@@ -34,7 +34,12 @@ private enum class ActiveClass1Book {
     NONE,
     ENGLISH,
     MATHS,
-    DRAWING
+    DRAWING,
+    NAZERA,
+    ISLAMYAT,
+    PASHTO,
+    URDU,
+    GK
 }
 
 private data class Class1BookCardModel(
@@ -82,6 +87,38 @@ fun Class1BooksHubScreen(
             )
             return
         }
+        ActiveClass1Book.NAZERA -> {
+            Class1NazeraScreen(
+                onBackClick = { selectedBook = ActiveClass1Book.NONE }
+            )
+            return
+        }
+        ActiveClass1Book.ISLAMYAT -> {
+            Class1IslamyatScreen(
+                onBackClick = { selectedBook = ActiveClass1Book.NONE }
+            )
+            return
+        }
+        ActiveClass1Book.PASHTO -> {
+            Class1PashtoScreen(
+                onBackClick = { selectedBook = ActiveClass1Book.NONE }
+            )
+            return
+        }
+        ActiveClass1Book.URDU -> {
+            Class1UrduOrGKScreen(
+                isUrduBook = true,
+                onBackClick = { selectedBook = ActiveClass1Book.NONE }
+            )
+            return
+        }
+        ActiveClass1Book.GK -> {
+            Class1UrduOrGKScreen(
+                isUrduBook = false,
+                onBackClick = { selectedBook = ActiveClass1Book.NONE }
+            )
+            return
+        }
         ActiveClass1Book.NONE -> {}
     }
 
@@ -89,7 +126,7 @@ fun Class1BooksHubScreen(
         listOf(
             Class1BookCardModel(
                 bookType = ActiveClass1Book.ENGLISH,
-                titleEn = "English Grade 1",
+                titleEn = "English Class 1",
                 titleUr = "انگلش جماعت اول",
                 titlePs = "انګلیسي لومړی ټولګی",
                 subtitle = "Units 1–11 • Pages 2–120",
@@ -100,7 +137,7 @@ fun Class1BooksHubScreen(
             ),
             Class1BookCardModel(
                 bookType = ActiveClass1Book.MATHS,
-                titleEn = "Mathematics Grade 1",
+                titleEn = "Maths Class 1",
                 titleUr = "ریاضی جماعت اول",
                 titlePs = "ریاضي لومړی ټولګی",
                 subtitle = "Units 1–6 • Pages 1–139",
@@ -111,7 +148,7 @@ fun Class1BooksHubScreen(
             ),
             Class1BookCardModel(
                 bookType = ActiveClass1Book.DRAWING,
-                titleEn = "Drawing Grade 1",
+                titleEn = "Drawing Class 1",
                 titleUr = "ڈرائنگ جماعت اول",
                 titlePs = "رسامي لومړی ټولګی",
                 subtitle = "Pages 1–32 • Full Book",
@@ -119,6 +156,61 @@ fun Class1BooksHubScreen(
                 coverRes = R.drawable.cls1_drawing_cover,
                 accentColor = Color(0xFFD81B60),
                 gradientColors = listOf(Color(0xFF4A148C), Color(0xFFE91E63))
+            ),
+            Class1BookCardModel(
+                bookType = ActiveClass1Book.NAZERA,
+                titleEn = "Nazira Class 1",
+                titleUr = "ناظرہ قرآن جماعت اول",
+                titlePs = "ناظره قرآن لومړی ټولګی",
+                subtitle = "Lessons 1–17 • Pages 6–62",
+                badgeText = "17 Tajweed Games",
+                coverRes = R.drawable.cls1_nazera_cover,
+                accentColor = Color(0xFF0D9488),
+                gradientColors = listOf(Color(0xFF042F2E), Color(0xFF0D9488))
+            ),
+            Class1BookCardModel(
+                bookType = ActiveClass1Book.PASHTO,
+                titleEn = "Pashto Class 1",
+                titleUr = "پشتو جماعت اول",
+                titlePs = "پښتو لومړی ټولګی",
+                subtitle = "Lessons 1–23 • Pages 1–88",
+                badgeText = "23 Lessons • Games",
+                coverRes = R.drawable.cls1_pashto_cover,
+                accentColor = Color(0xFF7C3AED),
+                gradientColors = listOf(Color(0xFF3B0764), Color(0xFF7C3AED))
+            ),
+            Class1BookCardModel(
+                bookType = ActiveClass1Book.URDU,
+                titleEn = "Urdu Class 1",
+                titleUr = "اردو جماعت اول",
+                titlePs = "اردو لومړی ټولګی",
+                subtitle = "حروف، حمد، نعت اور اسباق",
+                badgeText = "Urdu Games • Voice",
+                coverRes = R.drawable.cls1_urdu_cover,
+                accentColor = Color(0xFF0284C7),
+                gradientColors = listOf(Color(0xFF075985), Color(0xFF0284C7))
+            ),
+            Class1BookCardModel(
+                bookType = ActiveClass1Book.GK,
+                titleEn = "General Knowledge",
+                titleUr = "واقفیت عامہ جماعت اول",
+                titlePs = "عمومي معلومات لومړی ټولګی",
+                subtitle = "Body, Health, Nature & Pakistan",
+                badgeText = "GK Games • Voice",
+                coverRes = R.drawable.cls1_gk_cover,
+                accentColor = Color(0xFF16A34A),
+                gradientColors = listOf(Color(0xFF14532D), Color(0xFF16A34A))
+            ),
+            Class1BookCardModel(
+                bookType = ActiveClass1Book.ISLAMYAT,
+                titleEn = "Islamyat Class 1",
+                titleUr = "اسلامیات جماعت اول",
+                titlePs = "اسلامیات لومړی ټولګی",
+                subtitle = "Units 1–5 • Pages 1–58",
+                badgeText = "7 Islamic Games",
+                coverRes = R.drawable.cls1_islamyat_cover,
+                accentColor = Color(0xFF059669),
+                gradientColors = listOf(Color(0xFF064E3B), Color(0xFF059669))
             )
         )
     }

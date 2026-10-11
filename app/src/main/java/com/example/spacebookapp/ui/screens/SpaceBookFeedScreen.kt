@@ -46,17 +46,47 @@ fun SpaceBookFeedScreen(
     val posts = SpaceBookRepository.posts
 
     var viewingStory by remember { mutableStateOf<BookStory?>(null) }
-    var showClass1EnglishScreen by remember { mutableStateOf(false) }
-    var showClass1MathsScreen by remember { mutableStateOf(false) }
-    var showClass1DrawingScreen by remember { mutableStateOf(false) }
+    var activeClass1StoryId by remember { mutableStateOf<String?>(null) }
     var activeCommentPost by remember { mutableStateOf<StudyPost?>(null) }
     var showCreatePostDialog by remember { mutableStateOf(false) }
 
-    if (showClass1EnglishScreen) {
-        Class1BooksHubScreen(
-            onBackClick = { showClass1EnglishScreen = false }
-        )
-        return
+    when (activeClass1StoryId) {
+        "story-class1-hub" -> {
+            Class1BooksHubScreen(onBackClick = { activeClass1StoryId = null })
+            return
+        }
+        "story-class1-english" -> {
+            Class1EnglishScreen(onBackClick = { activeClass1StoryId = null })
+            return
+        }
+        "story-class1-maths" -> {
+            Class1MathsScreen(onBackClick = { activeClass1StoryId = null })
+            return
+        }
+        "story-class1-drawing" -> {
+            Class1DrawingScreen(onBack = { activeClass1StoryId = null })
+            return
+        }
+        "story-class1-nazera" -> {
+            Class1NazeraScreen(onBackClick = { activeClass1StoryId = null })
+            return
+        }
+        "story-class1-pashto" -> {
+            Class1PashtoScreen(onBackClick = { activeClass1StoryId = null })
+            return
+        }
+        "story-class1-urdu" -> {
+            Class1UrduOrGKScreen(isUrduBook = true, onBackClick = { activeClass1StoryId = null })
+            return
+        }
+        "story-class1-gk" -> {
+            Class1UrduOrGKScreen(isUrduBook = false, onBackClick = { activeClass1StoryId = null })
+            return
+        }
+        "story-class1-islamyat" -> {
+            Class1IslamyatScreen(onBackClick = { activeClass1StoryId = null })
+            return
+        }
     }
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -97,9 +127,10 @@ fun SpaceBookFeedScreen(
                         stories = stories,
                         onStoryClick = { story ->
                             when {
-                                story.isClass1EnglishBook -> showClass1EnglishScreen = true
-                                story.isClass1MathsBook -> showClass1MathsScreen = true
-                                story.isClass1DrawingBook -> showClass1DrawingScreen = true
+                                story.id.startsWith("story-class1-") -> activeClass1StoryId = story.id
+                                story.isClass1EnglishBook -> activeClass1StoryId = "story-class1-english"
+                                story.isClass1MathsBook -> activeClass1StoryId = "story-class1-maths"
+                                story.isClass1DrawingBook -> activeClass1StoryId = "story-class1-drawing"
                                 else -> viewingStory = story
                             }
                         },

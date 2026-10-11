@@ -90,14 +90,88 @@ object SpaceBookRepository {
     // ─── STORIES STATE ───
     val stories = mutableStateListOf<BookStory>(
         BookStory(
-            id = "story-class-1",
-            authorName = "Class 1",
+            id = "story-class1-hub",
+            authorName = "Class 1 Books Hub",
             authorRole = "KPK Textbook Board",
-            bookTitle = "3 Books • Tap to Open",
+            bookTitle = "8 Books • Tap to Open",
             subjectTag = "1st Class",
+            previewGradient = listOf(0xFF0F172A, 0xFF1E3A8A),
+            coverDrawableRes = R.drawable.cls1_english_cover
+        ),
+        BookStory(
+            id = "story-class1-english",
+            authorName = "English Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–11 • 20 Games",
+            subjectTag = "Class 1",
             previewGradient = listOf(0xFF0F172A, 0xFF1E3A8A),
             coverDrawableRes = R.drawable.cls1_english_cover,
             isClass1EnglishBook = true
+        ),
+        BookStory(
+            id = "story-class1-maths",
+            authorName = "Maths Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–6 • 13 Games",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF064E3B, 0xFF10B981),
+            coverDrawableRes = R.drawable.cls1_maths_cover,
+            isClass1MathsBook = true
+        ),
+        BookStory(
+            id = "story-class1-drawing",
+            authorName = "Drawing Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Pages 1–32 • Art Studio",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF4A148C, 0xFFE91E63),
+            coverDrawableRes = R.drawable.cls1_drawing_cover,
+            isClass1DrawingBook = true
+        ),
+        BookStory(
+            id = "story-class1-nazera",
+            authorName = "Nazira Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "ناظرہ قرآن • 17 Lessons",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF042F2E, 0xFF0D9488),
+            coverDrawableRes = R.drawable.cls1_nazera_cover
+        ),
+        BookStory(
+            id = "story-class1-pashto",
+            authorName = "Pashto Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "پښتو • 23 Lessons",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF3B0764, 0xFF7C3AED),
+            coverDrawableRes = R.drawable.cls1_pashto_cover
+        ),
+        BookStory(
+            id = "story-class1-urdu",
+            authorName = "Urdu Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "اردو جماعت اول • Games",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF075985, 0xFF0284C7),
+            coverDrawableRes = R.drawable.cls1_urdu_cover
+        ),
+        BookStory(
+            id = "story-class1-gk",
+            authorName = "General Knowledge",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "واقفیت عامہ • Class 1",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF14532D, 0xFF16A34A),
+            coverDrawableRes = R.drawable.cls1_gk_cover
+        ),
+        BookStory(
+            id = "story-class1-islamyat",
+            authorName = "Islamyat Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "اسلامیات • Units 1–5",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF064E3B, 0xFF059669),
+            coverDrawableRes = R.drawable.cls1_islamyat_cover
         ),
         BookStory(
             id = "story-create",
@@ -107,6 +181,32 @@ object SpaceBookRepository {
             subjectTag = "All",
             previewGradient = listOf(0xFF2563EB, 0xFF1D4ED8),
             isUserStory = true
+        ),
+        BookStory(
+            id = "story-1",
+            authorName = "Nabil Khan",
+            authorRole = "Physics Scholar",
+            bookTitle = "Physics 9: Measurements & Vectors",
+            subjectTag = "Physics",
+            previewGradient = listOf(0xFF1E3A8A, 0xFF3B82F6),
+            slides = listOf(
+                StorySlide(
+                    title = "Physical Quantities & SI Units",
+                    subtitle = "Class 9 Physics • Chapter 1",
+                    keyConcept = "7 Base SI Units: Length (m), Mass (kg), Time (s), Electric Current (A), Temperature (K), Amount of substance (mol), Luminous intensity (cd).",
+                    quoteOrSummary = "Derived quantities are derived from base units. e.g., Velocity (m/s), Force (N = kg·m/s²).",
+                    subjectTag = "Physics",
+                    pageRef = "Pages 4-12"
+                ),
+                StorySlide(
+                    title = "Vernier Calipers & Micrometer",
+                    subtitle = "Zero Error Analysis",
+                    keyConcept = "Least Count of Vernier = 0.01 cm or 0.1 mm. Least Count of Micrometer Screw Gauge = 0.001 cm or 0.01 mm.",
+                    quoteOrSummary = "Positive zero error is subtracted from reading; negative zero error is added!",
+                    subjectTag = "Physics",
+                    pageRef = "Pages 15-20"
+                )
+            )
         ),
         BookStory(
             id = "story-2",
