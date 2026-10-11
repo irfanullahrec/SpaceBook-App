@@ -115,6 +115,12 @@ fun Class7BooksHubScreen(
             )
             return
         }
+        ActiveClass7Book.CS -> {
+            Class7CSScreen(
+                onBackClick = { selectedBook = ActiveClass7Book.NONE }
+            )
+            return
+        }
         else -> {
             // Display Hub grid below
         }
