@@ -48,6 +48,8 @@ enum class DrawerDestination {
     TEXTBOOKS,
     CLASS1_HUB,
     CLASS3_HUB,
+    BRAIN_ZONE,
+    QUICK_PLAY,
     EXAM_ROADMAPS,
     STUDY_PLAN
 }
@@ -252,6 +254,26 @@ fun StudySidebarDrawer(
             isSelected = currentDestination == DrawerDestination.CLASS3_HUB,
             activeColor = Color(0xFFD97706),
             onClick = { onDestinationSelected(DrawerDestination.CLASS3_HUB) }
+        )
+
+        // Brain Zone
+        DrawerMenuItem(
+            icon = Icons.Default.SportsEsports,
+            title = "🧠 Brain Zone",
+            subtitle = "Focus, Logic IQ & Critical Thinking",
+            isSelected = currentDestination == DrawerDestination.BRAIN_ZONE,
+            activeColor = Color(0xFF6366F1),
+            onClick = { onDestinationSelected(DrawerDestination.BRAIN_ZONE) }
+        )
+
+        // Quick Play Feed
+        DrawerMenuItem(
+            icon = Icons.Default.Explore,
+            title = "⚡ Quick Play (TikTok-Style)",
+            subtitle = "15-Sec Swipe Challenges & Mascots",
+            isSelected = currentDestination == DrawerDestination.QUICK_PLAY,
+            activeColor = Color(0xFFEC4899),
+            onClick = { onDestinationSelected(DrawerDestination.QUICK_PLAY) }
         )
 
         // 4. Exam Roadmaps

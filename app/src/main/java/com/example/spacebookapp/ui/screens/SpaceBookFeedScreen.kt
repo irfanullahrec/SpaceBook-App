@@ -2,11 +2,16 @@ package com.example.spacebookapp.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.SnackbarHost
@@ -21,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.spacebookapp.data.models.BookStory
 import com.example.spacebookapp.data.models.StudyPost
 import com.example.spacebookapp.data.repository.SpaceBookRepository
@@ -95,6 +101,14 @@ fun SpaceBookFeedScreen(
             Class3GKScreen(onBackClick = { activeClass1StoryId = null })
             return
         }
+        "story-brain-zone" -> {
+            com.example.spacebookapp.ui.brain.BrainZoneHubScreen(onBack = { activeClass1StoryId = null })
+            return
+        }
+        "story-quick-play" -> {
+            com.example.spacebookapp.ui.brain.QuickPlayFeedScreen(onBack = { activeClass1StoryId = null })
+            return
+        }
     }
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -127,6 +141,57 @@ fun SpaceBookFeedScreen(
                     CreatePostBar(
                         onBarClick = { showCreatePostDialog = true }
                     )
+                }
+
+                // Quick Play & Brain Zone CTA
+                item {
+                    androidx.compose.foundation.layout.Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 6.dp),
+                        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)
+                    ) {
+                        androidx.compose.material3.Surface(
+                            shape = androidx.compose.foundation.shape.RoundedCornerShape(14.dp),
+                            color = Color(0xFF4F46E5),
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable { activeClass1StoryId = "story-quick-play" }
+                        ) {
+                            androidx.compose.foundation.layout.Row(
+                                modifier = Modifier.padding(10.dp),
+                                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                            ) {
+                                androidx.compose.material3.Text("⚡", fontSize = 20.sp)
+                                androidx.compose.foundation.layout.Spacer(Modifier.width(6.dp))
+                                androidx.compose.foundation.layout.Column {
+                                    androidx.compose.material3.Text("Quick Play", color = Color.White, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, fontSize = 13.sp)
+                                    androidx.compose.material3.Text("Swipe feed", color = Color(0xFFC7D2FE), fontSize = 10.sp)
+                                }
+                            }
+                        }
+
+                        androidx.compose.material3.Surface(
+                            shape = androidx.compose.foundation.shape.RoundedCornerShape(14.dp),
+                            color = Color(0xFF0F172A),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF6366F1)),
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable { activeClass1StoryId = "story-brain-zone" }
+                        ) {
+                            androidx.compose.foundation.layout.Row(
+                                modifier = Modifier.padding(10.dp),
+                                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                            ) {
+                                androidx.compose.material3.Text("🧠", fontSize = 20.sp)
+                                androidx.compose.foundation.layout.Spacer(Modifier.width(6.dp))
+                                androidx.compose.foundation.layout.Column {
+                                    androidx.compose.material3.Text("Brain Zone", color = Color.White, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, fontSize = 13.sp)
+                                    androidx.compose.material3.Text("IQ & Focus", color = Color(0xFF94A3B8), fontSize = 10.sp)
+                                }
+                            }
+                        }
+                    }
                 }
 
                 // 2. Stories Carousel

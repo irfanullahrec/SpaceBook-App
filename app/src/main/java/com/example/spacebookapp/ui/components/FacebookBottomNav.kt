@@ -7,27 +7,22 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Group
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.MenuBook
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.OndemandVideo
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.outlined.Group
-import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.filled.Psychology
+import androidx.compose.material.icons.outlined.Bolt
 import androidx.compose.material.icons.outlined.MenuBook
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.OndemandVideo
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -42,12 +37,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 enum class BottomTab {
-    HOME,
-    REELS,
-    GROUPS,
-    LIBRARY,
-    NOTIFICATIONS,
-    PROFILE
+    LEARN,
+    PLAY,
+    BRAIN,
+    ME
 }
 
 @Composable
@@ -61,100 +54,65 @@ fun FacebookBottomNav(
             .fillMaxWidth()
             .background(Color.White)
     ) {
-        HorizontalDivider(thickness = 1.dp, color = Color(0xFFE4E6EB))
+        HorizontalDivider(thickness = 1.dp, color = Color(0xFFE2E8F0))
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp),
+                .height(58.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            // 1. Home
-            BottomNavItem(
-                icon = if (selectedTab == BottomTab.HOME) Icons.Filled.Home else Icons.Outlined.Home,
-                label = "Home",
-                isSelected = selectedTab == BottomTab.HOME,
-                onClick = { onTabSelected(BottomTab.HOME) }
+            // 1. Learn (Books)
+            KidBottomNavItem(
+                icon = if (selectedTab == BottomTab.LEARN) Icons.Filled.MenuBook else Icons.Outlined.MenuBook,
+                label = "Learn",
+                emoji = "📚",
+                isSelected = selectedTab == BottomTab.LEARN,
+                activeColor = Color(0xFF2563EB),
+                onClick = { onTabSelected(BottomTab.LEARN) }
             )
 
-            // 2. Video / Reels
-            BottomNavItem(
-                icon = if (selectedTab == BottomTab.REELS) Icons.Filled.OndemandVideo else Icons.Outlined.OndemandVideo,
-                label = "Video",
-                isSelected = selectedTab == BottomTab.REELS,
-                onClick = { onTabSelected(BottomTab.REELS) }
+            // 2. Play (Quick Challenges / Games)
+            KidBottomNavItem(
+                icon = if (selectedTab == BottomTab.PLAY) Icons.Filled.Bolt else Icons.Outlined.Bolt,
+                label = "Play",
+                emoji = "⚡",
+                isSelected = selectedTab == BottomTab.PLAY,
+                activeColor = Color(0xFFEC4899),
+                onClick = { onTabSelected(BottomTab.PLAY) }
             )
 
-            // 3. Groups (with badge 2)
-            BottomNavItem(
-                icon = if (selectedTab == BottomTab.GROUPS) Icons.Filled.Group else Icons.Outlined.Group,
-                label = "Groups",
-                badgeCount = "2",
-                isSelected = selectedTab == BottomTab.GROUPS,
-                onClick = { onTabSelected(BottomTab.GROUPS) }
+            // 3. Brain (Brain Zone Hub)
+            KidBottomNavItem(
+                icon = if (selectedTab == BottomTab.BRAIN) Icons.Filled.Psychology else Icons.Outlined.Psychology,
+                label = "Brain",
+                emoji = "🧠",
+                isSelected = selectedTab == BottomTab.BRAIN,
+                activeColor = Color(0xFF6366F1),
+                onClick = { onTabSelected(BottomTab.BRAIN) }
             )
 
-            // 4. Library / Textbooks
-            BottomNavItem(
-                icon = if (selectedTab == BottomTab.LIBRARY) Icons.Filled.MenuBook else Icons.Outlined.MenuBook,
-                label = "Books",
-                isSelected = selectedTab == BottomTab.LIBRARY,
-                onClick = { onTabSelected(BottomTab.LIBRARY) }
+            // 4. Me (Profile / Stars / Parent Corner)
+            KidBottomNavItem(
+                icon = if (selectedTab == BottomTab.ME) Icons.Filled.Person else Icons.Outlined.Person,
+                label = "Me",
+                emoji = "⭐",
+                isSelected = selectedTab == BottomTab.ME,
+                activeColor = Color(0xFFF59E0B),
+                onClick = { onTabSelected(BottomTab.ME) }
             )
-
-            // 5. Notifications (with badge 9+)
-            BottomNavItem(
-                icon = if (selectedTab == BottomTab.NOTIFICATIONS) Icons.Filled.Notifications else Icons.Outlined.Notifications,
-                label = "Notifications",
-                badgeCount = "9+",
-                isSelected = selectedTab == BottomTab.NOTIFICATIONS,
-                onClick = { onTabSelected(BottomTab.NOTIFICATIONS) }
-            )
-
-            // 6. Profile Avatar
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight()
-                    .clickable { onTabSelected(BottomTab.PROFILE) },
-                contentAlignment = Alignment.Center
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(28.dp)
-                        .clip(CircleShape)
-                        .background(if (selectedTab == BottomTab.PROFILE) FacebookBlue else Color(0xFF334155)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = "Profile",
-                        tint = Color.White,
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-
-                if (selectedTab == BottomTab.PROFILE) {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .fillMaxWidth(0.6f)
-                            .height(2.5.dp)
-                            .background(FacebookBlue, RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp))
-                    )
-                }
-            }
         }
     }
 }
 
 @Composable
-private fun RowScope.BottomNavItem(
+private fun RowScope.KidBottomNavItem(
     icon: ImageVector,
     label: String,
+    emoji: String,
     isSelected: Boolean,
-    badgeCount: String? = null,
+    activeColor: Color,
     onClick: () -> Unit
 ) {
     Box(
@@ -164,35 +122,33 @@ private fun RowScope.BottomNavItem(
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
-        if (badgeCount != null) {
-            BadgedBox(
-                badge = {
-                    Badge(
-                        containerColor = Color(0xFFE41E3F),
-                        contentColor = Color.White,
-                        modifier = Modifier.offset(x = 4.dp, y = (-2).dp)
-                    ) {
-                        Text(
-                            text = badgeCount,
-                            fontSize = 9.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(vertical = 4.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(34.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(if (isSelected) activeColor.copy(alpha = 0.14f) else Color.Transparent),
+                contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = label,
-                    tint = if (isSelected) FacebookBlue else Color(0xFF65676B),
-                    modifier = Modifier.size(26.dp)
+                    tint = if (isSelected) activeColor else Color(0xFF64748B),
+                    modifier = Modifier.size(24.dp)
                 )
             }
-        } else {
-            Icon(
-                imageVector = icon,
-                contentDescription = label,
-                tint = if (isSelected) FacebookBlue else Color(0xFF65676B),
-                modifier = Modifier.size(26.dp)
+
+            Spacer(Modifier.height(2.dp))
+
+            Text(
+                text = label,
+                fontSize = 11.5.sp,
+                fontWeight = if (isSelected) FontWeight.ExtraBold else FontWeight.Medium,
+                color = if (isSelected) activeColor else Color(0xFF64748B)
             )
         }
 
@@ -200,9 +156,9 @@ private fun RowScope.BottomNavItem(
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .fillMaxWidth(0.6f)
-                    .height(2.5.dp)
-                    .background(FacebookBlue, RoundedCornerShape(topStart = 2.dp, topEnd = 2.dp))
+                    .fillMaxWidth(0.55f)
+                    .height(3.dp)
+                    .background(activeColor, RoundedCornerShape(topStart = 3.dp, topEnd = 3.dp))
             )
         }
     }
