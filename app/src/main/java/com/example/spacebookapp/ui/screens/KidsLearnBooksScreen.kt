@@ -47,6 +47,7 @@ import com.example.spacebookapp.data.brain.BrainProgressManager
 
 @Composable
 fun KidsLearnBooksScreen(
+    onOpenClass7Hub: () -> Unit,
     onOpenClass3Hub: () -> Unit,
     onOpenClass1Hub: () -> Unit,
     onOpenTextbooks: () -> Unit,
@@ -191,6 +192,20 @@ fun KidsLearnBooksScreen(
                         }
                     }
                 }
+            }
+
+            // Book Hub: Class 7 Books Hub
+            item {
+                LearnBookCard(
+                    title = "Class 7 Books Hub",
+                    subtitle = "12 Books • Mathematics, Science, English, CS & Quizzes",
+                    badge = "12 BOOKS • GRADE 7",
+                    badgeColor = Color(0xFF0284C7),
+                    iconEmoji = "📐",
+                    gradientColors = listOf(Color(0xFFF0F9FF), Color(0xFFE0F2FE)),
+                    borderColor = Color(0xFF7DD3FC),
+                    onClick = onOpenClass7Hub
+                )
             }
 
             // Book Hub 1: Class 3 Books Hub

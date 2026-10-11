@@ -66,6 +66,7 @@ import com.example.spacebookapp.ui.drawer.DrawerDestination
 import com.example.spacebookapp.ui.drawer.StudySidebarDrawer
 import com.example.spacebookapp.ui.screens.Class1BooksHubScreen
 import com.example.spacebookapp.ui.screens.Class3BooksHubScreen
+import com.example.spacebookapp.ui.screens.Class7BooksHubScreen
 import com.example.spacebookapp.ui.screens.ExamRoadmapScreen
 import com.example.spacebookapp.ui.screens.KidsLearnBooksScreen
 import com.example.spacebookapp.ui.screens.KidsProfileScreen
@@ -165,7 +166,7 @@ fun SpaceBookMainApp() {
                         currentDestination = destination
                         when (destination) {
                             DrawerDestination.HOME -> selectedBottomTab = BottomTab.LEARN
-                            DrawerDestination.CLASS1_HUB, DrawerDestination.CLASS3_HUB, DrawerDestination.TEXTBOOKS -> selectedBottomTab = BottomTab.LEARN
+                            DrawerDestination.CLASS1_HUB, DrawerDestination.CLASS3_HUB, DrawerDestination.CLASS7_HUB, DrawerDestination.TEXTBOOKS -> selectedBottomTab = BottomTab.LEARN
                             DrawerDestination.BRAIN_ZONE -> selectedBottomTab = BottomTab.BRAIN
                             DrawerDestination.QUICK_PLAY -> selectedBottomTab = BottomTab.PLAY
                             DrawerDestination.STUDY_PLAN -> selectedBottomTab = BottomTab.ME
@@ -222,6 +223,11 @@ fun SpaceBookMainApp() {
                                     onBackClick = { currentDestination = DrawerDestination.HOME }
                                 )
                             }
+                            DrawerDestination.CLASS7_HUB -> {
+                                Class7BooksHubScreen(
+                                    onBackClick = { currentDestination = DrawerDestination.HOME }
+                                )
+                            }
                             DrawerDestination.TEXTBOOKS -> {
                                 TextbooksScreen(
                                     onBackToHome = { currentDestination = DrawerDestination.HOME }
@@ -251,6 +257,7 @@ fun SpaceBookMainApp() {
                             else -> {
                                 // Default Hub for Learn Tab
                                 KidsLearnBooksScreen(
+                                    onOpenClass7Hub = { currentDestination = DrawerDestination.CLASS7_HUB },
                                     onOpenClass3Hub = { currentDestination = DrawerDestination.CLASS3_HUB },
                                     onOpenClass1Hub = { currentDestination = DrawerDestination.CLASS1_HUB },
                                     onOpenTextbooks = { currentDestination = DrawerDestination.TEXTBOOKS },

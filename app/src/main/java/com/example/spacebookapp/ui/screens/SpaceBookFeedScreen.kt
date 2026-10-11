@@ -101,6 +101,10 @@ fun SpaceBookFeedScreen(
             Class3GKScreen(onBackClick = { activeClass1StoryId = null })
             return
         }
+        "story-class7-hub" -> {
+            Class7BooksHubScreen(onBackClick = { activeClass1StoryId = null })
+            return
+        }
         "story-brain-zone" -> {
             com.example.spacebookapp.ui.brain.BrainZoneHubScreen(onBack = { activeClass1StoryId = null })
             return
@@ -202,6 +206,7 @@ fun SpaceBookFeedScreen(
                             when {
                                 story.id.startsWith("story-class1-") -> activeClass1StoryId = story.id
                                 story.id.startsWith("story-class3-") -> activeClass1StoryId = story.id
+                                story.id.startsWith("story-class7-") -> activeClass1StoryId = story.id
                                 story.isClass1EnglishBook -> activeClass1StoryId = "story-class1-english"
                                 story.isClass1MathsBook -> activeClass1StoryId = "story-class1-maths"
                                 story.isClass1DrawingBook -> activeClass1StoryId = "story-class1-drawing"

@@ -192,6 +192,15 @@ object SpaceBookRepository {
             coverDrawableRes = R.drawable.cls3_gk_cover
         ),
         BookStory(
+            id = "story-class7-hub",
+            authorName = "Class 7 Books Hub",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "12 Books • Tap to Open",
+            subjectTag = "7th Class",
+            previewGradient = listOf(0xFF0369A1, 0xFF0284C7),
+            coverDrawableRes = R.drawable.cls7_maths_cover
+        ),
+        BookStory(
             id = "story-create",
             authorName = "Create story",
             authorRole = "You",

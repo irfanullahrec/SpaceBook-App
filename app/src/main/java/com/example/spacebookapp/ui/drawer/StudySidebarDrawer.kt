@@ -48,6 +48,7 @@ enum class DrawerDestination {
     TEXTBOOKS,
     CLASS1_HUB,
     CLASS3_HUB,
+    CLASS7_HUB,
     BRAIN_ZONE,
     QUICK_PLAY,
     EXAM_ROADMAPS,
@@ -254,6 +255,16 @@ fun StudySidebarDrawer(
             isSelected = currentDestination == DrawerDestination.CLASS3_HUB,
             activeColor = Color(0xFFD97706),
             onClick = { onDestinationSelected(DrawerDestination.CLASS3_HUB) }
+        )
+
+        // Class 7 Books Hub
+        DrawerMenuItem(
+            icon = Icons.Default.SportsEsports,
+            title = "Class 7 Books Hub",
+            subtitle = "12 Books • Mathematics, Science & Games",
+            isSelected = currentDestination == DrawerDestination.CLASS7_HUB,
+            activeColor = Color(0xFF0284C7),
+            onClick = { onDestinationSelected(DrawerDestination.CLASS7_HUB) }
         )
 
         // Brain Zone
