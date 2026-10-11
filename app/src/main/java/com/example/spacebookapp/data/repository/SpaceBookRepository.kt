@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.example.spacebookapp.R
 import com.example.spacebookapp.data.models.BookStory
 import com.example.spacebookapp.data.models.ChapterInfo
 import com.example.spacebookapp.data.models.ChartBarData
@@ -89,6 +90,16 @@ object SpaceBookRepository {
     // ─── STORIES STATE ───
     val stories = mutableStateListOf<BookStory>(
         BookStory(
+            id = "story-class-1",
+            authorName = "Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "3 Books • Tap to Open",
+            subjectTag = "1st Class",
+            previewGradient = listOf(0xFF0F172A, 0xFF1E3A8A),
+            coverDrawableRes = R.drawable.cls1_english_cover,
+            isClass1EnglishBook = true
+        ),
+        BookStory(
             id = "story-create",
             authorName = "Create story",
             authorRole = "You",
@@ -96,32 +107,6 @@ object SpaceBookRepository {
             subjectTag = "All",
             previewGradient = listOf(0xFF2563EB, 0xFF1D4ED8),
             isUserStory = true
-        ),
-        BookStory(
-            id = "story-1",
-            authorName = "Nabil Khan",
-            authorRole = "Physics Scholar",
-            bookTitle = "Physics 9: Measurements & Vectors",
-            subjectTag = "Physics",
-            previewGradient = listOf(0xFF1E3A8A, 0xFF3B82F6),
-            slides = listOf(
-                StorySlide(
-                    title = "Physical Quantities & SI Units",
-                    subtitle = "Class 9 Physics • Chapter 1",
-                    keyConcept = "7 Base SI Units: Length (m), Mass (kg), Time (s), Electric Current (A), Temperature (K), Amount of substance (mol), Luminous intensity (cd).",
-                    quoteOrSummary = "Derived quantities are derived from base units. e.g., Velocity (m/s), Force (N = kg·m/s²).",
-                    subjectTag = "Physics",
-                    pageRef = "Pages 4-12"
-                ),
-                StorySlide(
-                    title = "Vernier Calipers & Micrometer",
-                    subtitle = "Zero Error Analysis",
-                    keyConcept = "Least Count of Vernier = 0.01 cm or 0.1 mm. Least Count of Micrometer Screw Gauge = 0.001 cm or 0.01 mm.",
-                    quoteOrSummary = "Positive zero error is subtracted from reading; negative zero error is added!",
-                    subjectTag = "Physics",
-                    pageRef = "Pages 15-20"
-                )
-            )
         ),
         BookStory(
             id = "story-2",

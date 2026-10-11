@@ -17,6 +17,10 @@ data class BookStory(
     val subjectTag: String,
     val previewGradient: List<Long>, // ARGB hex colors for gradient
     val isUserStory: Boolean = false,
+    val coverDrawableRes: Int? = null,
+    val isClass1EnglishBook: Boolean = false,
+    val isClass1MathsBook: Boolean = false,
+    val isClass1DrawingBook: Boolean = false,
     val slides: List<StorySlide> = emptyList(),
     val hasUnseen: Boolean = true
 )

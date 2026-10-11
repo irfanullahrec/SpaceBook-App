@@ -46,8 +46,18 @@ fun SpaceBookFeedScreen(
     val posts = SpaceBookRepository.posts
 
     var viewingStory by remember { mutableStateOf<BookStory?>(null) }
+    var showClass1EnglishScreen by remember { mutableStateOf(false) }
+    var showClass1MathsScreen by remember { mutableStateOf(false) }
+    var showClass1DrawingScreen by remember { mutableStateOf(false) }
     var activeCommentPost by remember { mutableStateOf<StudyPost?>(null) }
     var showCreatePostDialog by remember { mutableStateOf(false) }
+
+    if (showClass1EnglishScreen) {
+        Class1BooksHubScreen(
+            onBackClick = { showClass1EnglishScreen = false }
+        )
+        return
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -85,7 +95,14 @@ fun SpaceBookFeedScreen(
                 item {
                     StoriesSection(
                         stories = stories,
-                        onStoryClick = { story -> viewingStory = story },
+                        onStoryClick = { story ->
+                            when {
+                                story.isClass1EnglishBook -> showClass1EnglishScreen = true
+                                story.isClass1MathsBook -> showClass1MathsScreen = true
+                                story.isClass1DrawingBook -> showClass1DrawingScreen = true
+                                else -> viewingStory = story
+                            }
+                        },
                         onCreateStoryClick = { showCreatePostDialog = true }
                     )
                 }

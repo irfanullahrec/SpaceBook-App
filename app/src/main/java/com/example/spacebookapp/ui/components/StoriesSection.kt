@@ -1,5 +1,6 @@
 package com.example.spacebookapp.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -41,6 +42,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -241,25 +244,38 @@ fun BookStoryCard(
             .height(190.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(brush)
-            .border(1.dp, Color(0x33FFFFFF), RoundedCornerShape(12.dp))
+            .border(
+                width = if (story.isClass1EnglishBook || story.isClass1MathsBook || story.isClass1DrawingBook) 2.5.dp else 1.dp,
+                color = if (story.isClass1EnglishBook || story.isClass1MathsBook || story.isClass1DrawingBook) Color(0xFF1877F2) else Color(0x33FFFFFF),
+                shape = RoundedCornerShape(12.dp)
+            )
             .clickable { onClick() }
     ) {
-        // Subtle decorative background icon for book feel
-        Icon(
-            imageVector = Icons.Default.MenuBook,
-            contentDescription = null,
-            tint = Color(0x22FFFFFF),
-            modifier = Modifier
-                .size(80.dp)
-                .align(Alignment.Center)
-        )
+        if (story.coverDrawableRes != null) {
+            Image(
+                painter = painterResource(id = story.coverDrawableRes),
+                contentDescription = story.bookTitle,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
+        } else {
+            // Subtle decorative background icon for book feel
+            Icon(
+                imageVector = Icons.Default.MenuBook,
+                contentDescription = null,
+                tint = Color(0x22FFFFFF),
+                modifier = Modifier
+                    .size(80.dp)
+                    .align(Alignment.Center)
+            )
+        }
 
         // Subject Badge at top right
         Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(6.dp)
-                .background(Color(0x66000000), RoundedCornerShape(6.dp))
+                .background(Color(0x99000000), RoundedCornerShape(6.dp))
                 .padding(horizontal = 5.dp, vertical = 2.dp)
         ) {
             Text(
@@ -271,29 +287,31 @@ fun BookStoryCard(
         }
 
         // Top Left: User Avatar with Facebook Blue ring
-        Box(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(8.dp)
-                .size(38.dp)
-                .clip(CircleShape)
-                .background(Color(0xFF1E293B))
-                .border(2.5.dp, FacebookBlue, CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.size(22.dp)
-            )
+        if (story.coverDrawableRes == null) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(8.dp)
+                    .size(38.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFF1E293B))
+                    .border(2.5.dp, FacebookBlue, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(22.dp)
+                )
+            }
         }
 
         // Dark gradient scrim at bottom for text legibility
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(70.dp)
+                .height(64.dp)
                 .align(Alignment.BottomCenter)
                 .background(
                     Brush.verticalGradient(

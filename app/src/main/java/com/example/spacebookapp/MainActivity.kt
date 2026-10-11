@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.spacebookapp.data.repository.SpaceBookRepository
+import com.example.spacebookapp.data.web.WebRepository
 import com.example.spacebookapp.ui.components.BottomTab
 import com.example.spacebookapp.ui.components.FacebookBottomNav
 import com.example.spacebookapp.ui.drawer.DrawerDestination
@@ -39,6 +40,7 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WebRepository.init(applicationContext)
         enableEdgeToEdge()
         setContent {
             SpaceBookAppTheme {
@@ -136,6 +138,9 @@ fun SpaceBookMainApp() {
                             onBackToHome = {
                                 currentDestination = DrawerDestination.HOME
                                 selectedBottomTab = BottomTab.HOME
+                            },
+                            onOpenRoadmap = {
+                                currentDestination = DrawerDestination.EXAM_ROADMAPS
                             }
                         )
                     }
