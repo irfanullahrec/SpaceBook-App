@@ -109,6 +109,12 @@ fun Class7BooksHubScreen(
             )
             return
         }
+        ActiveClass7Book.ENGLISH -> {
+            Class7EnglishScreen(
+                onBackClick = { selectedBook = ActiveClass7Book.NONE }
+            )
+            return
+        }
         else -> {
             // Display Hub grid below
         }
