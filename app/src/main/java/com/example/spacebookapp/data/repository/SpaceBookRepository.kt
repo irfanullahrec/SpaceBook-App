@@ -174,6 +174,24 @@ object SpaceBookRepository {
             coverDrawableRes = R.drawable.cls1_islamyat_cover
         ),
         BookStory(
+            id = "story-class3-hub",
+            authorName = "Class 3 Books Hub",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "7 Books • Tap to Open",
+            subjectTag = "3rd Class",
+            previewGradient = listOf(0xFF78350F, 0xFFD97706),
+            coverDrawableRes = R.drawable.cls3_gk_cover
+        ),
+        BookStory(
+            id = "story-class3-gk",
+            authorName = "General Knowledge",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "واقفیتِ عامہ • 16 Chapters",
+            subjectTag = "Class 3",
+            previewGradient = listOf(0xFF78350F, 0xFFD97706),
+            coverDrawableRes = R.drawable.cls3_gk_cover
+        ),
+        BookStory(
             id = "story-create",
             authorName = "Create story",
             authorRole = "You",

@@ -29,6 +29,8 @@ import com.example.spacebookapp.ui.components.BottomTab
 import com.example.spacebookapp.ui.components.FacebookBottomNav
 import com.example.spacebookapp.ui.drawer.DrawerDestination
 import com.example.spacebookapp.ui.drawer.StudySidebarDrawer
+import com.example.spacebookapp.ui.screens.Class1BooksHubScreen
+import com.example.spacebookapp.ui.screens.Class3BooksHubScreen
 import com.example.spacebookapp.ui.screens.ExamRoadmapScreen
 import com.example.spacebookapp.ui.screens.SpaceBookFeedScreen
 import com.example.spacebookapp.ui.screens.StudyPlanScreen
@@ -148,6 +150,24 @@ fun SpaceBookMainApp() {
                     DrawerDestination.TEXTBOOKS -> {
                         TextbooksScreen(
                             onBackToHome = {
+                                currentDestination = DrawerDestination.HOME
+                                selectedBottomTab = BottomTab.HOME
+                            }
+                        )
+                    }
+
+                    DrawerDestination.CLASS1_HUB -> {
+                        Class1BooksHubScreen(
+                            onBackClick = {
+                                currentDestination = DrawerDestination.HOME
+                                selectedBottomTab = BottomTab.HOME
+                            }
+                        )
+                    }
+
+                    DrawerDestination.CLASS3_HUB -> {
+                        Class3BooksHubScreen(
+                            onBackClick = {
                                 currentDestination = DrawerDestination.HOME
                                 selectedBottomTab = BottomTab.HOME
                             }

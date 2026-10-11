@@ -245,8 +245,8 @@ fun BookStoryCard(
             .clip(RoundedCornerShape(12.dp))
             .background(brush)
             .border(
-                width = if (story.id.startsWith("story-class1-") || story.isClass1EnglishBook || story.isClass1MathsBook || story.isClass1DrawingBook) 2.5.dp else 1.dp,
-                color = if (story.id.startsWith("story-class1-") || story.isClass1EnglishBook || story.isClass1MathsBook || story.isClass1DrawingBook) Color(0xFF1877F2) else Color(0x33FFFFFF),
+                width = if (story.id.startsWith("story-class1-") || story.id.startsWith("story-class3-") || story.isClass1EnglishBook || story.isClass1MathsBook || story.isClass1DrawingBook) 2.5.dp else 1.dp,
+                color = if (story.id.startsWith("story-class1-") || story.id.startsWith("story-class3-") || story.isClass1EnglishBook || story.isClass1MathsBook || story.isClass1DrawingBook) Color(0xFF1877F2) else Color(0x33FFFFFF),
                 shape = RoundedCornerShape(12.dp)
             )
             .clickable { onClick() }

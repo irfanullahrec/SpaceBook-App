@@ -87,6 +87,14 @@ fun SpaceBookFeedScreen(
             Class1IslamyatScreen(onBackClick = { activeClass1StoryId = null })
             return
         }
+        "story-class3-hub" -> {
+            Class3BooksHubScreen(onBackClick = { activeClass1StoryId = null })
+            return
+        }
+        "story-class3-gk" -> {
+            Class3GKScreen(onBackClick = { activeClass1StoryId = null })
+            return
+        }
     }
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -128,6 +136,7 @@ fun SpaceBookFeedScreen(
                         onStoryClick = { story ->
                             when {
                                 story.id.startsWith("story-class1-") -> activeClass1StoryId = story.id
+                                story.id.startsWith("story-class3-") -> activeClass1StoryId = story.id
                                 story.isClass1EnglishBook -> activeClass1StoryId = "story-class1-english"
                                 story.isClass1MathsBook -> activeClass1StoryId = "story-class1-maths"
                                 story.isClass1DrawingBook -> activeClass1StoryId = "story-class1-drawing"

@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -45,6 +46,8 @@ enum class DrawerDestination {
     HOME,
     SUBJECTS_UNITS,
     TEXTBOOKS,
+    CLASS1_HUB,
+    CLASS3_HUB,
     EXAM_ROADMAPS,
     STUDY_PLAN
 }
@@ -229,6 +232,26 @@ fun StudySidebarDrawer(
             isSelected = currentDestination == DrawerDestination.TEXTBOOKS,
             activeColor = Color(0xFF0D9488),
             onClick = { onDestinationSelected(DrawerDestination.TEXTBOOKS) }
+        )
+
+        // Class 1 Books Hub
+        DrawerMenuItem(
+            icon = Icons.Default.SportsEsports,
+            title = "Class 1 Books Hub",
+            subtitle = "8 Books • Games, Voice & Quizzes",
+            isSelected = currentDestination == DrawerDestination.CLASS1_HUB,
+            activeColor = Color(0xFF1E88E5),
+            onClick = { onDestinationSelected(DrawerDestination.CLASS1_HUB) }
+        )
+
+        // Class 3 Books Hub
+        DrawerMenuItem(
+            icon = Icons.Default.SportsEsports,
+            title = "Class 3 Books Hub",
+            subtitle = "7 Books • 16 GK Chapters & Quizzes",
+            isSelected = currentDestination == DrawerDestination.CLASS3_HUB,
+            activeColor = Color(0xFFD97706),
+            onClick = { onDestinationSelected(DrawerDestination.CLASS3_HUB) }
         )
 
         // 4. Exam Roadmaps
