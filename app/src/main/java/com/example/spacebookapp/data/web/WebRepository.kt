@@ -90,33 +90,180 @@ object WebRepository {
 
     private fun data(): JSONObject = load("data.json") as JSONObject
 
-    fun classNames(): Map<String, String> {
-        val out = LinkedHashMap<String, String>()
-        data().optJSONArray("classes")?.objects()?.forEach { out[it.str("id")] = it.str("name") }
-        return out
-    }
+    private val spaceBookWebClasses = listOf(
+        WebClassRef("cls1", "Class 1", "✏️", 8),
+        WebClassRef("cls2", "Class 2", "📖", 8),
+        WebClassRef("cls3", "Class 3", "📚", 8),
+        WebClassRef("cls4", "Class 4", "🎒", 6),
+        WebClassRef("cls5", "Class 5", "🔬", 8),
+        WebClassRef("cls6", "Class 6", "📐", 13),
+        WebClassRef("cls7", "Class 7", "🧪", 13),
+        WebClassRef("cls8", "Class 8", "⚛️", 13),
+        WebClassRef("cls9", "Class 9", "🏫", 14),
+        WebClassRef("cls10", "Class 10", "🏫", 14),
+        WebClassRef("cls11", "Class 11", "🏛️", 5),
+        WebClassRef("cls12", "Class 12", "🎓", 15)
+    )
 
-    fun classes(): List<WebClassRef> =
-        data().optJSONArray("classes")?.objects()?.map {
-            WebClassRef(
-                id = it.str("id"),
-                name = it.str("name"),
-                emoji = it.str("emoji"),
-                subjects = it.intOrString("subjects", 0)
-            )
-        } ?: emptyList()
+    private val spaceBookWebSubjects: Map<String, List<WebSubjectRef>> = mapOf(
+        "cls1" to listOf(
+            WebSubjectRef("cls1-eng", "English • انگریزی", "📖", 11),
+            WebSubjectRef("cls1-math", "Mathematics • ریاضی", "📐", 6),
+            WebSubjectRef("cls1-isl", "Islamyat • اسلامیات", "🕌", 10),
+            WebSubjectRef("cls1-nazira", "Nazira Quran • ناظرہ قرآن", "📖", 17),
+            WebSubjectRef("cls1-pashto", "Pashto • پښتو (لازمي)", "📚", 23),
+            WebSubjectRef("cls1-drawing", "Drawing • تخلیقی فنون", "🎨", 32),
+            WebSubjectRef("cls1-urdu", "Urdu • اردو لازمی", "📗", 12),
+            WebSubjectRef("cls1-gk", "General Knowledge • واقفیتِ عامہ", "🌍", 10)
+        ),
+        "cls2" to listOf(
+            WebSubjectRef("cls2-eng", "English • انگریزی", "📖", 12),
+            WebSubjectRef("cls2-urdu", "Urdu • اردو لازمی", "📗", 22),
+            WebSubjectRef("cls2-math", "Mathematics • ریاضی", "📐", 6),
+            WebSubjectRef("cls2-gk", "General Knowledge • واقفیتِ عامہ", "🌍", 16),
+            WebSubjectRef("cls2-isl", "Islamyat • اسلامیات", "🕌", 11),
+            WebSubjectRef("cls2-nazira", "Nazira Quran • ناظرہ قرآن", "📖", 15),
+            WebSubjectRef("cls2-pashto", "Pashto • پښتو (لازمي)", "📚", 28),
+            WebSubjectRef("cls2-drawing", "Drawing • تخلیقی فنون", "🎨", 32)
+        ),
+        "cls3" to listOf(
+            WebSubjectRef("cls3-eng", "English • انگریزی", "📖", 11),
+            WebSubjectRef("cls3-math", "Mathematics • ریاضی", "📐", 7),
+            WebSubjectRef("cls3-gk", "General Knowledge • واقفیتِ عامہ", "🌍", 16),
+            WebSubjectRef("cls3-isl", "Islamyat • اسلامیات", "🕌", 18),
+            WebSubjectRef("cls3-nazira", "Nazira Quran • ناظرہ قرآن", "📖", 16),
+            WebSubjectRef("cls3-pashto", "Pashto • پښتو (لازمي)", "📚", 33),
+            WebSubjectRef("cls3-drawing", "Drawing • تخلیقی فنون", "🎨", 32),
+            WebSubjectRef("cls3-urdu", "Urdu • اردو لازمی", "📗", 14)
+        ),
+        "cls4" to listOf(
+            WebSubjectRef("cls4-math", "Mathematics • ریاضی", "📐", 10),
+            WebSubjectRef("cls4-eng", "English • انگریزی", "📖", 13),
+            WebSubjectRef("cls4-sci", "General Science • جنرل سائنس", "🔬", 10),
+            WebSubjectRef("cls4-sst", "Social Studies • معاشرتی علوم", "🗺️", 6),
+            WebSubjectRef("cls4-isl", "Islamyat • اسلامیات", "🕌", 7),
+            WebSubjectRef("cls4-pashto", "Pashto • پښتو لازمي", "📚", 18)
+        ),
+        "cls5" to listOf(
+            WebSubjectRef("cls5-math", "Mathematics • ریاضی", "📐", 9),
+            WebSubjectRef("cls5-sci", "General Science • جنرل سائنس", "🔬", 10),
+            WebSubjectRef("cls5-eng", "English • انگریزی", "📖", 14),
+            WebSubjectRef("cls5-urdu", "Urdu • اردو لازمی", "📗", 21),
+            WebSubjectRef("cls5-isl", "Islamyat • اسلامیات لازمی", "🕌", 7),
+            WebSubjectRef("cls5-sst", "Social Studies (EM)", "🗺️", 6),
+            WebSubjectRef("cls5-sstum", "Social Studies (UM) • معاشرتی علوم", "🌍", 6),
+            WebSubjectRef("cls5-pashto", "Pashto • پښتو لازمي", "📚", 28)
+        ),
+        "cls6" to listOf(
+            WebSubjectRef("cls6-math", "Mathematics • ریاضی", "📐", 11),
+            WebSubjectRef("cls6-sci", "General Science • جنرل سائنس", "🔬", 11),
+            WebSubjectRef("cls6-eng", "English • انگریزی", "📖", 10),
+            WebSubjectRef("cls6-urdu", "Urdu • اردو لازمی", "📗", 15),
+            WebSubjectRef("cls6-isl", "Islamyat • اسلامیات", "🕌", 7),
+            WebSubjectRef("cls6-comp", "Computer Education • کمپیوٹر", "💻", 6),
+            WebSubjectRef("cls6-geo", "Geography • جغرافیہ", "🌍", 4),
+            WebSubjectRef("cls6-hist", "History • تاریخ", "🏛️", 5),
+            WebSubjectRef("cls6-hpe", "Health & Physical Education", "🏃", 6),
+            WebSubjectRef("cls6-drawing", "Drawing / Art • ڈرائنگ", "🎨", 6),
+            WebSubjectRef("cls6-arabic", "Arabic • عربی", "📜", 8),
+            WebSubjectRef("cls6-quran", "Mutalia-e-Quran • مطالعہ قرآن", "📖", 8),
+            WebSubjectRef("cls6-pashto", "Pashto • پښتو لازمي", "📚", 12)
+        ),
+        "cls7" to listOf(
+            WebSubjectRef("cls7-eng", "English • انگریزی", "📖", 7),
+            WebSubjectRef("cls7-urdu", "Urdu • اردو لازمی", "📗", 26),
+            WebSubjectRef("cls7-math", "Mathematics • ریاضی", "📐", 13),
+            WebSubjectRef("cls7-sci", "General Science • جنرل سائنس", "🔬", 12),
+            WebSubjectRef("cls7-geo", "Geography • جغرافیہ", "🌍", 6),
+            WebSubjectRef("cls7-hist", "History • تاریخ", "🏛️", 6),
+            WebSubjectRef("cls7-hg", "History & Geography • تاریخ و جغرافیہ", "🌍", 12),
+            WebSubjectRef("cls7-comp", "Computer Education • کمپیوٹر", "💻", 6),
+            WebSubjectRef("cls7-isl", "Islamyat • اسلامیات", "🕌", 7),
+            WebSubjectRef("cls7-quran", "Mutalia-e-Quran • مطالعہ قرآن", "📖", 22),
+            WebSubjectRef("cls7-arabic", "Arabic • عربی", "📜", 25),
+            WebSubjectRef("cls7-drawing", "Drawing / Art • ڈرائنگ", "🎨", 5),
+            WebSubjectRef("cls7-hpe", "Health & Physical Education", "🏃", 12)
+        ),
+        "cls8" to listOf(
+            WebSubjectRef("cls8-eng", "English • انگریزی", "📖", 8),
+            WebSubjectRef("cls8-urdu", "Urdu • اردو لازمی", "📗", 25),
+            WebSubjectRef("cls8-math", "Mathematics • ریاضی", "📐", 11),
+            WebSubjectRef("cls8-sci", "General Science • جنرل سائنس", "🔬", 12),
+            WebSubjectRef("cls8-geo", "Geography • جغرافیہ", "🌍", 6),
+            WebSubjectRef("cls8-hist", "History • تاریخ", "🏛️", 6),
+            WebSubjectRef("cls8-comp", "Computer Education • کمپیوٹر", "💻", 6),
+            WebSubjectRef("cls8-isl", "Islamyat • اسلامیات", "🕌", 7),
+            WebSubjectRef("cls8-quran", "Mutalia-e-Quran • مطالعہ قرآن", "📖", 24),
+            WebSubjectRef("cls8-pashto", "Pashto • پښتو لازمي", "📚", 33),
+            WebSubjectRef("cls8-arabic", "Arabic • عربی", "📜", 26),
+            WebSubjectRef("cls8-drawing", "Drawing / Art • ڈرائنگ", "🎨", 6),
+            WebSubjectRef("cls8-hpe", "Health & Physical Education", "🏃", 9)
+        ),
+        "cls9" to listOf(
+            WebSubjectRef("cls9-math", "Mathematics • ریاضی", "📐", 17),
+            WebSubjectRef("cls9-phy", "Physics • طبیعیات", "⚛️", 9),
+            WebSubjectRef("cls9-chem", "Chemistry • کیمیا", "🧪", 8),
+            WebSubjectRef("cls9-bio", "Biology • حیاتیات", "🧬", 9),
+            WebSubjectRef("cls9-eng", "English • انگریزی", "📖", 15),
+            WebSubjectRef("cls9-urdu", "Urdu • اردو لازمی", "📗", 19),
+            WebSubjectRef("cls9-isl", "Islamyat • اسلامیات", "🕌", 15),
+            WebSubjectRef("cls9-comp", "Computer Science • کمپیوٹر", "💻", 7),
+            WebSubjectRef("cls9-pakstudy", "Pakistan Studies • مطالعہ پاکستان", "🇵🇰", 4),
+            WebSubjectRef("cls9-sci", "General Science • جنرل سائنس", "🔬", 5),
+            WebSubjectRef("cls9-hpe", "Health & Physical Education", "🏃", 8),
+            WebSubjectRef("cls9-drawing", "Art & Model Drawing • ڈرائنگ", "🎨", 4),
+            WebSubjectRef("cls9-islopt", "Islamiat Ikhtiari • اسلامیات اختیاری", "🕌", 7),
+            WebSubjectRef("cls9-quran", "Mutalia-e-Quran • مطالعہ قرآن", "📖", 6)
+        ),
+        "cls10" to listOf(
+            WebSubjectRef("cls10-math", "Mathematics • ریاضی", "📐", 13),
+            WebSubjectRef("cls10-phy", "Physics • طبیعیات", "⚡", 9),
+            WebSubjectRef("cls10-chem", "Chemistry • کیمیا", "🧪", 8),
+            WebSubjectRef("cls10-bio", "Biology • حیاتیات", "🧬", 9),
+            WebSubjectRef("cls10-eng", "English • انگریزی", "📖", 15),
+            WebSubjectRef("cls10-pakstudy", "Pakistan Studies • مطالعہ پاکستان", "🇵🇰", 4),
+            WebSubjectRef("cls10-isl", "Islamyat • اسلامیات", "🕌", 18),
+            WebSubjectRef("cls10-urdu", "Urdu • اردو لازمی", "📗", 22),
+            WebSubjectRef("cls10-comp", "Computer Science • کمپیوٹر", "💻", 7),
+            WebSubjectRef("cls10-sci", "General Science • جنرل سائنس", "🔬", 6),
+            WebSubjectRef("cls10-hpe", "Health & Physical Education", "🏃", 8),
+            WebSubjectRef("cls10-drawing", "Art & Model Drawing • ڈرائنگ", "🎨", 4),
+            WebSubjectRef("cls10-islopt", "Islamiat Ikhtiari • اسلامیات اختیاری", "🕌", 4),
+            WebSubjectRef("cls10-quran", "Mutalia-e-Quran • مطالعہ قرآن", "📖", 8)
+        ),
+        "cls11" to listOf(
+            WebSubjectRef("cls11-phy", "Physics • طبیعیات", "⚡", 10),
+            WebSubjectRef("cls11-chem", "Chemistry • کیمیا", "🧪", 11),
+            WebSubjectRef("cls11-math", "Mathematics • ریاضی", "📐", 14),
+            WebSubjectRef("cls11-bio", "Biology • حیاتیات", "🧬", 10),
+            WebSubjectRef("cls11-eng", "English • انگریزی", "📖", 9)
+        ),
+        "cls12" to listOf(
+            WebSubjectRef("cls12-math", "Mathematics • ریاضی", "📐", 12),
+            WebSubjectRef("cls12-phy", "Physics • طبیعیات", "⚡", 10),
+            WebSubjectRef("cls12-chem", "Chemistry • کیمیا", "🧪", 12),
+            WebSubjectRef("cls12-bio", "Biology • حیاتیات", "🧬", 14),
+            WebSubjectRef("cls12-eng", "English • انگریزی لازمی", "📖", 19),
+            WebSubjectRef("cls12-urdu", "Urdu • اردو لازمی", "📗", 22),
+            WebSubjectRef("cls12-pak", "Pakistan Studies • مطالعہ پاکستان", "🇵🇰", 11),
+            WebSubjectRef("cls12-comp", "Computer Science • کمپیوٹر سائنس", "💻", 9),
+            WebSubjectRef("cls12-stat", "Statistics • شماریات", "📊", 9),
+            WebSubjectRef("cls12-civics", "Civics • شہریت (سوکس)", "🏛️", 8),
+            WebSubjectRef("cls12-econ", "Economics • معاشیات", "📈", 12),
+            WebSubjectRef("cls12-hpe", "Health & Physical Education", "🏃", 6),
+            WebSubjectRef("cls12-islopt", "Islamiat Ikhtiari • اسلامیات اختیاری", "🕌", 6),
+            WebSubjectRef("cls12-islhist", "Islamic History • تاریخِ اسلام", "📜", 6),
+            WebSubjectRef("cls12-quran", "Mutalia-e-Quran • ترجمۃ القرآن", "📖", 8)
+        )
+    )
 
-    fun subjectsFor(classId: String): List<WebSubjectRef> {
-        val arr = data().optJSONObject("subjects")?.optJSONArray(classId) ?: return emptyList()
-        return arr.objects().map {
-            WebSubjectRef(
-                id = it.str("id"),
-                name = it.str("name"),
-                emoji = it.str("emoji"),
-                chapters = it.intOrString("chapters", 0)
-            )
-        }
-    }
+    fun classNames(): Map<String, String> =
+        spaceBookWebClasses.associate { it.id to it.name }
+
+    fun classes(): List<WebClassRef> = spaceBookWebClasses
+
+    fun subjectsFor(classId: String): List<WebSubjectRef> =
+        spaceBookWebSubjects[classId] ?: emptyList()
 
     private fun scienceKey(subjectId: String): String? = when (subjectId) {
         "cls9-bio" -> "bioChapters"

@@ -87,119 +87,41 @@ object SpaceBookRepository {
         }
     }
 
-    // ─── STORIES STATE ───
+    // ─── SELECTED CLASS FILTER FOR STORIES ───
+    var selectedClassTag by mutableStateOf("All")
+
+    data class SidebarClassOption(
+        val tag: String,
+        val titleEn: String,
+        val titleUr: String,
+        val badgeText: String
+    )
+
+    val sidebarClasses = listOf(
+        SidebarClassOption("All", "All Classes", "تمام جماعتیں", "All Stories"),
+        SidebarClassOption("Class 1", "Class 1st", "جماعت اوّل", "8 Books • Web"),
+        SidebarClassOption("Class 2", "Class 2nd", "جماعت دوم", "8 Books • Web"),
+        SidebarClassOption("Class 3", "Class 3rd", "جماعت سوم", "8 Books • Web"),
+        SidebarClassOption("Class 4", "Class 4th", "جماعت چہارم", "6 Books • Web"),
+        SidebarClassOption("Class 5", "Class 5th", "جماعت پنجم", "8 Books • Web"),
+        SidebarClassOption("Class 6", "Class 6th", "جماعت ششم", "13 Books • Web"),
+        SidebarClassOption("Class 7", "Class 7th", "جماعت ہفتم", "13 Books • Web"),
+        SidebarClassOption("Class 8", "Class 8th", "جماعت ہشتم", "13 Books • Web"),
+        SidebarClassOption("Class 9", "Class 9th", "جماعت نہم", "14 Books • Web"),
+        SidebarClassOption("Class 10", "Class 10th", "جماعت دہم", "14 Books • Web"),
+        SidebarClassOption("Class 11", "Class 11th", "فرسٹ ایئر (11th)", "5 Books • Web"),
+        SidebarClassOption("Class 12", "Class 12th", "سیکنڈ ایئر (12th)", "15 Books • Web")
+    )
+
+    fun getFilteredStories(): List<BookStory> {
+        if (selectedClassTag == "All") return stories
+        return stories.filter { story ->
+            story.isUserStory || story.subjectTag.equals(selectedClassTag, ignoreCase = true)
+        }
+    }
+
+    // ─── STORIES STATE (All Classes 1–12 Subjects from SpaceBook Web) ───
     val stories = mutableStateListOf<BookStory>(
-        BookStory(
-            id = "story-class1-hub",
-            authorName = "Class 1 Books Hub",
-            authorRole = "KPK Textbook Board",
-            bookTitle = "8 Books • Tap to Open",
-            subjectTag = "1st Class",
-            previewGradient = listOf(0xFF0F172A, 0xFF1E3A8A),
-            coverDrawableRes = R.drawable.cls1_english_cover
-        ),
-        BookStory(
-            id = "story-class1-english",
-            authorName = "English Class 1",
-            authorRole = "KPK Textbook Board",
-            bookTitle = "Units 1–11 • 20 Games",
-            subjectTag = "Class 1",
-            previewGradient = listOf(0xFF0F172A, 0xFF1E3A8A),
-            coverDrawableRes = R.drawable.cls1_english_cover,
-            isClass1EnglishBook = true
-        ),
-        BookStory(
-            id = "story-class1-maths",
-            authorName = "Maths Class 1",
-            authorRole = "KPK Textbook Board",
-            bookTitle = "Units 1–6 • 13 Games",
-            subjectTag = "Class 1",
-            previewGradient = listOf(0xFF064E3B, 0xFF10B981),
-            coverDrawableRes = R.drawable.cls1_maths_cover,
-            isClass1MathsBook = true
-        ),
-        BookStory(
-            id = "story-class1-drawing",
-            authorName = "Drawing Class 1",
-            authorRole = "KPK Textbook Board",
-            bookTitle = "Pages 1–32 • Art Studio",
-            subjectTag = "Class 1",
-            previewGradient = listOf(0xFF4A148C, 0xFFE91E63),
-            coverDrawableRes = R.drawable.cls1_drawing_cover,
-            isClass1DrawingBook = true
-        ),
-        BookStory(
-            id = "story-class1-nazera",
-            authorName = "Nazira Class 1",
-            authorRole = "KPK Textbook Board",
-            bookTitle = "ناظرہ قرآن • 17 Lessons",
-            subjectTag = "Class 1",
-            previewGradient = listOf(0xFF042F2E, 0xFF0D9488),
-            coverDrawableRes = R.drawable.cls1_nazera_cover
-        ),
-        BookStory(
-            id = "story-class1-pashto",
-            authorName = "Pashto Class 1",
-            authorRole = "KPK Textbook Board",
-            bookTitle = "پښتو • 23 Lessons",
-            subjectTag = "Class 1",
-            previewGradient = listOf(0xFF3B0764, 0xFF7C3AED),
-            coverDrawableRes = R.drawable.cls1_pashto_cover
-        ),
-        BookStory(
-            id = "story-class1-urdu",
-            authorName = "Urdu Class 1",
-            authorRole = "KPK Textbook Board",
-            bookTitle = "اردو جماعت اول • Games",
-            subjectTag = "Class 1",
-            previewGradient = listOf(0xFF075985, 0xFF0284C7),
-            coverDrawableRes = R.drawable.cls1_urdu_cover
-        ),
-        BookStory(
-            id = "story-class1-gk",
-            authorName = "General Knowledge",
-            authorRole = "KPK Textbook Board",
-            bookTitle = "واقفیت عامہ • Class 1",
-            subjectTag = "Class 1",
-            previewGradient = listOf(0xFF14532D, 0xFF16A34A),
-            coverDrawableRes = R.drawable.cls1_gk_cover
-        ),
-        BookStory(
-            id = "story-class1-islamyat",
-            authorName = "Islamyat Class 1",
-            authorRole = "KPK Textbook Board",
-            bookTitle = "اسلامیات • Units 1–5",
-            subjectTag = "Class 1",
-            previewGradient = listOf(0xFF064E3B, 0xFF059669),
-            coverDrawableRes = R.drawable.cls1_islamyat_cover
-        ),
-        BookStory(
-            id = "story-class3-hub",
-            authorName = "Class 3 Books Hub",
-            authorRole = "KPK Textbook Board",
-            bookTitle = "7 Books • Tap to Open",
-            subjectTag = "3rd Class",
-            previewGradient = listOf(0xFF78350F, 0xFFD97706),
-            coverDrawableRes = R.drawable.cls3_gk_cover
-        ),
-        BookStory(
-            id = "story-class3-gk",
-            authorName = "General Knowledge",
-            authorRole = "KPK Textbook Board",
-            bookTitle = "واقفیتِ عامہ • 16 Chapters",
-            subjectTag = "Class 3",
-            previewGradient = listOf(0xFF78350F, 0xFFD97706),
-            coverDrawableRes = R.drawable.cls3_gk_cover
-        ),
-        BookStory(
-            id = "story-class7-hub",
-            authorName = "Class 7 Books Hub",
-            authorRole = "KPK Textbook Board",
-            bookTitle = "12 Books • Tap to Open",
-            subjectTag = "7th Class",
-            previewGradient = listOf(0xFF0369A1, 0xFF0284C7),
-            coverDrawableRes = R.drawable.cls7_maths_cover
-        ),
         BookStory(
             id = "story-create",
             authorName = "Create story",
@@ -209,112 +131,638 @@ object SpaceBookRepository {
             previewGradient = listOf(0xFF2563EB, 0xFF1D4ED8),
             isUserStory = true
         ),
+
+        // ─── CLASS 1 (8 Books) ───
         BookStory(
-            id = "story-1",
-            authorName = "Nabil Khan",
-            authorRole = "Physics Scholar",
-            bookTitle = "Physics 9: Measurements & Vectors",
-            subjectTag = "Physics",
-            previewGradient = listOf(0xFF1E3A8A, 0xFF3B82F6),
-            slides = listOf(
-                StorySlide(
-                    title = "Physical Quantities & SI Units",
-                    subtitle = "Class 9 Physics • Chapter 1",
-                    keyConcept = "7 Base SI Units: Length (m), Mass (kg), Time (s), Electric Current (A), Temperature (K), Amount of substance (mol), Luminous intensity (cd).",
-                    quoteOrSummary = "Derived quantities are derived from base units. e.g., Velocity (m/s), Force (N = kg·m/s²).",
-                    subjectTag = "Physics",
-                    pageRef = "Pages 4-12"
-                ),
-                StorySlide(
-                    title = "Vernier Calipers & Micrometer",
-                    subtitle = "Zero Error Analysis",
-                    keyConcept = "Least Count of Vernier = 0.01 cm or 0.1 mm. Least Count of Micrometer Screw Gauge = 0.001 cm or 0.01 mm.",
-                    quoteOrSummary = "Positive zero error is subtracted from reading; negative zero error is added!",
-                    subjectTag = "Physics",
-                    pageRef = "Pages 15-20"
-                )
-            )
+            id = "story-class1-english",
+            authorName = "English Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–11 • Lesson, Glossary, Exercise & SLOs",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF0F172A, 0xFF1E3A8A),
+            coverDrawableRes = R.drawable.cls1_english_cover,
+            isClass1EnglishBook = true,
+            webClassId = "cls1",
+            webSubjId = "cls1-eng"
         ),
         BookStory(
-            id = "story-2",
-            authorName = "Dr. Ayesha",
-            authorRole = "Biology Mentor",
-            bookTitle = "Biology 10: Cell Division",
-            subjectTag = "Biology",
+            id = "story-class1-maths",
+            authorName = "Maths Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–6 • Lessons, Examples & Exercises",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF064E3B, 0xFF10B981),
+            coverDrawableRes = R.drawable.cls1_maths_cover,
+            isClass1MathsBook = true,
+            webClassId = "cls1",
+            webSubjId = "cls1-math"
+        ),
+        BookStory(
+            id = "story-class1-drawing",
+            authorName = "Drawing Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Pages 1–32 • Activities & Drawing Studio",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF4A148C, 0xFFE91E63),
+            coverDrawableRes = R.drawable.cls1_drawing_cover,
+            isClass1DrawingBook = true,
+            webClassId = "cls1",
+            webSubjId = "cls1-drawing"
+        ),
+        BookStory(
+            id = "story-class1-nazera",
+            authorName = "Nazira Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "ناظرہ قرآن • 17 Lessons",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF042F2E, 0xFF0D9488),
+            coverDrawableRes = R.drawable.cls1_nazera_cover,
+            webClassId = "cls1",
+            webSubjId = "cls1-nazira"
+        ),
+        BookStory(
+            id = "story-class1-pashto",
+            authorName = "Pashto Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "پښتو • 23 Lessons",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF3B0764, 0xFF7C3AED),
+            coverDrawableRes = R.drawable.cls1_pashto_cover,
+            webClassId = "cls1",
+            webSubjId = "cls1-pashto"
+        ),
+        BookStory(
+            id = "story-class1-islamyat",
+            authorName = "Islamyat Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "اسلامیات • 10 Chapters",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF064E3B, 0xFF059669),
+            coverDrawableRes = R.drawable.cls1_islamyat_cover,
+            webClassId = "cls1",
+            webSubjId = "cls1-isl"
+        ),
+        BookStory(
+            id = "story-class1-urdu",
+            authorName = "Urdu Class 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "اردو جماعت اول • Games & Lessons",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF075985, 0xFF0284C7),
+            coverDrawableRes = R.drawable.cls1_urdu_cover
+        ),
+        BookStory(
+            id = "story-class1-gk",
+            authorName = "General Knowledge 1",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "واقفیت عامہ • Class 1",
+            subjectTag = "Class 1",
+            previewGradient = listOf(0xFF14532D, 0xFF16A34A),
+            coverDrawableRes = R.drawable.cls1_gk_cover
+        ),
+
+        // ─── CLASS 2 (8 Books) ───
+        BookStory(
+            id = "story-cls2-eng",
+            authorName = "English Class 2",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "12 Units • Lesson, Glossary, Exercise & SLOs",
+            subjectTag = "Class 2",
+            previewGradient = listOf(0xFF1E3A8A, 0xFF2563EB),
+            webClassId = "cls2",
+            webSubjId = "cls2-eng"
+        ),
+        BookStory(
+            id = "story-cls2-urdu",
+            authorName = "Urdu Class 2",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "اردو لازمی • 22 Lessons",
+            subjectTag = "Class 2",
+            previewGradient = listOf(0xFF881337, 0xFFE11D48),
+            webClassId = "cls2",
+            webSubjId = "cls2-urdu"
+        ),
+        BookStory(
+            id = "story-cls2-math",
+            authorName = "Maths Class 2",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "6 Units • Lessons, Examples & Exercises",
+            subjectTag = "Class 2",
+            previewGradient = listOf(0xFF065F46, 0xFF059669),
+            webClassId = "cls2",
+            webSubjId = "cls2-math"
+        ),
+        BookStory(
+            id = "story-cls2-gk",
+            authorName = "General Knowledge 2",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "واقفیتِ عامہ • 16 Chapters",
+            subjectTag = "Class 2",
+            previewGradient = listOf(0xFF14532D, 0xFF16A34A),
+            webClassId = "cls2",
+            webSubjId = "cls2-gk"
+        ),
+        BookStory(
+            id = "story-cls2-isl",
+            authorName = "Islamyat Class 2",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "اسلامیات • 11 Chapters",
+            subjectTag = "Class 2",
+            previewGradient = listOf(0xFF064E3B, 0xFF10B981),
+            webClassId = "cls2",
+            webSubjId = "cls2-isl"
+        ),
+        BookStory(
+            id = "story-cls2-nazira",
+            authorName = "Nazira Class 2",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "ناظرہ قرآن • 15 Lessons",
+            subjectTag = "Class 2",
+            previewGradient = listOf(0xFF042F2E, 0xFF0D9488),
+            webClassId = "cls2",
+            webSubjId = "cls2-nazira"
+        ),
+        BookStory(
+            id = "story-cls2-pashto",
+            authorName = "Pashto Class 2",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "پښتو (لازمي) • 28 Lessons",
+            subjectTag = "Class 2",
+            previewGradient = listOf(0xFF4C1D95, 0xFF7C3AED),
+            webClassId = "cls2",
+            webSubjId = "cls2-pashto"
+        ),
+        BookStory(
+            id = "story-cls2-drawing",
+            authorName = "Drawing Class 2",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "تخلیقی فنون و ڈرائنگ • 32 Pages",
+            subjectTag = "Class 2",
+            previewGradient = listOf(0xFF7C2D12, 0xFFF59E0B),
+            webClassId = "cls2",
+            webSubjId = "cls2-drawing"
+        ),
+
+        // ─── CLASS 3 (8 Books) ───
+        BookStory(
+            id = "story-cls3-eng",
+            authorName = "English Class 3",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "11 Units • Reading, Grammar & Exercises",
+            subjectTag = "Class 3",
+            previewGradient = listOf(0xFF0284C7, 0xFF38BDF8),
+            webClassId = "cls3",
+            webSubjId = "cls3-eng"
+        ),
+        BookStory(
+            id = "story-cls3-math",
+            authorName = "Maths Class 3",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "7 Units • Lessons, Examples & Exercises",
+            subjectTag = "Class 3",
             previewGradient = listOf(0xFF065F46, 0xFF10B981),
-            slides = listOf(
-                StorySlide(
-                    title = "Stages of Mitosis (PMAT)",
-                    subtitle = "Class 10 Biology • Chapter 5",
-                    keyConcept = "Prophase → Metaphase → Anaphase → Telophase.",
-                    quoteOrSummary = "In Metaphase, chromosomes align on the equatorial plate. In Anaphase, sister chromatids separate toward opposite poles.",
-                    subjectTag = "Biology",
-                    pageRef = "Pages 88-96"
-                ),
-                StorySlide(
-                    title = "Significance of Meiosis",
-                    subtitle = "Genetic Variation",
-                    keyConcept = "Crossing over occurs during Prophase I (Pachytene sub-stage) creating recombinant chromosomes.",
-                    quoteOrSummary = "Essential for maintaining chromosome number constant across generations in sexually reproducing organisms.",
-                    subjectTag = "Biology",
-                    pageRef = "Pages 97-104"
-                )
-            )
+            webClassId = "cls3",
+            webSubjId = "cls3-math"
         ),
         BookStory(
-            id = "story-3",
-            authorName = "Seyed Qasim",
-            authorRole = "Chemistry Lecturer",
-            bookTitle = "Chemistry 9: Periodic Table",
-            subjectTag = "Chemistry",
-            previewGradient = listOf(0xFF831843, 0xFFEC4899),
-            slides = listOf(
-                StorySlide(
-                    title = "Periodic Trends Decoded",
-                    subtitle = "Electronegativity & Ionization Energy",
-                    keyConcept = "Both increase across a period (left to right) and decrease down a group (top to bottom).",
-                    quoteOrSummary = "Fluorine has the highest electronegativity (4.0 on Pauling Scale) due to small atomic size and high effective nuclear charge.",
-                    subjectTag = "Chemistry",
-                    pageRef = "Pages 45-56"
-                )
-            )
+            id = "story-cls3-gk",
+            authorName = "General Knowledge 3",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "واقفیتِ عامہ • 16 Chapters",
+            subjectTag = "Class 3",
+            previewGradient = listOf(0xFF14532D, 0xFF16A34A),
+            webClassId = "cls3",
+            webSubjId = "cls3-gk"
         ),
         BookStory(
-            id = "story-4",
-            authorName = "Tariq Jamil",
-            authorRole = "Urdu & Islamic Scholar",
-            bookTitle = "Urdu 10: Allama Iqbal",
-            subjectTag = "Urdu",
-            previewGradient = listOf(0xFF78350F, 0xFFF59E0B),
-            slides = listOf(
-                StorySlide(
-                    title = "شکوہ اور جواب شکوہ — مرکزی خیال",
-                    subtitle = "دسویں جماعت اردو • علامہ محمد اقبال",
-                    keyConcept = "مسلمانوں کی عظمت رفتہ، پستی کے اسباب اور بیداری کا درس۔",
-                    quoteOrSummary = "کی محمد سے وفا تو نے تو ہم تیرے ہیں • یہ جہاں چیز ہے کیا لوح و قلم تیرے ہیں",
-                    subjectTag = "Urdu",
-                    pageRef = "صفحات ۱۱۰-۱۱۸"
-                )
-            )
+            id = "story-cls3-isl",
+            authorName = "Islamyat Class 3",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "اسلامیات • 18 Chapters",
+            subjectTag = "Class 3",
+            previewGradient = listOf(0xFF064E3B, 0xFF059669),
+            webClassId = "cls3",
+            webSubjId = "cls3-isl"
         ),
         BookStory(
-            id = "story-5",
-            authorName = "Eng. Hamza",
-            authorRole = "Maths Topper",
-            bookTitle = "Math 10: Quadratic Equations",
-            subjectTag = "Maths",
-            previewGradient = listOf(0xFF312E81, 0xFF6366F1),
-            slides = listOf(
-                StorySlide(
-                    title = "The Nature of Roots",
-                    subtitle = "Discriminant D = b² - 4ac",
-                    keyConcept = "If D > 0 and perfect square: Real, rational & unequal. If D = 0: Real & equal. If D < 0: Imaginary/Complex.",
-                    quoteOrSummary = "Always test discriminant before factoring to determine the fastest solution path!",
-                    subjectTag = "Maths",
-                    pageRef = "Pages 21-28"
-                )
-            )
-        )
+            id = "story-cls3-nazira",
+            authorName = "Nazira Class 3",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "ناظرہ قرآن • 16 Lessons",
+            subjectTag = "Class 3",
+            previewGradient = listOf(0xFF042F2E, 0xFF0D9488),
+            webClassId = "cls3",
+            webSubjId = "cls3-nazira"
+        ),
+        BookStory(
+            id = "story-cls3-pashto",
+            authorName = "Pashto Class 3",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "پښتو (لازمي) • 33 Lessons",
+            subjectTag = "Class 3",
+            previewGradient = listOf(0xFF4C1D95, 0xFF7C3AED),
+            webClassId = "cls3",
+            webSubjId = "cls3-pashto"
+        ),
+        BookStory(
+            id = "story-cls3-drawing",
+            authorName = "Drawing Class 3",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "تخلیقی فنون و ڈرائنگ • 32 Pages",
+            subjectTag = "Class 3",
+            previewGradient = listOf(0xFF7C2D12, 0xFFF59E0B),
+            webClassId = "cls3",
+            webSubjId = "cls3-drawing"
+        ),
+
+        // ─── CLASS 4 (6 Web Books + Urdu) ───
+        BookStory(
+            id = "story-class4-maths",
+            authorName = "Maths Class 4",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–10 • Lessons, Examples & Exercises",
+            subjectTag = "Class 4",
+            previewGradient = listOf(0xFF115E59, 0xFF0D9488),
+            coverDrawableRes = R.drawable.cls4_maths_cover,
+            webClassId = "cls4",
+            webSubjId = "cls4-math"
+        ),
+        BookStory(
+            id = "story-class4-english",
+            authorName = "English Class 4",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–13 • Lesson, Glossary, Exercise & SLOs",
+            subjectTag = "Class 4",
+            previewGradient = listOf(0xFF0F172A, 0xFF1D4ED8),
+            coverDrawableRes = R.drawable.cls4_english_cover,
+            webClassId = "cls4",
+            webSubjId = "cls4-eng"
+        ),
+        BookStory(
+            id = "story-class4-science",
+            authorName = "Science Class 4",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Chapters 1–10 • Lessons, Concepts & Exercises",
+            subjectTag = "Class 4",
+            previewGradient = listOf(0xFF075985, 0xFF0284C7),
+            coverDrawableRes = R.drawable.cls4_science_cover,
+            webClassId = "cls4",
+            webSubjId = "cls4-sci"
+        ),
+        BookStory(
+            id = "story-class4-social",
+            authorName = "Social Studies 4",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Chapters 1–6 • Lessons, Concepts & Exercises",
+            subjectTag = "Class 4",
+            previewGradient = listOf(0xFF9A3412, 0xFFEA580C),
+            coverDrawableRes = R.drawable.cls4_social_cover,
+            webClassId = "cls4",
+            webSubjId = "cls4-sst"
+        ),
+        BookStory(
+            id = "story-class4-islamiat",
+            authorName = "Islamiat Class 4",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "اسلامیات چہارم • 7 Chapters",
+            subjectTag = "Class 4",
+            previewGradient = listOf(0xFF064E3B, 0xFF059669),
+            coverDrawableRes = R.drawable.cls4_islamiat_cover,
+            webClassId = "cls4",
+            webSubjId = "cls4-isl"
+        ),
+        BookStory(
+            id = "story-class4-pashto",
+            authorName = "Pashto Class 4",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "پښتو څلورم • 18 Units",
+            subjectTag = "Class 4",
+            previewGradient = listOf(0xFF4C1D95, 0xFF7C3AED),
+            coverDrawableRes = R.drawable.cls4_pashto_cover,
+            webClassId = "cls4",
+            webSubjId = "cls4-pashto"
+        ),
+
+        // ─── CLASS 5 (8 Books) ───
+        BookStory(
+            id = "story-class5-maths",
+            authorName = "Maths Class 5",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–9 • Lessons, Examples & Exercises",
+            subjectTag = "Class 5",
+            previewGradient = listOf(0xFF134E4A, 0xFF0D9488),
+            coverDrawableRes = R.drawable.cls5_maths_cover,
+            webClassId = "cls5",
+            webSubjId = "cls5-math"
+        ),
+        BookStory(
+            id = "story-class5-science",
+            authorName = "Science Class 5",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Chapters 1–10 • Lessons, Concepts & Exercises",
+            subjectTag = "Class 5",
+            previewGradient = listOf(0xFF0C4A6E, 0xFF0284C7),
+            coverDrawableRes = R.drawable.cls5_science_cover,
+            webClassId = "cls5",
+            webSubjId = "cls5-sci"
+        ),
+        BookStory(
+            id = "story-class5-english",
+            authorName = "English Class 5",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–14 • Lesson, Glossary, Exercise & SLOs",
+            subjectTag = "Class 5",
+            previewGradient = listOf(0xFF0F172A, 0xFF2563EB),
+            coverDrawableRes = R.drawable.cls5_english_cover,
+            webClassId = "cls5",
+            webSubjId = "cls5-eng"
+        ),
+        BookStory(
+            id = "story-class5-urdu",
+            authorName = "Urdu Class 5",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "اردو جماعت پنجم • 21 Lessons",
+            subjectTag = "Class 5",
+            previewGradient = listOf(0xFF881337, 0xFFE11D48),
+            coverDrawableRes = R.drawable.cls5_urdu_cover,
+            webClassId = "cls5",
+            webSubjId = "cls5-urdu"
+        ),
+        BookStory(
+            id = "story-class5-islamiat",
+            authorName = "Islamiat Class 5",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "اسلامیات پنجم • 7 Chapters",
+            subjectTag = "Class 5",
+            previewGradient = listOf(0xFF064E3B, 0xFF059669),
+            coverDrawableRes = R.drawable.cls5_islamiat_cover,
+            webClassId = "cls5",
+            webSubjId = "cls5-isl"
+        ),
+        BookStory(
+            id = "story-class5-social",
+            authorName = "Social Studies 5 (EM)",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Chapters 1–6 • Citizenship, History & Geo",
+            subjectTag = "Class 5",
+            previewGradient = listOf(0xFF7C2D12, 0xFFEA580C),
+            coverDrawableRes = R.drawable.cls5_social_cover,
+            webClassId = "cls5",
+            webSubjId = "cls5-sst"
+        ),
+        BookStory(
+            id = "story-class5-social-um",
+            authorName = "Social Studies 5 (UM)",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "معاشرتی علوم (اردو میڈیم) • 6 ابواب",
+            subjectTag = "Class 5",
+            previewGradient = listOf(0xFF065F46, 0xFF10B981),
+            coverDrawableRes = R.drawable.cls5_social_cover,
+            webClassId = "cls5",
+            webSubjId = "cls5-sstum"
+        ),
+        BookStory(
+            id = "story-class5-pashto",
+            authorName = "Pashto Class 5",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "پښتو پنځم • 28 Lessons",
+            subjectTag = "Class 5",
+            previewGradient = listOf(0xFF4C1D95, 0xFF7C3AED),
+            coverDrawableRes = R.drawable.cls5_pashto_cover,
+            webClassId = "cls5",
+            webSubjId = "cls5-pashto"
+        ),
+
+        // ─── CLASS 6 (13 Books) ───
+        BookStory(
+            id = "story-class6-maths",
+            authorName = "Maths Class 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–11 • Lessons, Worked Examples & Exercises",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF7C2D12, 0xFFEA580C),
+            coverDrawableRes = R.drawable.cls6_maths_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-math"
+        ),
+        BookStory(
+            id = "story-class6-science",
+            authorName = "Science Class 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–11 • Lessons, Concepts & Exercises",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF064E3B, 0xFF10B981),
+            coverDrawableRes = R.drawable.cls6_science_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-sci"
+        ),
+        BookStory(
+            id = "story-class6-english",
+            authorName = "English Class 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "10 Units • Lesson, Glossary, Exercise & SLOs",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF0F172A, 0xFF2563EB),
+            coverDrawableRes = R.drawable.cls6_english_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-eng"
+        ),
+        BookStory(
+            id = "story-class6-urdu",
+            authorName = "Urdu Class 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "اردو جماعت ششم • 15 Units",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF881337, 0xFFE11D48),
+            coverDrawableRes = R.drawable.cls6_urdu_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-urdu"
+        ),
+        BookStory(
+            id = "story-class6-islamiat",
+            authorName = "Islamiat Class 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "اسلامیات ششم • 7 Units",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF064E3B, 0xFF059669),
+            coverDrawableRes = R.drawable.cls6_islamiat_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-isl"
+        ),
+        BookStory(
+            id = "story-class6-computer",
+            authorName = "Computer Class 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–6 • Coding & ICT",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF1E1B4B, 0xFF4F46E5),
+            coverDrawableRes = R.drawable.cls6_computer_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-comp"
+        ),
+        BookStory(
+            id = "story-class6-geography",
+            authorName = "Geography Class 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–4 • Earth & Rocks",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF134E4A, 0xFF0D9488),
+            coverDrawableRes = R.drawable.cls6_geography_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-geo"
+        ),
+        BookStory(
+            id = "story-class6-history",
+            authorName = "History Class 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "Units 1–5 • Ancient Civilizations",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF713F12, 0xFFCA8A04),
+            coverDrawableRes = R.drawable.cls6_history_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-hist"
+        ),
+        BookStory(
+            id = "story-class6-hpe",
+            authorName = "HPE Class 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "صحت و جسمانی تعلیم • 6 Units",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF7F1D1D, 0xFFEF4444),
+            coverDrawableRes = R.drawable.cls6_hpe_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-hpe"
+        ),
+        BookStory(
+            id = "story-class6-drawing",
+            authorName = "Drawing Class 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "ڈرائنگ ششم • 6 Chapters",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF7C2D12, 0xFFF59E0B),
+            coverDrawableRes = R.drawable.cls6_drawing_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-drawing"
+        ),
+        BookStory(
+            id = "story-class6-arabic",
+            authorName = "Arabic Class 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "عربی ششم • 8 Units",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF0C4A6E, 0xFF0284C7),
+            coverDrawableRes = R.drawable.cls6_arabic_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-arabic"
+        ),
+        BookStory(
+            id = "story-class6-mq",
+            authorName = "Mutala-e-Quran 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "مطالعہ قرآن حکیم • 8 Surahs",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF14532D, 0xFF16A34A),
+            coverDrawableRes = R.drawable.cls6_mq_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-quran"
+        ),
+        BookStory(
+            id = "story-class6-pashto",
+            authorName = "Pashto Class 6",
+            authorRole = "KPK Textbook Board",
+            bookTitle = "پښتو شپږم • 12 Units",
+            subjectTag = "Class 6",
+            previewGradient = listOf(0xFF4C1D95, 0xFF7C3AED),
+            coverDrawableRes = R.drawable.cls6_pashto_cover,
+            webClassId = "cls6",
+            webSubjId = "cls6-pashto"
+        ),
+
+        // ─── CLASS 7 (13 Books) ───
+        BookStory(id = "story-cls7-eng", authorName = "English Class 7", authorRole = "KPK Textbook Board", bookTitle = "7 Units • Lesson, Glossary, Exercise & SLOs", subjectTag = "Class 7", previewGradient = listOf(0xFF1E3A8A, 0xFF2563EB), webClassId = "cls7", webSubjId = "cls7-eng"),
+        BookStory(id = "story-cls7-urdu", authorName = "Urdu Class 7", authorRole = "KPK Textbook Board", bookTitle = "اردو لازمی ہفتم • 26 اسباق", subjectTag = "Class 7", previewGradient = listOf(0xFF881337, 0xFFE11D48), webClassId = "cls7", webSubjId = "cls7-urdu"),
+        BookStory(id = "story-cls7-math", authorName = "Maths Class 7", authorRole = "KPK Textbook Board", bookTitle = "13 Units • Lessons, Worked Examples & Exercises", subjectTag = "Class 7", previewGradient = listOf(0xFF0C4A6E, 0xFF0284C7), webClassId = "cls7", webSubjId = "cls7-math"),
+        BookStory(id = "story-cls7-sci", authorName = "Science Class 7", authorRole = "KPK Textbook Board", bookTitle = "12 Units • Lessons, Concepts & Exercises", subjectTag = "Class 7", previewGradient = listOf(0xFF064E3B, 0xFF10B981), webClassId = "cls7", webSubjId = "cls7-sci"),
+        BookStory(id = "story-cls7-geo", authorName = "Geography Class 7", authorRole = "KPK Textbook Board", bookTitle = "جغرافیہ ہفتم • 6 Units", subjectTag = "Class 7", previewGradient = listOf(0xFF134E4A, 0xFF0D9488), webClassId = "cls7", webSubjId = "cls7-geo"),
+        BookStory(id = "story-cls7-hist", authorName = "History Class 7", authorRole = "KPK Textbook Board", bookTitle = "تاریخ ہفتم • 6 Units", subjectTag = "Class 7", previewGradient = listOf(0xFF713F12, 0xFFCA8A04), webClassId = "cls7", webSubjId = "cls7-hist"),
+        BookStory(id = "story-cls7-hg", authorName = "History & Geography 7", authorRole = "KPK Textbook Board", bookTitle = "تاریخ و جغرافیہ • 12 Units", subjectTag = "Class 7", previewGradient = listOf(0xFF78350F, 0xFFD97706), webClassId = "cls7", webSubjId = "cls7-hg"),
+        BookStory(id = "story-cls7-comp", authorName = "Computer Class 7", authorRole = "KPK Textbook Board", bookTitle = "کمپیوٹر سائنس • 6 Units", subjectTag = "Class 7", previewGradient = listOf(0xFF1E1B4B, 0xFF4F46E5), webClassId = "cls7", webSubjId = "cls7-comp"),
+        BookStory(id = "story-cls7-isl", authorName = "Islamyat Class 7", authorRole = "KPK Textbook Board", bookTitle = "اسلامیات ہفتم • 7 Units", subjectTag = "Class 7", previewGradient = listOf(0xFF064E3B, 0xFF059669), webClassId = "cls7", webSubjId = "cls7-isl"),
+        BookStory(id = "story-cls7-quran", authorName = "Mutalia-e-Quran 7", authorRole = "KPK Textbook Board", bookTitle = "مطالعہ قرآن حکیم • 22 Units", subjectTag = "Class 7", previewGradient = listOf(0xFF14532D, 0xFF16A34A), webClassId = "cls7", webSubjId = "cls7-quran"),
+        BookStory(id = "story-cls7-arabic", authorName = "Arabic Class 7", authorRole = "KPK Textbook Board", bookTitle = "عربی ہفتم • 25 Lessons", subjectTag = "Class 7", previewGradient = listOf(0xFF0C4A6E, 0xFF0284C7), webClassId = "cls7", webSubjId = "cls7-arabic"),
+        BookStory(id = "story-cls7-drawing", authorName = "Drawing Class 7", authorRole = "KPK Textbook Board", bookTitle = "ڈرائنگ ہفتم • 5 Units", subjectTag = "Class 7", previewGradient = listOf(0xFF7C2D12, 0xFFF59E0B), webClassId = "cls7", webSubjId = "cls7-drawing"),
+        BookStory(id = "story-cls7-hpe", authorName = "HPE Class 7", authorRole = "KPK Textbook Board", bookTitle = "صحت و جسمانی تعلیم • 12 Units", subjectTag = "Class 7", previewGradient = listOf(0xFF7F1D1D, 0xFFEF4444), webClassId = "cls7", webSubjId = "cls7-hpe"),
+
+        // ─── CLASS 8 (13 Books) ───
+        BookStory(id = "story-cls8-eng", authorName = "English Class 8", authorRole = "KPK Textbook Board", bookTitle = "8 Units • Lesson, Glossary, Exercise & SLOs", subjectTag = "Class 8", previewGradient = listOf(0xFF1E3A8A, 0xFF2563EB), webClassId = "cls8", webSubjId = "cls8-eng"),
+        BookStory(id = "story-cls8-urdu", authorName = "Urdu Class 8", authorRole = "KPK Textbook Board", bookTitle = "اردو لازمی ہشتم • 25 اسباق", subjectTag = "Class 8", previewGradient = listOf(0xFF881337, 0xFFE11D48), webClassId = "cls8", webSubjId = "cls8-urdu"),
+        BookStory(id = "story-cls8-math", authorName = "Maths Class 8", authorRole = "KPK Textbook Board", bookTitle = "11 Units • Lessons, Worked Examples & Exercises", subjectTag = "Class 8", previewGradient = listOf(0xFF0C4A6E, 0xFF0284C7), webClassId = "cls8", webSubjId = "cls8-math"),
+        BookStory(id = "story-cls8-sci", authorName = "Science Class 8", authorRole = "KPK Textbook Board", bookTitle = "12 Units • Lessons, Concepts & Exercises", subjectTag = "Class 8", previewGradient = listOf(0xFF064E3B, 0xFF10B981), webClassId = "cls8", webSubjId = "cls8-sci"),
+        BookStory(id = "story-cls8-geo", authorName = "Geography Class 8", authorRole = "KPK Textbook Board", bookTitle = "جغرافیہ ہشتم • 6 Units", subjectTag = "Class 8", previewGradient = listOf(0xFF134E4A, 0xFF0D9488), webClassId = "cls8", webSubjId = "cls8-geo"),
+        BookStory(id = "story-cls8-hist", authorName = "History Class 8", authorRole = "KPK Textbook Board", bookTitle = "تاریخ ہشتم • 6 Units", subjectTag = "Class 8", previewGradient = listOf(0xFF713F12, 0xFFCA8A04), webClassId = "cls8", webSubjId = "cls8-hist"),
+        BookStory(id = "story-cls8-comp", authorName = "Computer Class 8", authorRole = "KPK Textbook Board", bookTitle = "کمپیوٹر ہشتم • 6 Units", subjectTag = "Class 8", previewGradient = listOf(0xFF1E1B4B, 0xFF4F46E5), webClassId = "cls8", webSubjId = "cls8-comp"),
+        BookStory(id = "story-cls8-isl", authorName = "Islamyat Class 8", authorRole = "KPK Textbook Board", bookTitle = "اسلامیات ہشتم • 7 Units", subjectTag = "Class 8", previewGradient = listOf(0xFF064E3B, 0xFF059669), webClassId = "cls8", webSubjId = "cls8-isl"),
+        BookStory(id = "story-cls8-quran", authorName = "Mutalia-e-Quran 8", authorRole = "KPK Textbook Board", bookTitle = "مطالعہ قرآن حکیم • 24 Units", subjectTag = "Class 8", previewGradient = listOf(0xFF14532D, 0xFF16A34A), webClassId = "cls8", webSubjId = "cls8-quran"),
+        BookStory(id = "story-cls8-pashto", authorName = "Pashto Class 8", authorRole = "KPK Textbook Board", bookTitle = "پښتو لازمي • 33 Lessons", subjectTag = "Class 8", previewGradient = listOf(0xFF4C1D95, 0xFF7C3AED), webClassId = "cls8", webSubjId = "cls8-pashto"),
+        BookStory(id = "story-cls8-arabic", authorName = "Arabic Class 8", authorRole = "KPK Textbook Board", bookTitle = "عربی ہشتم • 26 Lessons", subjectTag = "Class 8", previewGradient = listOf(0xFF0C4A6E, 0xFF0284C7), webClassId = "cls8", webSubjId = "cls8-arabic"),
+        BookStory(id = "story-cls8-drawing", authorName = "Drawing Class 8", authorRole = "KPK Textbook Board", bookTitle = "ڈرائنگ ہشتم • 6 Units", subjectTag = "Class 8", previewGradient = listOf(0xFF7C2D12, 0xFFF59E0B), webClassId = "cls8", webSubjId = "cls8-drawing"),
+        BookStory(id = "story-cls8-hpe", authorName = "HPE Class 8", authorRole = "KPK Textbook Board", bookTitle = "صحت و جسمانی تعلیم • 9 Units", subjectTag = "Class 8", previewGradient = listOf(0xFF7F1D1D, 0xFFEF4444), webClassId = "cls8", webSubjId = "cls8-hpe"),
+
+        // ─── CLASS 9 (14 Books) ───
+        BookStory(id = "story-cls9-math", authorName = "Maths Class 9", authorRole = "KPK Textbook Board", bookTitle = "17 Units • Lessons, Worked Examples & Exercises", subjectTag = "Class 9", previewGradient = listOf(0xFF1E3A8A, 0xFF2563EB), webClassId = "cls9", webSubjId = "cls9-math"),
+        BookStory(id = "story-cls9-phy", authorName = "Physics Class 9", authorRole = "KPK Textbook Board", bookTitle = "9 Units • Lessons, Numericals & Exercises", subjectTag = "Class 9", previewGradient = listOf(0xFF4C1D95, 0xFF7C3AED), webClassId = "cls9", webSubjId = "cls9-phy"),
+        BookStory(id = "story-cls9-chem", authorName = "Chemistry Class 9", authorRole = "KPK Textbook Board", bookTitle = "8 Units • Lessons, Concepts & Exercises", subjectTag = "Class 9", previewGradient = listOf(0xFF831843, 0xFFEC4899), webClassId = "cls9", webSubjId = "cls9-chem"),
+        BookStory(id = "story-cls9-bio", authorName = "Biology Class 9", authorRole = "KPK Textbook Board", bookTitle = "9 Units • Lessons, Summary, Exercises & Lab", subjectTag = "Class 9", previewGradient = listOf(0xFF064E3B, 0xFF10B981), webClassId = "cls9", webSubjId = "cls9-bio"),
+        BookStory(id = "story-cls9-eng", authorName = "English Class 9", authorRole = "KPK Textbook Board", bookTitle = "15 Units • Prose, Poetry, Grammar & SLOs", subjectTag = "Class 9", previewGradient = listOf(0xFF1E1B4B, 0xFF4F46E5), webClassId = "cls9", webSubjId = "cls9-eng"),
+        BookStory(id = "story-cls9-urdu", authorName = "Urdu Class 9", authorRole = "KPK Textbook Board", bookTitle = "اردو لازمی نہم • 19 اسباق", subjectTag = "Class 9", previewGradient = listOf(0xFF0891B2, 0xFF06B6D4), webClassId = "cls9", webSubjId = "cls9-urdu"),
+        BookStory(id = "story-cls9-isl", authorName = "Islamyat Class 9", authorRole = "KPK Textbook Board", bookTitle = "اسلامیات نہم • 15 Units", subjectTag = "Class 9", previewGradient = listOf(0xFF065F46, 0xFF059669), webClassId = "cls9", webSubjId = "cls9-isl"),
+        BookStory(id = "story-cls9-comp", authorName = "Computer Class 9", authorRole = "KPK Textbook Board", bookTitle = "کمپیوٹر سائنس نہم • 7 Units", subjectTag = "Class 9", previewGradient = listOf(0xFF0F172A, 0xFF0284C7), webClassId = "cls9", webSubjId = "cls9-comp"),
+        BookStory(id = "story-cls9-pakstudy", authorName = "Pak Studies Class 9", authorRole = "KPK Textbook Board", bookTitle = "مطالعہ پاکستان نہم • 4 Chapters", subjectTag = "Class 9", previewGradient = listOf(0xFF14532D, 0xFF16A34A), webClassId = "cls9", webSubjId = "cls9-pakstudy"),
+        BookStory(id = "story-cls9-sci", authorName = "General Science 9", authorRole = "KPK Textbook Board", bookTitle = "جنرل سائنس نہم • 5 Units", subjectTag = "Class 9", previewGradient = listOf(0xFF0F766E, 0xFF14B8A6), webClassId = "cls9", webSubjId = "cls9-sci"),
+        BookStory(id = "story-cls9-hpe", authorName = "HPE Class 9", authorRole = "KPK Textbook Board", bookTitle = "صحت و جسمانی تعلیم • 8 Units", subjectTag = "Class 9", previewGradient = listOf(0xFF7F1D1D, 0xFFEF4444), webClassId = "cls9", webSubjId = "cls9-hpe"),
+        BookStory(id = "story-cls9-drawing", authorName = "Drawing Class 9", authorRole = "KPK Textbook Board", bookTitle = "ڈرائنگ و ماڈل آرٹ • 4 Units", subjectTag = "Class 9", previewGradient = listOf(0xFF7C2D12, 0xFFF59E0B), webClassId = "cls9", webSubjId = "cls9-drawing"),
+        BookStory(id = "story-cls9-islopt", authorName = "Islamiat Ikhtiari 9", authorRole = "KPK Textbook Board", bookTitle = "اسلامیات اختیاری • 7 Units", subjectTag = "Class 9", previewGradient = listOf(0xFF064E3B, 0xFF10B981), webClassId = "cls9", webSubjId = "cls9-islopt"),
+        BookStory(id = "story-cls9-quran", authorName = "Mutalia-e-Quran 9", authorRole = "KPK Textbook Board", bookTitle = "مطالعہ قرآن حکیم • 6 Units", subjectTag = "Class 9", previewGradient = listOf(0xFF115E59, 0xFF0D9488), webClassId = "cls9", webSubjId = "cls9-quran"),
+
+        // ─── CLASS 10 (14 Books) ───
+        BookStory(id = "story-cls10-math", authorName = "Maths Class 10", authorRole = "KPK Textbook Board", bookTitle = "13 Units • Lessons, Worked Examples & Exercises", subjectTag = "Class 10", previewGradient = listOf(0xFF312E81, 0xFF6366F1), webClassId = "cls10", webSubjId = "cls10-math"),
+        BookStory(id = "story-cls10-phy", authorName = "Physics Class 10", authorRole = "KPK Textbook Board", bookTitle = "9 Units • SHM, Optics, Electricity & Nuclear", subjectTag = "Class 10", previewGradient = listOf(0xFF4C1D95, 0xFF7C3AED), webClassId = "cls10", webSubjId = "cls10-phy"),
+        BookStory(id = "story-cls10-chem", authorName = "Chemistry Class 10", authorRole = "KPK Textbook Board", bookTitle = "8 Units • Equilibrium, Organic & Biochemistry", subjectTag = "Class 10", previewGradient = listOf(0xFF831843, 0xFFEC4899), webClassId = "cls10", webSubjId = "cls10-chem"),
+        BookStory(id = "story-cls10-bio", authorName = "Biology Class 10", authorRole = "KPK Textbook Board", bookTitle = "9 Units • Gaseous Exchange to Biotechnology", subjectTag = "Class 10", previewGradient = listOf(0xFF065F46, 0xFF10B981), webClassId = "cls10", webSubjId = "cls10-bio"),
+        BookStory(id = "story-cls10-eng", authorName = "English Class 10", authorRole = "KPK Textbook Board", bookTitle = "15 Units • Prose, Poetry, Grammar & SLOs", subjectTag = "Class 10", previewGradient = listOf(0xFF1E3A8A, 0xFF2563EB), webClassId = "cls10", webSubjId = "cls10-eng"),
+        BookStory(id = "story-cls10-pakstudy", authorName = "Pak Studies Class 10", authorRole = "KPK Textbook Board", bookTitle = "مطالعہ پاکستان دہم • 4 Chapters", subjectTag = "Class 10", previewGradient = listOf(0xFF14532D, 0xFF16A34A), webClassId = "cls10", webSubjId = "cls10-pakstudy"),
+        BookStory(id = "story-cls10-isl", authorName = "Islamyat Class 10", authorRole = "KPK Textbook Board", bookTitle = "اسلامیات دہم • 18 Units", subjectTag = "Class 10", previewGradient = listOf(0xFF064E3B, 0xFF059669), webClassId = "cls10", webSubjId = "cls10-isl"),
+        BookStory(id = "story-cls10-urdu", authorName = "Urdu Class 10", authorRole = "KPK Textbook Board", bookTitle = "اردو لازمی دہم • 22 اسباق", subjectTag = "Class 10", previewGradient = listOf(0xFF78350F, 0xFFF59E0B), webClassId = "cls10", webSubjId = "cls10-urdu"),
+        BookStory(id = "story-cls10-comp", authorName = "Computer Class 10", authorRole = "KPK Textbook Board", bookTitle = "کمپیوٹر سائنس دہم • 7 Units", subjectTag = "Class 10", previewGradient = listOf(0xFF0F172A, 0xFF0284C7), webClassId = "cls10", webSubjId = "cls10-comp"),
+        BookStory(id = "story-cls10-sci", authorName = "General Science 10", authorRole = "KPK Textbook Board", bookTitle = "جنرل سائنس دہم • 6 Units", subjectTag = "Class 10", previewGradient = listOf(0xFF0F766E, 0xFF14B8A6), webClassId = "cls10", webSubjId = "cls10-sci"),
+        BookStory(id = "story-cls10-hpe", authorName = "HPE Class 10", authorRole = "KPK Textbook Board", bookTitle = "صحت و جسمانی تعلیم • 8 Units", subjectTag = "Class 10", previewGradient = listOf(0xFF7F1D1D, 0xFFEF4444), webClassId = "cls10", webSubjId = "cls10-hpe"),
+        BookStory(id = "story-cls10-drawing", authorName = "Drawing Class 10", authorRole = "KPK Textbook Board", bookTitle = "ڈرائنگ و ماڈل آرٹ • 4 Units", subjectTag = "Class 10", previewGradient = listOf(0xFF7C2D12, 0xFFF59E0B), webClassId = "cls10", webSubjId = "cls10-drawing"),
+        BookStory(id = "story-cls10-islopt", authorName = "Islamiat Ikhtiari 10", authorRole = "KPK Textbook Board", bookTitle = "اسلامیات اختیاری • 4 Units", subjectTag = "Class 10", previewGradient = listOf(0xFF064E3B, 0xFF10B981), webClassId = "cls10", webSubjId = "cls10-islopt"),
+        BookStory(id = "story-cls10-quran", authorName = "Mutalia-e-Quran 10", authorRole = "KPK Textbook Board", bookTitle = "مطالعہ قرآن حکیم • 8 Units", subjectTag = "Class 10", previewGradient = listOf(0xFF115E59, 0xFF0D9488), webClassId = "cls10", webSubjId = "cls10-quran"),
+
+        // ─── CLASS 11 (5 Books) ───
+        BookStory(id = "story-cls11-phy", authorName = "Physics Class 11", authorRole = "KPK Textbook Board", bookTitle = "10 Chapters • Vectors, Mechanics & Thermodynamics", subjectTag = "Class 11", previewGradient = listOf(0xFF0F172A, 0xFF2563EB), webClassId = "cls11", webSubjId = "cls11-phy"),
+        BookStory(id = "story-cls11-chem", authorName = "Chemistry Class 11", authorRole = "KPK Textbook Board", bookTitle = "12 Chapters • Stoichiometry to Thermochemistry", subjectTag = "Class 11", previewGradient = listOf(0xFF831843, 0xFFEC4899), webClassId = "cls11", webSubjId = "cls11-chem"),
+        BookStory(id = "story-cls11-math", authorName = "Maths Class 11", authorRole = "KPK Textbook Board", bookTitle = "14 Chapters • FSc Part-I Mathematics", subjectTag = "Class 11", previewGradient = listOf(0xFF1E3A8A, 0xFF3B82F6), webClassId = "cls11", webSubjId = "cls11-math"),
+        BookStory(id = "story-cls11-bio", authorName = "Biology Class 11", authorRole = "KPK Textbook Board", bookTitle = "10 Chapters • FSc Part-I Biology", subjectTag = "Class 11", previewGradient = listOf(0xFF065F46, 0xFF10B981), webClassId = "cls11", webSubjId = "cls11-bio"),
+        BookStory(id = "story-cls11-eng", authorName = "English Class 11", authorRole = "KPK Textbook Board", bookTitle = "9 Units • FSc Part-I English", subjectTag = "Class 11", previewGradient = listOf(0xFF312E81, 0xFF6366F1), webClassId = "cls11", webSubjId = "cls11-eng"),
+
+        // ─── CLASS 12 (15 Books) ───
+        BookStory(id = "story-cls12-math", authorName = "Maths Class 12", authorRole = "KPK Textbook Board", bookTitle = "12 Units • Calculus, Vectors, Conics & Maple", subjectTag = "Class 12", previewGradient = listOf(0xFF1E3A8A, 0xFF2563EB), webClassId = "cls12", webSubjId = "cls12-math"),
+        BookStory(id = "story-cls12-phy", authorName = "Physics Class 12", authorRole = "KPK Textbook Board", bookTitle = "10 Units • Electrostatics to Nuclear Physics", subjectTag = "Class 12", previewGradient = listOf(0xFF4C1D95, 0xFF9333EA), webClassId = "cls12", webSubjId = "cls12-phy"),
+        BookStory(id = "story-cls12-chem", authorName = "Chemistry Class 12", authorRole = "KPK Textbook Board", bookTitle = "12 Units • Inorganic, Organic & Analytical", subjectTag = "Class 12", previewGradient = listOf(0xFF831843, 0xFFEC4899), webClassId = "cls12", webSubjId = "cls12-chem"),
+        BookStory(id = "story-cls12-bio", authorName = "Biology Class 12", authorRole = "KPK Textbook Board", bookTitle = "14 Units • Respiration, Genetics & Ecology", subjectTag = "Class 12", previewGradient = listOf(0xFF065F46, 0xFF10B981), webClassId = "cls12", webSubjId = "cls12-bio"),
+        BookStory(id = "story-cls12-eng", authorName = "English Class 12", authorRole = "KPK Textbook Board", bookTitle = "19 Units • Lesson, Glossary, Exercise & SLOs", subjectTag = "Class 12", previewGradient = listOf(0xFF1E1B4B, 0xFF4F46E5), webClassId = "cls12", webSubjId = "cls12-eng"),
+        BookStory(id = "story-cls12-urdu", authorName = "Urdu Class 12", authorRole = "KPK Textbook Board", bookTitle = "اردو لازمی بارہویں • 22 اسباق", subjectTag = "Class 12", previewGradient = listOf(0xFF881337, 0xFFE11D48), webClassId = "cls12", webSubjId = "cls12-urdu"),
+        BookStory(id = "story-cls12-pak", authorName = "Pak Studies Class 12", authorRole = "KPK Textbook Board", bookTitle = "مطالعہ پاکستان • 11 Chapters", subjectTag = "Class 12", previewGradient = listOf(0xFF14532D, 0xFF16A34A), webClassId = "cls12", webSubjId = "cls12-pak"),
+        BookStory(id = "story-cls12-comp", authorName = "Computer Class 12", authorRole = "KPK Textbook Board", bookTitle = "9 Units • C Programming, OS & Databases", subjectTag = "Class 12", previewGradient = listOf(0xFF0F172A, 0xFF0284C7), webClassId = "cls12", webSubjId = "cls12-comp"),
+        BookStory(id = "story-cls12-stat", authorName = "Statistics Class 12", authorRole = "KPK Textbook Board", bookTitle = "9 Units • Probability, Sampling & Testing", subjectTag = "Class 12", previewGradient = listOf(0xFF0C4A6E, 0xFF0284C7), webClassId = "cls12", webSubjId = "cls12-stat"),
+        BookStory(id = "story-cls12-civics", authorName = "Civics Class 12", authorRole = "KPK Textbook Board", bookTitle = "شہریت (سوکس) • 8 Chapters", subjectTag = "Class 12", previewGradient = listOf(0xFF334155, 0xFF64748B), webClassId = "cls12", webSubjId = "cls12-civics"),
+        BookStory(id = "story-cls12-econ", authorName = "Economics Class 12", authorRole = "KPK Textbook Board", bookTitle = "معاشیات • 12 Chapters", subjectTag = "Class 12", previewGradient = listOf(0xFF065F46, 0xFF059669), webClassId = "cls12", webSubjId = "cls12-econ"),
+        BookStory(id = "story-cls12-hpe", authorName = "HPE Class 12", authorRole = "KPK Textbook Board", bookTitle = "صحت و جسمانی تعلیم • 6 Chapters", subjectTag = "Class 12", previewGradient = listOf(0xFF7C2D12, 0xFFEA580C), webClassId = "cls12", webSubjId = "cls12-hpe"),
+        BookStory(id = "story-cls12-islopt", authorName = "Islamiat Ikhtiari 12", authorRole = "KPK Textbook Board", bookTitle = "اسلامیات اختیاری • 6 Chapters", subjectTag = "Class 12", previewGradient = listOf(0xFF14532D, 0xFF15803D), webClassId = "cls12", webSubjId = "cls12-islopt"),
+        BookStory(id = "story-cls12-islhist", authorName = "Islamic History 12", authorRole = "KPK Textbook Board", bookTitle = "تاریخِ اسلام • 6 Chapters", subjectTag = "Class 12", previewGradient = listOf(0xFF78350F, 0xFFB45309), webClassId = "cls12", webSubjId = "cls12-islhist"),
+        BookStory(id = "story-cls12-quran", authorName = "Mutalia-e-Quran 12", authorRole = "KPK Textbook Board", bookTitle = "ترجمۃ القرآن المجید • 8 Surahs", subjectTag = "Class 12", previewGradient = listOf(0xFF064E3B, 0xFF059669), webClassId = "cls12", webSubjId = "cls12-quran")
     )
 
     // ─── POSTS FEED STATE (Dashboard Study Statistics as Facebook Posts) ───

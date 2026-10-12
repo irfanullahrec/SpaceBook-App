@@ -25,7 +25,6 @@ import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.School
-import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -42,15 +41,23 @@ import androidx.compose.ui.unit.sp
 import com.example.spacebookapp.data.models.StudyStats
 import com.example.spacebookapp.ui.components.FacebookBlue
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material.icons.filled.Class
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.example.spacebookapp.data.repository.SpaceBookRepository
+
 enum class DrawerDestination {
     HOME,
     SUBJECTS_UNITS,
     TEXTBOOKS,
-    CLASS1_HUB,
-    CLASS3_HUB,
-    CLASS7_HUB,
-    BRAIN_ZONE,
-    QUICK_PLAY,
     EXAM_ROADMAPS,
     STUDY_PLAN
 }
@@ -59,9 +66,13 @@ enum class DrawerDestination {
 fun StudySidebarDrawer(
     currentDestination: DrawerDestination,
     onDestinationSelected: (DrawerDestination) -> Unit,
+    onClassSelected: (String) -> Unit = {},
     stats: StudyStats,
     modifier: Modifier = Modifier
 ) {
+    var classesExpanded by remember { mutableStateOf(true) }
+    val selectedClassTag = SpaceBookRepository.selectedClassTag
+
     Column(
         modifier = modifier
             .fillMaxHeight()
@@ -141,9 +152,10 @@ fun StudySidebarDrawer(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Class 10 • Pre-Medical",
-                            color = Color(0xFFCBD5E1),
-                            fontSize = 12.sp
+                            text = "Selected: $selectedClassTag",
+                            color = Color(0xFFFDE68A),
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.SemiBold
                         )
                     }
                 }
@@ -217,7 +229,111 @@ fun StudySidebarDrawer(
             onClick = { onDestinationSelected(DrawerDestination.HOME) }
         )
 
-        // 2. Subjects and Units
+        // 2. Classes Button (Expandable list of all Classes -> filters related Stories)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 2.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .background(if (classesExpanded) Color(0xFF059669).copy(alpha = 0.08f) else Color.Transparent)
+                .clickable { classesExpanded = !classesExpanded }
+                .padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(38.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color(0xFF059669)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Class,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "Classes ($selectedClassTag)",
+                    fontSize = 14.5.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF059669)
+                )
+                Text(
+                    text = "Tap a class to show its related Stories",
+                    fontSize = 11.5.sp,
+                    color = Color(0xFF64748B)
+                )
+            }
+            Icon(
+                imageVector = if (classesExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                contentDescription = null,
+                tint = Color(0xFF059669),
+                modifier = Modifier.size(20.dp)
+            )
+        }
+
+        AnimatedVisibility(visible = classesExpanded) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 6.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Color(0xFFF8FAFC))
+                    .padding(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                SpaceBookRepository.sidebarClasses.forEach { cls ->
+                    val isCurrent = selectedClassTag.equals(cls.tag, ignoreCase = true)
+                    Surface(
+                        shape = RoundedCornerShape(10.dp),
+                        color = if (isCurrent) Color(0xFF059669) else Color.White,
+                        border = BorderStroke(
+                            1.dp,
+                            if (isCurrent) Color(0xFF059669) else Color(0xFFE2E8F0)
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                SpaceBookRepository.selectedClassTag = cls.tag
+                                onClassSelected(cls.tag)
+                            }
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Column {
+                                Text(
+                                    text = "${cls.titleEn}  •  ${cls.titleUr}",
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    color = if (isCurrent) Color.White else Color(0xFF0F172A)
+                                )
+                            }
+                            Surface(
+                                shape = RoundedCornerShape(8.dp),
+                                color = if (isCurrent) Color(0xFFFFD54F) else Color(0xFFF1F5F9)
+                            ) {
+                                Text(
+                                    text = cls.badgeText,
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF0F172A),
+                                    modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. Subjects and Units
         DrawerMenuItem(
             icon = Icons.Default.School,
             title = "Subjects and Units",
@@ -227,7 +343,7 @@ fun StudySidebarDrawer(
             onClick = { onDestinationSelected(DrawerDestination.SUBJECTS_UNITS) }
         )
 
-        // 3. TextBooks
+        // 4. TextBooks
         DrawerMenuItem(
             icon = Icons.Default.MenuBook,
             title = "TextBooks",
@@ -237,57 +353,7 @@ fun StudySidebarDrawer(
             onClick = { onDestinationSelected(DrawerDestination.TEXTBOOKS) }
         )
 
-        // Class 1 Books Hub
-        DrawerMenuItem(
-            icon = Icons.Default.SportsEsports,
-            title = "Class 1 Books Hub",
-            subtitle = "8 Books • Games, Voice & Quizzes",
-            isSelected = currentDestination == DrawerDestination.CLASS1_HUB,
-            activeColor = Color(0xFF1E88E5),
-            onClick = { onDestinationSelected(DrawerDestination.CLASS1_HUB) }
-        )
-
-        // Class 3 Books Hub
-        DrawerMenuItem(
-            icon = Icons.Default.SportsEsports,
-            title = "Class 3 Books Hub",
-            subtitle = "7 Books • 16 GK Chapters & Quizzes",
-            isSelected = currentDestination == DrawerDestination.CLASS3_HUB,
-            activeColor = Color(0xFFD97706),
-            onClick = { onDestinationSelected(DrawerDestination.CLASS3_HUB) }
-        )
-
-        // Class 7 Books Hub
-        DrawerMenuItem(
-            icon = Icons.Default.SportsEsports,
-            title = "Class 7 Books Hub",
-            subtitle = "12 Books • Mathematics, Science & Games",
-            isSelected = currentDestination == DrawerDestination.CLASS7_HUB,
-            activeColor = Color(0xFF0284C7),
-            onClick = { onDestinationSelected(DrawerDestination.CLASS7_HUB) }
-        )
-
-        // Brain Zone
-        DrawerMenuItem(
-            icon = Icons.Default.SportsEsports,
-            title = "🧠 Brain Zone",
-            subtitle = "Focus, Logic IQ & Critical Thinking",
-            isSelected = currentDestination == DrawerDestination.BRAIN_ZONE,
-            activeColor = Color(0xFF6366F1),
-            onClick = { onDestinationSelected(DrawerDestination.BRAIN_ZONE) }
-        )
-
-        // Quick Play Feed
-        DrawerMenuItem(
-            icon = Icons.Default.Explore,
-            title = "⚡ Quick Play (TikTok-Style)",
-            subtitle = "15-Sec Swipe Challenges & Mascots",
-            isSelected = currentDestination == DrawerDestination.QUICK_PLAY,
-            activeColor = Color(0xFFEC4899),
-            onClick = { onDestinationSelected(DrawerDestination.QUICK_PLAY) }
-        )
-
-        // 4. Exam Roadmaps
+        // 5. Exam Roadmaps
         DrawerMenuItem(
             icon = Icons.Default.Explore,
             title = "Exam Roadmaps",
@@ -297,7 +363,7 @@ fun StudySidebarDrawer(
             onClick = { onDestinationSelected(DrawerDestination.EXAM_ROADMAPS) }
         )
 
-        // 5. Study Plan
+        // 6. Study Plan
         DrawerMenuItem(
             icon = Icons.Default.CalendarMonth,
             title = "Study Plan",

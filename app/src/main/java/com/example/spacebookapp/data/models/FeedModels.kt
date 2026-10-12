@@ -21,6 +21,8 @@ data class BookStory(
     val isClass1EnglishBook: Boolean = false,
     val isClass1MathsBook: Boolean = false,
     val isClass1DrawingBook: Boolean = false,
+    val webClassId: String? = null,
+    val webSubjId: String? = null,
     val slides: List<StorySlide> = emptyList(),
     val hasUnseen: Boolean = true
 )

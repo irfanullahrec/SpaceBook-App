@@ -233,20 +233,27 @@ fun SubjectsUnitsScreen(
 
                     HubLevel.SUBJECTS -> {
                         val list = subjects
+                        val cls = selectedClass
                         cardGrid(list.size) { i ->
                             val subj = list[i]
-                            val authored = subjectKindOf(subj.id) != SubjectKind.GENERIC
                             StatCard(
                                 emoji = subj.emoji,
                                 title = subj.name,
-                                subtitle = if (authored) "Verified KPK Textbook Volume" else "Syllabus overview",
+                                subtitle = "Verified KPK Textbook Volume",
                                 accent = Color(subjectAccent(subj.id)),
-                                badge = if (authored) "Verified" else "Overview",
+                                badge = "Verified",
                                 stats = listOf(subj.chapters to "Units"),
-                                status = if (authored) "ready" else "planned",
+                                status = "ready",
                                 onClick = {
-                                    selectedSubject = subj
-                                    level = HubLevel.CHAPTERS
+                                    if (cls != null) {
+                                        route = SubjectRoute(
+                                            classId = cls.id,
+                                            subjectId = subj.id,
+                                            subjectName = subj.name,
+                                            emoji = subj.emoji,
+                                            initialChapter = 0
+                                        )
+                                    }
                                 },
                                 modifier = Modifier.padding(horizontal = 14.dp, vertical = 5.dp)
                             )
@@ -419,58 +426,16 @@ private fun SearchResultsList(
 private fun SubjectRouteHost(
     route: SubjectRoute,
     onBack: () -> Unit,
-    onOpenRoadmap: () -> Unit = {}
+    @Suppress("UNUSED_PARAMETER") onOpenRoadmap: () -> Unit = {}
 ) {
     val accent = Color(subjectAccent(route.subjectId))
-    when (subjectKindOf(route.subjectId)) {
-        SubjectKind.SCIENCE -> ScienceSubjectView(
-            classId = route.classId,
-            subjectId = route.subjectId,
-            subjectName = route.subjectName,
-            accent = accent,
-            initialChapter = route.initialChapter,
-            onBack = onBack,
-            onOpenRoadmap = onOpenRoadmap
-        )
-        SubjectKind.ENGLISH -> EnglishSubjectView(
-            classId = route.classId,
-            subjectName = route.subjectName,
-            accent = accent,
-            initialChapter = route.initialChapter,
-            onBack = onBack,
-            onOpenRoadmap = onOpenRoadmap
-        )
-        SubjectKind.URDU -> UrduSubjectView(
-            classId = route.classId,
-            subjectName = route.subjectName,
-            accent = accent,
-            initialChapter = route.initialChapter,
-            onBack = onBack,
-            onOpenRoadmap = onOpenRoadmap
-        )
-        SubjectKind.MATH -> MathSubjectView(
-            classId = route.classId,
-            subjectName = route.subjectName,
-            accent = accent,
-            initialChapter = route.initialChapter,
-            onBack = onBack,
-            onOpenRoadmap = onOpenRoadmap
-        )
-        SubjectKind.PAKSTUDY -> PakStudySubjectView(
-            classId = route.classId,
-            subjectName = route.subjectName,
-            accent = accent,
-            initialChapter = route.initialChapter,
-            onBack = onBack,
-            onOpenRoadmap = onOpenRoadmap
-        )
-        SubjectKind.GENERIC -> GenericSubjectView(
-            classId = route.classId,
-            subjectId = route.subjectId,
-            subjectName = route.subjectName,
-            emoji = route.emoji,
-            initialChapter = route.initialChapter,
-            onBack = onBack
-        )
-    }
+    SpaceBookWebSubjectScreen(
+        classId = route.classId,
+        subjId = route.subjectId,
+        subjectTitle = route.subjectName,
+        subjectSubtitle = "KPK Textbook Board",
+        accentColor = accent,
+        initialChapter = route.initialChapter,
+        onBackClick = onBack
+    )
 }

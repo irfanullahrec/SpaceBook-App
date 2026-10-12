@@ -174,6 +174,13 @@ fun SpaceBookMainApp() {
                         }
                         scope.launch { drawerState.close() }
                     },
+                    onClassSelected = { classTag ->
+                        currentDestination = DrawerDestination.HOME
+                        selectedBottomTab = BottomTab.HOME
+                        scope.launch { drawerState.close() }
+                        val label = if (classTag == "All") "All Classes" else classTag
+                        Toast.makeText(context, "Showing $label Stories", Toast.LENGTH_SHORT).show()
+                    },
                     stats = SpaceBookRepository.studyStats
                 )
             }

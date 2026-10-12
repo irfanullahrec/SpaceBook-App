@@ -2,16 +2,11 @@ package com.example.spacebookapp.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.SnackbarHost
@@ -26,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.spacebookapp.data.models.BookStory
 import com.example.spacebookapp.data.models.StudyPost
 import com.example.spacebookapp.data.repository.SpaceBookRepository
@@ -48,70 +42,78 @@ fun SpaceBookFeedScreen(
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val stories = SpaceBookRepository.stories
+    val stories = SpaceBookRepository.getFilteredStories()
     val posts = SpaceBookRepository.posts
 
     var viewingStory by remember { mutableStateOf<BookStory?>(null) }
-    var activeClass1StoryId by remember { mutableStateOf<String?>(null) }
+    var activeBookStory by remember { mutableStateOf<BookStory?>(null) }
     var activeCommentPost by remember { mutableStateOf<StudyPost?>(null) }
     var showCreatePostDialog by remember { mutableStateOf(false) }
 
-    when (activeClass1StoryId) {
-        "story-class1-hub" -> {
-            Class1BooksHubScreen(onBackClick = { activeClass1StoryId = null })
+    activeBookStory?.let { story ->
+        val cid = story.webClassId
+        val sid = story.webSubjId
+        if (cid != null && sid != null) {
+            val secondaryHex = story.previewGradient.firstOrNull() ?: 0xFF0F172AL
+            val accentHex = story.previewGradient.getOrNull(1) ?: 0xFF0284C7L
+            val gameStages: List<Class4StageData>? = remember(sid) {
+                when (sid) {
+                    "cls4-eng" -> Class4CurriculumRepository.stagesFor(Class4BookType.ENGLISH)
+                    "cls4-math" -> Class4CurriculumRepository.stagesFor(Class4BookType.MATHS)
+                    "cls4-sci" -> Class4CurriculumRepository.stagesFor(Class4BookType.SCIENCE)
+                    "cls4-isl" -> Class4CurriculumRepository.stagesFor(Class4BookType.ISLAMIAT)
+                    "cls4-pashto" -> Class4CurriculumRepository.stagesFor(Class4BookType.PASHTO)
+                    "cls4-sst" -> Class4CurriculumRepository.stagesFor(Class4BookType.SOCIAL_STUDY)
+                    "cls5-eng" -> Class5CurriculumRepository.stagesFor(Class5BookType.ENGLISH)
+                    "cls5-math" -> Class5CurriculumRepository.stagesFor(Class5BookType.MATHS)
+                    "cls5-sci" -> Class5CurriculumRepository.stagesFor(Class5BookType.SCIENCE)
+                    "cls5-isl" -> Class5CurriculumRepository.stagesFor(Class5BookType.ISLAMIAT)
+                    "cls5-pashto" -> Class5CurriculumRepository.stagesFor(Class5BookType.PASHTO)
+                    "cls5-sst", "cls5-sstum" -> Class5CurriculumRepository.stagesFor(Class5BookType.SOCIAL_STUDY)
+                    "cls5-urdu" -> Class5CurriculumRepository.stagesFor(Class5BookType.URDU)
+                    "cls6-eng" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.ENGLISH)
+                    "cls6-math" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.MATHS)
+                    "cls6-sci" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.SCIENCE)
+                    "cls6-comp" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.COMPUTER)
+                    "cls6-geo" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.GEOGRAPHY)
+                    "cls6-hist" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.HISTORY)
+                    "cls6-isl" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.ISLAMIAT)
+                    "cls6-quran" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.MQ)
+                    "cls6-urdu" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.URDU)
+                    "cls6-pashto" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.PASHTO)
+                    "cls6-arabic" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.ARABIC)
+                    "cls6-drawing" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.DRAWING)
+                    "cls6-hpe" -> com.example.spacebookapp.data.Class6CurriculumRepository.getStages(com.example.spacebookapp.data.Class6BookType.HPE)
+                    else -> null
+                }
+            }
+            val defaultLang = when {
+                sid.endsWith("-pashto") -> ExplainLang.PASHTO
+                sid.endsWith("-urdu") || sid.endsWith("-isl") || sid.endsWith("-quran") -> ExplainLang.URDU
+                else -> ExplainLang.ENGLISH
+            }
+            SpaceBookWebSubjectScreen(
+                classId = cid,
+                subjId = sid,
+                subjectTitle = story.authorName,
+                subjectSubtitle = story.bookTitle,
+                accentColor = Color(accentHex),
+                secondaryColor = Color(secondaryHex),
+                gameStages = gameStages,
+                defaultGameLang = defaultLang,
+                onBackClick = { activeBookStory = null }
+            )
             return
         }
-        "story-class1-english" -> {
-            Class1EnglishScreen(onBackClick = { activeClass1StoryId = null })
-            return
-        }
-        "story-class1-maths" -> {
-            Class1MathsScreen(onBackClick = { activeClass1StoryId = null })
-            return
-        }
-        "story-class1-drawing" -> {
-            Class1DrawingScreen(onBack = { activeClass1StoryId = null })
-            return
-        }
-        "story-class1-nazera" -> {
-            Class1NazeraScreen(onBackClick = { activeClass1StoryId = null })
-            return
-        }
-        "story-class1-pashto" -> {
-            Class1PashtoScreen(onBackClick = { activeClass1StoryId = null })
-            return
-        }
-        "story-class1-urdu" -> {
-            Class1UrduOrGKScreen(isUrduBook = true, onBackClick = { activeClass1StoryId = null })
-            return
-        }
-        "story-class1-gk" -> {
-            Class1UrduOrGKScreen(isUrduBook = false, onBackClick = { activeClass1StoryId = null })
-            return
-        }
-        "story-class1-islamyat" -> {
-            Class1IslamyatScreen(onBackClick = { activeClass1StoryId = null })
-            return
-        }
-        "story-class3-hub" -> {
-            Class3BooksHubScreen(onBackClick = { activeClass1StoryId = null })
-            return
-        }
-        "story-class3-gk" -> {
-            Class3GKScreen(onBackClick = { activeClass1StoryId = null })
-            return
-        }
-        "story-class7-hub" -> {
-            Class7BooksHubScreen(onBackClick = { activeClass1StoryId = null })
-            return
-        }
-        "story-brain-zone" -> {
-            com.example.spacebookapp.ui.brain.BrainZoneHubScreen(onBack = { activeClass1StoryId = null })
-            return
-        }
-        "story-quick-play" -> {
-            com.example.spacebookapp.ui.brain.QuickPlayFeedScreen(onBack = { activeClass1StoryId = null })
-            return
+        when (story.id) {
+            "story-class1-urdu" -> {
+                Class1UrduOrGKScreen(isUrduBook = true, onBackClick = { activeBookStory = null })
+                return
+            }
+            "story-class1-gk" -> {
+                Class1UrduOrGKScreen(isUrduBook = false, onBackClick = { activeBookStory = null })
+                return
+            }
         }
     }
 
@@ -126,7 +128,7 @@ fun SpaceBookFeedScreen(
                 onHamburgerClick = onHamburgerClick,
                 onCreateClick = { showCreatePostDialog = true },
                 onSearchClick = {
-                    Toast.makeText(context, "Search Class 9-12 subjects, notes & past papers...", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Search Class 1-12 subjects, notes & past papers...", Toast.LENGTH_SHORT).show()
                 },
                 onMessengerClick = {
                     Toast.makeText(context, "Opening Study Discussion Messenger...", Toast.LENGTH_SHORT).show()
@@ -147,69 +149,14 @@ fun SpaceBookFeedScreen(
                     )
                 }
 
-                // Quick Play & Brain Zone CTA
-                item {
-                    androidx.compose.foundation.layout.Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp, vertical = 6.dp),
-                        horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)
-                    ) {
-                        androidx.compose.material3.Surface(
-                            shape = androidx.compose.foundation.shape.RoundedCornerShape(14.dp),
-                            color = Color(0xFF4F46E5),
-                            modifier = Modifier
-                                .weight(1f)
-                                .clickable { activeClass1StoryId = "story-quick-play" }
-                        ) {
-                            androidx.compose.foundation.layout.Row(
-                                modifier = Modifier.padding(10.dp),
-                                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-                            ) {
-                                androidx.compose.material3.Text("⚡", fontSize = 20.sp)
-                                androidx.compose.foundation.layout.Spacer(Modifier.width(6.dp))
-                                androidx.compose.foundation.layout.Column {
-                                    androidx.compose.material3.Text("Quick Play", color = Color.White, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, fontSize = 13.sp)
-                                    androidx.compose.material3.Text("Swipe feed", color = Color(0xFFC7D2FE), fontSize = 10.sp)
-                                }
-                            }
-                        }
-
-                        androidx.compose.material3.Surface(
-                            shape = androidx.compose.foundation.shape.RoundedCornerShape(14.dp),
-                            color = Color(0xFF0F172A),
-                            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF6366F1)),
-                            modifier = Modifier
-                                .weight(1f)
-                                .clickable { activeClass1StoryId = "story-brain-zone" }
-                        ) {
-                            androidx.compose.foundation.layout.Row(
-                                modifier = Modifier.padding(10.dp),
-                                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-                            ) {
-                                androidx.compose.material3.Text("🧠", fontSize = 20.sp)
-                                androidx.compose.foundation.layout.Spacer(Modifier.width(6.dp))
-                                androidx.compose.foundation.layout.Column {
-                                    androidx.compose.material3.Text("Brain Zone", color = Color.White, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold, fontSize = 13.sp)
-                                    androidx.compose.material3.Text("IQ & Focus", color = Color(0xFF94A3B8), fontSize = 10.sp)
-                                }
-                            }
-                        }
-                    }
-                }
-
                 // 2. Stories Carousel
                 item {
                     StoriesSection(
                         stories = stories,
                         onStoryClick = { story ->
                             when {
-                                story.id.startsWith("story-class1-") -> activeClass1StoryId = story.id
-                                story.id.startsWith("story-class3-") -> activeClass1StoryId = story.id
-                                story.id.startsWith("story-class7-") -> activeClass1StoryId = story.id
-                                story.isClass1EnglishBook -> activeClass1StoryId = "story-class1-english"
-                                story.isClass1MathsBook -> activeClass1StoryId = "story-class1-maths"
-                                story.isClass1DrawingBook -> activeClass1StoryId = "story-class1-drawing"
+                                story.webClassId != null && story.webSubjId != null -> activeBookStory = story
+                                story.id == "story-class1-urdu" || story.id == "story-class1-gk" -> activeBookStory = story
                                 else -> viewingStory = story
                             }
                         },

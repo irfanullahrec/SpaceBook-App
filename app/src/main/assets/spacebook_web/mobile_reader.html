@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
+  <title>SpaceBook Mobile Reader</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+  <style id="mobile-reader-overrides">
+    /* 1. Hide desktop chrome & duplicate headers/sidebars/tabs (handled natively in Compose) */
+    #overlay,
+    #sidebar,
+    #top-header,
+    #paperStatisticalHeader,
+    #subpage-nav-bar,
+    #footer,
+    .math-ch-sidebar,
+    .bio-ch-sidebar,
+    .math-compact-header-bar,
+    .math-nav-tabs,
+    .bio-top-tab,
+    .drawing-view-tabs,
+    .btn-back-link,
+    a[href^="file://"],
+    #math12OpenPageLink,
+    #eng-word-popover,
+    #word-hover-tooltip,
+    #m6-word,
+    #m5-word,
+    #m7-word,
+    #m8-word,
+    .m6-page,
+    .m5-page,
+    .m7-page,
+    .m8-page,
+    [id$="-m6-front"],
+    [id$="-m6-back"],
+    [id$="-m5-front"],
+    [id$="-m5-back"],
+    [id$="-m7-front"],
+    [id$="-m7-back"],
+    [id$="-m8-front"],
+    [id$="-m8-back"] {
+      display: none !important;
+    }
+
+    /* 2. Unlock all height & overflow locks so vertical touch scrolling works smoothly */
+    html,
+    body,
+    body:has(.math-unified-view),
+    body:has(.preps-one-look-view),
+    body:has(.papers-creator-view),
+    body:has(.classes-universe-wrapper),
+    body:has(.cls1-cover-stage-grid) {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      max-width: 100vw !important;
+      height: auto !important;
+      min-height: 100vh !important;
+      max-height: none !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+      touch-action: pan-y pinch-zoom !important;
+      background: #f1f5f9 !important;
+      color: #0f172a !important;
+      text-align: left !important;
+      -webkit-tap-highlight-color: transparent;
+      position: static !important;
+    }
+
+    #main-wrapper,
+    #page-content,
+    #dashboard-body {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      min-height: 0 !important;
+      height: auto !important;
+      max-height: none !important;
+      overflow: visible !important;
+      background: #f1f5f9 !important;
+      text-align: left !important;
+      border: none !important;
+      box-shadow: none !important;
+      position: static !important;
+    }
+
+    .math-unified-view,
+    .math-unified-view[data-math-class="cls12"],
+    .bio-view,
+    .drawing-workspace,
+    .math-topic-area,
+    .bio-topic-area,
+    .drawing-topic-area,
+    #mathTopicArea,
+    #subjectTopicArea,
+    #bioTopicArea {
+      display: block !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow: visible !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      background: transparent !important;
+    }
+
+    .math-tab-content-scroll,
+    #mathTabContent,
+    #subjTabContent,
+    #bioTabContentContainer {
+      display: block !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow: visible !important;
+      padding: 10px 10px 88px 10px !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+      background: #f1f5f9 !important;
+      text-align: left !important;
+    }
+
+    /* Force single-column card stacks on mobile */
+    #mathTabContent.math-grid-layout #mathLessonList,
+    #mathTabContent.math-grid-layout #mathExamplesList,
+    #mathTabContent.math-grid-layout .math-cards-grid-target,
+    #mathLessonList,
+    #mathExamplesList,
+    .math-cards-grid-target {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+      width: 100% !important;
+    }
+
+    /* 3. Sub-tabs bar (e.g. Paragraphs / Translations / Videos / Exercise / SLOs) */
+    #subjSubTabsBar,
+    .topic-sub-tabs-bar,
+    .topic-sub-tabs-bar-fixed {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      white-space: nowrap !important;
+      gap: 6px !important;
+      padding: 8px 10px !important;
+      background: #ffffff !important;
+      border-bottom: 1px solid #cbd5e1 !important;
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 20 !important;
+      -webkit-overflow-scrolling: touch;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04) !important;
+    }
+    #subjSubTabsBar::-webkit-scrollbar,
+    .topic-sub-tabs-bar::-webkit-scrollbar,
+    .topic-sub-tabs-bar-fixed::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* 4. Clean Topic / Accordion Cards */
+    .math-topic-card,
+    .math-accordion-card,
+    .c2-topic-card,
+    .para-card,
+    .bio-section-card,
+    .slo-accordion-card {
+      background: #ffffff !important;
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 16px !important;
+      padding: 0 !important;
+      margin: 0 0 12px 0 !important;
+      box-sizing: border-box !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow: hidden !important;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+      text-align: left !important;
+    }
+
+    .math-topic-card:not(:has(.math-acc-header)),
+    .c2-topic-card:not(:has(.math-acc-header)),
+    .para-card {
+      padding: 14px !important;
+    }
+
+    .math-acc-header {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 10px !important;
+      padding: 12px 14px !important;
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+      text-align: left !important;
+      cursor: pointer !important;
+    }
+
+    .math-accordion-card.open > .math-acc-header {
+      background: linear-gradient(90deg, #eff6ff 0%, #f8fafc 100%) !important;
+      border-bottom: 1px solid #bae6fd !important;
+    }
+
+    .math-acc-header > div:first-child {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 5px !important;
+      flex: 1 !important;
+      min-width: 0 !important;
+      text-align: left !important;
+    }
+
+    .math-badge,
+    .math-acc-badge {
+      display: inline-flex !important;
+      align-items: center !important;
+      white-space: nowrap !important;
+      width: fit-content !important;
+      flex-shrink: 0 !important;
+      padding: 3px 10px !important;
+      border-radius: 999px !important;
+      font-size: 11px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.02em !important;
+      background: #0284c7 !important;
+      color: #ffffff !important;
+    }
+
+    .math-acc-header h3,
+    .math-acc-header strong {
+      font-size: 15px !important;
+      font-weight: 800 !important;
+      line-height: 1.4 !important;
+      color: #0f172a !important;
+      margin: 0 !important;
+      text-align: left !important;
+      word-break: break-word !important;
+    }
+
+    .math-acc-icon,
+    .math-acc-toggle {
+      width: 30px !important;
+      height: 30px !important;
+      min-width: 30px !important;
+      border-radius: 50% !important;
+      background: #e0f2fe !important;
+      color: #0369a1 !important;
+      font-size: 16px !important;
+      font-weight: 800 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+      border: 1px solid #bae6fd !important;
+    }
+
+    .math-accordion-card.open .math-acc-icon,
+    .math-accordion-card.open .math-acc-toggle {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      border-color: #0284c7 !important;
+    }
+
+    .math-accordion-body {
+      padding: 14px 12px !important;
+      margin: 0 !important;
+      border-top: none !important;
+      background: #ffffff !important;
+      text-align: left !important;
+    }
+
+    /* 5. Paragraph 3-Horizontal-Tabs Bar (.sb-para-tabs & .para-lang-tabs-bar) */
+    .sb-para-block {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 12px !important;
+      padding: 10px 12px !important;
+      margin: 10px 0 !important;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04) !important;
+    }
+
+    .sb-para-tabs,
+    .para-lang-tabs-bar {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 6px !important;
+      width: 100% !important;
+      margin: 0 0 8px 0 !important;
+      padding: 4px !important;
+      background: #f1f5f9 !important;
+      border-radius: 10px !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Hide 4th "All (Parallel)" button in app.js para-lang-tabs-bar so there are exactly 3 horizontal tabs */
+    .para-lang-tabs-bar .para-lang-tab-btn:nth-child(n+4) {
+      display: none !important;
+    }
+
+    .sb-para-tab,
+    .para-lang-tabs-bar .para-lang-tab-btn {
+      appearance: none !important;
+      border: 1px solid transparent !important;
+      background: transparent !important;
+      color: #475569 !important;
+      font-size: 12px !important;
+      font-weight: 800 !important;
+      padding: 6px 4px !important;
+      border-radius: 7px !important;
+      text-align: center !important;
+      cursor: pointer !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      transition: all 0.15s ease !important;
+    }
+
+    .sb-para-tab.active,
+    .para-lang-tabs-bar .para-lang-tab-btn.active {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      border-color: #0369a1 !important;
+      box-shadow: 0 1px 4px rgba(2, 132, 199, 0.25) !important;
+    }
+
+    /* 6. Sentence Click Highlight & Underline + Word Tap-and-Hold Highlight */
+    .m5-w, .m6-w, .m7-w, .m8-w,
+    .tts-word, .dict-clickable-word,
+    [data-math12-word] {
+      text-decoration: none !important;
+      border-bottom: none !important;
+      color: inherit !important;
+      cursor: pointer !important;
+      -webkit-user-select: none !important;
+      user-select: none !important;
+    }
+
+    .sb-word-held {
+      background: #fde047 !important;
+      color: #0f172a !important;
+      text-decoration: underline 2.5px solid #d97706 !important;
+      text-underline-offset: 3px !important;
+      border-radius: 4px !important;
+      padding: 1px 3px !important;
+    }
+
+    p.m5-s, p.m6-s, p.m7-s, p.m8-s,
+    span.m5-s, span.m6-s, span.m7-s, span.m8-s,
+    .lesson-sentence {
+      cursor: pointer !important;
+      border-radius: 6px !important;
+      transition: background 0.15s ease !important;
+    }
+
+    p.m5-s, p.m6-s, p.m7-s, p.m8-s {
+      margin: 4px 0 !important;
+      padding: 6px 8px !important;
+      font-size: 15px !important;
+      line-height: 1.72 !important;
+      color: #0f172a !important;
+      text-align: left !important;
+    }
+
+    /* Clicked sentence: underlined and highlighted! */
+    .m5-s[aria-expanded="true"],
+    .m6-s[aria-expanded="true"],
+    .m7-s[aria-expanded="true"],
+    .m8-s[aria-expanded="true"],
+    .lesson-sentence.sb-sent-active,
+    .sb-sent-active {
+      background: #fef08a !important;
+      color: #0f172a !important;
+      text-decoration: underline 2.5px solid #0284c7 !important;
+      text-underline-offset: 4px !important;
+      font-weight: 600 !important;
+      padding: 6px 8px !important;
+      border-radius: 6px !important;
+    }
+
+    /* Translations shown below clicked sentence or when switched via 3-tab bar */
+    .m5-tr, .m6-tr, .m7-tr, .m8-tr {
+      margin: 6px 0 4px 0 !important;
+      padding: 10px 12px !important;
+      background: #f8fafc !important;
+      border: 1px solid #bae6fd !important;
+      border-left: 4px solid #0284c7 !important;
+      border-radius: 10px !important;
+    }
+
+    .m5-tr p, .m6-tr p, .m7-tr p, .m8-tr p {
+      margin: 4px 0 !important;
+      text-align: right !important;
+      direction: rtl !important;
+      color: #0f172a !important;
+      font-size: 16px !important;
+      line-height: 1.95 !important;
+    }
+
+    .m5-tr p[dir="ltr"], .m6-tr p[dir="ltr"], .m7-tr p[dir="ltr"], .m8-tr p[dir="ltr"] {
+      text-align: left !important;
+      direction: ltr !important;
+      font-size: 15px !important;
+      line-height: 1.7 !important;
+    }
+
+    .m5-tr .m5-ps, .m6-tr .m6-ps, .m7-tr .m7-ps, .m8-tr .m8-ps {
+      border-top: 1px dashed #cbd5e1 !important;
+      padding-top: 6px !important;
+      margin-top: 6px !important;
+      color: #334155 !important;
+    }
+
+    /* When a specific translation tab (Tab 2 or Tab 3) is active on the paragraph */
+    .m5-tr[data-single-lang] .m5-ps,
+    .m6-tr[data-single-lang] .m6-ps,
+    .m7-tr[data-single-lang] .m7-ps,
+    .m8-tr[data-single-lang] .m8-ps {
+      border-top: none !important;
+      padding-top: 0 !important;
+      margin-top: 0 !important;
+    }
+
+    .m5-tr .m5-lang, .m6-tr .m6-lang, .m7-tr .m7-lang, .m8-tr .m8-lang {
+      display: inline-block !important;
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      font-size: 11px !important;
+      font-weight: 800 !important;
+      padding: 1px 8px !important;
+      border-radius: 6px !important;
+      margin-left: 6px !important;
+      margin-right: 6px !important;
+    }
+
+    /* Top "Show all Urdu / Pashto" button inside card (kept OFF by default) */
+    .m5-tools, .m6-tools, .m7-tools, .m8-tools {
+      display: flex !important;
+      margin: 0 0 8px 0 !important;
+    }
+    .m5-tools button, .m6-tools button, .m7-tools button, .m8-tools button {
+      width: 100% !important;
+      padding: 8px 12px !important;
+      border-radius: 10px !important;
+      font-size: 12.5px !important;
+      font-weight: 800 !important;
+      background: #f8fafc !important;
+      color: #0369a1 !important;
+      border: 1px solid #cbd5e1 !important;
+      text-align: center !important;
+      cursor: pointer !important;
+    }
+    .m5-tools button[aria-pressed="true"],
+    .m6-tools button[aria-pressed="true"],
+    .m7-tools button[aria-pressed="true"],
+    .m8-tools button[aria-pressed="true"] {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      border-color: #0284c7 !important;
+    }
+    .m5-help, .m6-help, .m7-help, .m8-help {
+      display: none !important;
+    }
+
+    /* 7. Headings, Boxes, Examples, and Exercises */
+    .m5-h3, .m6-h3, .m7-h3, .m8-h3 {
+      background: linear-gradient(90deg, #eff6ff 0%, #f8fafc 100%) !important;
+      border-left: 4px solid #0284c7 !important;
+      border-radius: 8px !important;
+      padding: 10px 12px !important;
+      margin: 14px 0 10px 0 !important;
+      font-size: 16px !important;
+      font-weight: 800 !important;
+      color: #0f172a !important;
+      text-align: left !important;
+    }
+
+    .m5-h4, .m6-h4, .m7-h4, .m8-h4 {
+      background: #f8fafc !important;
+      border-left: 3.5px solid #0ea5e9 !important;
+      border-radius: 6px !important;
+      padding: 8px 10px !important;
+      margin: 12px 0 8px 0 !important;
+      font-size: 15px !important;
+      font-weight: 800 !important;
+      color: #075985 !important;
+      text-align: left !important;
+    }
+
+    .m5-hsub, .m6-hsub, .m7-hsub, .m8-hsub {
+      display: block !important;
+      margin-top: 4px !important;
+      font-size: 14.5px !important;
+      font-weight: 700 !important;
+      color: #0369a1 !important;
+      direction: rtl !important;
+      text-align: right !important;
+      line-height: 1.75 !important;
+    }
+
+    .m5-ul, .m6-ul, .m7-ul, .m8-ul {
+      list-style: none !important;
+      padding: 0 !important;
+      margin: 8px 0 !important;
+    }
+
+    .m5-ul > li, .m6-ul > li, .m7-ul > li, .m8-ul > li {
+      list-style: none !important;
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-left: 3.5px solid #0284c7 !important;
+      border-radius: 10px !important;
+      padding: 10px 12px !important;
+      margin: 8px 0 !important;
+      text-align: left !important;
+    }
+
+    .m5-box, .m6-box, .m7-box, .m8-box {
+      border-radius: 12px !important;
+      padding: 12px 14px !important;
+      margin: 12px 0 !important;
+      text-align: left !important;
+    }
+    .m5-box.key, .m6-box.key, .m7-box.key, .m8-box.key {
+      text-align: left !important;
+      border: 1.5px solid #fda4af !important;
+      border-left: 5px solid #e11d48 !important;
+      background: #fff1f2 !important;
+    }
+    .m5-box-t, .m6-box-t, .m7-box-t, .m8-box-t {
+      display: inline-block !important;
+      background: rgba(15, 23, 42, 0.08) !important;
+      color: #0f172a !important;
+      font-size: 12px !important;
+      font-weight: 800 !important;
+      padding: 3px 9px !important;
+      border-radius: 6px !important;
+      margin-bottom: 8px !important;
+      text-transform: uppercase !important;
+    }
+
+    .m5-example, .m6-example, .m7-example, .m8-example {
+      border: 1.5px solid #bbf7d0 !important;
+      border-left: 5px solid #16a34a !important;
+      border-radius: 12px !important;
+      padding: 12px 12px !important;
+      margin: 12px 0 !important;
+      background: #ffffff !important;
+      text-align: left !important;
+    }
+
+    .m5-example-t, .m6-example-t, .m7-example-t, .m8-example-t {
+      display: block !important;
+      background: #dcfce7 !important;
+      color: #166534 !important;
+      font-size: 14px !important;
+      font-weight: 800 !important;
+      padding: 6px 10px !important;
+      border-radius: 8px !important;
+      margin-bottom: 8px !important;
+      text-align: left !important;
+    }
+
+    .m5-exercise, .m6-exercise, .m7-exercise, .m8-exercise {
+      border: 1.5px solid #ddd6fe !important;
+      border-left: 5px solid #7c3aed !important;
+      border-radius: 12px !important;
+      padding: 12px 12px !important;
+      margin: 12px 0 !important;
+      background: #ffffff !important;
+      text-align: left !important;
+    }
+
+    .m5-exercise-t, .m6-exercise-t, .m7-exercise-t, .m8-exercise-t {
+      display: block !important;
+      background: #ede9fe !important;
+      color: #5b21b6 !important;
+      font-size: 15px !important;
+      font-weight: 800 !important;
+      padding: 6px 10px !important;
+      border-radius: 8px !important;
+      margin-bottom: 10px !important;
+      text-align: left !important;
+    }
+
+    .m5-q, .m6-q, .m7-q, .m8-q {
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 12px !important;
+      padding: 10px 12px !important;
+      margin: 10px 0 !important;
+      text-align: left !important;
+    }
+
+    .m5-parts, .m6-parts, .m7-parts, .m8-parts {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 8px !important;
+      margin: 8px 0 4px 0 !important;
+    }
+
+    .m5-part, .m6-part, .m7-part, .m8-part {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 8px !important;
+      padding: 8px 10px !important;
+      margin: 0 !important;
+      text-align: left !important;
+    }
+
+    .m5-solbtn, .m6-solbtn, .m7-solbtn, .m8-solbtn {
+      display: inline-flex !important;
+      align-items: center !important;
+      margin-top: 6px !important;
+      padding: 5px 12px !important;
+      font-size: 12.5px !important;
+      font-weight: 800 !important;
+      color: #ffffff !important;
+      background: #16a34a !important;
+      border: none !important;
+      border-radius: 999px !important;
+      box-shadow: 0 2px 5px rgba(22, 163, 74, 0.25) !important;
+      cursor: pointer !important;
+    }
+
+    .m5-ans, .m6-ans, .m7-ans, .m8-ans {
+      margin: 8px 0 2px 0 !important;
+      padding: 8px 10px !important;
+      border-radius: 8px !important;
+      background: #dcfce7 !important;
+      border: 1px solid #86efac !important;
+      color: #14532d !important;
+      font-size: 13.5px !important;
+      text-align: left !important;
+    }
+
+    /* 8. Single-Line Step-by-Step Solution & Single-Line Explanation Below */
+    .sb-sol-container {
+      margin-top: 10px !important;
+      border: 1.5px solid #86efac !important;
+      border-radius: 12px !important;
+      background: #ffffff !important;
+      overflow: hidden !important;
+    }
+
+    .sb-sol-section-title {
+      padding: 8px 12px !important;
+      font-size: 12.5px !important;
+      font-weight: 800 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.03em !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+    }
+
+    .sb-sol-steps-title {
+      background: #dcfce7 !important;
+      color: #166534 !important;
+      border-bottom: 1px solid #bbf7d0 !important;
+    }
+
+    .sb-sol-explain-title {
+      background: #e0f2fe !important;
+      color: #075985 !important;
+      border-top: 1.5px solid #bae6fd !important;
+      border-bottom: 1px solid #bae6fd !important;
+    }
+
+    .sb-sol-single-line-list {
+      list-style: none !important;
+      margin: 0 !important;
+      padding: 8px 10px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 6px !important;
+    }
+
+    .sb-sol-single-line-item {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      white-space: nowrap !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      -webkit-overflow-scrolling: touch !important;
+      padding: 6px 10px !important;
+      border-radius: 8px !important;
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      font-size: 14px !important;
+      line-height: 1.5 !important;
+      color: #0f172a !important;
+    }
+
+    .sb-sol-single-line-item[dir="rtl"] {
+      direction: rtl !important;
+      text-align: right !important;
+      font-size: 15.5px !important;
+    }
+
+    .sb-sol-step-badge {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 2px 7px !important;
+      border-radius: 6px !important;
+      font-size: 11px !important;
+      font-weight: 800 !important;
+      background: #16a34a !important;
+      color: #ffffff !important;
+      flex-shrink: 0 !important;
+    }
+
+    .sb-sol-explain-badge {
+      background: #0284c7 !important;
+    }
+
+    .sb-sol-answer-line {
+      margin: 0 10px 10px 10px !important;
+      padding: 8px 12px !important;
+      border-radius: 8px !important;
+      background: #dcfce7 !important;
+      border: 1px solid #86efac !important;
+      color: #14532d !important;
+      font-weight: 800 !important;
+      font-size: 14px !important;
+      white-space: nowrap !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* 9. Word Tap-and-Hold Floating Popover */
+    #sb-word-hold-popover {
+      position: fixed !important;
+      left: 14px !important;
+      right: 14px !important;
+      bottom: 20px !important;
+      z-index: 99999 !important;
+      background: #0f172a !important;
+      color: #ffffff !important;
+      border: 2px solid #38bdf8 !important;
+      border-radius: 16px !important;
+      padding: 14px 16px !important;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.45) !important;
+      text-align: left !important;
+    }
+
+    /* RTL Primary Books (Urdu, Islamiat, Pashto, Arabic, Quran) */
+    .m5-rtl, .m6-rtl, .m7-rtl, .m8-rtl,
+    [dir="rtl"] {
+      text-align: right !important;
+      direction: rtl !important;
+    }
+    .m6-rtl p.m6-s,
+    .m5-rtl p.m5-s,
+    .m7-rtl p.m7-s,
+    .m8-rtl p.m8-s {
+      text-align: right !important;
+      direction: rtl !important;
+      font-size: 17px !important;
+      line-height: 2.0 !important;
+    }
+
+    /* Responsive SVGs, tables, and KaTeX */
+    svg {
+      max-width: 100% !important;
+      height: auto !important;
+    }
+    .katex-display {
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      max-width: 100% !important;
+      padding: 4px 0 !important;
+    }
+    table {
+      max-width: 100% !important;
+    }
+    .m5-table, .m6-table, .m7-table, .m8-table {
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="overlay"></div>
+  <aside id="sidebar"></aside>
+  <header id="top-header"></header>
+  <div id="paperStatisticalHeader" style="display:none;"></div>
+  <div id="main-wrapper">
+    <div id="subpage-nav-bar" style="display:none;">
+      <div class="breadcrumb" id="breadcrumb"></div>
+      <div class="subpage-title-wrap" id="subpage-title-wrap">
+        <div>
+          <h2 id="dash-title">Subjects</h2>
+          <p id="dash-sub">Choose a class to explore</p>
+        </div>
+      </div>
+    </div>
+    <main id="page-content">
+      <div id="dashboard-body">
+        <div style="padding:32px 16px;text-align:center;color:#64748b;font-family:system-ui,sans-serif;">
+          Loading textbook content…
+        </div>
+      </div>
+    </main>
+    <footer id="footer"></footer>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalHeader">Questions</h3>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    // 1. Polyfill speechSynthesis with AndroidBridge TTS
+    (function setupAndroidTtsBridge() {
+      const fakeVoices = [
+        { lang: 'en-US', name: 'English' },
+        { lang: 'ur-PK', name: 'Urdu' },
+        { lang: 'ps-AF', name: 'Pashto' },
+        { lang: 'ar-SA', name: 'Arabic' }
+      ];
+      if (!window.speechSynthesis || !window.speechSynthesis.getVoices || window.speechSynthesis.getVoices().length === 0) {
+        window.SpeechSynthesisUtterance = window.SpeechSynthesisUtterance || function(text) {
+          this.text = text;
+          this.lang = 'en-US';
+          this.rate = 1.0;
+        };
+        window.speechSynthesis = {
+          getVoices: function() { return fakeVoices; },
+          cancel: function() {
+            if (window.AndroidBridge && window.AndroidBridge.stopSpeaking) {
+              window.AndroidBridge.stopSpeaking();
+            }
+          },
+          speak: function(utterance) {
+            if (window.AndroidBridge && window.AndroidBridge.speak) {
+              window.AndroidBridge.speak(String(utterance.text || ''), String(utterance.lang || 'en'));
+              setTimeout(function() {
+                if (typeof utterance.onend === 'function') utterance.onend();
+              }, Math.min(8000, Math.max(1200, String(utterance.text || '').length * 55)));
+            } else if (typeof utterance.onend === 'function') {
+              setTimeout(utterance.onend, 600);
+            }
+          }
+        };
+      }
+    })();
+
+    // Helper to speak any text via AndroidBridge or speechSynthesis
+    window.sbSpeakText = function(text, lang) {
+      if (window.AndroidBridge && window.AndroidBridge.speak) {
+        window.AndroidBridge.speak(String(text || ''), String(lang || 'en-US'));
+      } else if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(String(text || ''));
+        u.lang = lang || 'en-US';
+        window.speechSynthesis.speak(u);
+      }
+    };
+
+    // Determine primary medium language for current subject
+    window.getSubjectDefaultLang = function() {
+      const params = new URLSearchParams(window.location.search);
+      const subjId = (params.get('subjId') || '').toLowerCase();
+      if (subjId.endsWith('-pashto')) return 'ps';
+      if (subjId.endsWith('-arabic')) return 'ar';
+      if (
+        subjId.endsWith('-urdu') ||
+        subjId.endsWith('-isl') ||
+        subjId.endsWith('-quran') ||
+        subjId.endsWith('-nazira') ||
+        subjId.endsWith('-sstum') ||
+        subjId.endsWith('-islopt') ||
+        subjId.endsWith('-islhist')
+      ) {
+        return 'ur';
+      }
+      return 'en';
+    };
+
+    // 2. Determine exact data scripts needed for (classId, subjId)
+    function getSubjectDataScripts(classId, subjId) {
+      const map = {
+        'cls1-eng': ['js/english_1_data.js', 'js/primary_page_art.js', 'js/english_1_pages.js', 'js/primary_page_learning.js'],
+        'cls1-math': ['js/math_1_data.js', 'js/math_primary_visuals.js'],
+        'cls1-isl': ['js/islamyat_1_data.js'],
+        'cls1-nazira': ['js/nazira_1_data.js'],
+        'cls1-pashto': ['js/pashto_1_data.js'],
+        'cls1-drawing': ['js/drawing_1_data.js'],
+
+        'cls2-eng': ['js/english_2_data.js'],
+        'cls2-urdu': ['js/urdu_2_data.js'],
+        'cls2-math': ['js/math_2_data.js', 'js/math_primary_visuals.js'],
+        'cls2-gk': ['js/gk_2_data.js'],
+        'cls2-isl': ['js/islamyat_2_data.js'],
+        'cls2-nazira': ['js/nazira_2_data.js'],
+        'cls2-pashto': ['js/pashto_2_data.js'],
+        'cls2-drawing': ['js/drawing_2_data.js'],
+
+        'cls3-eng': ['js/english_3_data.js'],
+        'cls3-math': ['js/math_3_book_text.js', 'js/math_3_data.js', 'js/math_primary_visuals.js'],
+        'cls3-gk': ['js/gk_3_data.js'],
+        'cls3-isl': ['js/islamyat_3_data.js'],
+        'cls3-nazira': ['js/nazira_3_data.js'],
+        'cls3-pashto': ['js/pashto_3_data.js'],
+        'cls3-drawing': ['js/drawing_3_data.js'],
+
+        'cls4-math': ['js/math_4_data.js'],
+        'cls4-eng': ['js/english_4_data.js'],
+        'cls4-sci': ['js/general_science_4_data.js'],
+        'cls4-sst': ['js/social_studies_4_data.js'],
+        'cls4-isl': ['js/islamiat_4_data.js'],
+        'cls4-pashto': ['js/pashto_4_data.js'],
+
+        'cls5-math': ['js/math_5_data.js', 'js/math_5_solutions.js'],
+        'cls5-sci': ['js/general_science_5_data.js'],
+        'cls5-eng': ['js/english_5_data.js'],
+        'cls5-urdu': ['js/urdu_5_data.js'],
+        'cls5-isl': ['js/islamiat_5_data.js'],
+        'cls5-sst': ['js/social_studies_5_data.js'],
+        'cls5-sstum': ['js/social_studies_um_5_data.js'],
+        'cls5-pashto': ['js/pashto_5_data.js'],
+
+        'cls6-math': ['js/math_6_data.js', 'js/math_6_solutions.js'],
+        'cls6-sci': ['js/general_science_6_data.js'],
+        'cls6-eng': ['js/english_6_data.js'],
+        'cls6-urdu': ['js/urdu_6_data.js'],
+        'cls6-isl': ['js/islamiat_6_data.js'],
+        'cls6-comp': ['js/computer_6_data.js'],
+        'cls6-geo': ['js/geography_6_data.js'],
+        'cls6-hist': ['js/history_6_data.js'],
+        'cls6-hpe': ['js/hpe_6_data.js'],
+        'cls6-drawing': ['js/drawing_6_data.js'],
+        'cls6-arabic': ['js/arabic_6_data.js'],
+        'cls6-quran': ['js/mutalia_quran_6_data.js'],
+        'cls6-pashto': ['js/pashto_6_data.js'],
+
+        'cls7-math': ['js/math_7_data.js', 'js/math_7_solutions.js'],
+        'cls7-eng': ['js/english_7_data.js'],
+        'cls7-sci': ['js/general_science_7_data.js'],
+        'cls7-comp': ['js/computer_7_data.js'],
+        'cls7-geo': ['js/geography_7_data.js'],
+        'cls7-hist': ['js/history_7_data.js'],
+        'cls7-hg': ['js/geography_7_data.js', 'js/history_7_data.js'],
+        'cls7-urdu': ['js/urdu_7_data.js'],
+        'cls7-isl': ['js/islamiat_7_data.js'],
+        'cls7-quran': ['js/mutalia_quran_7_data.js'],
+        'cls7-arabic': ['js/arabic_7_data.js'],
+        'cls7-drawing': ['js/drawing_7_data.js'],
+        'cls7-hpe': ['js/hpe_7_data.js'],
+
+        'cls8-eng': ['js/english_8_data.js'],
+        'cls8-math': ['js/math_8_data.js', 'js/math_8_solutions.js'],
+        'cls8-sci': ['js/general_science_8_data.js'],
+        'cls8-comp': ['js/computer_8_data.js'],
+        'cls8-geo': ['js/geography_8_data.js'],
+        'cls8-hist': ['js/history_8_data.js'],
+        'cls8-hg': ['js/geography_8_data.js', 'js/history_8_data.js'],
+        'cls8-urdu': ['js/urdu_8_data.js'],
+        'cls8-isl': ['js/islamiat_8_data.js'],
+        'cls8-quran': ['js/mutalia_quran_8_data.js'],
+        'cls8-pashto': ['js/pashto_8_data.js'],
+        'cls8-arabic': ['js/arabic_8_data.js'],
+        'cls8-drawing': ['js/drawing_8_data.js'],
+        'cls8-hpe': ['js/hpe_8_data.js'],
+
+        'cls9-math': ['js/math_data.js'],
+        'cls9-phy': ['js/data_phys.js'],
+        'cls9-chem': ['js/data_chem.js'],
+        'cls9-bio': ['js/data_bio.js', 'js/bio_data.js'],
+        'cls9-eng': ['js/data_eng.js', 'js/english_data.js'],
+        'cls9-urdu': ['js/urdu_data.js'],
+        'cls9-isl': ['js/islamyat_data.js'],
+        'cls9-comp': ['js/data_comp.js'],
+        'cls9-pakstudy': ['js/pakstudy_data.js'],
+        'cls9-sci': ['js/general_science_9_data.js'],
+        'cls9-hpe': ['js/hpe_9_data.js'],
+        'cls9-drawing': ['js/drawing_9_data.js'],
+        'cls9-islopt': ['js/islamiat_ikhtiari_9_data.js'],
+        'cls9-quran': ['js/mutalia_quran_9_data.js'],
+
+        'cls10-math': ['js/math_10_data.js'],
+        'cls10-phy': ['js/data_phys.js', 'js/physics_10_source_data.js'],
+        'cls10-chem': ['js/data_chem.js', 'js/chemistry_10_source_data.js'],
+        'cls10-bio': ['js/data_bio.js', 'js/bio_data.js'],
+        'cls10-eng': ['js/data_eng.js', 'js/english_10_data.js'],
+        'cls10-pakstudy': ['js/pakstudy_10_data.js'],
+        'cls10-isl': ['js/islamyat_10_data.js'],
+        'cls10-urdu': ['js/urdu_10_data.js'],
+        'cls10-comp': ['js/computer_10_data.js'],
+        'cls10-sci': ['js/general_science_10_data.js'],
+        'cls10-hpe': ['js/hpe_10_data.js'],
+        'cls10-drawing': ['js/drawing_10_data.js'],
+        'cls10-islopt': ['js/islamiat_ikhtiari_10_data.js'],
+        'cls10-quran': ['js/mutalia_quran_10_data.js'],
+
+        'cls11-phy': ['js/phys_11_data.js'],
+        'cls11-chem': ['js/chem_11_data.js'],
+
+        'cls12-math': ['js/math_12_data.js'],
+        'cls12-phy': ['js/phys_12_data.js'],
+        'cls12-chem': ['js/chem_12_data.js'],
+        'cls12-stat': ['js/stat_12_data.js'],
+        'cls12-eng': ['js/english_12_data.js'],
+        'cls12-urdu': ['js/urdu_12_data.js'],
+        'cls12-bio': ['js/biology_12_data.js'],
+        'cls12-pak': ['js/pakstudy_12_data.js'],
+        'cls12-pakstudy': ['js/pakstudy_12_data.js'],
+        'cls12-comp': ['js/computer_12_data.js'],
+        'cls12-civics': ['js/civics_12_data.js'],
+        'cls12-econ': ['js/economics_12_data.js'],
+        'cls12-hpe': ['js/hpe_12_data.js'],
+        'cls12-islopt': ['js/islamiat_ikhtiari_12_data.js'],
+        'cls12-islhist': ['js/islamic_history_12_data.js'],
+        'cls12-quran': ['js/quran_12_data.js']
+      };
+      return map[subjId] || [];
+    }
+
+    function loadScriptSequential(urls) {
+      return urls.reduce((promise, url) => {
+        return promise.then(() => new Promise((resolve) => {
+          const s = document.createElement('script');
+          s.src = url;
+          s.onload = () => resolve();
+          s.onerror = (err) => {
+            console.warn('Could not load script:', url, err);
+            resolve();
+          };
+          document.body.appendChild(s);
+        }));
+      }, Promise.resolve());
+    }
+
+    // 3. Paragraph 3-Horizontal-Tabs Controller (for .m5-s / .m6-s / .m7-s / .m8-s blocks)
+    const SB_LANG_LABELS = {
+      en: '🇬🇧 English',
+      ur: '🇵🇰 اردو',
+      ps: '🇦🇫 پښتو',
+      ar: '🇸🇦 العربية'
+    };
+
+    window.sbSwitchParaLang = function(btn, targetLang) {
+      const bar = btn.closest('.sb-para-tabs');
+      if (!bar) return;
+      const defaultLang = bar.dataset.defaultLang || 'en';
+      bar.querySelectorAll('.sb-para-tab').forEach(b => {
+        b.classList.toggle('active', b === btn);
+      });
+
+      const wrapper = bar.parentElement;
+      if (!wrapper) return;
+      const sentEl = wrapper.querySelector('.m5-s, .m6-s, .m7-s, .m8-s');
+      const trEl = wrapper.querySelector('.m5-tr, .m6-tr, .m7-tr, .m8-tr');
+      if (!sentEl || !trEl) return;
+
+      if (targetLang === defaultLang) {
+        sentEl.style.display = '';
+        trEl.removeAttribute('data-single-lang');
+        Array.from(trEl.children).forEach(p => { p.style.display = ''; });
+        // Keep hidden unless the sentence itself was clicked
+        trEl.hidden = sentEl.getAttribute('aria-expanded') !== 'true';
+      } else {
+        sentEl.style.display = 'none';
+        trEl.hidden = false;
+        trEl.setAttribute('data-single-lang', targetLang);
+        Array.from(trEl.children).forEach(p => {
+          const pLang = p.getAttribute('lang') || '';
+          p.style.display = (pLang === targetLang) ? 'block' : 'none';
+        });
+      }
+    };
+
+    // For .para-card in app.js that don't have .para-lang-tabs-bar yet
+    window.sbSwitchGenericParaCardLang = function(btn, targetLang) {
+      const bar = btn.closest('.sb-para-tabs');
+      const card = btn.closest('.para-card');
+      if (!bar || !card) return;
+      const defaultLang = bar.dataset.defaultLang || 'en';
+      bar.querySelectorAll('.sb-para-tab').forEach(b => b.classList.toggle('active', b === btn));
+
+      const origBox = card.querySelector('.para-text-box');
+      let urBox = card.querySelector('.sb-gen-ur-box');
+      let psBox = card.querySelector('.sb-gen-ps-box');
+      if (!origBox) return;
+
+      if (targetLang === defaultLang) {
+        origBox.style.display = '';
+        if (urBox) urBox.style.display = 'none';
+        if (psBox) psBox.style.display = 'none';
+      } else if (targetLang === 'ur') {
+        origBox.style.display = 'none';
+        if (urBox) urBox.style.display = 'block';
+        if (psBox) psBox.style.display = 'none';
+      } else if (targetLang === 'ps') {
+        origBox.style.display = 'none';
+        if (urBox) urBox.style.display = 'none';
+        if (psBox) psBox.style.display = 'block';
+      }
+    };
+
+    // 4. Unified Step-by-Step Solution + Explanation Renderer
+    // First solves the question completely in single-line steps, then explains each step below in single lines.
+    window.sbRenderStepByStepSolution = function(btn, solId) {
+      const panel = btn.nextElementSibling;
+      if (!panel) return;
+      const open = panel.hidden;
+      panel.hidden = !open;
+      btn.setAttribute('aria-expanded', String(open));
+      btn.textContent = open ? '✕ Close solution' : '▶ Explain step by step';
+      if (!open) {
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        return;
+      }
+
+      const inlineRender = (window.MATH6_READER && window.MATH6_READER.inline)
+        ? function(t) { return window.MATH6_READER.inline(String(t || ''), false); }
+        : function(t) { return String(t || ''); };
+
+      const findSolution = () => {
+        if (solId.includes('-') && window.CLS6_SOLUTIONS && window.CLS6_SOLUTIONS[solId]) return window.CLS6_SOLUTIONS[solId];
+        if (window.CLS5_SOLUTIONS && window.CLS5_SOLUTIONS[solId]) return window.CLS5_SOLUTIONS[solId];
+        if (window.CLS7_SOLUTIONS && window.CLS7_SOLUTIONS[solId]) return window.CLS7_SOLUTIONS[solId];
+        if (window.CLS8_SOLUTIONS && window.CLS8_SOLUTIONS[solId]) return window.CLS8_SOLUTIONS[solId];
+        if (window.MATH_6_SOLUTIONS && window.MATH_6_SOLUTIONS[solId]) return window.MATH_6_SOLUTIONS[solId];
+        if (window.MATH_5_SOLUTIONS && window.MATH_5_SOLUTIONS[solId]) return window.MATH_5_SOLUTIONS[solId];
+        if (window.MATH_7_SOLUTIONS && window.MATH_7_SOLUTIONS[solId]) return window.MATH_7_SOLUTIONS[solId];
+        if (window.MATH_8_SOLUTIONS && window.MATH_8_SOLUTIONS[solId]) return window.MATH_8_SOLUTIONS[solId];
+        if (window.CLS4_SOLUTIONS && window.CLS4_SOLUTIONS[solId]) return window.CLS4_SOLUTIONS[solId];
+        if (window.CLS2_SOLUTIONS && window.CLS2_SOLUTIONS[solId]) return window.CLS2_SOLUTIONS[solId];
+        return null;
+      };
+
+      const sol = findSolution();
+      if (!sol) {
+        panel.innerHTML = '<div class="sb-sol-container" style="padding:10px 12px;color:#64748b;">Solution not available.</div>';
+        return;
+      }
+
+      const steps = Array.isArray(sol.steps) ? sol.steps : [];
+      const defaultLang = window.getSubjectDefaultLang() === 'ps' ? 'ps' : (window.getSubjectDefaultLang() === 'ur' ? 'ur' : 'en');
+
+      // Part 1: Complete Solution in Steps (each step in a single line)
+      const mathSteps = steps.filter(s => s && s.m);
+      const solutionLinesHtml = (mathSteps.length > 0 ? mathSteps : steps).map((s, idx) => {
+        const lineContent = s.m
+          ? inlineRender('$' + s.m + '$')
+          : inlineRender(s[defaultLang] || s.en || '');
+        const dirAttr = (!s.m && (defaultLang === 'ur' || defaultLang === 'ps')) ? ' dir="rtl"' : '';
+        return `<li class="sb-sol-single-line-item"${dirAttr}>
+          <span class="sb-sol-step-badge">Step ${idx + 1}</span>
+          <span>${lineContent}</span>
+        </li>`;
+      }).join('');
+
+      const svgsHtml = steps.filter(s => s && s.svg).map(s => `<div class="m6-fig" style="margin:6px 10px;">${s.svg}</div>`).join('');
+      const finalAnsHtml = sol.answer
+        ? `<div class="sb-sol-answer-line">✅ <strong>Answer:</strong> ${inlineRender(sol.answer)}</div>`
+        : '';
+
+      // Part 2: Step-by-Step Explanation Below at the End (each step in a single line)
+      const renderExplainLines = (lang) => {
+        const isRtl = (lang === 'ur' || lang === 'ps');
+        return steps.map((s, idx) => {
+          const text = s[lang] || s.en || '';
+          return `<li class="sb-sol-single-line-item"${isRtl ? ' dir="rtl"' : ''}>
+            <span class="sb-sol-step-badge sb-sol-explain-badge">Step ${idx + 1}</span>
+            <span>${inlineRender(text)}</span>
+          </li>`;
+        }).join('');
+      };
+
+      panel.innerHTML = `
+        <div class="sb-sol-container" data-explain-lang="${defaultLang}">
+          <div class="sb-sol-section-title sb-sol-steps-title">
+            <span>📐 Complete Solution (Step by Step)</span>
+          </div>
+          <ol class="sb-sol-single-line-list">
+            ${solutionLinesHtml}
+          </ol>
+          ${svgsHtml}
+          ${finalAnsHtml}
+
+          <div class="sb-sol-section-title sb-sol-explain-title">
+            <span>💡 Step-by-Step Explanation</span>
+            <button type="button" class="sb-sol-read-btn" style="border:1px solid #0284c7;background:#fff;color:#0369a1;border-radius:999px;padding:2px 10px;font-size:11px;font-weight:800;cursor:pointer;">
+              🔊 Read Aloud
+            </button>
+          </div>
+          <div style="padding:8px 10px 0 10px;">
+            <div class="sb-para-tabs" style="margin-bottom:4px !important;">
+              <button type="button" class="sb-para-tab${defaultLang === 'en' ? ' active' : ''}" data-expl-lang="en">🇬🇧 English</button>
+              <button type="button" class="sb-para-tab${defaultLang === 'ur' ? ' active' : ''}" data-expl-lang="ur">🇵🇰 اردو</button>
+              <button type="button" class="sb-para-tab${defaultLang === 'ps' ? ' active' : ''}" data-expl-lang="ps">🇦🇫 پښتو</button>
+            </div>
+          </div>
+          <ol class="sb-sol-single-line-list sb-sol-explain-list">
+            ${renderExplainLines(defaultLang)}
+          </ol>
+        </div>
+      `;
+
+      const container = panel.querySelector('.sb-sol-container');
+      const explainList = panel.querySelector('.sb-sol-explain-list');
+      panel.querySelectorAll('[data-expl-lang]').forEach(tabBtn => {
+        tabBtn.onclick = function(e) {
+          e.stopPropagation();
+          const l = tabBtn.dataset.explLang;
+          container.dataset.explainLang = l;
+          panel.querySelectorAll('[data-expl-lang]').forEach(b => b.classList.toggle('active', b === tabBtn));
+          explainList.innerHTML = renderExplainLines(l);
+        };
+      });
+
+      const readBtn = panel.querySelector('.sb-sol-read-btn');
+      if (readBtn) {
+        readBtn.onclick = function(e) {
+          e.stopPropagation();
+          const l = container.dataset.explainLang || 'en';
+          const voiceTag = l === 'ur' ? 'ur-PK' : (l === 'ps' ? 'ps-AF' : 'en-US');
+          const allText = steps.map((s, i) => `Step ${i + 1}: ` + String(s[l] || s.en || '').replace(/\$([^$]*)\$/g, '$1')).join('. ');
+          window.sbSpeakText(allText, voiceTag);
+        };
+      }
+    };
+
+    // 5. Tap-and-Hold (Long-Press) Word Translation Popover
+    (function setupTapAndHoldWordTranslation() {
+      let holdTimer = null;
+      let startX = 0;
+      let startY = 0;
+      let holdFired = false;
+      let heldElement = null;
+
+      function clearHeldHighlight() {
+        if (heldElement) {
+          heldElement.classList.remove('sb-word-held');
+          heldElement = null;
+        }
+      }
+
+      window.closeSbWordHoldPopover = function() {
+        clearHeldHighlight();
+        const existing = document.getElementById('sb-word-hold-popover');
+        if (existing) existing.remove();
+      };
+
+      function lookupMeaningForElementOrPoint(target, x, y) {
+        // 1. Check .m6-w / .m5-w / .m7-w / .m8-w
+        const mw = target.closest ? target.closest('.m6-w, .m5-w, .m7-w, .m8-w') : null;
+        if (mw) {
+          const word = mw.textContent.trim();
+          const ur = mw.dataset.ur || '';
+          const ps = mw.dataset.ps || '';
+          if (ur || ps) {
+            return { el: mw, word: word, ur: ur, ps: ps };
+          }
+        }
+
+        // 2. Check [data-math12-word]
+        const m12 = target.closest ? target.closest('[data-math12-word]') : null;
+        if (m12 && typeof MATH12_WORD_MEANINGS !== 'undefined') {
+          const key = m12.dataset.math12Word;
+          const m = MATH12_WORD_MEANINGS[key];
+          if (m) {
+            return { el: m12, word: m12.textContent.trim(), ur: m[0] || '', ps: m[1] || '' };
+          }
+        }
+
+        // 3. Check .tts-word / .dict-clickable-word or word at point
+        const tw = target.closest ? target.closest('.tts-word, .dict-clickable-word') : null;
+        let wordText = tw ? (tw.dataset.word || tw.textContent.trim()) : '';
+        if (!wordText && typeof window.getWordAtPoint === 'function') {
+          wordText = window.getWordAtPoint(x, y) || '';
+        }
+        wordText = String(wordText || '').replace(/[^a-zA-Z\u0600-\u06FF'-]/g, '').trim();
+        if (!wordText || wordText.length < 2) return null;
+
+        const key = wordText.toLowerCase();
+        if (typeof MATH_6_WORDS !== 'undefined' && MATH_6_WORDS[key]) {
+          return { el: tw || target, word: wordText, ur: MATH_6_WORDS[key][0] || '', ps: MATH_6_WORDS[key][1] || '' };
+        }
+        if (typeof MATH_5_WORDS !== 'undefined' && MATH_5_WORDS[key]) {
+          return { el: tw || target, word: wordText, ur: MATH_5_WORDS[key][0] || '', ps: MATH_5_WORDS[key][1] || '' };
+        }
+        if (typeof window.lookupWordInDict === 'function') {
+          const d = window.lookupWordInDict(wordText);
+          if (d && (d.ur || d.ps)) {
+            return { el: tw || target, word: wordText, ur: d.ur || '', ps: d.ps || '' };
+          }
+        }
+        return { el: tw || target, word: wordText, ur: 'اردو معنی دستیاب ہے', ps: 'د پښتو معنی شتون لري' };
+      }
+
+      function showHoldPopover(info) {
+        window.closeSbWordHoldPopover();
+        if (!info || !info.word) return;
+        if (info.el && info.el.classList) {
+          heldElement = info.el;
+          heldElement.classList.add('sb-word-held');
+        }
+
+        const pop = document.createElement('div');
+        pop.id = 'sb-word-hold-popover';
+        const safeWord = info.word.replace(/[<>"'&]/g, '');
+        pop.innerHTML = `
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:17px;font-weight:800;color:#fde047;">${safeWord}</span>
+              <button type="button" onclick="window.sbSpeakText('${safeWord}', 'en-US')" style="background:#0284c7;color:#fff;border:none;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:800;cursor:pointer;">🔊 Listen</button>
+            </div>
+            <button type="button" onclick="window.closeSbWordHoldPopover()" style="background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:50%;width:28px;height:28px;font-weight:800;cursor:pointer;">✕</button>
+          </div>
+          ${info.ur ? `<div style="direction:rtl;text-align:right;font-size:16px;line-height:1.8;color:#f8fafc;background:rgba(255,255,255,0.08);padding:6px 10px;border-radius:8px;margin-bottom:6px;"><span style="background:#0284c7;color:#fff;font-size:11px;font-weight:800;padding:1px 6px;border-radius:4px;margin-left:6px;">اردو</span> ${info.ur}</div>` : ''}
+          ${info.ps ? `<div style="direction:rtl;text-align:right;font-size:15px;line-height:1.8;color:#fde68a;background:rgba(255,255,255,0.08);padding:6px 10px;border-radius:8px;"><span style="background:#16a34a;color:#fff;font-size:11px;font-weight:800;padding:1px 6px;border-radius:4px;margin-left:6px;">پښتو</span> ${info.ps}</div>` : ''}
+        `;
+        pop.onclick = function(e) { e.stopPropagation(); };
+        document.body.appendChild(pop);
+      }
+
+      document.addEventListener('touchstart', function(e) {
+        if (!e.touches || e.touches.length !== 1) return;
+        const t = e.touches[0];
+        startX = t.clientX;
+        startY = t.clientY;
+        holdFired = false;
+
+        if (e.target && e.target.closest && e.target.closest('#sb-word-hold-popover')) return;
+        if (e.target && e.target.closest && e.target.closest('button, .math-acc-header, .sb-para-tabs, .para-lang-tabs-bar')) return;
+
+        clearTimeout(holdTimer);
+        const targetEl = e.target;
+        holdTimer = setTimeout(function() {
+          const info = lookupMeaningForElementOrPoint(targetEl, startX, startY);
+          if (info && info.word) {
+            holdFired = true;
+            showHoldPopover(info);
+          }
+        }, 430);
+      }, { passive: true });
+
+      document.addEventListener('touchmove', function(e) {
+        if (!holdTimer || !e.touches || e.touches.length !== 1) return;
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+        if (Math.hypot(dx, dy) > 10) {
+          clearTimeout(holdTimer);
+          holdTimer = null;
+        }
+      }, { passive: true });
+
+      document.addEventListener('touchend', function(e) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+        if (holdFired) {
+          e.preventDefault();
+          e.stopPropagation();
+          holdFired = false;
+        }
+      }, { passive: false });
+
+      document.addEventListener('touchcancel', function() {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+        holdFired = false;
+      }, { passive: true });
+
+      document.addEventListener('contextmenu', function(e) {
+        if (e.target && e.target.closest && e.target.closest('#page-content')) {
+          e.preventDefault();
+        }
+      });
+
+      document.addEventListener('click', function(e) {
+        if (e.target && e.target.closest && !e.target.closest('#sb-word-hold-popover')) {
+          window.closeSbWordHoldPopover();
+        }
+      });
+    })();
+
+    // 6. Enhance Mobile Content:
+    //    - By default keep all accordion tabs collapsed everywhere
+    //    - By default keep Urdu/Pashto translations hidden
+    //    - Inject 3 horizontal language tabs on each paragraph
+    window.enhanceMobileContent = function(forceCollapseAll) {
+      try {
+        const overrideStyle = document.getElementById('mobile-reader-overrides');
+        if (overrideStyle && overrideStyle.parentNode === document.head && document.head.lastElementChild !== overrideStyle) {
+          document.head.appendChild(overrideStyle);
+        }
+
+        const pop = document.getElementById('eng-word-popover');
+        if (pop) pop.remove();
+
+        // Hide front/back cover metadata cards and collapse all accordion cards by default
+        const allCards = Array.from(document.querySelectorAll('.math-topic-card, .math-accordion-card, .bio-section-card, .slo-accordion-card'));
+        allCards.forEach(card => {
+          const id = card.id || '';
+          const titleEl = card.querySelector('.math-acc-header h3, .math-acc-header strong');
+          const titleText = titleEl ? titleEl.textContent.trim() : '';
+          if (
+            /-front$|-back$/i.test(id) ||
+            /Cover,\s*credits\s*and\s*contents/i.test(titleText) ||
+            /Glossary,\s*formulas,\s*web\s*links/i.test(titleText)
+          ) {
+            card.style.setProperty('display', 'none', 'important');
+            return;
+          }
+
+          if (forceCollapseAll || !card.dataset.sbCollapsedInit) {
+            card.dataset.sbCollapsedInit = 'true';
+            const body = card.querySelector('.math-accordion-body, .bio-section-body, .slo-accordion-body');
+            const icon = card.querySelector('.math-acc-icon, .math-acc-toggle');
+            if (body) {
+              card.classList.remove('open');
+              body.style.display = 'none';
+              if (icon) icon.textContent = '+';
+            }
+          }
+        });
+
+        // Ensure .m5-root / .m6-root / .m7-root / .m8-root have translations HIDDEN by default
+        const roots = document.querySelectorAll('.m5-root, .m6-root, .m7-root, .m8-root');
+        roots.forEach(root => {
+          if (!root.dataset.sbRootInit) {
+            root.dataset.sbRootInit = 'true';
+            root.classList.remove('m5-show-all', 'm6-show-all', 'm7-show-all', 'm8-show-all');
+            const btn = root.querySelector('.m5-tools button, .m6-tools button, .m7-tools button, .m8-tools button');
+            if (btn) {
+              btn.setAttribute('aria-pressed', 'false');
+              const names = btn.dataset.names || 'Urdu / Pashto';
+              btn.textContent = 'Show all ' + names;
+            }
+          }
+        });
+
+        // Inject 3 horizontal language tabs into each paragraph in .m5-root / .m6-root / .m7-root / .m8-root
+        const defaultSubjLang = window.getSubjectDefaultLang();
+        const paraSentences = document.querySelectorAll('p.m5-s, p.m6-s, p.m7-s, p.m8-s, li > span.m5-s, li > span.m6-s, li > span.m7-s, li > span.m8-s');
+        paraSentences.forEach(sentEl => {
+          if (sentEl.dataset.sbParaTabsInit) return;
+          const trEl = sentEl.nextElementSibling;
+          if (!trEl || !trEl.matches('.m5-tr, .m6-tr, .m7-tr, .m8-tr')) return;
+          sentEl.dataset.sbParaTabsInit = 'true';
+
+          const l0 = sentEl.getAttribute('lang') || defaultSubjLang || 'en';
+          const trChildren = Array.from(trEl.querySelectorAll('p[lang]'));
+          const l1 = (trChildren[0] && trChildren[0].getAttribute('lang')) || (l0 === 'ur' ? 'en' : 'ur');
+          const l2 = (trChildren[1] && trChildren[1].getAttribute('lang')) || 'ps';
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'sb-para-block';
+          sentEl.parentNode.insertBefore(wrapper, sentEl);
+
+          const tabsBar = document.createElement('div');
+          tabsBar.className = 'sb-para-tabs';
+          tabsBar.dataset.defaultLang = l0;
+          tabsBar.innerHTML = `
+            <button type="button" class="sb-para-tab active" data-lang="${l0}" onclick="window.sbSwitchParaLang(this, '${l0}')">${SB_LANG_LABELS[l0] || l0.toUpperCase()}</button>
+            <button type="button" class="sb-para-tab" data-lang="${l1}" onclick="window.sbSwitchParaLang(this, '${l1}')">${SB_LANG_LABELS[l1] || l1.toUpperCase()}</button>
+            <button type="button" class="sb-para-tab" data-lang="${l2}" onclick="window.sbSwitchParaLang(this, '${l2}')">${SB_LANG_LABELS[l2] || l2.toUpperCase()}</button>
+          `;
+
+          wrapper.appendChild(tabsBar);
+          wrapper.appendChild(sentEl);
+          wrapper.appendChild(trEl);
+        });
+
+        // Also inject 3 horizontal language tabs into app.js .para-card elements that don't have .para-lang-tabs-bar
+        const genericParaCards = document.querySelectorAll('.para-card');
+        genericParaCards.forEach((card) => {
+          if (card.dataset.sbParaCardInit) return;
+          card.dataset.sbParaCardInit = 'true';
+
+          const existingBar = card.querySelector('.para-lang-tabs-bar');
+          if (existingBar) {
+            // If subject is Urdu or Pashto medium, activate that tab by default
+            if (defaultSubjLang === 'ur' || defaultSubjLang === 'ps') {
+              const targetBtn = existingBar.querySelector(`button[onclick*="'${defaultSubjLang}'"]`);
+              if (targetBtn) targetBtn.click();
+            }
+            return;
+          }
+
+          const origBox = card.querySelector('.para-text-box');
+          if (!origBox) return;
+          const sents = Array.from(origBox.querySelectorAll('.lesson-sentence'));
+          if (sents.length === 0) return;
+
+          const urText = sents.map(s => s.dataset.ur || '').filter(Boolean).join(' ');
+          const psText = sents.map(s => s.dataset.ps || '').filter(Boolean).join(' ');
+          if (!urText && !psText) return;
+
+          const l0 = defaultSubjLang || 'en';
+          const langs = l0 === 'ur' ? ['ur', 'en', 'ps'] : (l0 === 'ps' ? ['ps', 'ur', 'en'] : ['en', 'ur', 'ps']);
+
+          const tabsBar = document.createElement('div');
+          tabsBar.className = 'sb-para-tabs';
+          tabsBar.dataset.defaultLang = l0;
+          tabsBar.innerHTML = langs.map((l, i) => `
+            <button type="button" class="sb-para-tab${i === 0 ? ' active' : ''}" onclick="window.sbSwitchGenericParaCardLang(this, '${l}')">${SB_LANG_LABELS[l] || l}</button>
+          `).join('');
+
+          const urBox = document.createElement('div');
+          urBox.className = 'sb-gen-ur-box';
+          urBox.style.cssText = 'display:none;direction:rtl;text-align:right;font-size:17px;line-height:2.0;color:#0f172a;background:#f8fafc;padding:10px 12px;border-radius:10px;border:1px solid #bae6fd;';
+          urBox.textContent = urText;
+
+          const psBox = document.createElement('div');
+          psBox.className = 'sb-gen-ps-box';
+          psBox.style.cssText = 'display:none;direction:rtl;text-align:right;font-size:16px;line-height:1.9;color:#0f172a;background:#f8fafc;padding:10px 12px;border-radius:10px;border:1px solid #bae6fd;';
+          psBox.textContent = psText;
+
+          origBox.parentNode.insertBefore(tabsBar, origBox);
+          origBox.parentNode.insertBefore(urBox, origBox.nextSibling);
+          origBox.parentNode.insertBefore(psBox, urBox.nextSibling);
+        });
+      } catch (e) {
+        console.warn('enhanceMobileContent error:', e);
+      }
+    };
+
+    window.extractAndSendMetadata = function(forceCollapseAll) {
+      try {
+        window.enhanceMobileContent(!!forceCollapseAll);
+
+        const chBtns = Array.from(document.querySelectorAll('.math-ch-list .math-ch-btn, .bio-ch-list .bio-ch-btn'));
+        let activeChapter = 0;
+        const chapters = chBtns.map((btn, i) => {
+          if (btn.classList.contains('active')) activeChapter = i;
+          const numEl = btn.querySelector('.mcb-num, .ch-btn-num');
+          const nameEl = btn.querySelector('.mcb-name, .ch-btn-name');
+          const subEl = btn.querySelector('.mcb-sub, .ch-btn-sub');
+          return {
+            index: i,
+            number: numEl ? numEl.textContent.trim() : String(i + 1),
+            title: nameEl ? nameEl.textContent.trim() : ('Unit ' + (i + 1)),
+            subtitle: subEl ? subEl.textContent.trim() : ''
+          };
+        });
+
+        let tabBtns = Array.from(document.querySelectorAll('.math-nav-tabs button[data-tab], .bio-top-tab[data-tab]'));
+        let tabs = [];
+        let activeTab = '';
+
+        if (tabBtns.length > 0) {
+          tabs = tabBtns.map(btn => {
+            const id = btn.dataset.tab || '';
+            const isActive = btn.classList.contains('active');
+            if (isActive) activeTab = id;
+            return {
+              id: id,
+              label: btn.textContent.replace(/\s+/g, ' ').trim(),
+              active: isActive
+            };
+          });
+        } else {
+          const drawBtns = Array.from(document.querySelectorAll('.drawing-view-tabs button'));
+          if (drawBtns.length > 0) {
+            tabs = drawBtns.map((btn, idx) => {
+              const id = idx === 0 ? 'activities' : 'practice';
+              const isActive = btn.classList.contains('active');
+              if (isActive) activeTab = id;
+              return {
+                id: id,
+                label: btn.textContent.replace(/\s+/g, ' ').trim(),
+                active: isActive
+              };
+            });
+          }
+        }
+
+        if (!activeTab && tabs.length > 0) {
+          activeTab = tabs[0].id;
+        }
+
+        if (window.AndroidBridge && window.AndroidBridge.onMetadataReady) {
+          window.AndroidBridge.onMetadataReady(JSON.stringify({
+            chapters: chapters,
+            tabs: tabs,
+            activeChapter: activeChapter,
+            activeTab: activeTab
+          }));
+        }
+      } catch (e) {
+        console.error('extractAndSendMetadata error:', e);
+      }
+    };
+
+    window.mobileSelectChapter = function(index) {
+      try {
+        const currentActiveTabBtn = document.querySelector('.math-nav-tabs button.active[data-tab], .bio-top-tab.active[data-tab]');
+        const prevTabId = currentActiveTabBtn ? currentActiveTabBtn.dataset.tab : null;
+
+        const chBtns = Array.from(document.querySelectorAll('.math-ch-list .math-ch-btn, .bio-ch-list .bio-ch-btn'));
+        if (chBtns[index]) {
+          chBtns[index].click();
+          if (prevTabId) {
+            const newTabBtn = document.querySelector(`.math-nav-tabs button[data-tab="${prevTabId}"], .bio-top-tab[data-tab="${prevTabId}"]`);
+            if (newTabBtn && !newTabBtn.classList.contains('active')) {
+              newTabBtn.click();
+            }
+          }
+        }
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.extractAndSendMetadata(true);
+      } catch (e) {
+        console.error('mobileSelectChapter error:', e);
+      }
+    };
+
+    window.mobileSelectTab = function(tabId) {
+      try {
+        if (tabId === 'activities' || tabId === 'practice') {
+          const drawBtns = Array.from(document.querySelectorAll('.drawing-view-tabs button'));
+          const target = tabId === 'activities' ? drawBtns[0] : drawBtns[1];
+          if (target) target.click();
+        } else {
+          const btn = document.querySelector(`.math-nav-tabs button[data-tab="${tabId}"], .bio-top-tab[data-tab="${tabId}"]`);
+          if (btn) btn.click();
+        }
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.extractAndSendMetadata(true);
+      } catch (e) {
+        console.error('mobileSelectTab error:', e);
+      }
+    };
+
+    (function bootMobileReader() {
+      const params = new URLSearchParams(window.location.search);
+      const classId = params.get('classId') || 'cls6';
+      const subjId = params.get('subjId') || 'cls6-math';
+
+      const scripts = [
+        'js/data.js',
+        'js/dictionary_data.js',
+        ...getSubjectDataScripts(classId, subjId),
+        'js/app.js',
+        'assets/vendor/katex/katex.min.js',
+        'js/lesson_math_reader.js'
+      ];
+
+      loadScriptSequential(scripts).then(() => {
+        if (typeof MATH_6_DATA === 'undefined') window.MATH_6_DATA = [];
+        if (typeof MATH_5_DATA === 'undefined') window.MATH_5_DATA = [];
+
+        // Disable single-tap word popover in app.js (we use tap-and-hold instead!)
+        window.showWordLookupPopover = function() {};
+        window.openWordLookupPopover = function() {};
+
+        // Enhance app.js toggleSentenceTranslation so clicked sentence gets .sb-sent-active (underlined + highlighted)
+        if (typeof window.toggleSentenceTranslation === 'function') {
+          const origToggleSent = window.toggleSentenceTranslation;
+          window.toggleSentenceTranslation = function(el, event) {
+            origToggleSent.apply(this, arguments);
+            if (el && el.dataset) {
+              const drawer = document.getElementById(`sent-trans-${el.dataset.para}-${el.dataset.sent}`);
+              const isOpen = drawer && drawer.style.display !== 'none';
+              el.classList.toggle('sb-sent-active', !!isOpen);
+            }
+          };
+        }
+
+        // When an accordion card is opened by the user, initialize any paragraphs inside it
+        if (typeof window.toggleMathAccordion === 'function') {
+          const origAcc = window.toggleMathAccordion;
+          window.toggleMathAccordion = function(headerEl) {
+            origAcc.apply(this, arguments);
+            window.enhanceMobileContent(false);
+          };
+        }
+
+        // Patch getSubjectChapterList so Drawing in cls1-3 returns DRAWING_*_DATA
+        if (typeof window.getSubjectChapterList === 'function') {
+          const origGetCh = window.getSubjectChapterList;
+          window.getSubjectChapterList = function(subjKey, cid) {
+            const c = cid || (typeof state !== 'undefined' ? state.selectedClass : '');
+            if (subjKey === 'drawing' && c === 'cls2' && typeof DRAWING_2_DATA !== 'undefined') return DRAWING_2_DATA;
+            if (subjKey === 'drawing' && c === 'cls1' && typeof DRAWING_1_DATA !== 'undefined') return DRAWING_1_DATA;
+            if (subjKey === 'drawing' && c === 'cls3' && typeof DRAWING_3_DATA !== 'undefined') return DRAWING_3_DATA;
+            return origGetCh.apply(this, arguments);
+          };
+        }
+
+        const readerScripts = ['js/math6_reader.js'];
+        if (classId === 'cls12') readerScripts.push('js/math12_translation_reader.js');
+        if (classId === 'cls5') readerScripts.push('js/math5_reader.js');
+        if (classId === 'cls2') readerScripts.push('js/cls2_book_reader.js');
+        if (classId === 'cls4') readerScripts.push('js/cls4_book_reader.js');
+        if (classId === 'cls6' || classId === 'cls7' || classId === 'cls8') readerScripts.push('js/cls6_book_reader.js');
+        if (classId === 'cls7') readerScripts.push('js/math7_reader.js');
+        if (classId === 'cls8') readerScripts.push('js/math8_reader.js');
+
+        return loadScriptSequential(readerScripts);
+      }).then(() => {
+        // Route single-tap on words to sentence click (tap-and-hold handles word meaning!)
+        ['m5', 'm6', 'm7', 'm8'].forEach(prefix => {
+          window[prefix + 'Word'] = function(el, event) {
+            const s = el && el.closest ? el.closest('.' + prefix + '-s') : null;
+            if (s && typeof window[prefix + 'Toggle'] === 'function') {
+              window[prefix + 'Toggle'](s, event);
+            }
+          };
+
+          // Ensure sentence click toggles translations below sentence even if .m*-w was clicked
+          window[prefix + 'Toggle'] = function(el, event) {
+            if (event && event.type === 'keydown') event.preventDefault();
+            const wrapper = el.closest('.sb-para-block');
+            const panel = wrapper ? wrapper.querySelector('.' + prefix + '-tr') : el.nextElementSibling;
+            if (!panel || !panel.classList.contains(prefix + '-tr')) return;
+
+            // If user was on a translated tab, reset to default tab and show full translations below
+            if (panel.hasAttribute('data-single-lang')) {
+              panel.removeAttribute('data-single-lang');
+              Array.from(panel.children).forEach(p => { p.style.display = ''; });
+              el.style.display = '';
+              const bar = wrapper ? wrapper.querySelector('.sb-para-tabs') : null;
+              if (bar) {
+                const btns = bar.querySelectorAll('.sb-para-tab');
+                btns.forEach((b, i) => b.classList.toggle('active', i === 0));
+              }
+            }
+
+            const open = panel.hidden;
+            panel.hidden = !open;
+            el.setAttribute('aria-expanded', String(open));
+            el.classList.toggle('sb-sent-active', open);
+          };
+
+          // Override step-by-step solution button to show single-line solution steps + single-line explanations below
+          window[prefix + 'SolOpen'] = window.sbRenderStepByStepSolution;
+        });
+
+        // Hook tab/subtab switchers so enhanceMobileContent always runs after any inner tab change
+        ['switchSubjectTab', 'switchMathTab', 'switchSubjectSubTab'].forEach(fnName => {
+          if (typeof window[fnName] === 'function') {
+            const orig = window[fnName];
+            window[fnName] = function() {
+              const res = orig.apply(this, arguments);
+              window.enhanceMobileContent(true);
+              return res;
+            };
+          }
+        });
+
+        if (typeof window.openSubject === 'function') {
+          window.openSubject(classId, subjId);
+          const initCh = parseInt(params.get('initCh') || '0', 10);
+          setTimeout(() => {
+            if (initCh > 0) {
+              window.mobileSelectChapter(initCh);
+            } else {
+              window.extractAndSendMetadata(true);
+            }
+          }, 50);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

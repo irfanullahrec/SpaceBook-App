@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.spacebookapp.data.models.BookStory
+import com.example.spacebookapp.data.repository.SpaceBookRepository
 
 @Composable
 fun StoriesSection(
@@ -58,6 +59,7 @@ fun StoriesSection(
     modifier: Modifier = Modifier
 ) {
     var activeTab by remember { mutableStateOf("Stories") }
+    val selectedClass = SpaceBookRepository.selectedClassTag
 
     Column(
         modifier = modifier
@@ -82,7 +84,7 @@ fun StoriesSection(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Stories",
+                    text = if (selectedClass == "All") "Stories" else "Stories • $selectedClass",
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     color = if (activeTab == "Stories") FacebookBlue else Color(0xFF65676B)
@@ -125,6 +127,39 @@ fun StoriesSection(
         }
 
         HorizontalDivider(thickness = 1.dp, color = Color(0xFFE4E6EB))
+
+        if (selectedClass != "All") {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFFEFF6FF))
+                    .padding(horizontal = 14.dp, vertical = 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Showing $selectedClass Books (${stories.count { !it.isUserStory }} stories)",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xFF1D4ED8)
+                )
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Color(0xFFDBEAFE))
+                        .clickable { SpaceBookRepository.selectedClassTag = "All" }
+                        .padding(horizontal = 10.dp, vertical = 3.dp)
+                ) {
+                    Text(
+                        text = "Show All Classes",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1E40AF)
+                    )
+                }
+            }
+            HorizontalDivider(thickness = 1.dp, color = Color(0xFFDBEAFE))
+        }
 
         // Horizontal Story Cards Carousel
         LazyRow(
@@ -245,8 +280,8 @@ fun BookStoryCard(
             .clip(RoundedCornerShape(12.dp))
             .background(brush)
             .border(
-                width = if (story.id.startsWith("story-class1-") || story.id.startsWith("story-class3-") || story.isClass1EnglishBook || story.isClass1MathsBook || story.isClass1DrawingBook) 2.5.dp else 1.dp,
-                color = if (story.id.startsWith("story-class1-") || story.id.startsWith("story-class3-") || story.isClass1EnglishBook || story.isClass1MathsBook || story.isClass1DrawingBook) Color(0xFF1877F2) else Color(0x33FFFFFF),
+                width = if (story.id.startsWith("story-class1-") || story.id.startsWith("story-class4-") || story.isClass1EnglishBook || story.isClass1MathsBook || story.isClass1DrawingBook) 2.5.dp else 1.dp,
+                color = if (story.id.startsWith("story-class1-") || story.id.startsWith("story-class4-") || story.isClass1EnglishBook || story.isClass1MathsBook || story.isClass1DrawingBook) Color(0xFF1877F2) else Color(0x33FFFFFF),
                 shape = RoundedCornerShape(12.dp)
             )
             .clickable { onClick() }
