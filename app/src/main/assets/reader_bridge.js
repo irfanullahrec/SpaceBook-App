@@ -36,6 +36,24 @@
     for (;;) { var v = fn(); if (v) return v; if (Date.now() > end) return null; await wait(step || 80); }
   }
 
+  // ---------- keep the page where the student is ----------
+  // The website sizes its reader to the window and calls scrollTo(0, 0) from fitReaders() every time the page changes (a solution step
+  // appears, an animation moves on ...). On the website the window does not scroll, so that is harmless; in the app the page IS the
+  // scroller, so it threw the student back to the top at every step. Only that call is ignored; every other scroll works as before.
+  var nativeScrollTo = window.scrollTo.bind(window);
+  window.scrollTo = function () {
+    var a = arguments;
+    var toTop = (a.length >= 2 && +a[0] === 0 && +a[1] === 0) || (a.length === 1 && a[0] && typeof a[0] === 'object' && !+a[0].top && !+a[0].left);
+    if (toTop) { var st = ''; try { st = String(new Error().stack || ''); } catch (e) { /* no stack */ } if (st.indexOf('fitReaders') >= 0) return; }
+    return nativeScrollTo.apply(window, a);
+  };
+  // a solution step must not pull the page along when it appears
+  var nativeIntoView = Element.prototype.scrollIntoView;
+  Element.prototype.scrollIntoView = function () {
+    if (this.classList && this.classList.contains('sbs-step')) return;
+    return nativeIntoView.apply(this, arguments);
+  };
+
   // ---------- where the readable content is ----------
   function root() {
     var cands = ['#subjTabContent', '#mathTabContent', '#page-content'].map(function (q) { return $(q); }).filter(Boolean);
@@ -75,7 +93,7 @@
       u.classList.toggle('sbapp-page-on', i === cur);
     });
     if (mode === 'cards') openCard(units[cur]);
-    window.scrollTo(0, 0);
+    nativeScrollTo(0, 0);
     report();
   }
 
@@ -419,6 +437,23 @@
     if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) navigator.serviceWorker.getRegistrations().then(function (rs) { rs.forEach(function (r) { r.unregister(); }); });
     if (window.caches && caches.keys) caches.keys().then(function (ks) { ks.forEach(function (k) { caches.delete(k); }); });
   } catch (e) { /* not available: nothing to remove */ }
+
+  // "Ans": the website types a solution out one step at a time. In the app the whole solution shows at once, the moment it opens
+  // (the page's own "Show all" does the work, so languages, equations and the Animate button are untouched).
+  try {
+    new MutationObserver(function (muts) {
+      for (var i = 0; i < muts.length; i++) {
+        var added = muts[i].addedNodes;
+        for (var j = 0; j < added.length; j++) {
+          var n = added[j]; if (n.nodeType !== 1) continue;
+          var ctl = n.matches && n.matches('.sbs-ctl') ? n : (n.querySelector ? n.querySelector('.sbs-ctl') : null);
+          if (!ctl || ctl.getAttribute('data-sbapp-all')) continue;
+          ctl.setAttribute('data-sbapp-all', '1');
+          var all = ctl.querySelector('[data-a="all"]'); if (all) all.click();
+        }
+      }
+    }).observe(doc.body, { childList: true, subtree: true });
+  } catch (e) { /* the solution still plays step by step */ }
 
   doc.addEventListener('visibilitychange', function () { if (!doc.hidden) schedule(); });
   observe();

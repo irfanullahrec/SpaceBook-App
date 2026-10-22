@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SpaceBook Library - Grand Opening (video frames)</title>
+<style>
+  :root { --violet:#6d5cff; --pink:#ff5c8a; --gold:#ffc53d; --mint:#22c7a0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #070522; }
+  body { position: relative; font-family: "Segoe UI", "Arial", sans-serif; color: #fff; }
+  #stage { position: absolute; inset: 0; transform-origin: 50% 46%; }
+
+  .sky { position: absolute; inset: 0;
+    background:
+      radial-gradient(1200px 700px at 50% 38%, #4a2aa8 0%, rgba(74,42,168,0) 70%),
+      radial-gradient(900px 600px at 10% 90%, rgba(255,92,138,.45) 0%, rgba(255,92,138,0) 70%),
+      radial-gradient(900px 600px at 92% 12%, rgba(34,199,160,.38) 0%, rgba(34,199,160,0) 70%),
+      linear-gradient(180deg, #0a0630 0%, #1a0e5c 55%, #2c1478 100%); }
+  .stars i { position: absolute; border-radius: 50%; background: #fff; }
+  .rays { position: absolute; left: 50%; top: -160px; width: 2600px; height: 1500px; transform: translateX(-50%);
+    background: conic-gradient(from 180deg at 50% 0%, rgba(255,255,255,0) 0deg, rgba(255,230,160,.16) 12deg, rgba(255,255,255,0) 24deg,
+      rgba(255,255,255,0) 40deg, rgba(255,200,255,.12) 52deg, rgba(255,255,255,0) 64deg, rgba(255,255,255,0) 296deg,
+      rgba(255,200,255,.12) 308deg, rgba(255,255,255,0) 320deg, rgba(255,255,255,0) 336deg, rgba(255,230,160,.16) 348deg, rgba(255,255,255,0) 360deg);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 80%); mask-image: linear-gradient(180deg, #000 0%, transparent 80%); }
+
+  .grand { position: absolute; top: 64px; left: 50%; display: flex; align-items: center; gap: 28px; transform: translateX(-50%); }
+  .grand .pill { padding: 16px 50px 16px 60px; border-radius: 999px; font-weight: 800; font-size: 38px; letter-spacing: 10px; white-space: nowrap; text-transform: uppercase;
+    color: #3b2500; background: linear-gradient(180deg, #ffe08a, #ffb400); box-shadow: 0 0 0 4px rgba(255,255,255,.35), 0 14px 40px rgba(255,180,0,.55); }
+  .grand svg { width: 60px; height: 60px; filter: drop-shadow(0 0 14px rgba(255,200,60,.9)); }
+
+  #name { position: absolute; left: 50%; top: 190px; transform: translateX(-50%); white-space: nowrap; text-align: center;
+    font-family: "Arial Black", "Segoe UI Black", Impact, sans-serif; font-weight: 900; line-height: 1; letter-spacing: -6px; }
+  #name .row { position: relative; display: inline-block; }
+  .gl { display: inline-block; transform-origin: 50% 85%; }
+  .gl, .shine { background: linear-gradient(180deg, #ffffff 0%, #f1ebff 34%, #ffb3d1 66%, #ffd36b 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .shine { position: absolute; left: 0; top: 0; white-space: nowrap; pointer-events: none;
+    background: linear-gradient(105deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0) calc(var(--p, -30%) - 10%), rgba(255,255,255,.98) var(--p, -30%), rgba(255,255,255,0) calc(var(--p, -30%) + 10%), rgba(255,255,255,0) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  #lib { position: absolute; left: 0; right: 0; top: 520px; display: flex; align-items: center; justify-content: center; gap: 44px; }
+  #lib b { font-family: "Arial Black", "Segoe UI Black", sans-serif; font-weight: 900; font-size: 128px; color: var(--gold); display: inline-block; white-space: nowrap;
+    text-shadow: 0 0 40px rgba(255,197,61,.75), 0 6px 0 #9a6200, 0 12px 24px rgba(0,0,0,.5); }
+  #lib em { flex: 0 0 auto; height: 6px; border-radius: 6px; background: linear-gradient(90deg, rgba(255,197,61,0), var(--gold)); width: 0; }
+  #lib em.r { background: linear-gradient(270deg, rgba(255,197,61,0), var(--gold)); }
+
+  #tag { position: absolute; left: 0; right: 0; top: 700px; text-align: center; font-size: 46px; font-weight: 600; letter-spacing: 6px; color: #e9e2ff; white-space: nowrap; }
+  #tag span { display: inline-block; }
+  #tag .k { color: var(--pink); font-weight: 800; }
+  #tag .s { color: var(--gold); margin: 0 18px; }
+
+  svg.deco { position: absolute; }
+  #ribbon { position: absolute; left: 0; bottom: 36px; width: 1920px; height: 260px; overflow: visible; }
+  #fx { position: absolute; inset: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="sky"></div>
+  <div class="stars" id="stars"></div>
+  <div class="rays"></div>
+
+  <!-- planet, bottom left -->
+  <svg class="deco" id="planet" style="left:44px; top:560px; width:230px; height:230px" viewBox="0 0 300 300">
+    <defs><radialGradient id="pl" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd9a0"/><stop offset=".55" stop-color="#ff8f6b"/><stop offset="1" stop-color="#b13a7a"/></radialGradient></defs>
+    <path d="M10 175 C70 235 245 195 290 120 C250 215 80 265 10 175Z" fill="#ffe3a6" opacity=".35"/>
+    <circle cx="150" cy="150" r="82" fill="url(#pl)"/>
+    <ellipse cx="150" cy="170" rx="132" ry="34" transform="rotate(-18 150 170)" fill="none" stroke="#ffe3a6" stroke-width="10" opacity=".9"/>
+    <path d="M95 118 A82 82 0 0 1 205 100" stroke="#fff" stroke-opacity=".35" stroke-width="8" fill="none" stroke-linecap="round"/>
+  </svg>
+
+  <!-- rocket, bottom right -->
+  <svg class="deco" id="rocket" style="right:30px; top:500px; width:260px; height:330px; overflow:visible" viewBox="-50 -10 480 610">
+    <defs>
+      <linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c2"/><stop offset=".4" stop-color="#ffb400"/><stop offset="1" stop-color="#ff4b6e" stop-opacity="0"/></linearGradient>
+      <linearGradient id="bd" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfd6ff"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#b7c0ff"/></linearGradient>
+    </defs>
+    <g transform="rotate(24 190 260)">
+      <g id="flame" style="transform-origin:190px 340px"><g transform="translate(0 -52)"><path d="M190 392 C150 440 165 500 190 520 C215 500 230 440 190 392Z" fill="url(#fl)"/><path d="M190 392 C172 430 178 470 190 486 C202 470 208 430 190 392Z" fill="#fff6c2" opacity=".9"/></g></g>
+      <path d="M118 300 L70 372 L132 346Z" fill="#ff5c8a"/><path d="M262 300 L310 372 L248 346Z" fill="#ff5c8a"/>
+      <path d="M190 30 C262 90 270 200 252 350 L128 350 C110 200 118 90 190 30Z" fill="url(#bd)"/>
+      <path d="M190 30 C216 52 236 82 248 112 L132 112 C144 82 164 52 190 30Z" fill="#ff5c8a"/>
+      <circle cx="190" cy="206" r="40" fill="#2a1a7a"/><circle cx="190" cy="206" r="31" fill="#59d3ff"/>
+      <path d="M170 196 A24 24 0 0 1 200 184" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" opacity=".8"/>
+      <rect x="128" y="318" width="124" height="20" fill="#6d5cff"/>
+    </g>
+  </svg>
+
+  <div class="grand" id="grand">
+    <svg id="starL" viewBox="0 0 64 64"><path fill="#ffc53d" d="M32 2l8 20 22 2-17 14 6 22-19-12-19 12 6-22L2 24l22-2z"/></svg>
+    <div class="pill">Grand Opening Ceremony</div>
+    <svg id="starR" viewBox="0 0 64 64"><path fill="#ffc53d" d="M32 2l8 20 22 2-17 14 6 22-19-12-19 12 6-22L2 24l22-2z"/></svg>
+  </div>
+
+  <div id="name"><div class="row" id="nameRow"></div></div>
+
+  <div id="lib"><em id="libL"></em><b id="libT">LIBRARY</b><em class="r" id="libR"></em></div>
+
+  <div id="tag"><span class="k">Read</span><span class="s">&#9733;</span><span class="k">Learn</span><span class="s">&#9733;</span><span class="k">Play</span><span style="margin:0 22px">&mdash;</span><span>Classes 1 to 12</span></div>
+
+  <svg id="ribbon" viewBox="0 0 1920 260">
+    <defs>
+      <linearGradient id="rb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7a97"/><stop offset=".5" stop-color="#e3194f"/><stop offset="1" stop-color="#a50f38"/></linearGradient>
+      <linearGradient id="gd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a3"/><stop offset="1" stop-color="#d79a00"/></linearGradient>
+    </defs>
+    <!-- whole ribbon (before the cut) -->
+    <g id="ribWhole">
+      <rect x="0" y="74" width="1920" height="152" fill="url(#rb)"/>
+      <rect x="0" y="74" width="1920" height="16" fill="#fff" opacity=".28"/>
+      <rect x="0" y="212" width="1920" height="14" fill="#000" opacity=".18"/>
+      <path d="M0 108 H1920 M0 192 H1920" stroke="url(#gd)" stroke-width="6" opacity=".9"/>
+    </g>
+    <!-- the two halves (after the cut) -->
+    <g id="ribL" style="transform-origin:0px 150px" visibility="hidden">
+      <path d="M0 74 L880 74 L930 150 L880 226 L0 226Z" fill="url(#rb)"/>
+      <path d="M0 74 L880 74 L890 90 L0 90Z" fill="#fff" opacity=".28"/>
+      <path d="M0 212 L870 212 L880 226 L0 226Z" fill="#000" opacity=".18"/>
+      <path d="M0 108 H870 M0 192 H870" stroke="url(#gd)" stroke-width="6" opacity=".9"/>
+    </g>
+    <g id="ribR" style="transform-origin:1920px 150px" visibility="hidden">
+      <path d="M1920 74 L1040 74 L990 150 L1040 226 L1920 226Z" fill="url(#rb)"/>
+      <path d="M1920 74 L1040 74 L1030 90 L1920 90Z" fill="#fff" opacity=".28"/>
+      <path d="M1920 212 L1050 212 L1040 226 L1920 226Z" fill="#000" opacity=".18"/>
+      <path d="M1050 108 H1920 M1050 192 H1920" stroke="url(#gd)" stroke-width="6" opacity=".9"/>
+    </g>
+    <!-- scissors -->
+    <g id="scissors" transform="translate(960 150)">
+      <g id="sc" transform="rotate(-90)">
+        <g id="bladeA"><path d="M0 0 L120 -22 L120 -10 Z" fill="#dfe6ff" stroke="#8b97d6" stroke-width="3"/><circle cx="-34" cy="-30" r="26" fill="none" stroke="#ffc53d" stroke-width="12"/></g>
+        <g id="bladeB"><path d="M0 0 L120 22 L120 10 Z" fill="#c8d1ff" stroke="#8b97d6" stroke-width="3"/><circle cx="-34" cy="30" r="26" fill="none" stroke="#ffc53d" stroke-width="12"/></g>
+        <circle cx="0" cy="0" r="9" fill="#ffc53d" stroke="#9a6200" stroke-width="3"/>
+      </g>
+    </g>
+  </svg>
+
+  <canvas id="fx" width="1920" height="1080"></canvas>
+</div>
+
+<script>
+  // ---------- tools ----------
+  let seed = 20261023;
+  const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const seg = (t, a, b) => clamp((t - a) / (b - a));
+  const easeOut = x => 1 - Math.pow(1 - x, 3);
+  const easeIn = x => x * x * x;
+  const easeInOut = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const easeBack = x => { const c1 = 2.2, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+  const $ = id => document.getElementById(id);
+
+  // ---------- timeline (seconds) ----------
+  const T = { pill: 0.8, letters: 1.6, lib: 3.6, tag: 4.8, ribbon: 5.6, props: 6.2, scissors: 6.7, close: 7.8, cut: 8.0, launch: 8.5, end: 12 };
+
+  // ---------- stars ----------
+  const starsBox = $('stars'), stars = [];
+  for (let i = 0; i < 360; i++) {
+    const s = document.createElement('i'), r = rnd(), size = r > .96 ? 5 : r > .8 ? 3 : 2;
+    s.style.cssText = `left:${rnd() * 1920}px; top:${rnd() * 1080}px; width:${size}px; height:${size}px;` + (size > 3 ? 'box-shadow:0 0 14px 4px rgba(255,255,255,.8);' : '');
+    starsBox.appendChild(s);
+    stars.push({ el: s, base: .35 + rnd() * .65, ph: rnd() * 6.28, sp: 1 + rnd() * 2 });
+  }
+
+  // ---------- SpaceBook, as large as the page allows ----------
+  const WORD = 'SpaceBook', row = $('nameRow'), nameBox = $('name');
+  const letters = [...WORD].map(ch => { const s = document.createElement('span'); s.className = 'gl'; s.textContent = ch; row.appendChild(s); return s; });
+  const shine = document.createElement('div'); shine.className = 'shine'; shine.textContent = WORD; row.appendChild(shine);
+  let size = 200; nameBox.style.fontSize = size + 'px';
+  for (let k = 0; k < 6; k++) { size = size * 1800 / letters.reduce((w, l) => w + l.getBoundingClientRect().width, 0); nameBox.style.fontSize = size + 'px'; }
+
+  // LIBRARY, one letter at a time inside a wider and wider spacing
+  const libT = $('libT');
+
+  // ---------- particles (drawn on the canvas) ----------
+  const fx = $('fx').getContext('2d');
+  const COLOURS = ['#ff5c8a', '#ffc53d', '#22c7a0', '#59d3ff', '#ffffff', '#b49bff'];
+  const confetti = [];
+  function burst(t0, x, y, n, spread, power) {
+    for (let i = 0; i < n; i++) {
+      const a = -Math.PI / 2 + (rnd() - .5) * spread, v = power * (.35 + rnd() * .75);
+      confetti.push({ t0, x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, w: 10 + rnd() * 18, h: 6 + rnd() * 12, r0: rnd() * 6.28, spin: (rnd() - .5) * 14,
+        c: COLOURS[(rnd() * COLOURS.length) | 0], round: rnd() > .7, flip: 1 + rnd() * 4 });
+    }
+  }
+  const sparks = [];
+  for (let i = 0; i < 26; i++) { const a = rnd() * 6.28, v = 260 + rnd() * 700; sparks.push({ vx: Math.cos(a) * v, vy: Math.sin(a) * v, s: 10 + rnd() * 22, life: .7 + rnd() * .6 }); }
+  burst(T.cut, 960, 860, 150, 2.0, 1500);        // the main burst when the ribbon is cut
+  burst(T.cut + .55, 40, 1010, 70, .9, 1500);    // two cannons at the bottom corners
+  burst(T.cut + .55, 1880, 1010, 70, .9, 1500);
+  for (const c of confetti.slice(150)) { c.vx += c.x < 100 ? 420 : -420; }
+  for (let i = 0; i < 110; i++) {                          // rain: starts above the page, drifts down
+    confetti.push({ t0: T.cut + 1.4 + rnd() * 3.2, x: rnd() * 1920, y: -40, vx: (rnd() - .5) * 120, vy: 60 + rnd() * 160, w: 10 + rnd() * 16, h: 6 + rnd() * 10,
+      r0: rnd() * 6.28, spin: (rnd() - .5) * 8, c: COLOURS[(rnd() * COLOURS.length) | 0], round: rnd() > .7, flip: 1 + rnd() * 4, g: 260 });
+  }
+  const G = 1500;
+
+  function star4(ctx, x, y, r, rot) {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
+    for (let i = 0; i < 8; i++) { const rr = i % 2 ? r * .28 : r; const a = i * Math.PI / 4; ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr); }
+    ctx.closePath(); ctx.fill(); ctx.restore();
+  }
+
+  // the rocket's path once it launches (page pixels, relative to where it sits)
+  const rocketPos = u => ({ x: 150 * u + 420 * u * u * u, y: -1500 * u * u - 60 * u });
+
+  // ---------- the frame at time t ----------
+  window.setTime = function (t) {
+    // camera: a slow pull-back, and a punch when the ribbon is cut
+    const punch = t > T.cut ? Math.exp(-(t - T.cut) * 5) * Math.sin((t - T.cut) * 28) * .012 : 0;
+    $('stage').style.transform = `scale(${1.07 - .07 * easeOut(seg(t, 0, 3.2)) + punch})`;
+
+    stars.forEach(s => { s.el.style.opacity = (seg(t, 0, 1) * s.base * (.6 + .4 * Math.sin(t * s.sp + s.ph))).toFixed(3); });
+
+    // pill drops in, its stars spin
+    const p = seg(t, T.pill, T.pill + .7), py = (1 - easeBack(p)) * -160;
+    $('grand').style.opacity = clamp(p * 3);
+    $('grand').style.transform = `translateX(-50%) translateY(${py}px)`;
+    $('starL').style.transform = `rotate(${t * 90}deg) scale(${.8 + .2 * Math.sin(t * 5)})`;
+    $('starR').style.transform = `rotate(${-t * 90}deg) scale(${.8 + .2 * Math.cos(t * 5)})`;
+
+    // SpaceBook: letter by letter, then a glow that breathes, a bright flash at the cut
+    letters.forEach((l, i) => {
+      const u = seg(t, T.letters + i * .11, T.letters + i * .11 + .6), k = easeBack(u);
+      l.style.opacity = clamp(u * 2.5);
+      l.style.transform = `translateY(${(1 - k) * 90}px) scale(${.2 + .8 * k}) rotate(${(1 - k) * (i % 2 ? 14 : -14)}deg)`;
+    });
+    const flash = t > T.cut ? Math.exp(-(t - T.cut) * 2.2) : 0, breathe = .5 + .5 * Math.sin(t * 2.2);
+    const glow = 38 + 16 * breathe + 70 * flash;
+    nameBox.style.filter = `drop-shadow(0 6px 0 #5a2fc2) drop-shadow(0 14px 0 #3b1d92) drop-shadow(0 0 ${glow}px rgba(180,140,255,${.75 + .25 * flash})) drop-shadow(0 30px 40px rgba(0,0,0,.55))`;
+    const sh1 = seg(t, 4.4, 5.6), sh2 = seg(t, 9.6, 10.8);
+    shine.style.setProperty('--p', (sh1 > 0 && sh1 < 1 ? -20 + 140 * sh1 : sh2 > 0 && sh2 < 1 ? -20 + 140 * sh2 : -60) + '%');
+
+    // LIBRARY: spacing opens up, lines grow
+    const lu = easeOut(seg(t, T.lib, T.lib + 1.1));
+    libT.style.letterSpacing = (46 * lu) + 'px'; libT.style.paddingLeft = (46 * lu) + 'px';
+    libT.style.opacity = clamp(lu * 2.2);
+    libT.style.transform = `scale(${.86 + .14 * lu})`;
+    $('libL').style.width = $('libR').style.width = (150 * easeOut(seg(t, T.lib + .5, T.lib + 1.4))) + 'px';
+
+    // tagline, piece by piece
+    [...$('tag').children].forEach((c, i) => {
+      const u = easeOut(seg(t, T.tag + i * .14, T.tag + i * .14 + .5));
+      c.style.opacity = u; c.style.transform = `translateY(${(1 - u) * 26}px)`;
+    });
+
+    // props float in; the planet bobs
+    const pr = easeBack(seg(t, T.props, T.props + .9));
+    $('planet').style.opacity = clamp(seg(t, T.props, T.props + .5));
+    $('planet').style.transform = `translateY(${Math.sin(t * 1.6) * 10}px) scale(${.3 + .7 * pr}) rotate(${(1 - pr) * -40}deg)`;
+
+    // rocket: waits, shakes, then launches
+    const rk = $('rocket'), arrive = easeBack(seg(t, T.props + .15, T.props + 1.05));
+    const lu2 = seg(t, T.launch, T.launch + 2.0), rp = rocketPos(lu2);
+    const shake = t > T.launch - .5 && t < T.launch ? Math.sin(t * 90) * 4 : 0;
+    rk.style.opacity = clamp(seg(t, T.props + .15, T.props + .6)) * (1 - seg(t, T.launch + 1.7, T.launch + 2.0));
+    rk.style.transform = `translate(${rp.x + shake}px, ${rp.y + (1 - arrive) * 200}px) scale(${.3 + .7 * arrive})`;
+    $('flame').style.transform = `scale(${1 + .18 * Math.sin(t * 38) * (t > T.launch ? 2.2 : .8)}, ${(t > T.launch ? 1.9 : .9) + .22 * Math.sin(t * 29)})`;
+
+    // ribbon slides up; scissors come in, close, and the ribbon parts
+    const rib = $('ribbon'), ru = easeOut(seg(t, T.ribbon, T.ribbon + .8));
+    rib.style.transform = `translateY(${(1 - ru) * 320}px)`;
+    const cut = t >= T.cut;
+    $('ribWhole').setAttribute('visibility', cut ? 'hidden' : 'visible');
+    $('ribL').setAttribute('visibility', cut ? 'visible' : 'hidden');
+    $('ribR').setAttribute('visibility', cut ? 'visible' : 'hidden');
+    const part = easeOut(seg(t, T.cut, T.cut + .6));
+    $('ribL').style.transform = `translateX(${-26 * part}px) rotate(${2.4 * part}deg)`;
+    $('ribR').style.transform = `translateX(${26 * part}px) rotate(${-2.4 * part}deg)`;
+    const sc = $('scissors');
+    const comeIn = easeOut(seg(t, T.scissors, T.scissors + 1.0)), leave = easeIn(seg(t, T.cut + .45, T.cut + 1.2));
+    sc.setAttribute('transform', `translate(960 ${150 + (1 - comeIn) * 250 + leave * 320}) scale(${comeIn > 0 ? 1 : 0})`);
+    sc.setAttribute('opacity', 1 - seg(t, T.cut + .9, T.cut + 1.2));
+    const open = 26 * (1 - easeIn(seg(t, T.close, T.cut))) + 2 * Math.sin(t * 6) * (1 - seg(t, T.close, T.cut));
+    $('bladeA').setAttribute('transform', `rotate(${-open})`);
+    $('bladeB').setAttribute('transform', `rotate(${open})`);
+
+    // canvas: confetti, sparkle burst, shock ring, rocket smoke
+    fx.clearRect(0, 0, 1920, 1080);
+    if (t >= T.cut) {
+      const d = t - T.cut;
+      fx.globalAlpha = Math.max(0, .9 - d * 1.6);                          // shock ring
+      fx.strokeStyle = '#ffe9a3'; fx.lineWidth = 10 * (1 - seg(d, 0, .7)) + 2;
+      fx.beginPath(); fx.arc(960, 860, 40 + 900 * easeOut(seg(d, 0, .7)), 0, 6.283); fx.stroke();
+      fx.fillStyle = '#fff';
+      sparks.forEach(s => { const a = 1 - d / s.life; if (a <= 0) return; fx.globalAlpha = a; star4(fx, 960 + s.vx * d * .8, 860 + s.vy * d * .8, s.s * (1 + d), d * 4); });
+    }
+    confetti.forEach(c => {
+      const d = t - c.t0; if (d < 0) return;
+      const g = c.g || G, x = c.x + c.vx * d, y = c.y + c.vy * d + .5 * g * d * d;
+      if (y > 1200 || d > 7) return;
+      fx.globalAlpha = clamp(1 - (d - 4.5) / 2.5);
+      fx.save(); fx.translate(x, y); fx.rotate(c.r0 + c.spin * d); fx.scale(1, Math.cos(d * c.flip * 3));
+      fx.fillStyle = c.c;
+      if (c.round) { fx.beginPath(); fx.arc(0, 0, c.h * .6, 0, 6.283); fx.fill(); } else fx.fillRect(-c.w / 2, -c.h / 2, c.w, c.h);
+      fx.restore();
+    });
+    if (t > T.launch - .1 && t < T.launch + 3.2) {                          // smoke and sparks behind the rocket
+      const base = { x: 1920 - 30 - 130, y: 500 + 200 + 260 };
+      for (let k = 0; k < 28; k++) {
+        const tt = t - k * .045, u = seg(tt, T.launch, T.launch + 2.0); if (tt < T.launch - .1) continue;
+        const q = rocketPos(u), a = (1 - k / 28) * .32 * (1 - seg(t, T.launch + 2.2, T.launch + 3.2));
+        fx.globalAlpha = Math.max(0, a); fx.fillStyle = k % 3 ? '#ffffff' : '#ffc53d';
+        fx.beginPath(); fx.arc(base.x + q.x + (rnd() - .5) * 8 - 40, base.y + q.y + k * 7, 8 + k * 1.1, 0, 6.283); fx.fill();
+      }
+    }
+    fx.globalAlpha = 1;
+  };
+  window.__ready = true;
+  window.setTime(0);
+</script>
+</body>
+</html>

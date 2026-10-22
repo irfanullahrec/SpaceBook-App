@@ -9,3 +9,12 @@ build/
 .cxx
 *.apk
 replay_pid*.log
+
+# demo-video work files (raw phone clips, audio, rendered videos stay on disk, not in git)
+artwork/**/*.mp4
+artwork/**/*.wav
+artwork/demo/voice/
+artwork/demo/scenes/
+artwork/demo/prep_saved.json*
+artwork/demo/timeline.json
+artwork/demo/mask.png

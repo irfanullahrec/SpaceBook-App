@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SpaceBook demo video - frame renderer</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #070522; }
+  body { position: relative; font-family: "Segoe UI", Arial, sans-serif; color: #fff; }
+  :root { --violet:#6d5cff; --pink:#ff5c8a; --gold:#ffc53d; --mint:#22c7a0; }
+
+  .sky { position: absolute; inset: 0;
+    background:
+      radial-gradient(1200px 760px at 70% 40%, #4a2aa8 0%, rgba(74,42,168,0) 70%),
+      radial-gradient(900px 600px at 6% 96%, rgba(255,92,138,.40) 0%, rgba(255,92,138,0) 70%),
+      radial-gradient(900px 600px at 96% 6%, rgba(34,199,160,.30) 0%, rgba(34,199,160,0) 70%),
+      linear-gradient(180deg, #0a0630 0%, #1a0e5c 55%, #2c1478 100%); }
+  .stars i { position: absolute; border-radius: 50%; background: #fff; }
+  .layer { position: absolute; inset: 0; }
+
+  /* ---------- the phone ---------- */
+  #phone { position: absolute; left: 190px; top: 40px; width: 468px; height: 1008px; border-radius: 74px;
+    background: linear-gradient(145deg, #3b3475, #14102f); box-shadow: 0 0 0 3px #6f66c8, 0 40px 90px rgba(0,0,0,.65), 0 0 120px rgba(109,92,255,.35); }
+  #phone::after { content: ""; position: absolute; left: 50%; top: 20px; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: #05030f; }
+
+  /* ---------- right panel ---------- */
+  #panel { position: absolute; left: 760px; top: 0; width: 1080px; height: 1080px; }
+  .brand { position: absolute; left: 0; top: 56px; display: flex; align-items: center; gap: 18px; }
+  .brand svg { width: 70px; height: 70px; filter: drop-shadow(0 6px 18px rgba(109,92,255,.8)); }
+  .brand b { font-family: "Arial Black", "Segoe UI Black", sans-serif; font-size: 52px; letter-spacing: -1px;
+    background: linear-gradient(90deg, #8f7dff, #ff5c8a); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .brand span { font-size: 28px; color: #cfc6ff; margin-left: 10px; letter-spacing: 3px; text-transform: uppercase; }
+
+  .badge { display: inline-block; padding: 10px 26px; border-radius: 999px; font-size: 30px; font-weight: 800; letter-spacing: 2px;
+    background: linear-gradient(180deg, #ffe08a, #ffb400); color: #3b2500; box-shadow: 0 10px 30px rgba(255,180,0,.4); }
+  .caption { position: absolute; left: 0; width: 1040px; font-size: 62px; font-weight: 700; line-height: 1.22; color: #fff; text-shadow: 0 6px 30px rgba(0,0,0,.45); }
+  .caption em { font-style: normal; color: var(--gold); }
+
+  .classCard { position: absolute; left: 0; top: 190px; width: 640px; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,.55), 0 0 0 4px rgba(255,255,255,.18); }
+  .classCard img { display: block; width: 100%; }
+  .bigNum { position: absolute; left: 690px; top: 170px; font-family: "Arial Black", "Segoe UI Black", sans-serif; font-weight: 900; line-height: .9;
+    background: linear-gradient(180deg, #ffffff, #ffb3d1 70%, #ffd36b); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 8px 0 #4b25a6) drop-shadow(0 0 40px rgba(180,140,255,.7)); }
+  .bigNum small { display: block; font-size: 54px; letter-spacing: 8px; color: #ffe08a; -webkit-text-fill-color: #ffe08a; margin-bottom: 6px; filter: none; }
+  .count { position: absolute; left: 690px; top: 470px; font-size: 40px; font-weight: 700; color: #e9e2ff; }
+  .chips { position: absolute; left: 0; top: 800px; width: 1060px; display: flex; flex-wrap: wrap; gap: 14px; }
+  .chips span { padding: 10px 22px; border-radius: 999px; font-size: 28px; font-weight: 600; background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.25); }
+  .chips span.hl { background: linear-gradient(180deg, #8f7dff, #6d5cff); border-color: #fff; box-shadow: 0 0 24px rgba(143,125,255,.8); }
+
+  .math { position: absolute; left: 0; top: 330px; width: 1060px; }
+  .math .expr { font-family: "Cambria Math", "Segoe UI Symbol", Georgia, serif; font-size: 50px; line-height: 1.25; color: #fff; letter-spacing: 1px; white-space: nowrap; }
+  .math .expr b { color: var(--gold); }
+  .math .line { font-family: "Cambria Math", Georgia, serif; font-size: 62px; margin-top: 26px; color: #bfffe6; }
+  .math .done { font-size: 120px; font-weight: 900; margin-top: 30px; color: #9bffb4; text-shadow: 0 0 40px rgba(80,255,150,.7); }
+
+  .tapdot { position: absolute; width: 0; height: 0; }
+
+  /* ---------- intro / outro ---------- */
+  #intro, #outro { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; flex-direction: column; text-align: center; }
+  #intro h1, #outro h1 { font-family: "Arial Black", "Segoe UI Black", sans-serif; font-size: 300px; line-height: 1; letter-spacing: -6px; white-space: nowrap;
+    background: linear-gradient(180deg, #ffffff 0%, #f1ebff 34%, #ffb3d1 66%, #ffd36b 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 6px 0 #5a2fc2) drop-shadow(0 14px 0 #3b1d92) drop-shadow(0 0 46px rgba(180,140,255,.85)) drop-shadow(0 30px 40px rgba(0,0,0,.55)); }
+  #intro .lib { font-family: "Arial Black", "Segoe UI Black", sans-serif; font-size: 120px; letter-spacing: 44px; padding-left: 44px; color: var(--gold); margin-top: 20px;
+    text-shadow: 0 0 40px rgba(255,197,61,.75), 0 6px 0 #9a6200, 0 12px 24px rgba(0,0,0,.5); }
+  #intro .sub, #outro .sub { margin-top: 44px; font-size: 48px; font-weight: 600; letter-spacing: 6px; color: #e9e2ff; }
+  #outro .soon { font-family: "Arial Black", "Segoe UI Black", sans-serif; font-size: 190px; line-height: 1; letter-spacing: -4px; text-transform: uppercase; margin-top: 10px;
+    background: linear-gradient(180deg, #ffffff 0%, #efe9ff 40%, #ffb3d1 78%, #ffd36b 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 6px 0 #5a2fc2) drop-shadow(0 14px 0 #3b1d92) drop-shadow(0 0 44px rgba(180,140,255,.8)); }
+  #outro h1 { font-size: 150px; }
+  #outro .logo { width: 150px; height: 150px; margin-bottom: 20px; filter: drop-shadow(0 8px 30px rgba(109,92,255,.9)); }
+  #fade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
+</style>
+</head>
+<body>
+<div class="sky"></div>
+<div class="stars layer" id="stars"></div>
+
+<div id="phone"></div>
+
+<div id="panel">
+  <div class="brand">
+    <svg viewBox="12 10 96 80"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6d5cff"/><stop offset="1" stop-color="#ff5c8a"/></linearGradient></defs>
+      <rect x="14" y="10" width="92" height="80" rx="22" fill="url(#lg)"/><path fill="#fff" d="M54 40 C46 34 36 33 28 35 L28 72 C36 70 46 71 54 77 C62 71 72 70 80 72 L80 35 C72 33 62 34 54 40 Z"/>
+      <path fill="#6d5cff" d="M52.5 42 L55.5 42 L55.5 75 L52.5 75 Z"/><path fill="#ffd54a" d="M54 18 L57 26 L65.5 26.6 L59 32 L61.2 40.2 L54 35.6 L46.8 40.2 L49 32 L42.5 26.6 L51 26 Z"/></svg>
+    <b>SpaceBook</b><span>Library</span>
+  </div>
+  <div id="content"></div>
+</div>
+
+<div id="intro">
+  <h1>SpaceBook</h1><div class="lib">LIBRARY</div><div class="sub">Every textbook &middot; Classes 1 to 12</div>
+</div>
+<div id="outro">
+  <svg class="logo" viewBox="12 10 96 80"><rect x="14" y="10" width="92" height="80" rx="22" fill="url(#lg)"/><path fill="#fff" d="M54 40 C46 34 36 33 28 35 L28 72 C36 70 46 71 54 77 C62 71 72 70 80 72 L80 35 C72 33 62 34 54 40 Z"/>
+    <path fill="#6d5cff" d="M52.5 42 L55.5 42 L55.5 75 L52.5 75 Z"/><path fill="#ffd54a" d="M54 18 L57 26 L65.5 26.6 L59 32 L61.2 40.2 L54 35.6 L46.8 40.2 L49 32 L42.5 26.6 L51 26 Z"/></svg>
+  <h1>SpaceBook</h1><div class="soon">Coming Soon</div><div class="sub">Read &middot; Learn &middot; Play</div>
+</div>
+<div id="fade"></div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const easeOut = x => 1 - Math.pow(1 - x, 3);
+  const easeBack = x => { const c1 = 1.7, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+
+  // stars (seeded, so every frame has the same sky)
+  let seed = 424242; const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
+  const stars = [];
+  for (let i = 0; i < 260; i++) { const s = document.createElement('i'), r = rnd(), z = r > .96 ? 5 : r > .8 ? 3 : 2;
+    s.style.cssText = `left:${rnd() * 1920}px;top:${rnd() * 1080}px;width:${z}px;height:${z}px;` + (z > 3 ? 'box-shadow:0 0 12px 3px rgba(255,255,255,.8);' : '');
+    $('stars').appendChild(s); stars.push({ el: s, base: .3 + rnd() * .7, ph: rnd() * 6.28, sp: 1 + rnd() * 2 }); }
+
+  const esc = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const cardUrl = n => 'file:///D:/SpaceBook/SpaceBook%20App/app/src/main/assets/covers/class-cls' + n + '.webp';
+
+  // Draws the frame. s = { mode: 'intro'|'panel'|'outro', t (global seconds), dt (seconds since the current event began), panel: {...}, fade: 0..1 }
+  window.setFrame = function (s, catalog) {
+    stars.forEach(z => { z.el.style.opacity = z.base.toFixed(3); });   // steady, so unchanged frames can be reused
+    $('phone').style.display = s.mode === 'panel' ? 'block' : 'none';
+    $('panel').style.display = s.mode === 'panel' ? 'block' : 'none';
+    $('intro').style.display = s.mode === 'intro' ? 'flex' : 'none';
+    $('outro').style.display = s.mode === 'outro' ? 'flex' : 'none';
+    $('fade').style.opacity = s.fade || 0;
+    const d = s.dt || 0;
+    if (s.mode === 'intro') {
+      const k = easeOut(clamp(s.t / 1.1));
+      $('intro').style.opacity = clamp(s.t / .6); $('intro').style.transform = `scale(${.9 + .1 * k})`;
+    } else if (s.mode === 'outro') {
+      const k = easeBack(clamp(s.t / .9));
+      $('outro').style.opacity = clamp(s.t / .5); $('outro').firstElementChild.style.transform = `scale(${.8 + .2 * k})`;
+      $('outro').querySelector('.soon').style.transform = `scale(${.9 + .1 * easeOut(clamp((s.t - .4) / .8))}) translateY(${(1 - easeOut(clamp((s.t - .4) / .8))) * 30}px)`;
+    } else {
+      const p = s.panel || {}, a = easeOut(clamp(d / .5));
+      let h = '';
+      if (p.type === 'class') {
+        const c = catalog.classes.find(c => c.id === 'cls' + p.n);
+        const names = c ? c.subjects.map(x => x.name) : [];
+        h += `<div class="classCard" style="opacity:${a};transform:translateX(${(1 - a) * -60}px)"><img src="${cardUrl(p.n)}"></div>`;
+        h += `<div class="bigNum" style="opacity:${a};transform:translateY(${(1 - a) * 40}px);font-size:300px"><small>CLASS</small>${p.n}</div>`;
+        h += `<div class="count" style="opacity:${a}">${names.length} books</div>`;
+        h += `<div class="chips">${names.map((n, i) => `<span style="opacity:${easeOut(clamp((d - .25 - i * .06) / .3))}">${esc(n)}</span>`).join('')}</div>`;
+        h += `<div class="caption" style="top:628px;width:1040px;font-size:44px;color:#e9e2ff;opacity:${a}">${esc(p.text || '')}</div>`;
+      } else if (p.type === 'math') {
+        h += `<div style="position:absolute;left:0;top:190px;opacity:${a}"><span class="badge">${esc(p.badge || '')}</span></div>`;
+        h += `<div class="math" style="opacity:${a}">${(p.lines || []).map((l, i) => `<div class="${i === 0 ? 'expr' : l.big ? 'done' : 'line'}" style="opacity:${easeOut(clamp((d - i * .35) / .4))}">${l.html || esc(l.text || l)}</div>`).join('')}</div>`;
+        h += `<div class="caption" style="top:800px;font-size:50px;color:#e9e2ff;opacity:${a}">${esc(p.text || '')}</div>`;
+      } else {
+        h += `<div style="position:absolute;left:0;top:230px;opacity:${a};transform:translateY(${(1 - a) * 30}px)"><span class="badge">${esc(p.badge || '')}</span></div>`;
+        h += `<div class="caption" style="top:340px;opacity:${a};transform:translateY(${(1 - a) * 30}px)">${p.html || esc(p.text || '')}</div>`;
+      }
+      $('content').innerHTML = h;
+    }
+  };
+  window.__ready = true;
+</script>
+</body>
+</html>

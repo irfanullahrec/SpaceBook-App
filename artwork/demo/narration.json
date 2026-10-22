@@ -1,0 +1,38 @@
+﻿{
+  "voice": "Microsoft Zira Desktop",
+  "rate": 2,
+  "lines": {
+    "intro": "Welcome to the SpaceBook Library.",
+    "lib_open": "This is the Library. Every class, one to twelve, with the real textbook covers.",
+    "c1": "Class 1. First steps: English, Maths, Islamyat and Quran.",
+    "c2": "Class 2. Now with Urdu and General Knowledge.",
+    "c3": "Class 3. Seven books, with English, Maths and General Knowledge.",
+    "c4": "Class 4. General Science and Social Studies begin.",
+    "c5": "Class 5. Eight books, with Science, Urdu and Social Studies.",
+    "c6": "Class 6. Thirteen books, adding Computer, Geography and History.",
+    "c7": "Class 7. Twelve books, with Geography, History and Arabic.",
+    "c8": "Class 8. Thirteen books, including Pashto and Arabic.",
+    "c9": "Class 9. Physics, Chemistry and Biology, each its own book.",
+    "c10": "Class 10. Fourteen books for the board year.",
+    "c11": "Class 11. Statistics, Civics and Islamic History join in.",
+    "c12": "Class 12. Fifteen books, including Economics.",
+    "s2_open": "Let's open Class 1, English.",
+    "s2_unit": "Choose a unit, then open the Exercise tab.",
+    "s2_sentence": "Tap any sentence to see its meaning in Urdu and Pashto.",
+    "s2_speak": "And listen to it, read aloud.",
+    "s2_word": "Hold a word, to see just that word's meaning.",
+    "s2_match": "Page one. Match each picture with its letter sound.",
+    "s2_p2": "Page two. Choose the right word, and the app answers at once.",
+    "s3_open": "Now Class 6, Mathematics.",
+    "s3_chapter": "Chapter 3: Laws of Integers and Order of Operations.",
+    "s3_ex": "Open Exercise 3.7, question 1, part E.",
+    "s3_ans": "Tap Ans, and the whole step by step solution appears at once.",
+    "s3_anim": "Or tap Animate, and watch it solved on the board. First, the bar: five minus three is two.",
+    "s3_next1": "Next step. Seven times two is fourteen.",
+    "s3_next2": "Ten plus seven plus fourteen makes thirty one.",
+    "s3_next3": "Twenty times thirty one is six hundred and twenty.",
+    "s3_end": "And seven hundred twenty five minus six hundred twenty leaves one hundred five.",
+    "outro": "SpaceBook. Coming soon."
+  }
+}
+

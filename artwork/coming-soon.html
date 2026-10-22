@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SpaceBook - Coming Soon</title>
+<style>
+  :root { --violet:#6d5cff; --pink:#ff5c8a; --gold:#ffc53d; --mint:#22c7a0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #070522; }
+  body { position: relative; font-family: "Segoe UI", "Arial", sans-serif; color: #fff; }
+
+  .sky { position: absolute; inset: 0;
+    background:
+      radial-gradient(1100px 700px at 38% 52%, #5a30c8 0%, rgba(90,48,200,0) 70%),
+      radial-gradient(800px 560px at 92% 94%, rgba(255,92,138,.5) 0%, rgba(255,92,138,0) 70%),
+      radial-gradient(800px 560px at 6% 6%, rgba(34,199,160,.38) 0%, rgba(34,199,160,0) 70%),
+      linear-gradient(160deg, #0a0630 0%, #1b0e60 55%, #34167f 100%); }
+  .stars { position: absolute; inset: 0; }
+  .stars i { position: absolute; border-radius: 50%; background: #fff; }
+
+  /* the brand */
+  .brand { position: absolute; left: 110px; top: 84px; display: flex; align-items: center; gap: 22px; }
+  .brand svg { width: 112px; height: 112px; filter: drop-shadow(0 8px 26px rgba(109,92,255,.8)); }
+  .brand b { font-family: "Arial Black", "Segoe UI Black", sans-serif; font-weight: 900; font-size: 84px; letter-spacing: -2px;
+    background: linear-gradient(90deg, #8f7dff, #ff5c8a); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 4px 0 rgba(0,0,0,.35)); }
+
+  /* COMING SOON, as large as the page allows */
+  .soon { position: absolute; left: 110px; top: 300px; white-space: nowrap; line-height: .92;
+    font-family: "Arial Black", "Segoe UI Black", Impact, sans-serif; font-weight: 900; letter-spacing: -4px; text-transform: uppercase; }
+  .soon span { display: block; width: max-content;
+    background: linear-gradient(180deg, #ffffff 0%, #efe9ff 40%, #ffb3d1 78%, #ffd36b 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 6px 0 #5a2fc2) drop-shadow(0 14px 0 #3b1d92) drop-shadow(0 0 44px rgba(180,140,255,.8)) drop-shadow(0 28px 36px rgba(0,0,0,.5)); }
+  #soon1 { font-size: 270px; }
+  #soon2 { font-size: 270px; margin-top: 8px; }
+
+  .line { position: absolute; left: 116px; top: 880px; width: 1000px; height: 8px; border-radius: 8px; background: linear-gradient(90deg, var(--gold), var(--pink), rgba(255,92,138,0)); }
+  .sub { position: absolute; left: 112px; top: 912px; font-size: 52px; font-weight: 600; letter-spacing: 3px; color: #e9e2ff; }
+  .sub b { color: var(--gold); }
+  .dots { display: inline-flex; gap: 12px; margin-left: 18px; vertical-align: middle; }
+  .dots i { width: 18px; height: 18px; border-radius: 50%; background: var(--gold); opacity: .95; box-shadow: 0 0 16px rgba(255,197,61,.9); }
+  .dots i:nth-child(2) { opacity: .65; } .dots i:nth-child(3) { opacity: .35; }
+
+  svg.deco { position: absolute; }
+</style>
+</head>
+<body>
+  <div class="sky"></div>
+  <div class="stars" id="stars"></div>
+
+  <!-- big planet, bottom right -->
+  <svg class="deco" style="right:-210px; bottom:-250px; width:900px; height:900px" viewBox="0 0 900 900">
+    <defs>
+      <radialGradient id="pg" cx="32%" cy="28%" r="85%"><stop offset="0" stop-color="#ffd9a0"/><stop offset=".5" stop-color="#ff7aa0"/><stop offset="1" stop-color="#5b2a96"/></radialGradient>
+    </defs>
+    <circle cx="450" cy="450" r="360" fill="url(#pg)"/>
+    <g fill="#fff" opacity=".16"><circle cx="330" cy="330" r="62"/><circle cx="560" cy="250" r="34"/><circle cx="640" cy="440" r="50"/><circle cx="400" cy="560" r="40"/></g>
+    <ellipse cx="450" cy="470" rx="470" ry="96" transform="rotate(-16 450 470)" fill="none" stroke="#ffe3a6" stroke-width="22" opacity=".75"/>
+  </svg>
+
+  <!-- small moon, top right -->
+  <svg class="deco" style="right:230px; top:70px; width:190px; height:190px" viewBox="0 0 190 190">
+    <defs><radialGradient id="mn" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#b9b1ff"/></radialGradient></defs>
+    <circle cx="95" cy="95" r="80" fill="url(#mn)"/><g fill="#8a7fe0" opacity=".45"><circle cx="70" cy="70" r="16"/><circle cx="120" cy="110" r="22"/><circle cx="82" cy="126" r="9"/></g>
+  </svg>
+
+  <!-- rocket flying up and to the right, with its trail -->
+  <svg class="deco" style="left:1040px; top:90px; width:860px; height:860px" viewBox="0 0 860 860">
+    <defs>
+      <linearGradient id="tr" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ffb400" stop-opacity="0"/><stop offset=".6" stop-color="#ff7a97" stop-opacity=".55"/><stop offset="1" stop-color="#fff6c2" stop-opacity=".9"/></linearGradient>
+      <linearGradient id="fl2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c2"/><stop offset=".4" stop-color="#ffb400"/><stop offset="1" stop-color="#ff4b6e" stop-opacity="0"/></linearGradient>
+      <linearGradient id="bd2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfd6ff"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#b7c0ff"/></linearGradient>
+    </defs>
+    <g stroke-linecap="round" fill="none">
+      <path d="M392 468 L250 612" stroke="#ffc53d" stroke-width="12" opacity=".75"/>
+      <path d="M440 500 L330 640" stroke="#ff7a97" stroke-width="9" opacity=".6"/>
+      <path d="M360 440 L212 560" stroke="#ffffff" stroke-width="6" opacity=".5"/>
+    </g>
+    <g transform="translate(600 260) rotate(42)">
+      <g transform="translate(-190 -260)">
+        <g transform="translate(0 -50)"><path d="M190 392 C150 450 165 520 190 548 C215 520 230 450 190 392Z" fill="url(#fl2)"/>
+        <path d="M190 392 C172 436 178 480 190 500 C202 480 208 436 190 392Z" fill="#fff6c2" opacity=".9"/></g>
+        <path d="M118 300 L70 372 L132 346Z" fill="#ff5c8a"/><path d="M262 300 L310 372 L248 346Z" fill="#ff5c8a"/>
+        <path d="M190 30 C262 90 270 200 252 350 L128 350 C110 200 118 90 190 30Z" fill="url(#bd2)"/>
+        <path d="M190 30 C216 52 236 82 248 112 L132 112 C144 82 164 52 190 30Z" fill="#ff5c8a"/>
+        <circle cx="190" cy="206" r="40" fill="#2a1a7a"/><circle cx="190" cy="206" r="31" fill="#59d3ff"/>
+        <path d="M170 196 A24 24 0 0 1 200 184" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" opacity=".8"/>
+        <rect x="128" y="318" width="124" height="20" fill="#6d5cff"/>
+      </g>
+    </g>
+  </svg>
+
+  <div class="brand">
+    <svg viewBox="12 10 96 80"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6d5cff"/><stop offset="1" stop-color="#ff5c8a"/></linearGradient></defs>
+      <rect x="14" y="10" width="92" height="80" rx="22" fill="url(#lg)"/>
+      <path fill="#fff" d="M54 40 C46 34 36 33 28 35 L28 72 C36 70 46 71 54 77 C62 71 72 70 80 72 L80 35 C72 33 62 34 54 40 Z"/>
+      <path fill="#6d5cff" d="M52.5 42 L55.5 42 L55.5 75 L52.5 75 Z"/>
+      <path fill="#ffd54a" d="M54 18 L57 26 L65.5 26.6 L59 32 L61.2 40.2 L54 35.6 L46.8 40.2 L49 32 L42.5 26.6 L51 26 Z"/></svg>
+    <b>SpaceBook</b>
+  </div>
+
+  <div class="soon" id="soon"><span id="soon1">Coming</span><span id="soon2">Soon</span></div>
+  <div class="line"></div>
+  <div class="sub">Something <b>amazing</b> is on its way<span class="dots"><i></i><i></i><i></i></span></div>
+
+<script>
+  let seed = 7771023;
+  const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
+  const stars = document.getElementById('stars');
+  for (let i = 0; i < 340; i++) {
+    const s = document.createElement('i'), r = rnd(), size = r > .96 ? 5 : r > .8 ? 3 : 2;
+    s.style.cssText = `left:${rnd() * 1920}px; top:${rnd() * 1080}px; width:${size}px; height:${size}px; opacity:${.35 + rnd() * .65};` +
+      (size > 3 ? 'box-shadow:0 0 14px 4px rgba(255,255,255,.8);' : '');
+    stars.appendChild(s);
+  }
+  // "COMING" and "SOON" both fill the same width on the left, so the words stand as one block
+  const a = document.getElementById('soon1'), b = document.getElementById('soon2');
+  let size = 260;
+  a.style.fontSize = b.style.fontSize = size + 'px';
+  const widest = () => Math.max(a.getBoundingClientRect().width, b.getBoundingClientRect().width);
+  for (let k = 0; k < 6; k++) { size = size * 1180 / widest(); a.style.fontSize = b.style.fontSize = size + 'px'; }
+  document.getElementById('soon').style.top = '230px';
+  window.__size = Math.round(size);
+</script>
+</body>
+</html>

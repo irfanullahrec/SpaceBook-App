@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SpaceBook Library - Grand Opening Ceremony</title>
+<style>
+  :root { --violet:#6d5cff; --pink:#ff5c8a; --gold:#ffc53d; --mint:#22c7a0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; background: #070522; }
+  body { position: relative; font-family: "Segoe UI", "Arial", sans-serif; color: #fff; }
+
+  /* the sky */
+  .sky { position: absolute; inset: 0;
+    background:
+      radial-gradient(1200px 700px at 50% 38%, #4a2aa8 0%, rgba(74,42,168,0) 70%),
+      radial-gradient(900px 600px at 10% 90%, rgba(255,92,138,.45) 0%, rgba(255,92,138,0) 70%),
+      radial-gradient(900px 600px at 92% 12%, rgba(34,199,160,.38) 0%, rgba(34,199,160,0) 70%),
+      linear-gradient(180deg, #0a0630 0%, #1a0e5c 55%, #2c1478 100%); }
+  .stars { position: absolute; inset: 0; }
+  .stars i { position: absolute; border-radius: 50%; background: #fff; }
+
+  /* spotlight rays from the top, like a stage */
+  .rays { position: absolute; left: 50%; top: -160px; width: 2600px; height: 1500px; transform: translateX(-50%);
+    background: conic-gradient(from 180deg at 50% 0%, rgba(255,255,255,0) 0deg, rgba(255,230,160,.16) 12deg, rgba(255,255,255,0) 24deg,
+      rgba(255,255,255,0) 40deg, rgba(255,200,255,.12) 52deg, rgba(255,255,255,0) 64deg, rgba(255,255,255,0) 296deg,
+      rgba(255,200,255,.12) 308deg, rgba(255,255,255,0) 320deg, rgba(255,255,255,0) 336deg, rgba(255,230,160,.16) 348deg, rgba(255,255,255,0) 360deg);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 80%); mask-image: linear-gradient(180deg, #000 0%, transparent 80%); }
+
+  /* the invitation line */
+  .grand { position: absolute; top: 64px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 28px; }
+  .grand .pill { padding: 16px 50px 16px 60px; border-radius: 999px; font-weight: 800; font-size: 38px; letter-spacing: 10px; white-space: nowrap; text-transform: uppercase;
+    color: #3b2500; background: linear-gradient(180deg, #ffe08a, #ffb400); box-shadow: 0 0 0 4px rgba(255,255,255,.35), 0 14px 40px rgba(255,180,0,.55); }
+  .grand svg { width: 60px; height: 60px; filter: drop-shadow(0 0 14px rgba(255,200,60,.9)); }
+
+  /* SpaceBook, as large as the page allows */
+  .name { position: absolute; left: 50%; top: 190px; transform: translateX(-50%); white-space: nowrap; text-align: center;
+    font-family: "Arial Black", "Segoe UI Black", Impact, sans-serif; font-weight: 900; line-height: 1; letter-spacing: -6px; }
+  .name span { display: inline-block;
+    background: linear-gradient(180deg, #ffffff 0%, #f1ebff 34%, #ffb3d1 66%, #ffd36b 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 6px 0 #5a2fc2) drop-shadow(0 14px 0 #3b1d92) drop-shadow(0 0 46px rgba(180,140,255,.85)) drop-shadow(0 30px 40px rgba(0,0,0,.55)); }
+
+  .lib { position: absolute; left: 0; right: 0; top: 520px; display: flex; align-items: center; justify-content: center; gap: 44px; }
+  .lib b { font-family: "Arial Black", "Segoe UI Black", sans-serif; font-weight: 900; font-size: 128px; letter-spacing: 46px; padding-left: 46px; color: var(--gold);
+    text-shadow: 0 0 40px rgba(255,197,61,.75), 0 6px 0 #9a6200, 0 12px 24px rgba(0,0,0,.5); }
+  .lib em { flex: 0 0 150px; height: 6px; border-radius: 6px; background: linear-gradient(90deg, rgba(255,197,61,0), var(--gold)); }
+  .lib em:last-child { background: linear-gradient(270deg, rgba(255,197,61,0), var(--gold)); }
+
+  .tag { position: absolute; left: 0; right: 0; top: 700px; text-align: center; font-size: 46px; font-weight: 600; letter-spacing: 6px; color: #e9e2ff; }
+  .tag b { color: var(--pink); }
+  .tag i { font-style: normal; color: var(--gold); margin: 0 18px; }
+
+  /* the ribbon being cut */
+  .ribbon { position: absolute; left: 0; bottom: 36px; width: 1920px; height: 260px; }
+
+  svg.deco { position: absolute; }
+  .confetti i { position: absolute; display: block; }
+</style>
+</head>
+<body>
+  <div class="sky"></div>
+  <div class="stars" id="stars"></div>
+  <div class="rays"></div>
+
+  <!-- ringed planet, top left -->
+  <svg class="deco" style="left:44px; top:560px; width:230px; height:230px" viewBox="0 0 300 300">
+    <defs>
+      <radialGradient id="pl" cx="35%" cy="30%" r="80%"><stop offset="0" stop-color="#ffd9a0"/><stop offset=".55" stop-color="#ff8f6b"/><stop offset="1" stop-color="#b13a7a"/></radialGradient>
+    </defs>
+    <path d="M10 175 C70 235 245 195 290 120 C250 215 80 265 10 175Z" fill="#ffe3a6" opacity=".35"/>
+    <circle cx="150" cy="150" r="82" fill="url(#pl)"/>
+    <ellipse cx="150" cy="170" rx="132" ry="34" transform="rotate(-18 150 170)" fill="none" stroke="#ffe3a6" stroke-width="10" opacity=".9"/>
+    <path d="M95 118 A82 82 0 0 1 205 100" stroke="#fff" stroke-opacity=".35" stroke-width="8" fill="none" stroke-linecap="round"/>
+  </svg>
+
+  <!-- rocket, top right -->
+  <svg class="deco" style="right:30px; top:500px; width:260px; height:330px" viewBox="-50 -10 480 610">
+    <defs>
+      <linearGradient id="fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff6c2"/><stop offset=".4" stop-color="#ffb400"/><stop offset="1" stop-color="#ff4b6e" stop-opacity="0"/></linearGradient>
+      <linearGradient id="bd" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cfd6ff"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#b7c0ff"/></linearGradient>
+    </defs>
+    <g transform="rotate(24 190 260)">
+      <g transform="translate(0 -52)"><path d="M190 392 C150 440 165 500 190 520 C215 500 230 440 190 392Z" fill="url(#fl)"/>
+      <path d="M190 392 C172 430 178 470 190 486 C202 470 208 430 190 392Z" fill="#fff6c2" opacity=".9"/></g>
+      <path d="M118 300 L70 372 L132 346Z" fill="#ff5c8a"/>
+      <path d="M262 300 L310 372 L248 346Z" fill="#ff5c8a"/>
+      <path d="M190 30 C262 90 270 200 252 350 L128 350 C110 200 118 90 190 30Z" fill="url(#bd)"/>
+      <path d="M190 30 C216 52 236 82 248 112 L132 112 C144 82 164 52 190 30Z" fill="#ff5c8a"/>
+      <circle cx="190" cy="206" r="40" fill="#2a1a7a"/><circle cx="190" cy="206" r="31" fill="#59d3ff"/>
+      <path d="M170 196 A24 24 0 0 1 200 184" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" opacity=".8"/>
+      <rect x="128" y="318" width="124" height="20" fill="#6d5cff"/>
+    </g>
+  </svg>
+
+  <div class="confetti" id="confetti"></div>
+
+  <div class="grand">
+    <svg viewBox="0 0 64 64"><path fill="#ffc53d" d="M32 2l8 20 22 2-17 14 6 22-19-12-19 12 6-22L2 24l22-2z"/></svg>
+    <div class="pill">Grand Opening Ceremony</div>
+    <svg viewBox="0 0 64 64"><path fill="#ffc53d" d="M32 2l8 20 22 2-17 14 6 22-19-12-19 12 6-22L2 24l22-2z"/></svg>
+  </div>
+
+  <div class="name" id="name"><span>SpaceBook</span></div>
+
+  <div class="lib"><em></em><b>LIBRARY</b><em></em></div>
+
+  <div class="tag"><b>Read</b><i>&#9733;</i><b>Learn</b><i>&#9733;</i><b>Play</b> &nbsp;&mdash;&nbsp; Classes 1 to 12</div>
+
+  <!-- the ribbon, cut in the middle, with scissors -->
+  <svg class="ribbon" viewBox="0 0 1920 260">
+    <defs>
+      <linearGradient id="rb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7a97"/><stop offset=".5" stop-color="#e3194f"/><stop offset="1" stop-color="#a50f38"/></linearGradient>
+      <linearGradient id="gd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a3"/><stop offset="1" stop-color="#d79a00"/></linearGradient>
+    </defs>
+    <!-- left half -->
+    <path d="M0 74 L880 74 L930 150 L880 226 L0 226Z" fill="url(#rb)"/>
+    <path d="M0 74 L880 74 L890 90 L0 90Z" fill="#fff" opacity=".28"/>
+    <path d="M0 212 L870 212 L880 226 L0 226Z" fill="#000" opacity=".18"/>
+    <!-- right half -->
+    <path d="M1920 74 L1040 74 L990 150 L1040 226 L1920 226Z" fill="url(#rb)"/>
+    <path d="M1920 74 L1040 74 L1030 90 L1920 90Z" fill="#fff" opacity=".28"/>
+    <path d="M1920 212 L1050 212 L1040 226 L1920 226Z" fill="#000" opacity=".18"/>
+    <!-- gold edge lines -->
+    <path d="M0 108 H870 M0 192 H870 M1050 108 H1920 M1050 192 H1920" stroke="url(#gd)" stroke-width="6" opacity=".9"/>
+    <!-- scissors in the gap -->
+    <g transform="translate(960 150) rotate(-90)">
+      <path d="M0 0 L120 -22 L120 -10 Z" fill="#dfe6ff" stroke="#8b97d6" stroke-width="3"/>
+      <path d="M0 0 L120 22 L120 10 Z" fill="#c8d1ff" stroke="#8b97d6" stroke-width="3"/>
+      <circle cx="-34" cy="-30" r="26" fill="none" stroke="#ffc53d" stroke-width="12"/>
+      <circle cx="-34" cy="30" r="26" fill="none" stroke="#ffc53d" stroke-width="12"/>
+      <circle cx="0" cy="0" r="9" fill="#ffc53d" stroke="#9a6200" stroke-width="3"/>
+    </g>
+    <!-- sparkles where it is cut -->
+    <g fill="#fff"><path d="M960 40 l8 20 20 8 -20 8 -8 20 -8 -20 -20 -8 20 -8z"/><path d="M900 250 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z" opacity=".9"/><path d="M1030 246 l5 12 12 5 -12 5 -5 12 -5 -12 -12 -5 12 -5z" opacity=".9"/></g>
+  </svg>
+
+
+<script>
+  // a small seeded generator, so the poster is the same every time it is drawn
+  let seed = 20261022;
+  const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
+
+  const stars = document.getElementById('stars');
+  for (let i = 0; i < 360; i++) {
+    const s = document.createElement('i'), r = rnd(), size = r > .96 ? 5 : r > .8 ? 3 : 2;
+    s.style.cssText = `left:${rnd() * 1920}px; top:${rnd() * 1080}px; width:${size}px; height:${size}px; opacity:${.35 + rnd() * .65};` +
+      (size > 3 ? 'box-shadow:0 0 14px 4px rgba(255,255,255,.8);' : '');
+    stars.appendChild(s);
+  }
+
+  const colours = ['#ff5c8a', '#ffc53d', '#22c7a0', '#59d3ff', '#ffffff', '#b49bff'];
+  const box = document.getElementById('confetti');
+  for (let i = 0; i < 90; i++) {
+    const c = document.createElement('i'), w = 10 + rnd() * 18, h = 6 + rnd() * 12;
+    // keep the middle (the name) clear; scatter at the sides and along the top and bottom
+    let x = rnd() * 1920, y = rnd() * 1080;
+    if (y > 170 && y < 820) { y = rnd() > .45 ? rnd() * 150 : 830 + rnd() * 240; }   // never on the lettering
+    c.style.cssText = `left:${x}px; top:${y}px; width:${w}px; height:${h}px; background:${colours[(rnd() * colours.length) | 0]};` +
+      `transform:rotate(${rnd() * 360}deg); opacity:${.75 + rnd() * .25}; border-radius:${rnd() > .7 ? '50%' : '2px'};`;
+    box.appendChild(c);
+  }
+
+  // make "SpaceBook" fill the width of the page as far as it can
+  const name = document.getElementById('name'), span = name.firstElementChild;
+  let size = 200;
+  name.style.fontSize = size + 'px';
+  const target = 1800;
+  for (let k = 0; k < 6; k++) { size = size * target / span.getBoundingClientRect().width; name.style.fontSize = size + 'px'; }
+  window.__nameSize = Math.round(size);
+</script>
+</body>
+</html>

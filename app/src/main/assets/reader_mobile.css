@@ -42,3 +42,6 @@ html.sbapp .bk-nav { display: none !important; }
 html.sbapp, html.sbapp * { -webkit-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; -webkit-tap-highlight-color: transparent; }
 html.sbapp input, html.sbapp textarea { -webkit-user-select: text !important; user-select: text !important; }
 html.sbapp .ut-root, html.sbapp #wordHoverTooltip, html.sbapp .word-hover-tooltip, html.sbapp #m6-word, html.sbapp .sb-tri-drawer { display: none !important; }
+
+/* a solution shows whole: the play / pause / next-step controls of the typing effect are not needed */
+html.sbapp .sbs-ctl { display: none !important; }

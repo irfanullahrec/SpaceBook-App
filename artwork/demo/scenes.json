@@ -1,0 +1,493 @@
+{
+ "scenes": [
+  {
+   "id": "library",
+   "video": "scenes/library.mp4",
+   "offset": 1.19,
+   "duration": 73.83,
+   "overflow": 0,
+   "events": [
+    {
+     "t": 0.01,
+     "say": "lib_open",
+     "panel": {
+      "text": "This is the Library. Every class, one to twelve, with the real textbook covers.",
+      "type": "caption",
+      "badge": "The Library"
+     },
+     "taps": []
+    },
+    {
+     "t": 5.74,
+     "say": "c1",
+     "panel": {
+      "text": "Class 1. First steps: English, Maths, Islamyat and Quran.",
+      "type": "class",
+      "n": 1
+     },
+     "taps": [
+      6
+     ]
+    },
+    {
+     "t": 11.48,
+     "say": "c2",
+     "panel": {
+      "text": "Class 2. Now with Urdu and General Knowledge.",
+      "type": "class",
+      "n": 2
+     },
+     "taps": [
+      11.74
+     ]
+    },
+    {
+     "t": 16.53,
+     "say": "c3",
+     "panel": {
+      "text": "Class 3. Seven books, with English, Maths and General Knowledge.",
+      "type": "class",
+      "n": 3
+     },
+     "taps": [
+      16.78
+     ]
+    },
+    {
+     "t": 21.57,
+     "say": "c4",
+     "panel": {
+      "text": "Class 4. General Science and Social Studies begin.",
+      "type": "class",
+      "n": 4
+     },
+     "taps": [
+      21.83
+     ]
+    },
+    {
+     "t": 26.58,
+     "say": "c5",
+     "panel": {
+      "text": "Class 5. Eight books, with Science, Urdu and Social Studies.",
+      "type": "class",
+      "n": 5
+     },
+     "taps": [
+      26.85
+     ]
+    },
+    {
+     "t": 31.58,
+     "say": "c6",
+     "panel": {
+      "text": "Class 6. Thirteen books, adding Computer, Geography and History.",
+      "type": "class",
+      "n": 6
+     },
+     "taps": [
+      31.83
+     ]
+    },
+    {
+     "t": 39.65,
+     "say": "c7",
+     "panel": {
+      "text": "Class 7. Twelve books, with Geography, History and Arabic.",
+      "type": "class",
+      "n": 7
+     },
+     "taps": [
+      39.91
+     ]
+    },
+    {
+     "t": 44.65,
+     "say": "c8",
+     "panel": {
+      "text": "Class 8. Thirteen books, including Pashto and Arabic.",
+      "type": "class",
+      "n": 8
+     },
+     "taps": [
+      44.91
+     ]
+    },
+    {
+     "t": 49.7,
+     "say": "c9",
+     "panel": {
+      "text": "Class 9. Physics, Chemistry and Biology, each its own book.",
+      "type": "class",
+      "n": 9
+     },
+     "taps": [
+      49.96
+     ]
+    },
+    {
+     "t": 54.87,
+     "say": "c10",
+     "panel": {
+      "text": "Class 10. Fourteen books for the board year.",
+      "type": "class",
+      "n": 10
+     },
+     "taps": [
+      55.12
+     ]
+    },
+    {
+     "t": 59.87,
+     "say": "c11",
+     "panel": {
+      "text": "Class 11. Statistics, Civics and Islamic History join in.",
+      "type": "class",
+      "n": 11
+     },
+     "taps": [
+      60.12
+     ]
+    },
+    {
+     "t": 68.55,
+     "say": "c12",
+     "panel": {
+      "text": "Class 12. Fifteen books, including Economics.",
+      "type": "class",
+      "n": 12
+     },
+     "taps": [
+      68.8
+     ]
+    }
+   ]
+  },
+  {
+   "id": "class1a",
+   "video": "scenes/class1a.mp4",
+   "offset": 1.2,
+   "duration": 4.47,
+   "overflow": 1.63,
+   "events": [
+    {
+     "t": 0,
+     "say": "s2_open",
+     "panel": {
+      "text": "Let's open Class 1, English.",
+      "type": "caption",
+      "badge": "Class 1 · English"
+     },
+     "taps": [
+      0.6
+     ]
+    },
+    {
+     "t": 2.79,
+     "say": "s2_unit",
+     "panel": {
+      "text": "Choose a unit, then open the Exercise tab.",
+      "type": "caption",
+      "badge": "Unit → Exercise"
+     },
+     "taps": [
+      3.2
+     ]
+    }
+   ]
+  },
+  {
+   "id": "class1b",
+   "video": "scenes/class1b.mp4",
+   "offset": 1.19,
+   "duration": 22.52,
+   "overflow": 0,
+   "events": [
+    {
+     "t": 0,
+     "panel": {
+      "text": "Choose a unit, then open the Exercise tab.",
+      "type": "caption",
+      "badge": "Unit → Exercise"
+     },
+     "taps": [
+      0.6,
+      1.89
+     ]
+    },
+    {
+     "t": 2.11,
+     "say": "s2_sentence",
+     "panel": {
+      "text": "Tap any sentence to see its meaning in Urdu and Pashto.",
+      "type": "caption",
+      "badge": "Tap a sentence"
+     },
+     "taps": [
+      4.2
+     ]
+    },
+    {
+     "t": 5.55,
+     "say": "s2_speak",
+     "panel": {
+      "text": "And listen to it, read aloud.",
+      "type": "caption",
+      "badge": "Read aloud"
+     },
+     "taps": [
+      6.06
+     ]
+    },
+    {
+     "t": 8.11,
+     "say": "s2_word",
+     "panel": {
+      "text": "Hold a word, to see just that word's meaning.",
+      "type": "caption",
+      "badge": "Hold a word"
+     },
+     "taps": [
+      8.31,
+      9.29
+     ]
+    },
+    {
+     "t": 11.26,
+     "say": "s2_match",
+     "panel": {
+      "text": "Page one. Match each picture with its letter sound.",
+      "type": "caption",
+      "badge": "Page 1 · Match"
+     },
+     "taps": [
+      11.51,
+      13.65,
+      14.49,
+      15.44,
+      16.27
+     ]
+    },
+    {
+     "t": 17.11,
+     "say": "s2_p2",
+     "panel": {
+      "text": "Page two. Choose the right word, and the app answers at once.",
+      "type": "caption",
+      "badge": "Page 2 · Choose the word"
+     },
+     "taps": [
+      19.32,
+      20.25
+     ]
+    }
+   ]
+  },
+  {
+   "id": "class6a",
+   "video": "scenes/class6a.mp4",
+   "offset": 1.19,
+   "duration": 5.28,
+   "overflow": 1.54,
+   "events": [
+    {
+     "t": 0,
+     "say": "s3_open",
+     "panel": {
+      "text": "Now Class 6, Mathematics.",
+      "type": "caption",
+      "badge": "Class 6 · Mathematics"
+     },
+     "taps": [
+      0.6
+     ]
+    },
+    {
+     "t": 2.93,
+     "say": "s3_chapter",
+     "panel": {
+      "text": "Chapter 3: Laws of Integers and Order of Operations.",
+      "type": "caption",
+      "badge": "Chapter 3"
+     },
+     "taps": [
+      3.73
+     ]
+    }
+   ]
+  },
+  {
+   "id": "class6b",
+   "video": "scenes/class6b.mp4",
+   "offset": 1.18,
+   "duration": 37.65,
+   "overflow": 0,
+   "events": [
+    {
+     "t": 0,
+     "panel": {
+      "text": "Chapter 3: Laws of Integers and Order of Operations.",
+      "type": "caption",
+      "badge": "Chapter 3"
+     },
+     "taps": []
+    },
+    {
+     "t": 1.55,
+     "say": "s3_ex",
+     "panel": {
+      "text": "Open Exercise 3.7, question 1, part E.",
+      "type": "math",
+      "badge": "Exercise 3.7 · Question 1 (e)",
+      "lines": [
+       {
+        "html": "725 − [ 20 × { 10 + 7 + ( 7 × <b>(5 − 3)</b> ) } ]"
+       }
+      ]
+     },
+     "taps": [
+      3.29,
+      4.73,
+      5.26,
+      5.64,
+      6.04,
+      6.59,
+      6.96
+     ]
+    },
+    {
+     "t": 7.83,
+     "say": "s3_ans",
+     "panel": {
+      "text": "Tap Ans, and the whole step by step solution appears at once.",
+      "type": "caption",
+      "badge": "Ans · whole solution"
+     },
+     "taps": [
+      8.44
+     ]
+    },
+    {
+     "t": 12.83,
+     "say": "s3_anim",
+     "panel": {
+      "text": "Or tap Animate, and watch it solved on the board. First, the bar: five minus three is two.",
+      "type": "math",
+      "badge": "Animate",
+      "lines": [
+       {
+        "html": "725 − [ 20 × { 10 + 7 + ( 7 × <b>2</b> ) } ]"
+       },
+       {
+        "text": "5 − 3 = 2"
+       }
+      ]
+     },
+     "taps": [
+      14.76,
+      17.37,
+      18.09,
+      18.61
+     ]
+    },
+    {
+     "t": 19.32,
+     "say": "s3_next1",
+     "panel": {
+      "text": "Next step. Seven times two is fourteen.",
+      "type": "math",
+      "badge": "Next step",
+      "lines": [
+       {
+        "html": "725 − [ 20 × { 10 + 7 + ( <b>7 × 2</b> ) } ]"
+       },
+       {
+        "text": "7 × 2 = 14"
+       }
+      ]
+     },
+     "taps": [
+      19.56,
+      20.04,
+      20.67,
+      21.16
+     ]
+    },
+    {
+     "t": 23.12,
+     "say": "s3_next2",
+     "panel": {
+      "text": "Ten plus seven plus fourteen makes thirty one.",
+      "type": "math",
+      "badge": "Next step",
+      "lines": [
+       {
+        "html": "725 − [ 20 × { <b>10 + 7 + 14</b> } ]"
+       },
+       {
+        "text": "10 + 7 + 14 = 31"
+       }
+      ]
+     },
+     "taps": [
+      23.36,
+      23.98,
+      24.42,
+      26.13,
+      26.76,
+      27.22,
+      27.84
+     ]
+    },
+    {
+     "t": 28.15,
+     "say": "s3_next3",
+     "panel": {
+      "text": "Twenty times thirty one is six hundred and twenty.",
+      "type": "math",
+      "badge": "Next step",
+      "lines": [
+       {
+        "html": "725 − [ <b>20 × 31</b> ]"
+       },
+       {
+        "text": "20 × 31 = 620"
+       }
+      ]
+     },
+     "taps": [
+      28.41,
+      29.2,
+      29.83,
+      30.59
+     ]
+    },
+    {
+     "t": 31.38,
+     "say": "s3_end",
+     "panel": {
+      "text": "And seven hundred twenty five minus six hundred twenty leaves one hundred five.",
+      "type": "math",
+      "badge": "Answer",
+      "lines": [
+       {
+        "text": "725 − 620"
+       },
+       {
+        "text": "= 105",
+        "big": true
+       }
+      ]
+     },
+     "taps": [
+      31.63,
+      32.42,
+      33.05,
+      33.89,
+      34.58
+     ]
+    }
+   ]
+  }
+ ]
+}
