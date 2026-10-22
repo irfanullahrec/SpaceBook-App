@@ -1,0 +1,44 @@
+/* Injected into the SpaceBook web app inside the Android WebView (html.sbapp is set by reader_bridge.js).
+   It removes the website's own header, sidebar and chapter list (the app has its own), makes the reading
+   column fill the phone, and gives the one-page-at-a-time view. Nothing here changes the book's own look. */
+html.sbapp, html.sbapp body { background: #fff !important; margin: 0 !important; padding: 0 !important; overflow-x: hidden !important; -webkit-text-size-adjust: 100%; }
+html.sbapp #top-header, html.sbapp #sidebar, html.sbapp #footer, html.sbapp #subpage-nav-bar,
+html.sbapp #paperStatisticalHeader, html.sbapp #overlay, html.sbapp .header-nav-tabs,
+html.sbapp #navGlobalBackBtn, html.sbapp .sb-fs-btn, html.sbapp .sb-card-fs,
+html.sbapp #hamburger { display: none !important; }
+html.sbapp #main-wrapper { margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; left: 0 !important; }
+html.sbapp #page-content, html.sbapp #dashboard-body { margin: 0 !important; padding: 0 !important; max-width: 100% !important; }
+
+/* the subject workspace: no chapter column, tabs on top, content full width */
+html.sbapp .math-unified-view { display: block !important; grid-template-columns: 1fr !important; padding: 0 !important; gap: 0 !important; border-radius: 0 !important;
+  height: auto !important; max-height: none !important; overflow: visible !important; }
+/* the website sizes its content area to the window once, then scrolls inside it; in the app the page itself scrolls */
+html.sbapp .math-topic-area { display: block !important; overflow: visible !important; }
+html.sbapp .math-tab-content-scroll { flex: none !important; height: auto !important; min-height: 0 !important; }
+html.sbapp .math-ch-sidebar { display: none !important; }
+html.sbapp .math-topic-area { max-height: none !important; height: auto !important; border-radius: 0 !important; border: 0 !important; box-shadow: none !important; }
+html.sbapp .math-compact-header-bar { border-radius: 0 !important; margin: 0 !important; }
+html.sbapp .math-tab-content-scroll { max-height: none !important; overflow: visible !important; padding: .35rem .5rem 5.5rem !important; }
+
+/* touch: big enough tap targets, no accidental zoom on double tap */
+html.sbapp button, html.sbapp [onclick], html.sbapp .math-nav-tabs button { touch-action: manipulation; }
+html.sbapp .math-nav-tabs { overflow-x: auto !important; flex-wrap: nowrap !important; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+html.sbapp .math-nav-tabs button { min-height: 44px; white-space: nowrap; }
+html.sbapp img, html.sbapp svg { max-width: 100%; height: auto; }
+html.sbapp table { display: block; max-width: 100%; overflow-x: auto; }
+
+/* one page at a time */
+html.sbapp .sbapp-hide { display: none !important; }
+html.sbapp .sbapp-page-on { animation: sbappIn .22s ease-out; }
+@keyframes sbappIn { from { opacity: .4; transform: translateX(var(--sbapp-from, 24px)); } to { opacity: 1; transform: none; } }
+html.sbapp .bk-spread { grid-template-columns: 1fr !important; }
+html.sbapp .bk-spread::before { display: none !important; }
+html.sbapp .bk-page { min-height: 0 !important; }
+
+/* the web's floating bars are replaced by the app's controls */
+html.sbapp .bk-nav { display: none !important; }
+
+/* meanings open in the app's own pop-up: no text selection handles or system menu, and the website's floating cards stay hidden */
+html.sbapp, html.sbapp * { -webkit-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; -webkit-tap-highlight-color: transparent; }
+html.sbapp input, html.sbapp textarea { -webkit-user-select: text !important; user-select: text !important; }
+html.sbapp .ut-root, html.sbapp #wordHoverTooltip, html.sbapp .word-hover-tooltip, html.sbapp #m6-word, html.sbapp .sb-tri-drawer { display: none !important; }

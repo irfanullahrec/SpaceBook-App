@@ -1,0 +1,9 @@
+/* Read-aloud buttons are hidden for a language when the device has no voice for it (js/core/tts.js sets the class on <html>). */
+html.sb-no-voice-en [onclick^="playEngTTS("],
+html.sb-no-voice-en .para-audio-btn[onclick*="'en-US'"],
+html.sb-no-voice-ur [onclick^="playUrduTTS("],
+html.sb-no-voice-ur .para-audio-btn[onclick*="'ur-PK'"],
+html.sb-no-voice-ps .para-audio-btn[onclick*="'ps-AF'"] { display: none !important; }
+
+.sb-tts-toast { position: fixed; left: 50%; bottom: 72px; transform: translateX(-50%); z-index: 10001; max-width: 92vw; padding: 8px 14px; border-radius: 999px; background: #1e293b; color: #fff; font-size: .88rem; box-shadow: 0 4px 14px rgba(0, 0, 0, .3); }
+.sb-tts-toast[hidden] { display: none; }

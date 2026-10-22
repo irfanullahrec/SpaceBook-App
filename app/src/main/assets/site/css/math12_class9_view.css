@@ -1,0 +1,21 @@
+/* Class 12 additions use the existing Class 9 mathematics layout. */
+.math-unified-view[data-math-class="cls12"] .math12-study-note {
+  padding:.8rem 1rem; border:1px solid #cbd5e1; border-radius:8px;
+  background:#f8fafc; color:#475569; line-height:1.7;
+}
+.math-unified-view[data-math-class="cls12"] .math12-study-question { margin-bottom:1rem; }
+.math-unified-view[data-math-class="cls12"] .math12-question-text { margin:.65rem 0; font-weight:650; white-space:pre-line; line-height:1.75; }
+.math-unified-view[data-math-class="cls12"] .math12-answer-options { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr)); gap:.6rem; }
+.math-unified-view[data-math-class="cls12"] .math12-answer-options button { padding:.75rem; text-align:left; border:1px solid #cbd5e1; border-radius:8px; background:white; color:#17212b; font:inherit; cursor:pointer; }
+.math-unified-view[data-math-class="cls12"] .math12-answer-options .math12-option-correct { background:#dcfce7; border-color:#16a34a; }
+.math-unified-view[data-math-class="cls12"] .math12-answer-options .math12-option-incorrect { background:#fee2e2; border-color:#dc2626; }
+.math-unified-view[data-math-class="cls12"] .math12-worked-answer { margin-top:.8rem; padding:.75rem; background:#f0f9ff; border-radius:8px; }
+.math-unified-view[data-math-class="cls12"] .math12-worked-answer summary { cursor:pointer; font-weight:650; }
+.math-unified-view[data-math-class="cls12"] .math12-worked-answer li { margin:.6rem 0; line-height:1.8; }
+.math-unified-view[data-math-class="cls12"] .math12-worked-text { white-space:pre-line; line-height:1.8; }
+.math-unified-view[data-math-class="cls12"] .math12-language-passage { border-bottom:1px solid #e2e8f0; padding:.8rem 0; }
+.math-unified-view[data-math-class="cls12"] .math12-language-passage p { font-size:1.15rem; line-height:2.2; }
+.math-unified-view[data-math-class="cls12"] .math12-study-question { overflow-wrap:anywhere; min-width:0; }
+.math-unified-view[data-math-class="cls12"] .math12-source-overview { margin-bottom:1rem; }
+.math-unified-view[data-math-class="cls12"] .math12-source-overview > summary { cursor:pointer; font-weight:650; }
+.math-unified-view[data-math-class="cls12"] .topic-sub-tab-btn.active { color:#fff; }

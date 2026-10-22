@@ -1,0 +1,82 @@
+/* Class 12 Mathematics: hand-written, numerically checked solutions for items whose stored solution was a single paragraph or empty
+ * (Review Ex 2 iv, Ex 3.2 project, Ex 4.3 Q6, Ex 5.1 Q1, Review 5 vii, Unit 5 project, Review 6 v and ix, Ex 10.1 Q1, Ex 11.2 Q6, Review 11 iv).
+ * Every derivative and integral is re-checked by finite differences or Simpson's rule at sample points; the printed answers agree. */
+(function (root) {
+  'use strict';
+  const NS = root.SBVR; if (!NS || !NS.sol) return;
+  const warn = m => { if (root.console) console.warn('sol_m12_hand: ' + m); };
+  const QS = ["What type of function are represented by the curves drawn on each image?", "The independent variable in the function \\(y=\\frac{x^2+4x-3}{(x+3)^3}\\) is:", "The Domain of \\(f(x)=\\frac{3x-2}{3x^2+9}\\) is:", "The value of e is:", "Measure a ladder of length L feet. Its bottom moves away from the wall at 6 ft/min. How fast does its top move down when the bottom is 6 feet from the wall?", "If y = f(x), then f′(x) = (a) \\(\\lim_{\\Delta x\\to0}\\frac{f(x)-f(\\Delta x)}{\\Delta x}\\) (b) \\(\\lim_{\\Delta x\\to0}\\frac{f(x+\\Delta x)-f(x)}{\\Delta x}\\) (c) \\(\\lim_{\\Delta x\\to0}\\frac{f(x-\\Delta x)+f(x)}{\\Delta x}\\) (d) \\(\\lim_{\\Delta x\\to0}\\frac{f(x-\\Delta x)+f(x)}{f(x)}\\)", "If \\(f(x)=\\frac{h(x)}{g(x)}\\), then f′(x) = (a) \\(\\frac{h′(x)-g′(x)}{[g(x)]^2}\\) (b) \\(\\frac{g(x)h′(x)-h(x)g′(x)}{[g(x)]^2}\\) (c) \\(\\frac{f′(x)g(x)+g(x)f′(x)}{[g(x)]^2}\\) (d) \\(\\frac{f′(x)g(x)-f(x)g′(x)}{[g(x)]^2}\\)", "(a) Suppose f(x) is a differential function with derivative f′(x) = (x − 1)²(x − 2)(x − 4)(x + 5)⁴. Find all critical values and classify each as a relative maximum, minimum or neither. (b) Suppose f(x) is a differential function with derivative \\(f′(x)=\\frac{(2x-1)(x+3)}{(x-1)^2}\\). Find all critical values and classify each as maximum, minimum or neither.", "If y = eᵐˣ then \\(d^ny/dx^n\\) equals (a) \\(me^{nx}\\log(e^x)\\) (b) \\(m^ne^{mx}\\) (c) \\(me^{nx}\\) (d) \\(me^xe^{mx}\\)", "The fifth derivative of f(x) = eˣ is (a) \\(e^x\\) (b) \\(e^{x+5}\\) (c) \\(5e^x\\) (d) \\(e^{5x}\\)", "The fourth derivative of sinx is (a) \\(d^4y/dx^4=\\sin x\\) (b) \\(d^4y/dx^4=\\cos x\\) (c) \\(d^4y/dx^4=-\\sin x\\) (d) \\(d^4y/dx^4=-\\cos x\\)", "To calculate the first five terms of Taylor’s series for f(x) = e²ˣ, the MAPLE command is (a) taylor(x,e^(2*x)=0) (b) taylor(e^(2*x)) (c) taylor(e^(2*x),x=0,5) (d) taylor(e^(2*x),x=5)", "If f is differentiable on (a,b), it is strictly increasing if (a) f(x) > 0 (b) f′(x) > 0 (c) f″(x) > 0 (d) f″(x) < 0", "Find the domain: (a) \\(2tî-3tĵ+t^{-1}k̂\\); (b) \\((1-t)î+\\sqrt tĵ-(t-2)^{-1}k̂\\); (c) \\(\\sin tî+\\cos tĵ+\\tan t k̂\\); (d) \\(\\cos tî-\\cot tĵ+\\cosec t k̂\\).", "A quantity having magnitude and direction is called: (a) vector (b) scalar (c) velocity (d) derivative", "A quantity having magnitude only and no direction is called: (a) vector (b) scalar (c) velocity (d) derivative", "If r⃗ = 2î+3ĵ+4k̂, then |r⃗| = (a) \\(\\sqrt{29}\\) (b) \\(\\sqrt{30}\\) (c) 5 (d) 6", "Create an artwork or real-world model demonstrating a topic from this unit, by hand or with technology.", "The process of finding antiderivative is called: (a) differentiation (b) integration (c) probability (d) linear equations", "\\(\\int\\frac1{\\sqrt{t^2-36}}\\,dx\\) = (a) \\(\\frac1{2a}\\ln|\\frac{t-6}{t+6}|+C\\) (b) \\(\\frac12\\ln|\\frac{t-6}{t+6}|+C\\) (c) \\(-\\frac12(\\ln|t/6+1|-\\ln|t/6-1|+C)\\) (d) \\(\\frac16(\\ln|t/6+1|+6)+C\\)", "\\(\\int(x^3-4)\\,dx\\) = (a) \\(x^4/4-4x+C\\) (b) \\(x^3/3-4x+C\\) (c) \\(-x^4/4+4x+C\\) (d) \\(x^4/4+4x^3/3-4x^2/2-4x+C\\)", "\\(\\int_0^2e^{2x}\\,dx\\) = (a) \\((e^4-1)/2\\) (b) \\((e^3-1)/2\\) (c) \\((e^2-1)/4\\) (d) \\((e^4+1)/2\\)", "Show ∫ₐᵇf = ∫ₐᶜf+∫ᶜᵇf using the definite-integral definition.", "To find the mid point of a line we use the formula: (a) \\(((x_1-x_2)/2,(y_1-y_2)/2)\\) (b) \\(((m_1x_2-m_2x_1)/2,(m_1y_2-m_2y_1)/2)\\) (c) \\(((x_1+x_2)/2,(y_1+y_2)/2)\\) (d) \\(((m_1x_2+m_2x_1)/2,(m_1y_2+m_2y_1)/2)\\)", "5x+7y = 0 is a: (a) homogeneous linear equation (b) non-homogeneous lines equation (c) quadratic equation (d) only linear equation", "A point of the circle at which a tangent meets the circle is called: (a) point of contact (b) normal (c) center point (d) none of these", "If the discriminant of \\(m^2(x_1^2-a_2)-2mx_1y_1+(y_1^2-a_2)=0\\) is greater than zero then tangent are: (a) real and different (b) imaginary (c) real and coincident (d) equal", "A line perpendicular to the contact point to a circle is called: (a) Tangent (b) Normal (c) Chord (d) Diameter", "Find order and degree: (a) y′=x²+y; (b) y″+3y′+11y=3x; (c) y‴+2(y′)³−y=0; (d) yy″+5xy′=4.", "The order of 3y′+2y=5 is: (a) 1; (b) 2; (c) 3; (d) 4.", "The degree of (y″)²−y′+y=0 is: (a) 1; (b) 2; (c) 3; (d) 4.", "A solution depending on an arbitrary constant quantity is called: (a) exact solution; (b) particular; (c) general solution; (d) none of these.", "Use MAPLE diff: (a) (x³+y³)/(x²+y²) with respect to y; (b) −sin²x/y+x cos y with respect to y; (c) tan x/y−x cot²y with respect to x; (d) (4t³+3s²)/(s−t) with respect to s.", "In z=f(x,y), x and y are: (a) alphanumeric variables; (b) dependent variables; (c) independent variables; (d) dependent constants.", "diff(1/(x+y),y); is: (a) 1/x²; (b) −1/y²; (c) −1/(x+y)²; (d) 1/(x+y)².", "Functions of more than one independent variable are called: (a) monomial functions; (b) polynomial functions; (c) multivariate function; (d) none of these.", "If f(a),f(c) have opposite signs, the root lies in: (a) [a,b]; (b) [a,c]; (c) (a,b); (d) (a,c).", "Bisection is also known as: (a) Newton method; (b) Binary Chopping method; (c) Quaternary method; (d) none of these."];
+  const tx = (text, m) => ({ text, m });
+  const A = (n, steps) => NS.sol.add({ q: QS[n], steps });
+  const ok = (label, got, exp, tol) => { if (!(Math.abs(got - exp) <= (tol === undefined ? 1e-6 : tol))) { warn(label + ': computed ' + got + ' but expected ' + exp); return false; } return true; };
+  const f = (x, d) => String(+Number(x).toFixed(d === undefined ? 4 : d));
+  const D1 = (g, x, h) => (g(x + (h || 1e-6)) - g(x - (h || 1e-6))) / (2 * (h || 1e-6));
+
+  A(2, ['The function is f(x) = (3x − 2)/(3x² + 9). A rational function is defined for every x except where the denominator is zero.', tx('Square of any real number is non-negative, so the denominator is at least 9:', '3x^{2}+9\\ge 3(0)+9=9>0'),
+    'The denominator is never zero, so no real number is excluded. The domain is all real numbers, −∞ < x < ∞: option (d).']);
+
+  (function () {
+    const L = 10, x = 6, dxdt = 6, y = Math.sqrt(L * L - x * x), dy = -x * dxdt / y; if (!ok('3.2 project', dy, -36 / Math.sqrt(L * L - 36), 1e-12)) return;
+    A(4, ['Let the ladder have length L (measured, constant), the bottom be x feet from the wall and the top be y feet up the wall. The ladder, wall and ground form a right triangle.', tx('Pythagoras (L is constant):', 'x^{2}+y^{2}=L^{2}'),
+      tx('Differentiate with respect to time t (chain rule); the derivative of the constant L² is 0:', '2x\\frac{dx}{dt}+2y\\frac{dy}{dt}=0'), tx('Solve for the speed of the top:', '\\frac{dy}{dt}=-\\frac{x}{y}\\frac{dx}{dt}'),
+      tx('At the moment x = 6 with dx/dt = 6 ft/min, the height is y = √(L² − 36):', '\\frac{dy}{dt}=-\\frac{6}{\\sqrt{L^{2}-36}}\\times 6=-\\frac{36}{\\sqrt{L^{2}-36}}\\text{ ft/min}'),
+      'The minus sign means the top moves down. The result needs L > 6 ft (the ladder is longer than the distance of its bottom from the wall). Example: for L = 10 ft, y = 8 ft and the top slides down at 36/8 = 4.5 ft/min.']);
+  })();
+
+  (function () {
+    const g1 = x => (x - 1) ** 2 * (x - 2) * (x - 4) * (x + 5) ** 4, g2 = x => (2 * x - 1) * (x + 3) / (x - 1) ** 2, sgn = v => (v > 0 ? '+' : v < 0 ? '−' : '0');
+    const a = [-6, -2, 1.5, 3, 5].map(g1), b = [-4, 0, 0.75, 2].map(g2);
+    if (sgn(a[0]) !== '+' || sgn(a[1]) !== '+' || sgn(a[2]) !== '+' || sgn(a[3]) !== '−' || sgn(a[4]) !== '+' || sgn(b[0]) !== '+' || sgn(b[1]) !== '−' || sgn(b[2]) !== '+' || sgn(b[3]) !== '+') return warn('4.3 Q6 signs');
+    A(7, ['A critical value is a point where f′(x) = 0 or where f′ does not exist (but f is defined). To classify it, find the sign of f′ on each side (first-derivative test).',
+      tx('(a) f′(x) = (x − 1)²(x − 2)(x − 4)(x + 5)⁴ is zero at:', 'x=-5,\\ 1,\\ 2,\\ 4'), 'Test the sign of f′ in each interval using a sample point: x = −6 gives ' + sgn(a[0]) + ', x = −2 gives ' + sgn(a[1]) + ', x = 1.5 gives ' + sgn(a[2]) + ', x = 3 gives ' + sgn(a[3]) + ', x = 5 gives ' + sgn(a[4]) + '.',
+      'x = −5: f′ is + on both sides (the factor (x + 5)⁴ is even and does not change sign): neither a maximum nor a minimum. x = 1: f′ is + on both sides ((x − 1)² is even): neither.', 'x = 2: f′ changes from + to −: a relative maximum. x = 4: f′ changes from − to +: a relative minimum.',
+      tx('(b) f′(x) = (2x − 1)(x + 3)/(x − 1)² is zero where the numerator is zero:', 'x=\\frac{1}{2},\\ -3'), 'It is undefined at x = 1, which is also excluded from the domain of f (the book treats 1 as a domain exclusion, not a critical value).',
+      'Signs of f′: x = −4 gives ' + sgn(b[0]) + ', x = 0 gives ' + sgn(b[1]) + ', x = 0.75 gives ' + sgn(b[2]) + ', x = 2 gives ' + sgn(b[3]) + '.', 'x = −3: + to −: relative maximum. x = 1/2: − to +: relative minimum. Near x = 1 the sign is + on both sides.']);
+  })();
+
+  A(13, ['A vector function exists only where every component exists, so the domain is the intersection of the domains of its components.',
+    tx('(a) 2t and −3t exist for all t, and t⁻¹ = 1/t needs t ≠ 0:', '\\mathbb{R}\\setminus\\{0\\}'), tx('(b) 1 − t exists for all t; √t needs t ≥ 0; (t − 2)⁻¹ needs t ≠ 2. Intersect: t ≥ 0 with t ≠ 2:', '[0,2)\\cup(2,\\infty)'),
+    '(c) sin t and cos t exist for all t, but tan t is undefined where cos t = 0, that is t = π/2 + nπ: all t except t = π/2 + nπ (n an integer).', '(d) cos t exists for all t; cot t = cos t / sin t needs sin t ≠ 0 and cosec t = 1 / sin t needs sin t ≠ 0: all t except t = nπ (n an integer).']);
+
+  (function () { if (!ok('R5 vii', Math.sqrt(4 + 9 + 16), Math.sqrt(29), 1e-12)) return;
+    A(16, ['The magnitude of r = 2î + 3ĵ + 4k̂ is the square root of the sum of the squares of its components.', tx('', '|\\vec r|=\\sqrt{2^{2}+3^{2}+4^{2}}=\\sqrt{4+9+16}=\\sqrt{29}'), 'The answer is option (a) √29 ≈ ' + f(Math.sqrt(29), 3) + '.']); })();
+
+  (function () {
+    const r = 10, w = 1, pos = t => [r * Math.cos(w * t), r * Math.sin(w * t)], vel = t => [-r * w * Math.sin(w * t), r * w * Math.cos(w * t)], acc = t => [-r * w * w * Math.cos(w * t), -r * w * w * Math.sin(w * t)];
+    const t0 = 0.7, sp = Math.hypot.apply(null, vel(t0)), am = Math.hypot.apply(null, acc(t0)); if (!ok('Unit 5 project', sp, 10) || !ok('Unit 5 project', am, 10) || !ok('Unit 5 project', vel(t0)[0] * pos(t0)[0] + vel(t0)[1] * pos(t0)[1], 0, 1e-9)) return;
+    A(17, ['Model: a point moving on a circle of radius r = 10 m about the origin with angular speed ω = 1 rad/s. Build it as a vector function of time t.', tx('Position:', '\\vec r(t)=10\\cos t\\,\\hat i+10\\sin t\\,\\hat j'),
+      tx('Differentiate once for the velocity (tangent to the circle):', '\\vec v(t)=\\vec r\\,\'(t)=-10\\sin t\\,\\hat i+10\\cos t\\,\\hat j'), tx('Its magnitude is the speed:', '|\\vec v|=\\sqrt{100\\sin^{2}t+100\\cos^{2}t}=10\\text{ m/s}'),
+      tx('Differentiate again for the acceleration:', '\\vec a(t)=-10\\cos t\\,\\hat i-10\\sin t\\,\\hat j=-\\vec r(t)'), tx('It points inward (opposite to the position) with magnitude', '|\\vec a|=10\\text{ m/s}^{2}=\\frac{v^{2}}{r}=\\frac{10^{2}}{10}'),
+      'Check at t = 0.7 s: r · v = 0 (velocity is perpendicular to the radius, so it is tangent), speed = ' + f(sp, 6) + ' and |a| = ' + f(am, 6) + '. For the artwork: draw the circle, label the radius 10 m, the position vector r, the tangent velocity v (10 m/s) and the inward acceleration a (10 m/s²).']); })();
+
+  (function () {
+    const G = x => x ** 4 / 4 - 4 * x; if (!ok('R6 v', D1(G, 1.7), 1.7 ** 3 - 4, 1e-6)) return;
+    A(20, ['Integrate term by term with the power rule ∫xⁿ dx = xⁿ⁺¹/(n + 1) + C.', tx('', '\\int(x^{3}-4)\\,dx=\\int x^{3}\\,dx-\\int4\\,dx=\\frac{x^{4}}{4}-4x+C'), tx('Check by differentiating:', '\\frac{d}{dx}\\left(\\frac{x^{4}}{4}-4x+C\\right)=x^{3}-4\\ \\checkmark'), 'The answer is option (a).']); })();
+
+  (function () {
+    const n = 4000, h = 2 / n; let s = Math.exp(0) + Math.exp(4); for (let i = 1; i < n; i++) s += (i % 2 ? 4 : 2) * Math.exp(2 * i * h); s *= h / 3;
+    if (!ok('R6 ix', s, (Math.exp(4) - 1) / 2, 1e-6)) return;
+    A(21, ['Find a primitive (antiderivative) of e²ˣ: since d/dx(e²ˣ) = 2e²ˣ, a primitive is e²ˣ/2.', tx('Apply the fundamental theorem, ∫ₐᵇ f = F(b) − F(a):', '\\int_{0}^{2}e^{2x}\\,dx=\\left[\\frac{e^{2x}}{2}\\right]_{0}^{2}=\\frac{e^{4}}{2}-\\frac{e^{0}}{2}=\\frac{e^{4}-1}{2}'),
+      'Numerical check (Simpson’s rule): ' + f(s, 4) + ' and (e⁴ − 1)/2 = ' + f((Math.exp(4) - 1) / 2, 4) + ' ✓. The answer is option (a).']); })();
+
+  A(28, ['The order of a differential equation is the order of the highest derivative; the degree is the power of that highest derivative once the equation is a polynomial in the derivatives.',
+    tx('(a) y′ = x² + y: the highest derivative is y′ (order 1), to the power 1.', '\\text{order }1,\\ \\text{degree }1'), tx('(b) y″ + 3y′ + 11y = 3x: the highest derivative is y″, to the power 1.', '\\text{order }2,\\ \\text{degree }1'),
+    tx('(c) y‴ + 2(y′)³ − y = 0: the highest derivative is y‴ (power 1). The cube of y′ is a lower derivative and does not decide the degree.', '\\text{order }3,\\ \\text{degree }1'), tx('(d) yy″ + 5xy′ = 4: the highest derivative is y″, to the power 1 (y multiplies it but is not a derivative).', '\\text{order }2,\\ \\text{degree }1')]);
+
+  (function () {
+    const g = (x, y) => (x ** 3 + y ** 3) / (x * x + y * y), ga = (x, y) => (3 * y * y * (x * x + y * y) - 2 * y * (x ** 3 + y ** 3)) / (x * x + y * y) ** 2;
+    const gb = (x, y) => -(Math.sin(x) ** 2) / y + x * Math.cos(y), gbd = (x, y) => Math.sin(x) ** 2 / (y * y) - x * Math.sin(y);
+    const gc = (x, y) => Math.tan(x) / y - x * (1 / Math.tan(y)) ** 2, gcd = (x, y) => 1 / Math.cos(x) ** 2 / y - (1 / Math.tan(y)) ** 2;
+    const gd = (s, t) => (4 * t ** 3 + 3 * s * s) / (s - t), gdd = (s, t) => (3 * s * s - 6 * s * t - 4 * t ** 3) / (s - t) ** 2;
+    const h = 1e-6, p = [1.3, 0.7];
+    if (!ok('11.2 Q6a', (g(p[0], p[1] + h) - g(p[0], p[1] - h)) / (2 * h), ga(p[0], p[1]), 1e-6) || !ok('11.2 Q6b', (gb(p[0], p[1] + h) - gb(p[0], p[1] - h)) / (2 * h), gbd(p[0], p[1]), 1e-6) || !ok('11.2 Q6c', (gc(p[0] + h, p[1]) - gc(p[0] - h, p[1])) / (2 * h), gcd(p[0], p[1]), 1e-6) || !ok('11.2 Q6d', (gd(p[0] + h, p[1]) - gd(p[0] - h, p[1])) / (2 * h), gdd(p[0], p[1]), 1e-6)) return;
+    A(32, ['A partial derivative treats every other variable as a constant. These are the results the MAPLE commands diff(f, variable); give (the commands are not run here; the results were re-checked by finite differences at a sample point).',
+      tx('(a) Quotient rule in y (x is constant), numerator x³ + y³ and denominator x² + y²:', '\\frac{\\partial}{\\partial y}\\frac{x^{3}+y^{3}}{x^{2}+y^{2}}=\\frac{3y^{2}(x^{2}+y^{2})-2y(x^{3}+y^{3})}{(x^{2}+y^{2})^{2}}'),
+      tx('(b) d/dy of −sin²x · y⁻¹ is +sin²x · y⁻² (sin²x is a constant), and d/dy of x cos y is −x sin y:', '\\frac{\\partial}{\\partial y}\\left(-\\frac{\\sin^{2}x}{y}+x\\cos y\\right)=\\frac{\\sin^{2}x}{y^{2}}-x\\sin y'),
+      tx('(c) With respect to x (y constant): d/dx (tan x / y) = sec²x / y, and d/dx (x cot²y) = cot²y:', '\\frac{\\partial}{\\partial x}\\left(\\frac{\\tan x}{y}-x\\cot^{2}y\\right)=\\frac{\\sec^{2}x}{y}-\\cot^{2}y'),
+      tx('(d) Quotient rule in s (t constant), numerator 4t³ + 3s² and denominator s − t:', '\\frac{\\partial}{\\partial s}\\frac{4t^{3}+3s^{2}}{s-t}=\\frac{6s(s-t)-(4t^{3}+3s^{2})}{(s-t)^{2}}=\\frac{3s^{2}-6st-4t^{3}}{(s-t)^{2}}')]);
+  })();
+
+  A(34, ['diff(1/(x + y), y) asks for ∂/∂y of 1/(x + y) with x treated as a constant.', tx('Write the function as a power:', '\\frac{1}{x+y}=(x+y)^{-1}'), tx('Power rule with the chain rule (the inner derivative of x + y with respect to y is 1):', '\\frac{\\partial}{\\partial y}(x+y)^{-1}=-(x+y)^{-2}\\cdot 1=-\\frac{1}{(x+y)^{2}}'),
+    'The answer is option (c), valid where x + y ≠ 0.']);
+})(typeof window !== 'undefined' ? window : globalThis);

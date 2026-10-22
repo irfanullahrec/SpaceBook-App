@@ -1,0 +1,9 @@
+/* "In the books": text search results under the header search box (js/core/search.js) */
+.sb-ft { border-top: 1px solid #e2e8f0; margin-top: 0.25rem; padding-top: 0.25rem; }
+.sb-ft-head { padding: 0.4rem 0.75rem; font-size: 0.75rem; font-weight: 700; color: #475569; }
+.sb-ft-row { display: flex; flex-direction: column; align-items: flex-start; gap: 0.1rem; width: 100%; text-align: start; background: transparent; border: 0; border-radius: 6px; padding: 0.5rem 0.75rem; cursor: pointer; font: inherit; }
+.sb-ft-row:hover, .sb-ft-row:focus-visible { background: #f1f5f9; }
+.sb-ft-t { font-weight: 600; font-size: 0.9rem; color: #0f172a; }
+.sb-ft-s { font-size: 0.78rem; color: #475569; }
+.sb-ft-note { padding: 0.5rem 0.75rem; font-size: 0.8rem; color: #475569; }
+.sb-ft-all { margin-inline-start: 0.4rem; border: 1px solid #0278b5; background: #fff; color: #0272ab; border-radius: 6px; padding: 0.15rem 0.5rem; cursor: pointer; font: inherit; font-size: 0.78rem; }

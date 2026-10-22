@@ -1,0 +1,31 @@
+/* Phase 12: what the keyboard sees (js/core/a11y.js). Loaded last so that the focus ring is not removed by a component rule. */
+button:focus-visible,
+a[href]:focus-visible,
+summary:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 2px;
+}
+
+/* a sentence of a lesson is clickable (opens its translation) and reachable with the arrow keys: show which one has the focus */
+.lesson-sentence:focus-visible {
+  outline: 2px solid #1d4ed8;
+  outline-offset: 1px;
+  border-radius: 3px;
+  background: rgba(29, 78, 216, 0.08);
+}
+
+/* people who ask their system for less movement get none */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.001ms;
+    scroll-behavior: auto;
+  }
+}

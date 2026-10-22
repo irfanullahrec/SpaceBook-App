@@ -1,0 +1,107 @@
+/* sb_theme.css — one calm, modern look for tabs and cards in every class and subject.
+   Loaded after every other stylesheet. The accent follows the subject colour set by sb_book_skin.js (--c1b / --c1f). */
+:root { --sb-ink:#0f172a; --sb-text:#334155; --sb-muted:#64748b; --sb-line:#e2e8f0; --sb-soft:#f1f5f9; --sb-acc:#4f46e5; }
+
+/* ---------- main tab bar (Lessons · Examples · Exercises …) ---------- */
+.math-nav-tabs, .chapter-nav-tabs {
+  gap:.35rem !important; padding:.5rem .7rem !important; background:#fff !important;
+  border-bottom:1px solid var(--sb-line) !important; align-items:center;
+}
+.math-tab-btn, .bio-tab-btn, .bio-top-tab, .ps-top-tab, .math-top-tab {
+  display:inline-flex !important; align-items:center; gap:.4rem;
+  padding:.5rem 1rem !important; border-radius:999px !important; border:1px solid transparent !important;
+  background:transparent !important; color:#475569 !important; font-size:.86rem !important; font-weight:600 !important;
+  box-shadow:none !important; transition:background .15s ease, color .15s ease, box-shadow .15s ease;
+}
+/* a tab the chapter plan hides (js/sb_structure.js: empty or repeated) stays hidden despite the rule above */
+.math-tab-btn[hidden], .bio-tab-btn[hidden], .bio-top-tab[hidden], .ps-top-tab[hidden], .math-top-tab[hidden],
+.math-sub-tab-btn[hidden], .topic-sub-tab-btn[hidden], .category-sub-tab-btn[hidden], .slo-tab-pill[hidden] { display:none !important; }
+.math-tab-btn:hover, .bio-tab-btn:hover, .bio-top-tab:hover, .ps-top-tab:hover, .math-top-tab:hover {
+  background:var(--sb-soft) !important; color:var(--sb-ink) !important;
+}
+.math-tab-btn.active, .bio-tab-btn.active, .bio-top-tab.active, .ps-top-tab.active, .math-top-tab.active {
+  background:var(--c1b, var(--sb-acc)) !important; color:#fff !important;
+  box-shadow:0 6px 16px -8px var(--c1b, var(--sb-acc)) !important;
+}
+
+/* ---------- sub-tabs (Exercise 2.1 · 2.2 …, Translations · Videos …): one segmented control ---------- */
+.math-sub-tabs, .topic-sub-tabs-bar, .topic-sub-tabs-bar-fixed, .category-sub-tabs-bar, .slo-tab-buttons {
+  display:flex !important; flex-wrap:nowrap; gap:.25rem !important; width:fit-content; max-width:100%;
+  padding:.3rem !important; margin-bottom:1rem !important; background:var(--sb-soft) !important;
+  border:1px solid var(--sb-line) !important; border-radius:14px !important; overflow-x:auto;
+}
+/* Mathematics exercise row stays pinned to the top of the scrolling content area (all classes, normal + full screen).
+   The white halo hides content that would otherwise show in the gaps around the pill bar. */
+.math-sub-tabs {
+  position:sticky; top:0; z-index:30; -webkit-overflow-scrolling:touch;
+  box-shadow:0 0 0 1rem #fff, 0 1.2rem .8rem -.5rem rgba(15,23,42,.14);
+}
+.math-sub-tab-btn, .topic-sub-tab-btn, .category-sub-tab-btn, .slo-tab-pill {
+  display:inline-flex !important; align-items:center; gap:.35rem;
+  padding:.45rem .95rem !important; border:0 !important; border-radius:10px !important;
+  background:transparent !important; color:#475569 !important; font-size:.85rem !important; font-weight:600 !important;
+  box-shadow:none !important; white-space:nowrap; transition:background .15s ease, color .15s ease;
+}
+.math-sub-tab-btn:hover, .topic-sub-tab-btn:hover, .category-sub-tab-btn:hover, .slo-tab-pill:hover {
+  background:rgba(255,255,255,.7) !important; color:var(--sb-ink) !important;
+}
+.math-sub-tab-btn.active, .topic-sub-tab-btn.active, .category-sub-tab-btn.active, .slo-tab-pill.active {
+  background:#fff !important; color:var(--c1b, var(--sb-acc)) !important;
+  box-shadow:0 1px 3px rgba(15,23,42,.12), 0 0 0 1px rgba(15,23,42,.04) !important;
+}
+
+/* ---------- cards (topics, questions, examples, SLOs) ---------- */
+.math-topic-card, .math-accordion-card, .para-card, .urdu-section-card, .slo-accordion-card {
+  border-radius:14px !important;
+  transition:box-shadow .2s ease, border-color .2s ease;
+}
+.math-accordion-card, .math-topic-card[data-sb-topic], .slo-accordion-card {
+  background:#fff !important; border:1px solid var(--sb-line) !important;
+  border-inline-start:4px solid var(--c1f, var(--sb-acc)) !important;
+  box-shadow:0 1px 2px rgba(15,23,42,.05) !important; padding:.95rem 1.15rem !important;
+}
+.math-accordion-card:hover, .math-topic-card[data-sb-topic]:hover, .slo-accordion-card:hover {
+  box-shadow:0 10px 28px -14px rgba(15,23,42,.28) !important;
+}
+.math-accordion-card.open, .slo-accordion-card.open, .math-topic-card[data-sb-topic]:not(.sb-topic-closed) {
+  border-color:color-mix(in srgb, var(--c1f, var(--sb-acc)) 35%, var(--sb-line)) !important;
+  border-inline-start-color:var(--c1f, var(--sb-acc)) !important;
+}
+.math-acc-header, .sb-topic-head, .slo-accordion-header {
+  background:transparent !important; color:var(--sb-ink) !important; border-radius:10px;
+  display:flex; align-items:center; justify-content:space-between; gap:.6rem; cursor:pointer;
+}
+.math-acc-header h3, .math-acc-header h4, .math-acc-header strong { color:var(--sb-ink) !important; }
+.math-acc-header > div:first-child, .sb-topic-head > div:first-child { flex:1 1 auto; min-width:0; flex-wrap:nowrap !important; align-items:center; }
+.math-acc-header > div:first-child > span:not(.math-badge), .math-acc-header > div:first-child > h3, .math-acc-header > div:first-child > h4 { min-width:0; line-height:1.45; }
+.math-acc-header .math-badge { flex:0 0 auto; min-width:28px; text-align:center; }
+.math-acc-icon, .sb-topic-chev {
+  flex:0 0 auto; display:inline-flex !important; align-items:center; justify-content:center;
+  width:30px; height:30px; border-radius:50%; background:var(--sb-soft); color:var(--c1b, var(--sb-acc)) !important;
+  font-size:1.05rem !important; font-weight:700; transition:transform .2s ease, background .2s ease;
+}
+.math-acc-header:hover .math-acc-icon, .sb-topic-head:hover .sb-topic-chev { background:color-mix(in srgb, var(--c1f, var(--sb-acc)) 18%, #fff); }
+.math-accordion-card.open .math-acc-icon { background:var(--c1b, var(--sb-acc)) !important; color:#fff !important; }
+.math-badge { border-radius:8px !important; font-weight:700 !important; }
+
+/* per-card full screen: a quiet icon button */
+.sb-topic-tools { gap:.35rem !important; margin-inline-start:auto !important; padding-inline-start:.4rem; }
+.sb-topic-head { justify-content:flex-start !important; }
+.sb-topic-fs {
+  width:30px; height:30px; padding:0 !important; display:inline-flex; align-items:center; justify-content:center;
+  border:0 !important; border-radius:50% !important; background:transparent !important; color:var(--sb-muted) !important;
+  font-size:1rem !important; line-height:1; cursor:pointer;
+}
+.sb-topic-fs:hover { background:var(--sb-soft) !important; color:var(--c1b, var(--sb-acc)) !important; }
+
+/* page-level buttons (Expand all, Full screen, Collapse all) */
+.math-toolbar-btn, .sb-fs-btn {
+  border-radius:999px !important; border:1px solid var(--sb-line) !important; background:#fff !important;
+  color:var(--sb-text) !important; font-weight:600 !important; box-shadow:0 1px 2px rgba(15,23,42,.05) !important;
+}
+.math-toolbar-btn:hover, .sb-fs-btn:hover { border-color:var(--c1b, var(--sb-acc)) !important; color:var(--c1b, var(--sb-acc)) !important; background:#fff !important; }
+
+@media (max-width: 640px) {
+  .math-tab-btn, .bio-tab-btn, .bio-top-tab, .ps-top-tab, .math-top-tab { padding:.45rem .8rem !important; font-size:.8rem !important; }
+  .math-accordion-card, .math-topic-card[data-sb-topic], .slo-accordion-card { padding:.75rem .85rem !important; }
+}

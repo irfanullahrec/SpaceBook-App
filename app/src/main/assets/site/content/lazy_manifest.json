@@ -1,0 +1,7287 @@
+{
+ "schema": "spacebook.lazy/1",
+ "containers": [
+  "CLASS11_BOOKS",
+  "CLS10_BOOKS",
+  "CLS12_BOOKS",
+  "CLS1_BOOKS",
+  "CLS2_BOOKS",
+  "CLS3_BOOKS",
+  "CLS4_BOOKS",
+  "CLS5_BOOKS",
+  "CLS5_SOLUTIONS",
+  "CLS6_BOOKS",
+  "CLS6_SOLUTIONS",
+  "CLS7_BOOKS",
+  "CLS8_BOOKS",
+  "CLS9_BOOKS"
+ ],
+ "files": [
+  {
+   "src": "js/drawing_1_data.js",
+   "bytes": 32985,
+   "sha256": "99160bf4436667fa1fa32fbc22d9ecdb35b3184fc158deb0588144b608d31b06",
+   "stubs": [
+    {
+     "name": "DRAWING_1_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "DRAWING_1_TIPS",
+     "kind": "array"
+    },
+    {
+     "name": "DRAWING_1_EXAM",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/drawing_1_book.js",
+   "bytes": 180053,
+   "sha256": "d8c3b1f5ef2d184933707a282cd38bf29e356ef110c09bf2316395e3613c954a",
+   "stubs": [
+    {
+     "name": "DRAWING_1_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS1_BOOKS": [
+     "drawing"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/urdu_1_book.js",
+   "bytes": 2683,
+   "sha256": "242844cb2ad5d3e7352875de452d61cfe9acd10bcc3f38b371a0848cab616b67",
+   "stubs": [
+    {
+     "name": "URDU_1_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS1_BOOKS": [
+     "urdu"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/gk_1_book.js",
+   "bytes": 2816,
+   "sha256": "7c660710f08f39067d82ca9f696c3bc412fbd52f917f3ab6db5418170cdc16bf",
+   "stubs": [
+    {
+     "name": "GK_1_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS1_BOOKS": [
+     "gk"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/drawing_2_data.js",
+   "bytes": 173777,
+   "sha256": "8abd20f394f087b47fc2a27abc3322dc8e20295452f17287d4a485a1d6797610",
+   "stubs": [
+    {
+     "name": "DRAWING_2_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS2_BOOKS": [
+     "drawing"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/drawing_3_data.js",
+   "bytes": 125099,
+   "sha256": "917dd9f441b076519969f2de22ce3c7b0dad3eb7d8e9f37cd76cecb6007da4d5",
+   "stubs": [
+    {
+     "name": "DRAWING_3_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "DRAWING_3_ART",
+     "kind": "object"
+    },
+    {
+     "name": "DRAWING_3_EXAM",
+     "kind": "object"
+    }
+   ],
+   "keys": {
+    "CLS3_BOOKS": [
+     "drawing"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/data_chem.js",
+   "bytes": 9725352,
+   "sha256": "3fe33695a029dd6b27524c18f7b5c1a69e86cb9f71a8c02092553cc725daba9e",
+   "stubs": [],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "chemChapters",
+    "chem10Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/chemistry_10_source_data.js",
+     "bytes": 366080,
+     "sha256": "2872fa0f8042579b600769fff11b1e3c72926f9f8187dcc7d31fca91ed980d36"
+    }
+   ]
+  },
+  {
+   "src": "js/chemistry_10_book_data.js",
+   "bytes": 2292021,
+   "sha256": "fe66587f95a9d3afbfa4db4ad69c1a097ed86213e52f54e2490899be4d943633",
+   "stubs": [
+    {
+     "name": "CHEMISTRY_10_BOOK_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS10_BOOKS": [
+     "chem"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/data_phys.js",
+   "bytes": 7269507,
+   "sha256": "78f3a495acd58ce6a3992928bbbc91cdfee5113fbee71928f3ce54ac6519314b",
+   "stubs": [],
+   "keys": {},
+   "fns": [
+    "renderPhysics10SourceParagraph",
+    "physics10SpringPath",
+    "physics10MassSpringFigure",
+    "physics10Formula",
+    "renderPhysics10SourcePage",
+    "renderPhysics10SourceSection",
+    "renderPhysics10SourceFigure",
+    "renderPhysics10WorkedExample",
+    "renderClass10PhysicsWorkedExamples",
+    "physics10SourceSearchText"
+   ],
+   "dataKeys": [
+    "physChapters",
+    "phys10Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/physics_10_source_data.js",
+     "bytes": 979352,
+     "sha256": "0cee898f0b6bb4b33dbd422f81c11c6457c5112c0e33643e5dcbe9c4c214955a"
+    }
+   ]
+  },
+  {
+   "src": "js/physics_10_book_data.js",
+   "bytes": 2527880,
+   "sha256": "781146a10ec8f64d77a5542dc4fc9c16c0a5b759c02535847ec74e082b49d009",
+   "stubs": [
+    {
+     "name": "PHYSICS_10_BOOK_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS10_BOOKS": [
+     "phys"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/biology_10_book_data.js",
+   "bytes": 2523499,
+   "sha256": "86c8fa3ab88c3e4f57c13802e07ec04e7d3d24e23d553f95295a61c38f287144",
+   "stubs": [
+    {
+     "name": "BIOLOGY_10_BOOK_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS10_BOOKS": [
+     "bio"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_10_book_data.js",
+   "bytes": 1342329,
+   "sha256": "bf9de0eff4aebb44162675e4e5a31fe7e910f16e997a7c623cc9c5c9fd2c14dc",
+   "stubs": [
+    {
+     "name": "MATH_10_BOOK_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS10_BOOKS": [
+     "math"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/data_eng.js",
+   "bytes": 2542177,
+   "sha256": "60d3b57cfe30c58719d6a884b4dc69fcd7549f160a675f782d1af6e8c3d735b6",
+   "stubs": [
+    {
+     "name": "ENGLISH_10_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "eng10Unit1",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit2",
+     "kind": "object"
+    },
+    {
+     "name": "u2ArticleB",
+     "kind": "object"
+    },
+    {
+     "name": "u2Indefinite",
+     "kind": "object"
+    },
+    {
+     "name": "u2Antecedents",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit3",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit4",
+     "kind": "object"
+    },
+    {
+     "name": "u3clausesFinal",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit5",
+     "kind": "object"
+    },
+    {
+     "name": "u5dict",
+     "kind": "array"
+    },
+    {
+     "name": "u5types",
+     "kind": "object"
+    },
+    {
+     "name": "u5degrees",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit6",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit7",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit8",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit9",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit10",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit11",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit12",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit13",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit14",
+     "kind": "object"
+    },
+    {
+     "name": "eng10Unit15",
+     "kind": "object"
+    },
+    {
+     "name": "_eng10U15Grammar",
+     "kind": "array"
+    },
+    {
+     "name": "_eng10U15GrammarObject",
+     "kind": "object"
+    },
+    {
+     "name": "_u7SourceGlossary",
+     "kind": "object"
+    },
+    {
+     "name": "_u7p76Task",
+     "kind": "object"
+    },
+    {
+     "name": "_u7ga",
+     "kind": "array"
+    },
+    {
+     "name": "_u7g",
+     "kind": "object"
+    },
+    {
+     "name": "_u8UrParts",
+     "kind": "array"
+    },
+    {
+     "name": "_u8PsParts",
+     "kind": "array"
+    },
+    {
+     "name": "_u8phrase",
+     "kind": "object"
+    },
+    {
+     "name": "_u9UrLines",
+     "kind": "array"
+    },
+    {
+     "name": "_u9PsLines",
+     "kind": "array"
+    },
+    {
+     "name": "g",
+     "kind": "array"
+    },
+    {
+     "name": "m",
+     "kind": "array"
+    },
+    {
+     "name": "activities",
+     "kind": "array"
+    },
+    {
+     "name": "ur",
+     "kind": "array"
+    },
+    {
+     "name": "ps",
+     "kind": "array"
+    },
+    {
+     "name": "dict",
+     "kind": "array"
+    },
+    {
+     "name": "AUr",
+     "kind": "array"
+    },
+    {
+     "name": "BU",
+     "kind": "array"
+    },
+    {
+     "name": "tUr",
+     "kind": "array"
+    },
+    {
+     "name": "qsUr",
+     "kind": "array"
+    },
+    {
+     "name": "qPas",
+     "kind": "array"
+    },
+    {
+     "name": "qUr",
+     "kind": "array"
+    },
+    {
+     "name": "passU",
+     "kind": "array"
+    },
+    {
+     "name": "punctU",
+     "kind": "array"
+    },
+    {
+     "name": "ri",
+     "kind": "array"
+    },
+    {
+     "name": "ru",
+     "kind": "array"
+    },
+    {
+     "name": "rp",
+     "kind": "array"
+    },
+    {
+     "name": "coUr",
+     "kind": "array"
+    },
+    {
+     "name": "passOurs",
+     "kind": "array"
+    },
+    {
+     "name": "pu",
+     "kind": "array"
+    },
+    {
+     "name": "c",
+     "kind": "object"
+    },
+    {
+     "name": "d",
+     "kind": "object"
+    },
+    {
+     "name": "e",
+     "kind": "object"
+    },
+    {
+     "name": "f",
+     "kind": "object"
+    },
+    {
+     "name": "qu",
+     "kind": "array"
+    },
+    {
+     "name": "mu",
+     "kind": "array"
+    },
+    {
+     "name": "vu",
+     "kind": "object"
+    },
+    {
+     "name": "arrays",
+     "kind": "array"
+    },
+    {
+     "name": "cOUs",
+     "kind": "array"
+    },
+    {
+     "name": "u",
+     "kind": "array"
+    },
+    {
+     "name": "qp",
+     "kind": "array"
+    },
+    {
+     "name": "au",
+     "kind": "array"
+    },
+    {
+     "name": "ap",
+     "kind": "array"
+    },
+    {
+     "name": "ou",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "engChapters",
+    "eng10Chapters",
+    "eng10EditionMeta",
+    "eng10FrontMatter",
+    "eng10Contents",
+    "eng10SkillsByPage",
+    "eng10ReviewPages"
+   ],
+   "also": [
+    {
+     "src": "js/english_10_data.js",
+     "bytes": 1837701,
+     "sha256": "34448e28bef7079dbd38a9c246bd1ca353e2351fdac7307274ace2960e8d3165"
+    }
+   ],
+   "after": [
+    {
+     "src": "js/english_10_source_review.js",
+     "bytes": 539498,
+     "sha256": "776bf021b92ffa4dd59197fb8b89b79ba3efd3e169dfdb5133c7f7e086accb90"
+    }
+   ]
+  },
+  {
+   "src": "js/data_bio.js",
+   "bytes": 605664,
+   "sha256": "1d013d60fcde3b853f1b921892ebd87082eb9db815ed59453dcd4f251ddabf77",
+   "stubs": [],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "bioChapters",
+    "bio10Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/biology_10_front_source.js",
+     "bytes": 4835,
+     "sha256": "534d00e2fcfc0d94c45439487ca9573b914a8ddfd1222b681dfe8facb2341293"
+    },
+    {
+     "src": "js/biology_10_unit10_source.js",
+     "bytes": 143802,
+     "sha256": "52519a5199a9fffd65458a7bc5d321c54cbef8d524dc888336e7ed32c795bf21"
+    },
+    {
+     "src": "js/biology_10_unit11_source.js",
+     "bytes": 167762,
+     "sha256": "24ebe7ec3106954168a360bf8aba4d23a005b34d24541e3b033ea31f4c778939"
+    },
+    {
+     "src": "js/biology_10_unit12_source.js",
+     "bytes": 279812,
+     "sha256": "97d5371fab48884f102157390cfb4da74490e972d4655152e8a0a65d14de3082"
+    },
+    {
+     "src": "js/biology_10_unit13_source.js",
+     "bytes": 129946,
+     "sha256": "5182e02821fa0365ce499f51592c1486b98b92e381bdf044aba4a80a79ed42b3"
+    },
+    {
+     "src": "js/biology_10_unit14_source.js",
+     "bytes": 231121,
+     "sha256": "859c7ada6b36b1af37e46d4a9d888e6dd5eaab178b7eecf300a9e4813141ccdf"
+    },
+    {
+     "src": "js/biology_10_unit15_source.js",
+     "bytes": 180970,
+     "sha256": "422ee95889a78779a5b190d7eec321ab491fb0401c120cca736f9be4b9821e9b"
+    },
+    {
+     "src": "js/biology_10_unit16_source.js",
+     "bytes": 306951,
+     "sha256": "c01c178cbf4a5c28acd44282cda66b7e66ef2bda2cccc9e25701d8ff71712d2d"
+    },
+    {
+     "src": "js/biology_10_unit17_source.js",
+     "bytes": 138716,
+     "sha256": "687dcddf07901c355922e597a72a66a7b371dde98c320ac3b320a0e1ede76aa6"
+    },
+    {
+     "src": "js/biology_10_unit18_source.js",
+     "bytes": 126409,
+     "sha256": "4a8d566109f0cccbd7d3bb9f39458e7bedd71bbeb8f755cd56035690e0e44142"
+    },
+    {
+     "src": "js/biology_10_back_source.js",
+     "bytes": 74971,
+     "sha256": "d64e14af727b4c836a79691f54e2ce47e4c94a3f486ff4d4cb34aff503bae095"
+    }
+   ]
+  },
+  {
+   "src": "js/data_comp.js",
+   "bytes": 286980,
+   "sha256": "2317e7b0b2bb71741a21d06994dd13ba0d7559eaf79bba662ec7a9378d8fdd3d",
+   "stubs": [],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "compChapters"
+   ],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/dictionary_data.js",
+   "bytes": 515529,
+   "sha256": "e963b9aea411c0814fe056334d244dee09d35e94d9e57c7601970fbd1edc2fd6",
+   "stubs": [
+    {
+     "name": "ENG_URDU_DICT",
+     "kind": "object"
+    },
+    {
+     "name": "ENG_UNIT_VOCAB_WORDS",
+     "kind": "object"
+    },
+    {
+     "name": "CHEM_UNIT_VOCAB_WORDS",
+     "kind": "object"
+    },
+    {
+     "name": "KPK_TEXTBOOK_FALLBACK_DICT",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [
+    "lookupEngWord"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/urdu_data.js",
+   "bytes": 2664436,
+   "sha256": "a26133e5bf532a2a05a8a93f76da408a84c792f38d4b8bb0cd3319e14443673a",
+   "stubs": [
+    {
+     "name": "URDU_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "urduChapters"
+   ],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/urdu_10_data.js",
+   "bytes": 1397198,
+   "sha256": "7dce0d13832bb2c6ce1d56bc1344f848846808140292c6f9f1bbb16ad28bb9d1",
+   "stubs": [
+    {
+     "name": "URDU_10_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS10_BOOKS": [
+     "urdu"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/english_data.js",
+   "bytes": 1291397,
+   "sha256": "e4fbd39adcdcf302c33b92849ab0286570c3528c48ff91676bb2c532a5cc27cd",
+   "stubs": [
+    {
+     "name": "ENGLISH_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/english_1_data.js",
+   "bytes": 545131,
+   "sha256": "dcccf49217051883afdfbae3462bfba1eb9f47e6333d26aa1e228b066f71c7a4",
+   "stubs": [
+    {
+     "name": "ENGLISH_1_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "eng1Chapters"
+   ],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/english_1_book.js",
+   "bytes": 1393914,
+   "sha256": "e3103e4b7b040a7709107068252f0218b66d5d584c8caa91c94c47b09bf1966e",
+   "stubs": [
+    {
+     "name": "ENGLISH_1_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS1_BOOKS": [
+     "eng"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/primary_page_art.js",
+   "bytes": 15841,
+   "sha256": "0959269ccfbdd13ce505de6cb03a55635fb44bfbf692f200916da8ba5792232d",
+   "stubs": [
+    {
+     "name": "PRIMARY_PAGE_ART",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [
+    "primaryArtSvg",
+    "renderPrimaryArtwork"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/english_1_pages.js",
+   "bytes": 12109,
+   "sha256": "8347134538188c405c31499252737eb3bdd63e1de2bf7ce33bef35f03daccf64",
+   "stubs": [
+    {
+     "name": "ENGLISH_1_PAGES",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/primary_page_learning.js",
+   "bytes": 13596,
+   "sha256": "d89a031d6f69c7ed212cbb5be09745fcf08c287c4af2a248e71787222ab87880",
+   "stubs": [
+    {
+     "name": "PRIMARY_PAGE_UI",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [
+    "primaryPagesFor",
+    "primaryPageSpeak",
+    "primaryPageRevealKey",
+    "renderPrimaryPageView",
+    "primaryPageNav",
+    "primaryPageRerender",
+    "renderPrimaryPageBlocks",
+    "renderPrimaryFigureGrid",
+    "primaryPageToggleReveal",
+    "renderPrimarySayNames",
+    "primaryPageSayAll",
+    "renderPrimaryInitialSoundQuiz",
+    "primaryPageQuizStart",
+    "primaryPageQuizPick",
+    "renderPrimaryNameFive",
+    "primaryPageCollect",
+    "primaryPageStyles"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_data.js",
+   "bytes": 683848,
+   "sha256": "6dbcbeb5053bc4477ff305cd9662e1ee267f6cd53f0baabf6df55c4643f81522",
+   "stubs": [
+    {
+     "name": "MATH_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "mathChapters"
+   ],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_10_data.js",
+   "bytes": 511158,
+   "sha256": "7875f06b8dcc4b166911cadf33fa1d78ddb88b5c5dd416756a5dce3ad79e86bb",
+   "stubs": [
+    {
+     "name": "MATH_10_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_1_data.js",
+   "bytes": 148301,
+   "sha256": "533587f2b7d5be361b08fd2f202b1c6794be55a9c7d20e9169586e7a428b2e08",
+   "stubs": [
+    {
+     "name": "MATH_1_URDU",
+     "kind": "object"
+    },
+    {
+     "name": "MATH_1_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [
+    "makeMath1Section",
+    "makeMath1Problem",
+    "makeMath1Chapter"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_1_book.js",
+   "bytes": 2114614,
+   "sha256": "271754fcd57faac8013b3164c16d5d624393c5789259b2c72f973fe663888a6c",
+   "stubs": [
+    {
+     "name": "MATH_1_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS1_BOOKS": [
+     "math"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_2_data.js",
+   "bytes": 2142728,
+   "sha256": "570b633be488c371c95a360b15bb026cd9d3260cfa586553ae29ab580b1b77c8",
+   "stubs": [
+    {
+     "name": "MATH_2_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS2_BOOKS": [
+     "math"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_3_book_text.js",
+   "bytes": 113401,
+   "sha256": "c52ae08bee9a22535aabf1d5a1ab8464467db8b78b9e972c8b3931ebade05734",
+   "stubs": [
+    {
+     "name": "MATH_3_BOOK_TEXT",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_3_data.js",
+   "bytes": 1839242,
+   "sha256": "899137f0d6185e99ec89ec9253c934a32c4ddc5e192a4b7b0a2927959ac82a9e",
+   "stubs": [
+    {
+     "name": "MATH_3_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS3_BOOKS": [
+     "math"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_primary_visuals.js",
+   "bytes": 33621,
+   "sha256": "127017ed56d29dbb70c1a9c489f5140f86e88cdb72a12b0fa57c9f1fa91a8477",
+   "stubs": [
+    {
+     "name": "PRIMARY_MATH_VISUALS",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [
+    "renderPrimaryMathDiagram",
+    "renderClass3MathDiagram"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/pakstudy_data.js",
+   "bytes": 1260910,
+   "sha256": "6657f3b95c7d6e2c6ce2443f0d67636303c5eb11ca25d3b6f742e04ebbef23a7",
+   "stubs": [
+    {
+     "name": "PAKSTUDY_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/general_science_9_data.js",
+   "bytes": 904045,
+   "sha256": "1c8d8cdb69a6e244768833c34077eb3582c8efbbaac293d7f0f5a8e709221bea",
+   "stubs": [
+    {
+     "name": "GENERAL_SCIENCE_9_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "genSci9Chapters"
+   ],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/hpe_9_data.js",
+   "bytes": 845211,
+   "sha256": "025e021e086b55b456e74d9de8e0725a94d3ee2009f40c4ea8f6a75222a8ed77",
+   "stubs": [
+    {
+     "name": "HPE_9_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS9_BOOKS": [
+     "hpe"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/biology_9_book.js",
+   "bytes": 2381116,
+   "sha256": "fe9b4efdaafdbc31796e26c6a764b990ff1c42f3fe7fdf8bafa6e405702da338",
+   "stubs": [
+    {
+     "name": "BIOLOGY_9_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS9_BOOKS": [
+     "bio"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/chemistry_9_book.js",
+   "bytes": 2710210,
+   "sha256": "6b9dd3594d569a65d4fad3a5bf018d83319d512a783808d2850a7e4316e3146a",
+   "stubs": [
+    {
+     "name": "CHEMISTRY_9_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS9_BOOKS": [
+     "chem"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_9_book_data.js",
+   "bytes": 1172977,
+   "sha256": "7ab4e2ee3e4275218c9699edf52699339ffb1c70dce81ebe3442a42b0cc39747",
+   "stubs": [
+    {
+     "name": "MATH_9_BOOK_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS9_BOOKS": [
+     "math"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/english_9_book.js",
+   "bytes": 1242026,
+   "sha256": "d3558cbb29c0ae068e523e39a32e1c1b703c18fb89daa11321d4bd0e5e97d405",
+   "stubs": [
+    {
+     "name": "ENGLISH_9_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS9_BOOKS": [
+     "eng"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/pakstudy_9_book.js",
+   "bytes": 1125677,
+   "sha256": "7cd6a3358a16f63fc73980d6bba0db6819e89282ef437eeebc9d389c79e563b1",
+   "stubs": [
+    {
+     "name": "PAKSTUDY_9_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS9_BOOKS": [
+     "pakstudy"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/general_science_9_book.js",
+   "bytes": 1200089,
+   "sha256": "7c610700c623f0e98cb70e77fba7712cd27481bfb3dc199f28e3117abc7466fe",
+   "stubs": [
+    {
+     "name": "GENERAL_SCIENCE_9_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS9_BOOKS": [
+     "sci"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/computer_9_data.js",
+   "bytes": 1372635,
+   "sha256": "dfa557c518859075c51417492a7a6cf23b4fe2d6a7c4ceb89650021130c09397",
+   "stubs": [
+    {
+     "name": "COMPUTER_9_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS9_BOOKS": [
+     "comp"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamiat_9_data.js",
+   "bytes": 1194122,
+   "sha256": "542da4e9ef1e98dbe05481906305757a6025987ab1824b333a82702a3ce96e73",
+   "stubs": [
+    {
+     "name": "ISLAMIAT_9_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS9_BOOKS": [
+     "isl"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/drawing_9_data.js",
+   "bytes": 713529,
+   "sha256": "9544806f1a33f64ad56a9b326f28c5a5ac0403ac63d4f8f26e570d3021cc1c2d",
+   "stubs": [
+    {
+     "name": "DRAWING_9_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS9_BOOKS": [
+     "drawing"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamiat_ikhtiari_9_data.js",
+   "bytes": 52765,
+   "sha256": "9f2ec76dde4b640bd2d2c01971d6e38ef2af18abf88a2e053641860b92bfb175",
+   "stubs": [
+    {
+     "name": "ISLAMIAT_IKHTIARI_9_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "islopt9Chapters"
+   ],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/mutalia_quran_9_data.js",
+   "bytes": 2355640,
+   "sha256": "88edb2fde69ae26406bbc0f067ff8d9013645055706e500de81c933086991fa9",
+   "stubs": [
+    {
+     "name": "MUTALIA_QURAN_9_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS9_BOOKS": [
+     "quran"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/pakstudy_10_data.js",
+   "bytes": 1222479,
+   "sha256": "b0e97ef1fcbcad9501b37fde31fea0552ccac3b023c0a94a50cc319d9fdb3dbb",
+   "stubs": [
+    {
+     "name": "PAKSTUDY_10_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS10_BOOKS": [
+     "pakstudy"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/computer_10_data.js",
+   "bytes": 1699859,
+   "sha256": "1a105762ba0fbb7142d786ee99faf4791f4480944a8109652c5ed890f11591ff",
+   "stubs": [
+    {
+     "name": "COMPUTER_10_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS10_BOOKS": [
+     "comp"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/general_science_10_data.js",
+   "bytes": 1552428,
+   "sha256": "be01a96c3ab7730bd0ad02552451c300b219d7608e1dbe6fc7066bef7c651c35",
+   "stubs": [
+    {
+     "name": "GENERAL_SCIENCE_10_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS10_BOOKS": [
+     "sci"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/hpe_10_data.js",
+   "bytes": 1257365,
+   "sha256": "35e8dbcad5cb7e2ca9bcac883f78be9f14981b116e8a7da17c481279dac95b9b",
+   "stubs": [
+    {
+     "name": "HPE_10_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS10_BOOKS": [
+     "hpe"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/drawing_10_data.js",
+   "bytes": 501394,
+   "sha256": "d02218b253d152af44ec7614cd17fb9e5fd4a094a263f4b37ea73f42a38ec03d",
+   "stubs": [
+    {
+     "name": "DRAWING_10_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS10_BOOKS": [
+     "drawing"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamiat_ikhtiari_10_data.js",
+   "bytes": 2090368,
+   "sha256": "989f8736d83f30254ef3ceb7b96d90932968973d0ecbc21b949c856d5d771dcc",
+   "stubs": [
+    {
+     "name": "ISLAMIAT_IKHTIARI_10_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS10_BOOKS": [
+     "islopt"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/mutalia_quran_10_data.js",
+   "bytes": 3031357,
+   "sha256": "5d0e06716e15c5c5a459cbe44cbc54629b31d50345140d4b15fb973e02f987ac",
+   "stubs": [
+    {
+     "name": "MUTALIA_QURAN_10_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS10_BOOKS": [
+     "quran"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/bio_data.js",
+   "bytes": 3817623,
+   "sha256": "37075d67b6bbc3af40b372332177bf1b2913611548757ae602217b8a2b73bd0a",
+   "stubs": [
+    {
+     "name": "BIO_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamyat_data.js",
+   "bytes": 751985,
+   "sha256": "54d175f46c86abb1f436316c43352db35410df070269e7db8e45db877d2d0674",
+   "stubs": [
+    {
+     "name": "ISLAMYAT_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "islamyatChapters"
+   ],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamyat_10_data.js",
+   "bytes": 673944,
+   "sha256": "776816941768920059171d315e90be0853d2648b5ef12a0dc39e3bf70aa75bc7",
+   "stubs": [
+    {
+     "name": "ISLAMYAT_10_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "islamyat10Chapters"
+   ],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamyat_1_data.js",
+   "bytes": 145567,
+   "sha256": "f1fe596cbccc6b2e3c5e7aa84f7838d6261a97846bf4c83627a007906e96679e",
+   "stubs": [
+    {
+     "name": "ISLAMYAT_1_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "islamyat1Chapters"
+   ],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamyat_1_book.js",
+   "bytes": 268061,
+   "sha256": "3c74feb1dc322f7b05d7ce722ed2e578e6e222f883762b24a8c3bc54183a92a7",
+   "stubs": [
+    {
+     "name": "ISLAMYAT_1_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS1_BOOKS": [
+     "isl"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/nazira_1_data.js",
+   "bytes": 141735,
+   "sha256": "c07f69aada75d4547dc572bddd082a827e0cd98fcc4bbf347c0a71c7043166e4",
+   "stubs": [
+    {
+     "name": "NAZIRA_1_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "NAZIRA_1_PRINTED_PAGE_RANGES",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "nazira1Chapters"
+   ],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/nazira_1_book.js",
+   "bytes": 1123974,
+   "sha256": "c9c66942e0748536456777a1d97e45eea5fdca0547c87f15bcb247bdd7eef2ee",
+   "stubs": [
+    {
+     "name": "NAZIRA_1_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS1_BOOKS": [
+     "nazira"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/pashto_1_data.js",
+   "bytes": 182967,
+   "sha256": "380a590959470e29c33cdb91b0dd376de9700c460e9625018e4a34aa44903187",
+   "stubs": [
+    {
+     "name": "PASHTO_1_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "pashto1Chapters"
+   ],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/pashto_1_book.js",
+   "bytes": 511069,
+   "sha256": "dadd38534a02d716700bcc4e39493fd49cab5d3d1e0fa81fc5fc060920a3fae4",
+   "stubs": [
+    {
+     "name": "PASHTO_1_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS1_BOOKS": [
+     "pashto"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/english_2_data.js",
+   "bytes": 1191040,
+   "sha256": "fd349f907d661831bee3ea1a16662a6e0590c8e8138b8fbbf6600e297d3324f4",
+   "stubs": [
+    {
+     "name": "ENGLISH_2_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS2_BOOKS": [
+     "eng"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/urdu_2_data.js",
+   "bytes": 840548,
+   "sha256": "7919b4d9b03877544408773fe7818253a5a760fa4a045f0be4ae94ceca7dd42c",
+   "stubs": [
+    {
+     "name": "URDU_2_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS2_BOOKS": [
+     "urdu"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamyat_2_data.js",
+   "bytes": 333498,
+   "sha256": "9ff007e12ee77aa404f5c9bd70e17177681a0a17e0c89f5c8ce7df875330bece",
+   "stubs": [
+    {
+     "name": "ISLAMYAT_2_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS2_BOOKS": [
+     "isl"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/nazira_2_data.js",
+   "bytes": 1003417,
+   "sha256": "2f46c233c4eac97463722dd68d8a43bac18f7169b243c88ee6afb50d7f369a53",
+   "stubs": [
+    {
+     "name": "NAZIRA_2_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS2_BOOKS": [
+     "nazira"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/gk_2_data.js",
+   "bytes": 468458,
+   "sha256": "571d4876f475b230b0de0f0497fec22c05a359b643a91e66b1ea7f4554f86c63",
+   "stubs": [
+    {
+     "name": "GK_2_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS2_BOOKS": [
+     "gk"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/pashto_2_data.js",
+   "bytes": 704599,
+   "sha256": "5b9ac8c2dbbe85c91bd7c1b3b7189c1f74075b7c3fb858a9eab5df42a4e611ff",
+   "stubs": [
+    {
+     "name": "PASHTO_2_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS2_BOOKS": [
+     "pashto"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamyat_3_data.js",
+   "bytes": 776721,
+   "sha256": "e7dd3dbfcececf1c36e82a535068fddf56d3abd356f0b2a1ac0b363e972ce6fe",
+   "stubs": [
+    {
+     "name": "ISLAMYAT_3_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS3_BOOKS": [
+     "isl"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/nazira_3_data.js",
+   "bytes": 1614664,
+   "sha256": "d8654a03f08147f1d564a387471f3f7e09491bcf234d230d677c3d9e006be930",
+   "stubs": [
+    {
+     "name": "NAZIRA_3_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS3_BOOKS": [
+     "nazira"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/english_3_data.js",
+   "bytes": 816332,
+   "sha256": "472455ff56e69267b249f283886d247f16cfe24a71a70070c5c3b458b3013d90",
+   "stubs": [
+    {
+     "name": "ENGLISH_3_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS3_BOOKS": [
+     "eng"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/gk_3_data.js",
+   "bytes": 731709,
+   "sha256": "1f48486b0bb0d30815f04c9b1cac6de7f11ae34f4491a046b265f9f1bddeecf0",
+   "stubs": [
+    {
+     "name": "GK_3_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS3_BOOKS": [
+     "gk"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/pashto_3_data.js",
+   "bytes": 905196,
+   "sha256": "1751f0417b8ce9961b73cca450aec31a773994ec77d89eca422593cc0c04c2a4",
+   "stubs": [
+    {
+     "name": "PASHTO_3_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS3_BOOKS": [
+     "pashto"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/urdu_3_book.js",
+   "bytes": 2674,
+   "sha256": "6ef8fc49391f82928f003258bddf9023e2d6cb02ff9f04902fc484c4f4202611",
+   "stubs": [
+    {
+     "name": "URDU_3_BOOK",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS3_BOOKS": [
+     "urdu"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_12_data.js",
+   "bytes": 5829127,
+   "sha256": "2c5df428ef75591d613a48bbbc7684d412bb0a88e89a829911073306b2bf3edc",
+   "stubs": [
+    {
+     "name": "MATH_12_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "math12Intro",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedPages",
+     "kind": "array"
+    },
+    {
+     "name": "math12Polynomials",
+     "kind": "object"
+    },
+    {
+     "name": "math12Graphics",
+     "kind": "object"
+    },
+    {
+     "name": "math12Matrices",
+     "kind": "object"
+    },
+    {
+     "name": "math12Functions",
+     "kind": "object"
+    },
+    {
+     "name": "math12Composition",
+     "kind": "object"
+    },
+    {
+     "name": "math12Inverse",
+     "kind": "object"
+    },
+    {
+     "name": "math12Unit2Examples",
+     "kind": "array"
+    },
+    {
+     "name": "math12PollutionSource",
+     "kind": "array"
+    },
+    {
+     "name": "math12InverseExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12Exercise21Revision",
+     "kind": "array"
+    },
+    {
+     "name": "math12Transcendental",
+     "kind": "object"
+    },
+    {
+     "name": "math12ParametricPage",
+     "kind": "object"
+    },
+    {
+     "name": "math12Graphical",
+     "kind": "object"
+    },
+    {
+     "name": "math12Page44",
+     "kind": "object"
+    },
+    {
+     "name": "math12Limits",
+     "kind": "object"
+    },
+    {
+     "name": "math12ImportantLimits",
+     "kind": "object"
+    },
+    {
+     "name": "math12Continuity",
+     "kind": "object"
+    },
+    {
+     "name": "math12GrowthSource",
+     "kind": "array"
+    },
+    {
+     "name": "math12ParametricExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12LogGraphExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12ConicExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12CompoundExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12MapleExample",
+     "kind": "object"
+    },
+    {
+     "name": "math12AnimationExample",
+     "kind": "object"
+    },
+    {
+     "name": "math12SequenceLimitExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12Exercise22Revision",
+     "kind": "array"
+    },
+    {
+     "name": "math12IntervalExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12Exercise23Revision",
+     "kind": "array"
+    },
+    {
+     "name": "math12Exercise24Revision",
+     "kind": "array"
+    },
+    {
+     "name": "math12Review2Revision",
+     "kind": "array"
+    },
+    {
+     "name": "math12DerivativeIntro",
+     "kind": "object"
+    },
+    {
+     "name": "math12DerivativeTheorems",
+     "kind": "object"
+    },
+    {
+     "name": "math12Applications",
+     "kind": "object"
+    },
+    {
+     "name": "math12Chain",
+     "kind": "object"
+    },
+    {
+     "name": "math12Trig",
+     "kind": "object"
+    },
+    {
+     "name": "math12Exponential",
+     "kind": "object"
+    },
+    {
+     "name": "math12Hyperbolic",
+     "kind": "object"
+    },
+    {
+     "name": "math12Source97",
+     "kind": "object"
+    },
+    {
+     "name": "math12Source98",
+     "kind": "object"
+    },
+    {
+     "name": "math12Source100",
+     "kind": "object"
+    },
+    {
+     "name": "math12DerivativeExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12Exercise34",
+     "kind": "array"
+    },
+    {
+     "name": "math12Exercise35",
+     "kind": "array"
+    },
+    {
+     "name": "math12Exercise32Questions",
+     "kind": "array"
+    },
+    {
+     "name": "math12Exercise32Steps",
+     "kind": "array"
+    },
+    {
+     "name": "math12Exercise32Answers",
+     "kind": "array"
+    },
+    {
+     "name": "math12Exercise33",
+     "kind": "array"
+    },
+    {
+     "name": "math12Exercise31Revision",
+     "kind": "array"
+    },
+    {
+     "name": "math12HigherExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12Higher",
+     "kind": "object"
+    },
+    {
+     "name": "math12Exercise41",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex41",
+     "kind": "object"
+    },
+    {
+     "name": "math12Taylor",
+     "kind": "object"
+    },
+    {
+     "name": "math12Tangent",
+     "kind": "object"
+    },
+    {
+     "name": "math12Exercise42",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex42",
+     "kind": "object"
+    },
+    {
+     "name": "math12Extrema",
+     "kind": "object"
+    },
+    {
+     "name": "math12Exercise43",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex43",
+     "kind": "object"
+    },
+    {
+     "name": "math12Review4",
+     "kind": "array"
+    },
+    {
+     "name": "math12Rev4",
+     "kind": "object"
+    },
+    {
+     "name": "math12VectorExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12Vector132",
+     "kind": "object"
+    },
+    {
+     "name": "math12VectorIntro",
+     "kind": "object"
+    },
+    {
+     "name": "math12VectorLimits",
+     "kind": "object"
+    },
+    {
+     "name": "math12Exercise51",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex51",
+     "kind": "object"
+    },
+    {
+     "name": "math12Vector134",
+     "kind": "object"
+    },
+    {
+     "name": "math12VectorDerivative",
+     "kind": "object"
+    },
+    {
+     "name": "math12Vector135",
+     "kind": "object"
+    },
+    {
+     "name": "math12Exercise52",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex52",
+     "kind": "object"
+    },
+    {
+     "name": "math12Review5",
+     "kind": "array"
+    },
+    {
+     "name": "math12Rev5",
+     "kind": "object"
+    },
+    {
+     "name": "math12IntegrationExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12Integration158",
+     "kind": "object"
+    },
+    {
+     "name": "math12Integration159",
+     "kind": "object"
+    },
+    {
+     "name": "math12Substitution",
+     "kind": "object"
+    },
+    {
+     "name": "math12Parts",
+     "kind": "object"
+    },
+    {
+     "name": "math12Exercise62",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex62",
+     "kind": "object"
+    },
+    {
+     "name": "math12Exercise63",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex63",
+     "kind": "object"
+    },
+    {
+     "name": "math12Definite",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedIntegrationNums",
+     "kind": "object"
+    },
+    {
+     "name": "math12SeenIntegrationNums",
+     "kind": "object"
+    },
+    {
+     "name": "math12Exercise64",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex64",
+     "kind": "object"
+    },
+    {
+     "name": "math12Review6",
+     "kind": "array"
+    },
+    {
+     "name": "math12Rev6",
+     "kind": "object"
+    },
+    {
+     "name": "math12ActualSubstitution",
+     "kind": "object"
+    },
+    {
+     "name": "math12StraightExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12Source183",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedEx71",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex71",
+     "kind": "object"
+    },
+    {
+     "name": "math12Slope",
+     "kind": "object"
+    },
+    {
+     "name": "math12Source185",
+     "kind": "object"
+    },
+    {
+     "name": "math12StraightNums",
+     "kind": "object"
+    },
+    {
+     "name": "math12StraightSeen",
+     "kind": "object"
+    },
+    {
+     "name": "math12Source186",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedEx72",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex72",
+     "kind": "object"
+    },
+    {
+     "name": "math12Source194",
+     "kind": "object"
+    },
+    {
+     "name": "math12Position",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedEx73",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex73",
+     "kind": "object"
+    },
+    {
+     "name": "math12Concurrency",
+     "kind": "object"
+    },
+    {
+     "name": "math12Source206",
+     "kind": "object"
+    },
+    {
+     "name": "math12Homogeneous",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedEx74",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex74",
+     "kind": "object"
+    },
+    {
+     "name": "math12Review7",
+     "kind": "array"
+    },
+    {
+     "name": "math12Rev7",
+     "kind": "object"
+    },
+    {
+     "name": "math12CircleReviewedExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12ReviewedEx81",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex81",
+     "kind": "object"
+    },
+    {
+     "name": "math12CircleTangents",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedEx82",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex82",
+     "kind": "object"
+    },
+    {
+     "name": "math12CircleProperties",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedEx83",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex83",
+     "kind": "object"
+    },
+    {
+     "name": "math12Review8",
+     "kind": "array"
+    },
+    {
+     "name": "math12Rev8",
+     "kind": "object"
+    },
+    {
+     "name": "math12Conics2ReviewedExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12ReviewedExercise91",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex91",
+     "kind": "object"
+    },
+    {
+     "name": "math12Ellipse",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedExercise92",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex92",
+     "kind": "object"
+    },
+    {
+     "name": "math12Hyperbola",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedExercise93",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex93",
+     "kind": "object"
+    },
+    {
+     "name": "math12Axes",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedExercise94",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex94",
+     "kind": "object"
+    },
+    {
+     "name": "math12ODEReviewedExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12ReviewedExercise101",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex101",
+     "kind": "object"
+    },
+    {
+     "name": "math12ODESolutions",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedExercise102",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex102",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedReview10",
+     "kind": "array"
+    },
+    {
+     "name": "math12Rev10",
+     "kind": "object"
+    },
+    {
+     "name": "math12PartialReviewedExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12ReviewedExercise111",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex111",
+     "kind": "object"
+    },
+    {
+     "name": "math12EulerTheorem",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedExercise112",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex112",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedReview11",
+     "kind": "array"
+    },
+    {
+     "name": "math12Rev11",
+     "kind": "object"
+    },
+    {
+     "name": "math12NumericalReviewedExamples",
+     "kind": "array"
+    },
+    {
+     "name": "math12ReviewedExercise121",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex121",
+     "kind": "object"
+    },
+    {
+     "name": "math12NumericalQuadrature",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedExercise122",
+     "kind": "array"
+    },
+    {
+     "name": "math12Ex122",
+     "kind": "object"
+    },
+    {
+     "name": "math12ReviewedReview12",
+     "kind": "array"
+    },
+    {
+     "name": "math12Rev12",
+     "kind": "object"
+    },
+    {
+     "name": "math12Answer21",
+     "kind": "object"
+    },
+    {
+     "name": "math12Answer22",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key334_2_Exercise34",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key334_2_Exercise35",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key334_2_ReviewExercise3",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key334_3_Exercise41",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key335Exercise41",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key335Exercise42",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key335Exercise43",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key336Exercise43",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key336ReviewExercise4",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key336Exercise51",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key337Exercise51",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key337Exercise52",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key337ReviewExercise5",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key337Exercise61",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key338Exercise61",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key338Exercise62",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key338Exercise63",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key339Exercise63",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key339Exercise64",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key339ReviewExercise6",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key339Exercise71",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key339Exercise72",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key340Exercise72",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key340Exercise73",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key340Exercise74",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key340ReviewExercise7",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key340Exercise81",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key341Exercise81",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key341Exercise82",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key341ReviewExercise8",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key341Exercise91",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key342Exercise91",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key342Exercise92",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key343Exercise92",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key343Exercise93",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key345Exercise94",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key345Exercise101",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key345Exercise102",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key346Exercise102",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key346ReviewExercise10",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key346Exercise111",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key346Exercise112",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key346ReviewExercise11",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key347Exercise121",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key347Exercise122",
+     "kind": "object"
+    },
+    {
+     "name": "math12Key347ReviewExercise12",
+     "kind": "object"
+    },
+    {
+     "name": "MATH12_SENTENCE_TRANSLATIONS",
+     "kind": "object"
+    },
+    {
+     "name": "MATH12_WORD_MEANINGS",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [
+    "attachMath12Translations",
+    "math12BlockText"
+   ],
+   "dataKeys": [
+    "math12Units"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/math12_unit6_source_recovery.js",
+     "bytes": 38013,
+     "sha256": "4686afc7bbc2467a595e29fbd974fe3c00f2c534184c3130f573a5567de84cb8"
+    },
+    {
+     "src": "js/math12_translation_completions.js",
+     "bytes": 96591,
+     "sha256": "347850d5d35509d034e296ffb15c006717208e158b387b372ce7f6a62c592f10"
+    },
+    {
+     "src": "js/math12_unit2_translations.js",
+     "bytes": 267501,
+     "sha256": "8feb9512cf795b2ec74a483a01c7a13ae45caede2338cc430827f1df6298d723"
+    },
+    {
+     "src": "js/math12_unit5_translations.js",
+     "bytes": 91667,
+     "sha256": "1d165d80f789abf6ab92f4477ce18f6bc45ec54b4876a1802d0352b1226264fa"
+    },
+    {
+     "src": "js/math12_unit3_translations.js",
+     "bytes": 208174,
+     "sha256": "39a8c35640fc8cb151665c347e546b36e4a3d4803f7bfb69af70cfbeacccdc3e"
+    },
+    {
+     "src": "js/math12_unit7_translations.js",
+     "bytes": 217359,
+     "sha256": "00d3e5b861b30a2923b620a7848470d9020d017afb9932e643ac9f084bdc3cee"
+    },
+    {
+     "src": "js/math12_unit11_translations.js",
+     "bytes": 66415,
+     "sha256": "6c76d547ac8e72c7f62b7bbebf857c6393b4e0c00974ae4c4219c126f7c944dc"
+    },
+    {
+     "src": "js/math12_unit4_translations.js",
+     "bytes": 165228,
+     "sha256": "0cdd4a3743f100a84a70d30a2f0ddcdf969c5754fd302a846cfcc9beb11d4207"
+    },
+    {
+     "src": "js/math12_unit10_translations.js",
+     "bytes": 112465,
+     "sha256": "bed245bed328ce45e85b22a2b09373ca6e98fc24ba8d15a67dc76b3e26dd7165"
+    },
+    {
+     "src": "js/math12_unit8_translations.js",
+     "bytes": 116001,
+     "sha256": "a5c7902752cd680fc1dc625cf45a644dc6a54b947da04ee355480c13d6624133"
+    },
+    {
+     "src": "js/math12_unit12_translations.js",
+     "bytes": 150417,
+     "sha256": "b5b8c5bba13e4826b58ad9ab8e0e6ce347448f647e542d6c4f13728468cd9493"
+    },
+    {
+     "src": "js/math12_unit6_translations.js",
+     "bytes": 50546,
+     "sha256": "2ff5e571d1c9cde9af8d3b4fa79166fa8d20d02d0c65c5d48e8641890c504d75"
+    },
+    {
+     "src": "js/math12_unit9_translations.js",
+     "bytes": 68933,
+     "sha256": "d55e3b03536d13bdd7a1c28d2a14d8c100fe8e1aa12d035b0e588f0ef85fecac"
+    },
+    {
+     "src": "js/math12_remaining_translations.js",
+     "bytes": 242031,
+     "sha256": "a362fcf22de93b9c46efe5e82ce875adf8b74d70977ff99c3a79e80545d8f221"
+    },
+    {
+     "src": "js/math12_answer_repairs.js",
+     "bytes": 8510,
+     "sha256": "45888bb7fc5ae4948aa90fe47a804c6cc0a77eaca811d7be945f24afb6977fea"
+    },
+    {
+     "src": "js/math12_legibility_recovery.js",
+     "bytes": 2779,
+     "sha256": "79fc97d0500bef636e38a6700a18f1f496152127a3e4b4c536e2fc16fff2d062"
+    },
+    {
+     "src": "js/math12_unit9_practice.js",
+     "bytes": 32708,
+     "sha256": "86fb7148825acc4ecb285989ede630a4175b3fd65a4b557200ca6b14ef81f526"
+    },
+    {
+     "src": "js/math12_unit6_exercise61_recovery.js",
+     "bytes": 13537,
+     "sha256": "03b904220b1b02f8654444b91bacd23a72c78542e7123bf3d1f6690f81a868c7"
+    },
+    {
+     "src": "js/math12_study_bank_warm.js",
+     "bytes": 180,
+     "sha256": "390eaa5745797927a358f2d23d9b7e1bec5900fa4b11f110684b1fe3b091e193"
+    }
+   ]
+  },
+  {
+   "src": "js/math_12_pagebook_data.js",
+   "bytes": 4467027,
+   "sha256": "c825daf38276c3fe53c329cdc1b7e4af9e3f3b127e8b8ed0e4b9d388fd7d648a",
+   "stubs": [
+    {
+     "name": "MATH_12_PAGEBOOK_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS12_BOOKS": [
+     "math"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/statistics_12_book_data.js",
+   "bytes": 1553222,
+   "sha256": "c387e76a7392c482ec168f231d0272642d4bccec4269af59db12d534f53e295b",
+   "stubs": [
+    {
+     "name": "STATISTICS_12_BOOK_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS12_BOOKS": [
+     "stat"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/phys_11_data.js",
+   "bytes": 2489656,
+   "sha256": "714c276fa2ba357586ec73d2417b44cb56c29e1947e4046a50637ffd201bc27b",
+   "stubs": [
+    {
+     "name": "PHYS_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "phys11RadianContinuation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Example1_1",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment1_1",
+     "kind": "object"
+    },
+    {
+     "name": "phys11ScientificSection",
+     "kind": "object"
+    },
+    {
+     "name": "phys11ScientificContinuation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11UnitSymbolSection",
+     "kind": "object"
+    },
+    {
+     "name": "phys11ErrorDefinition",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Activity1_6",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Example1_2",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment1_2",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Example1_3",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment1_3",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Example1_4",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment1_4",
+     "kind": "object"
+    },
+    {
+     "name": "phys11SignificantDefinition",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Example1_5",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment1_5",
+     "kind": "object"
+    },
+    {
+     "name": "phys11AccuracyParas",
+     "kind": "array"
+    },
+    {
+     "name": "phys11PrecisionTable",
+     "kind": "object"
+    },
+    {
+     "name": "phys11FundamentalDimensions",
+     "kind": "object"
+    },
+    {
+     "name": "phys11DerivedDimensions",
+     "kind": "object"
+    },
+    {
+     "name": "phys11P31Equation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11P31Advantages",
+     "kind": "object"
+    },
+    {
+     "name": "phys11P31Correctness",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Example1_6",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment1_6",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Example1_7",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment1_7",
+     "kind": "object"
+    },
+    {
+     "name": "phys11KeyPoints",
+     "kind": "object"
+    },
+    {
+     "name": "phys11MCQPage36",
+     "kind": "object"
+    },
+    {
+     "name": "phys11MCQPage37",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Conceptual37",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Numerical38",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Numerical39",
+     "kind": "object"
+    },
+    {
+     "name": "phys11P39Items4",
+     "kind": "array"
+    },
+    {
+     "name": "phys11ShipDisplacement48",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment2_1",
+     "kind": "object"
+    },
+    {
+     "name": "phys11VectorForceExample55",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Extension22",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment22",
+     "kind": "object"
+    },
+    {
+     "name": "phys11AngleBetweenForces23",
+     "kind": "object"
+    },
+    {
+     "name": "phys11EqualForcesSolution57",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment23",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment24",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page72Continuation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment25",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page78Numerical",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page90Example",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page91Assignment",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Assignment32",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page97Assignment",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page100",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page114",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page116",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page117",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page118",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page119",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page120",
+     "kind": "object"
+    },
+    {
+     "name": "phys11WorkEnergyChapter",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page121",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page122",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page123",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page124",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page125",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page126",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page127",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page128",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page129",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page130",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page131",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page132",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page133",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page134",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page135",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page136",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page137",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page138",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page139",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page140",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page141",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page142",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page143",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page144",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page145",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page146",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page147",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page148",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page149",
+     "kind": "object"
+    },
+    {
+     "name": "phys11RotationalMotionChapter",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page154Cover",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page154Outcomes",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page155Outcomes",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page155AngularMotion",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page156AngularDisplacement",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page156DisplacementMeasures",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page156AngularVelocity",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page157AngularVelocity",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page157Example",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page157Assignment",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page157AngularAcceleration",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page158AngularAcceleration",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page159AngularLinear",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page160CentripetalIntro",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page161CentripetalAcceleration",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page162CentripetalDerivation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page163Example",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page163Assignment",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page164BankingIntro",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page165BankingContinuation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page165Example",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page166Assignment53",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page166TorqueIntro",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page167RigidBodyInertia",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page167Example54",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page168InertiaExamples",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page168Assignment54",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page168Assignment55",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page168AngularMomentumIntro",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page169AngularMomentum",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page170RigidMomentum",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page171Example55",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page171SolarInformation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page172Conservation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page173ConservationExamples",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page174Turntable",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page175Kinetic",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page176Comparison",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page177Rolling",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page179LiftUp",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page180LiftDownWeightless",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page181FreeFall",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page183SpaceStation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page184StationDesign",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page186SatelliteTypes",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page187OrbitalVelocity",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page188OrbitalSpeed",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page189Geostationary",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page191KeyPoints",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page193Exercise",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page195Numericals",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page196Unit6Outcomes",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page197ViscousFluids",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page199StokesLaw",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page200TerminalForces",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page201TerminalVelocity",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page202TerminalFormula",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page203Paratrooper",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page205StreamlineFlow",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page207Continuity",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page208ContinuityResult",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page209GardenHose",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page210BernoulliIntro",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page211BernoulliWork",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page212BernoulliDerivation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page213BernoulliExample",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page214BernoulliApplications",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page215CarburetorTorricelli",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page216TorricelliDerivation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page217TankExampleVenturi",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page218VenturiDerivation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page219VenturiPressureTubes",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page220VenturiAssignmentAerofoil",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page221AircraftWingExample",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page222BloodFlowStart",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page223ArteryFlow",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page224FluidDynamicsKeyPoints",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page225FluidDynamicsExercise",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page226FluidDynamicsExercise",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page227FluidDynamicsComprehensive",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page228FluidDynamicsNumericals",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page229OscillationIntro",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page230OscillationTerminology",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page231OscillationTermsSpring",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page232SpringSHMDerivation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page233SpringExampleCircularSHM",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page234CircularProjection",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page235ProjectionVelocity",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page236SimplePendulum",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page237PendulumPeriodExample",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page238SHMEnergy",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page239SHMPotentialEnergy",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page240SHMEnergyResonanceIntro",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page241Resonance",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page242ResonanceApplicationsWaveform",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page243PhaseIntroduction",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page244PhaseDifference",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page245OscillationExampleDamping",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page246Damping",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page247Resonance",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page248KeyPoints",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page249Exercise",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page251OscillationNumericals",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page252WavesOutcomes",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page253WavesIntro",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page254WaveSources",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page255ProgressiveIntro",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page256WaveMotion",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page257WaveConditions",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page258TransverseExamples",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page259LongitudinalIntro",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page260LongitudinalExamples",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page262WavelengthAmplitude",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page263WaveExamples",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page264NewtonSoundSpeed",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page265NewtonEstimate",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page267LaplaceResultFactors",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page269SteelSoundExample",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page270NeonSuperposition",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page271SuperpositionInterference",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page272InterferenceTypes",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page273InterferenceConditionsSound",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page274BeatsIntro",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page275BeatTiming",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page277BeatExampleReflection",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page278Reflection",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page279EchoReverberation",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page280StationaryWaves",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page283NthHarmonics",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page284StringExamplesAirColumn",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page285AirColumnActivity",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page286OrganPipesClosed",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page287ClosedPipeHarmonics",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page289OpenPipeHarmonics",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page290PipeExampleDoppler",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page292MovingListener",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page295DopplerApplications",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page296DopplerQuizExample",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page297UltrasonicStart",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page298UltrasonicUses",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page299UltrasonicApplications",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page300UltrasoundGeneration",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page301WavesKeyPoints",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page302WavesMcqs",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page303WavesExercise",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page304WavesComprehensive",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page305WavesNumericals",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page306WavesNumericals",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page314DestructiveInterference",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page315YoungDoubleSlit",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page317YoungBrightFringes",
+     "kind": "object"
+    },
+    {
+     "name": "phys11Page347ThermodynamicsIntro",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [
+    "physics11ProofBranch",
+    "physics11Page31Section",
+    "physics11AddPage37MCQ",
+    "phys11P39Para",
+    "phys11P39Equation",
+    "physics11CraneSvg",
+    "phys11U2Paragraph",
+    "physics11VectorPlaneSvg",
+    "physics11VectorSpaceSvg",
+    "physics11UnitAxesSvg",
+    "physics11AreaVectorSvg",
+    "physics11VectorAdditionSvg",
+    "physics11VectorResultantSvg",
+    "physics11ShipDisplacementSvg",
+    "physics11RectangularVectorAdditionSvg",
+    "physics11VectorComponentsTriangleSvg",
+    "physics11ScalarResultSvg",
+    "physics11VectorComponentsSvg",
+    "physics11VectorSubtractionSvg",
+    "physics11ScalarVectorSvg",
+    "physics11FourVectorResultSvg",
+    "physics11ParallelogramSvg",
+    "physics11FourVectorsSvg",
+    "physics11QuadrantSvg",
+    "physics11ForceAdditionExampleSvg",
+    "physics11EqualForcesSvg",
+    "physics11ScalarProductSvg",
+    "physics11ScalarProductReverseSvg",
+    "physics11CrossProductRuleSvg",
+    "physics11VectorProductFiguresSvg",
+    "physics11VectorProductReverseSvg",
+    "physics11ScalarCrossExampleSvg",
+    "physics11ConcurrentForcesSvg",
+    "physics11ConcurrentThreeForcesSvg",
+    "physics11EquilibrantSvg",
+    "physics11MultimeterSvg",
+    "physics11OrbiterSvg",
+    "physics11GearsSvg",
+    "physics11SphereSvg",
+    "physics11RadianSvg",
+    "physics11Pair",
+    "togglePhysics11SourceTranslation",
+    "renderPhysics11Tab",
+    "physics11SourceSearchText",
+    "physics11Symbol",
+    "physics11Equation",
+    "physics11TapeMeasureSvg",
+    "renderPhysics11Source",
+    "physics11TorqueMomentArmSvg",
+    "physics11TorqueWrenchSvg",
+    "physics11CraneCounterweightSvg",
+    "physics11CoupleSteeringWheelSvg",
+    "physics11EquilibriumTypesSvg",
+    "physics11EquilibriumForcePolygonSvg",
+    "physics11StaticConditionsSvg",
+    "physics11DivingBoardSvg",
+    "physics11PlankBreakingTensionSvg",
+    "physics11RodMassDiagramSvg",
+    "physics11RodEquilibriumOptionsSvg",
+    "physics11WheelTorqueMCQSvg",
+    "phys11AddMCQPage",
+    "physics11LadderForcesSvg",
+    "physics11IBeamReactionsSvg",
+    "physics11Unit3JetSvg",
+    "physics11Unit3DisplacementSvg",
+    "physics11Unit3AccelSvg",
+    "physics11AddUnit3Page",
+    "physics11GraphicalInterpretationSvg",
+    "physics11CarRoadSvg",
+    "physics11PositionTimePlotSvg",
+    "physics11AvgInstantVelocitySvg",
+    "physics11VelocityTimeGraphSvg",
+    "physics11BicycleVelocityTimeSvg",
+    "physics11AccelerationTimeSvg",
+    "physics11CarVelocityAssignmentSvg",
+    "physics11NewtonBookSvg",
+    "physics11FootballActionReactionSvg",
+    "physics11IceSkatersSvg",
+    "physics11SkaterAccelerationSvg",
+    "physics11CricketImpulseSvg",
+    "physics11CollisionExamplesSvg",
+    "physics11ElasticStagesSvg",
+    "physics11NeutronSvg",
+    "physics11HeliumSvg",
+    "physics11PistolExplosionSvg",
+    "physics11ProjectileComponentsSvg",
+    "physics11ProjectileVelocitySvg",
+    "physics11MaxHeightSvg",
+    "physics11TimeFlightSvg",
+    "physics11RangeSvg",
+    "physics11ComplementaryAnglesSvg",
+    "physics11AirResistanceSvg",
+    "physics11FallingBallsSvg",
+    "physics11RocketThrustSvg",
+    "physics11WorkEnergyCyclistSvg",
+    "physics11AddUnit4Page",
+    "physics11WorkForceComponentsSvg",
+    "physics11WorkPositiveSvg",
+    "physics11WorkNegativeZeroSvg",
+    "physics11WorkAreaGraphSvg",
+    "physics11VariablePathSvg",
+    "physics11VariableForceGraphSvg",
+    "physics11EarthFieldSvg",
+    "physics11ClosedPathSvg",
+    "physics11TwoPathSvg",
+    "physics11CarClimbPowerSvg",
+    "physics11DolphinEnergySvg",
+    "physics11PyramidRampSvg",
+    "physics11CraneEfficiencySvg",
+    "physics11EfficiencyTableSvg",
+    "physics11EfficiencyAppliancesSvg",
+    "physics11AbsolutePotentialWorkSvg",
+    "physics11EscapeRocketSvg",
+    "physics11HammerEnergySvg",
+    "physics11CoalPollutionSvg",
+    "physics11BiomassWasteSvg",
+    "physics11WaveColumnSvg",
+    "physics11GeothermalPlantSvg",
+    "physics11TidalBarrageSvg",
+    "physics11TidalTurbinesSvg",
+    "physics11WindEnergySvg",
+    "physics11AddUnit4QuestionSection",
+    "physics11AddUnit4MCQPage",
+    "physics11AddUnit5Page",
+    "physics11Unit5TornadoSvg",
+    "physics11Unit5SatelliteSvg",
+    "physics11Unit5AngularDiscSvg",
+    "physics11Unit5ArcRelationSvg",
+    "physics11Unit5CarWheelSvg",
+    "physics11Unit5RightHandRuleSvg",
+    "physics11Unit5TangentVelocitySvg",
+    "physics11Unit5CentripetalAccelerationSvg",
+    "physics11Unit5CentripetalSvg",
+    "physics11Unit5CentrifugalSvg",
+    "physics11Unit5CurvedRoadSvg",
+    "physics11Unit5BankedRoadSvg",
+    "physics11Unit5SkidRoadSvg",
+    "physics11Unit5BikeWheelSvg",
+    "physics11Unit5RigidBodySvg",
+    "physics11Unit5InertiaFiguresSvg",
+    "physics11Unit5AngularMomentumSvg",
+    "physics11Unit5RigidAngularMomentumSvg",
+    "physics11Unit5SolarNebulaSvg",
+    "physics11Unit5DiverSvg",
+    "physics11Unit5GymnastSvg",
+    "physics11Unit5TurntableSvg",
+    "physics11Unit5RotatingBodySvg",
+    "physics11Unit5LinearAngularTableSvg",
+    "physics11Unit5RollingInclineSvg",
+    "physics11Unit5LiftCaseSvg",
+    "physics11Unit5EarthOrbitSvg",
+    "physics11Unit5CannonRangeSvg",
+    "physics11Unit5AstronautFloatSvg",
+    "physics11Unit5StationWheelSvg",
+    "physics11Unit5SatelliteVectorSvg",
+    "physics11Unit5ShuttleSvg",
+    "physics11Unit5SatelliteOrbitSvg",
+    "physics11Unit5GeostationaryOrbitSvg",
+    "physics11AddUnit6Page",
+    "physics11Unit6ViscosityTableSvg",
+    "physics11Unit6StokesSphereSvg",
+    "physics11Unit6FallingSphereStagesSvg",
+    "physics11Unit6FallingSphereForcesSvg",
+    "physics11Unit6TerminalVelocityGraphSvg",
+    "physics11Unit6TerminalSpeedTableSvg",
+    "physics11Unit6ParatrooperGraphSvg",
+    "physics11Unit6StreamlineTubeSvg",
+    "physics11Unit6IncenseSmokeSvg",
+    "physics11Unit6ContinuityTubeSvg",
+    "physics11Unit6BernoulliPipeSvg",
+    "physics11Unit6FilterPumpSvg",
+    "physics11Unit6AtomizerSvg",
+    "physics11Unit6TankLeakSvg",
+    "physics11Unit6CarburetorSvg",
+    "physics11Unit6VenturiSvg",
+    "physics11Unit6VenturiManometerSvg",
+    "physics11Unit6AerofoilSvg",
+    "physics11Unit6AircraftLiftSvg",
+    "physics11Unit6ArterySvg",
+    "physics11Unit6PaperLiftSvg",
+    "physics11Unit6RaceCarSpoilerSvg",
+    "physics11AddUnit7Page",
+    "physics11Unit7OscillatingWatchSvg",
+    "physics11Unit7PendulumSvg",
+    "physics11Unit7SpringSvg",
+    "physics11Unit7CircularProjectionSvg",
+    "physics11Unit7OscillationGraphSvg",
+    "physics11Unit7SimplePendulumSvg",
+    "physics11Unit7EnergyGraphSvg",
+    "physics11Unit7ResonancePendulumsSvg",
+    "physics11Unit7ResonanceRadioSvg",
+    "physics11Unit7WaveformSvg",
+    "physics11Unit7VibratingSpringWaveSvg",
+    "physics11Unit7ResonanceApplicationSvg",
+    "physics11Unit7DampedOscillationSvg",
+    "physics11Unit7ResonanceCurveSvg",
+    "physics11AddUnit8Page",
+    "physics11Unit8RopeSvg",
+    "physics11Unit8RippleTankSvg",
+    "physics11Unit8ProgressiveWaveSvg",
+    "physics11Unit8WaveMotionSequenceSvg",
+    "physics11Unit8TransverseWaterSvg",
+    "physics11Unit8LongitudinalSvg",
+    "physics11Unit8WavelengthSvg",
+    "physics11Unit8InterferenceSvg",
+    "physics11Unit8ConstructiveSvg",
+    "physics11Unit8DestructiveSvg",
+    "physics11Unit8SoundInterferenceApparatusSvg",
+    "physics11Unit8BeatsSequenceSvg",
+    "physics11Unit8BeatEnvelopeSvg",
+    "physics11Unit8ReflectionSvg",
+    "physics11Unit8StandingStringSvg",
+    "physics11Unit8AirColumnSvg",
+    "physics11Unit8ClosedPipeSvg",
+    "physics11Unit8OpenPipeSvg",
+    "physics11Unit8DopplerWavesSvg",
+    "physics11Unit8MovingObserverSvg",
+    "physics11Unit8StationaryObserverMovingSvg",
+    "physics11Unit8BatEchoSvg",
+    "physics11Unit8UltrasonicFlawSvg",
+    "physics11Unit8SonicBoomSvg",
+    "physics11Unit8AmbulanceObserversSvg",
+    "physics11Unit8DopplerRadarSvg",
+    "physics11Unit8ListenerAwaySvg",
+    "physics11AddUnit9Page",
+    "physics11Unit9ButterflySvg",
+    "physics11Unit9EmWaveSvg",
+    "physics11Unit9CircularWavefrontSvg",
+    "physics11Unit9RayInverseSquareSvg",
+    "physics11Unit9HuygensSvg",
+    "physics11Unit9DoubleSlitFringesSvg",
+    "physics11Unit9ConstructiveWavesSvg",
+    "physics11Unit9DestructiveWavesSvg",
+    "physics11Unit9TvReflectionSvg",
+    "physics11Unit9YoungDoubleSlitSvg",
+    "physics11Unit9YoungGeometrySvg",
+    "physics11Unit9YoungFringePositionsSvg",
+    "physics11Unit9YoungPathCasesSvg",
+    "physics11Unit9BlueSkyScatteringSvg",
+    "physics11Unit9ThinFilmSvg",
+    "physics11Unit9MichelsonSvg",
+    "physics11Unit9NarrowGapSvg",
+    "physics11Unit9DiffractionIntensitySvg",
+    "physics11Unit9SingleSlitSvg",
+    "physics11Unit9SingleSlitHuygensSvg",
+    "physics11Unit9GratingSvg",
+    "physics11Unit9GratingSpectrometerSvg",
+    "physics11Unit9XrayCrystalSvg",
+    "physics11Unit9XrayDiffractionPatternsSvg",
+    "physics11Unit9LaueSvg",
+    "physics11Unit9BraggSvg",
+    "physics11Unit9PolarizationSlotsSvg",
+    "physics11Unit9PolarizerSvg",
+    "physics11Unit9AnalyzerSvg",
+    "physics11Unit9BrewsterSvg",
+    "physics11Unit9GlareSvg",
+    "physics11AddUnit10Page",
+    "physics11Unit10EquilibriumSvg",
+    "physics11Unit10WorkSvg",
+    "physics11Unit10SystemSvg",
+    "physics11Unit10ClosedSystemSvg",
+    "physics11Unit10PVProcessSvg",
+    "physics11Unit10IsothermalAdiabaticSvg",
+    "physics11Unit10CpCvWorkDiagramSvg",
+    "physics11Unit10HeatEngineFlowSvg",
+    "physics11Unit10ReversibleEngineExampleSvg",
+    "physics11Unit10CarnotTheoremSvg",
+    "physics11Unit10RefrigeratorSvg",
+    "physics11Unit10RefrigeratorCopSvg",
+    "physics11Unit10EntropyTransferSvg",
+    "physics11Unit10EntropyDisorderSvg",
+    "physics11Unit10EntropyPhaseChangeSvg",
+    "physics11Unit10ReversibleProcessSvg",
+    "physics11Unit10CarnotCycleEfficiencySvg",
+    "physics11Unit10CarnotCyclePvSvg",
+    "physics11Unit10CarnotPortraitCaptionSvg",
+    "physics11Unit10HeatEngineSvg",
+    "physics11Unit10CvCpComparisonSvg",
+    "physics11Unit10SpecificHeatVolumeSvg",
+    "physics11Unit10SpecificHeatPressureSvg",
+    "physics11Unit10BiologicalEnergySvg"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/chem_11_data.js",
+   "bytes": 4648834,
+   "sha256": "50c24915fde51e64c249f3c48c5471e5b8e14a98dd4e917670a8692187158683",
+   "stubs": [
+    {
+     "name": "CHEM_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "chem11StoichiometryOutcomes",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P008",
+     "kind": "array"
+    },
+    {
+     "name": "chem11AvogadroContinuation",
+     "kind": "object"
+    },
+    {
+     "name": "chem11P007",
+     "kind": "array"
+    },
+    {
+     "name": "chem11WordVocabulary",
+     "kind": "object"
+    },
+    {
+     "name": "chem11Credits",
+     "kind": "array"
+    },
+    {
+     "name": "chem11TocRows",
+     "kind": "array"
+    },
+    {
+     "name": "chem11First20",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P009",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P010",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P010Equations",
+     "kind": "array"
+    },
+    {
+     "name": "chem11MathVocabulary",
+     "kind": "object"
+    },
+    {
+     "name": "chem11P011",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P011Equations",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P012",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P012Equations",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P013",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P014",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P015",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P016",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P017",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P018",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P019",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P020",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P021",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P022",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P023",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P024",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P025",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P026",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P027",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P028",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P029",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P030",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P031",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P032",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P033",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P034",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P035",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P036",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P037",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P038",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P039",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P040",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P041",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P042",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P043",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P044",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P045",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P046",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P047",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P048",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P049",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P050",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P051",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P052",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P053",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P054",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P055",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P056",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P057",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P058",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P059",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P060",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P061",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P062",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P063",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P064",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P065",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P066",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P067",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P068",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P069",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P070",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P071",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P072",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P073",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P074",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P075",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P076",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P077",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P078",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P079",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P080",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P081",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P082",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P083",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P084",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P085",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P086",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P087",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P088",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P089",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P090",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P091",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P092",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P093",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P094",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P095",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P096",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P097",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E097",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P098",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E098",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P099",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E099",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P100",
+     "kind": "array"
+    },
+    {
+     "name": "chem11T100",
+     "kind": "object"
+    },
+    {
+     "name": "chem11P101",
+     "kind": "array"
+    },
+    {
+     "name": "chem11T101",
+     "kind": "object"
+    },
+    {
+     "name": "chem11P102",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E102",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P103",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P104",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P105",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P106",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P107",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P108",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P109",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P110",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P111",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P112",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P113",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P114",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P115",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P116",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E116",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P117",
+     "kind": "array"
+    },
+    {
+     "name": "chem11T117",
+     "kind": "object"
+    },
+    {
+     "name": "chem11E117",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P118",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E118",
+     "kind": "array"
+    },
+    {
+     "name": "chem11Section118",
+     "kind": "object"
+    },
+    {
+     "name": "chem11P119",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P120",
+     "kind": "array"
+    },
+    {
+     "name": "chem11T120",
+     "kind": "object"
+    },
+    {
+     "name": "chem11E120",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P121",
+     "kind": "array"
+    },
+    {
+     "name": "chem11T121",
+     "kind": "object"
+    },
+    {
+     "name": "chem11E121",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P122",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P123",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E123",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P124",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E124",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P125",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E125",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P126",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E126",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P127",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E127",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P128",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E128",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P129",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E129",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P130",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E130",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P131",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E131",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P132",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P133",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E133",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P134",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P135",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E135",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P136",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E136",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P137",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P138",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E138",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P139",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E139",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P140",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E140",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P141",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E141",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P142",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E142",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P143",
+     "kind": "array"
+    },
+    {
+     "name": "chem11E143",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P144",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P145",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P146",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P147",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P148",
+     "kind": "array"
+    },
+    {
+     "name": "chem11P149",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [
+    "chem11AddSection",
+    "chemistry11StoichiometryOutcomeSvg",
+    "chemistry11AvogadroSvg",
+    "chem11Pair",
+    "chem11SourceText",
+    "chem11RenderWordMeanings",
+    "chem11RenderPair",
+    "chem11RenderFigure",
+    "chem11RenderSectionBody",
+    "chem11RenderParagraphs",
+    "renderChemistry11Tab",
+    "chem11RenderEquation",
+    "chem11RenderTable",
+    "chem11TableCell",
+    "chemistry11CoverSvg",
+    "chem11TocSection",
+    "chem11WorkedFraction",
+    "chemistry11IronSulphideSvg",
+    "chemistry11ConversionSvg",
+    "chemistry11LimitingReagentSvg"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/bio_11_data.js",
+   "bytes": 3945745,
+   "sha256": "5de178152571e8b6670032148fbbc47811dd5012ffc65df0c8eafa25dc7cb71b",
+   "stubs": [
+    {
+     "name": "BIO_11_SOURCE",
+     "kind": "object"
+    },
+    {
+     "name": "BIO_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "bio11WordVocabulary",
+     "kind": "object"
+    },
+    {
+     "name": "BIO11_CODON_AA",
+     "kind": "object"
+    },
+    {
+     "name": "bio11C6",
+     "kind": "object"
+    },
+    {
+     "name": "bio11PlantFigNote",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [
+    "bio11AddSection",
+    "bio11Pair",
+    "bio11Page",
+    "bio11PdfRef",
+    "bio11Safe",
+    "bio11SourceText",
+    "bio11RenderWordMeanings",
+    "bio11RenderPair",
+    "bio11TogglePair",
+    "bio11RenderParagraphs",
+    "bio11RenderFigure",
+    "bio11Cell",
+    "bio11RenderTable",
+    "bio11RenderSectionBody",
+    "bio11SectionHeader",
+    "bio11FilterSectionsForTab",
+    "renderBiology11Tab",
+    "biology11SourceSearchText",
+    "bio11FigCellFractionation",
+    "bio11FigMicrometers",
+    "bio11FigCellWallBlock",
+    "bio11FigFluidMosaic",
+    "bio11FigAnimalCell",
+    "bio11Callouts",
+    "bio11Svg",
+    "bio11FigPlantCell",
+    "bio11FigEndoplasmicReticulum",
+    "bio11FigRibosomes",
+    "bio11FigGolgi",
+    "bio11FigLysosomes",
+    "bio11FigPeroxisome",
+    "bio11FigCytoskeleton",
+    "bio11FigCentrioles",
+    "bio11FigCentrioleCross",
+    "bio11FigCilia",
+    "bio11FigMitochondrion",
+    "bio11FigChloroplastLocation",
+    "bio11FigNucleus",
+    "bio11Mcq",
+    "bio11FigBacterium",
+    "bio11FigCondensation",
+    "bio11FigWaterConfiguration",
+    "bio11FigGlucoseOpen",
+    "bio11FigFructose",
+    "bio11SugarText",
+    "bio11SugarLine",
+    "bio11Pyranose",
+    "bio11Furanose",
+    "bio11FigMonosaccharideExamples",
+    "bio11FigGlucoseIsomerism",
+    "bio11FigDisaccharide",
+    "bio11FigCellulose",
+    "bio11FigAminoAcidStructure",
+    "bio11FigAminoAcidTypes",
+    "bio11FigPeptideBond",
+    "bio11FigHaemoglobin",
+    "bio11FigRedBloodCells",
+    "bio11FigTriglyceride",
+    "bio11FigSteroids",
+    "bio11FigIsoprenoid",
+    "bio11FigNucleotide",
+    "bio11FigNucleicStructures",
+    "bio11FigNucleobases",
+    "bio11FigATPHydrolysis",
+    "bio11FigCoenzymes",
+    "bio11FigDnaHelix",
+    "bio11FigDnaRnaChemistry",
+    "bio11CodonRows",
+    "bio11FigEnzymeMechanism",
+    "bio11FigEnzymeSequence",
+    "bio11FigEnergyProfile",
+    "bio11FigTemperatureCurve",
+    "bio11FigSubstrateSaturation",
+    "bio11FigFeedback",
+    "bio11FigElectromagneticSpectrum",
+    "bio11FigChloroplastCutaway",
+    "bio11FigChlorophyllStructure",
+    "bio11FigAbsorptionSpectra",
+    "bio11FigActionSpectrum",
+    "bio11FigPhotosystem",
+    "bio11FigNonCyclic",
+    "bio11FigCyclic",
+    "bio11FigCalvin",
+    "bio11FigGlycolysis",
+    "bio11FigKrebs",
+    "bio11FigETC",
+    "bio11FigChemiosmosis",
+    "bio11FigRespirationOverview",
+    "bio11FigC4Leaf",
+    "bio11FigVirusShapes",
+    "bio11FigBacteriophage",
+    "bio11FigHIV",
+    "bio11FigFlu",
+    "bio11FigLysogenic",
+    "bio11FigPhageCloning",
+    "bio11FigHIVLifecycle",
+    "bio11FigPolioMuscles",
+    "bio11FigPrion",
+    "bio11FigBacterialCell",
+    "bio11FigEndospore",
+    "bio11FigGrowthCurve",
+    "bio11FigBinaryFission",
+    "bio11FigGriffith",
+    "bio11FigTransduction",
+    "bio11FigConjugation",
+    "bio11FigPlantDisease",
+    "bio11FigTrypanosome",
+    "bio11FigTermites",
+    "bio11FigAmoeba",
+    "bio11FigMalaria",
+    "bio11FigParamecium",
+    "bio11FigBalantidium",
+    "bio11FigDinoflagellate",
+    "bio11FigDiatoms",
+    "bio11FigVolvox",
+    "bio11FigSpirogyra",
+    "bio11FigTrichonympha",
+    "bio11FigArmillaria",
+    "bio11FigPenicillium",
+    "bio11FigMushrooms",
+    "bio11FigLichens",
+    "bio11FigMildew",
+    "bio11FigRingworm",
+    "bio11FigGeoTimeChart",
+    "bio11FigBryo",
+    "bio11FigFunaria",
+    "bio11FigMossCycle",
+    "bio11FigThallus",
+    "bio11FigEmbryo",
+    "bio11FigPsilopsida",
+    "bio11FigPsilotum",
+    "bio11FigSelaginella",
+    "bio11FigCalamites",
+    "bio11FigEquisetum",
+    "bio11FigFerns",
+    "bio11FigLeafTheories",
+    "bio11FigMegaphyll",
+    "bio11FigAdiantumCycle",
+    "bio11FigSeedEvolution",
+    "bio11FigCone",
+    "bio11FigPineNuts",
+    "bio11FigFlower",
+    "bio11FigAngioCycle",
+    "bio11FigInflorescenceA",
+    "bio11FigInflorescenceB",
+    "bio11FigInflorescenceC",
+    "bio11FigDeodar",
+    "bio11FigCoelomTypes",
+    "bio11FigAnimalTree",
+    "bio11FigCanalSystem",
+    "bio11FigSponges",
+    "bio11FigHydra",
+    "bio11FigPolypMedusa",
+    "bio11FigPhotoSimple",
+    "bio11FigPlanariaDigestive",
+    "bio11FigPlanariaExcretory",
+    "bio11FigWorm",
+    "bio11FigMolluscPhoto",
+    "bio11LabFig",
+    "bio11FigAnnelids",
+    "bio11FigNephridium",
+    "bio11FigGrasshopperMorph",
+    "bio11FigGrasshopperAnat",
+    "bio11FigNymphCycle",
+    "bio11FigButterflyCycle",
+    "bio11FigStarfish",
+    "bio11FigEchinoPhotos",
+    "bio11FigBipinnaria",
+    "bio11FigSimple",
+    "bio11FigFish",
+    "bio11FigPhoto",
+    "bio11FigCarnivores",
+    "bio11FigXylem",
+    "bio11FigPhloem",
+    "bio11FigRootPaths",
+    "bio11FigTact",
+    "bio11FigMeniscus",
+    "bio11FigStomata",
+    "bio11FigPressureFlow",
+    "bio11FigOsmo",
+    "bio11FigPlantPhoto",
+    "bio11FigPhoto2",
+    "bio11FigTurgor",
+    "bio11L",
+    "bio11FigGround",
+    "bio11FigRootTip",
+    "bio11FigFlowMeristem",
+    "bio11FigLateral",
+    "bio11FigYoungStem",
+    "bio11FigTreeRings",
+    "bio11FigMovementsChart",
+    "bio11FigMimosa",
+    "bio11FigPhotoLeaves",
+    "bio11FigFernSperm",
+    "bio11FigPhotoperiod",
+    "bio11FigChailakhian",
+    "bio11FigLysenko",
+    "bio11FigSkullMuscles",
+    "bio11FigSwallow",
+    "bio11FigStomach",
+    "bio11FigGastricGland",
+    "bio11FigAlimentary",
+    "bio11FigLiverRib",
+    "bio11FigPancreasStructure",
+    "bio11FigPancreasAnatomy",
+    "bio11FigUlcer",
+    "bio11FigBmiTape",
+    "bio11HeartShape",
+    "bio11FigHeartExternal",
+    "bio11FigHeartInternal",
+    "bio11FigConduction",
+    "bio11FigEcgTrace",
+    "bio11FigEcgMachine",
+    "bio11FigArteryLayers",
+    "bio11FigCapillary",
+    "bio11FigVein",
+    "bio11FigCirculatoryPlan",
+    "bio11FigBpMeasure",
+    "bio11FigCoronaryAthero",
+    "bio11FigBlueBaby",
+    "bio11FigAngioplasty",
+    "bio11FigOpenHeart",
+    "bio11FigLymphatic",
+    "bio11FigSkin",
+    "bio11FigMucusLining",
+    "bio11FigNeutrophil",
+    "bio11FigMacrophage",
+    "bio11FigComplement",
+    "bio11FigInterferon",
+    "bio11FigPyrexia",
+    "bio11FigChildFever",
+    "bio11FigPolio",
+    "bio11FigTcell",
+    "bio11FigBcellResponse",
+    "bio11FigAntibody",
+    "bio11Gl",
+    "bio11PhotoNote"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/stat_11_data.js",
+   "bytes": 2323969,
+   "sha256": "ae997fdce6db31dc7e78eea1826815746f7dd90ef11109bc0a620df629d4d17e",
+   "stubs": [
+    {
+     "name": "STAT_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "stat11WordVocabulary",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [
+    "stat11AddSection",
+    "stat11Pair",
+    "stat11SourceText",
+    "stat11RenderWordMeanings",
+    "stat11RenderPair",
+    "stat11RenderFigure",
+    "stat11RenderSectionBody",
+    "stat11RenderParagraphs",
+    "renderStatistics11Tab",
+    "stat11RenderEquation",
+    "stat11RenderTable",
+    "stat11TableCell",
+    "statistics11SourceSearchText"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/eng_11_data.js",
+   "bytes": 2274235,
+   "sha256": "0c51f32239d009f1f393b17d5be4a7efb650674e97e9a37c1ebd77a993d5a4e7",
+   "stubs": [
+    {
+     "name": "ENG_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "eng11WordVocabulary",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [
+    "eng11AddSection",
+    "eng11Pair",
+    "eng11SourceText",
+    "eng11RenderWordMeanings",
+    "eng11RenderPair",
+    "eng11RenderFigure",
+    "eng11RenderSectionBody",
+    "eng11RenderParagraphs",
+    "renderEnglish11Tab",
+    "eng11RenderEquation",
+    "eng11RenderTable",
+    "eng11TableCell",
+    "english11SourceSearchText"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/ishist_11_data.js",
+   "bytes": 2451235,
+   "sha256": "f1d494a971c8b00cb58dc1b5444fff9727310816ad028748d63abbc602e8b77c",
+   "stubs": [
+    {
+     "name": "ISHIST_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "ishist11WordVocabulary",
+     "kind": "object"
+    }
+   ],
+   "keys": {
+    "CLASS11_BOOKS": [
+     "ishist"
+    ]
+   },
+   "fns": [
+    "ishist11AddSection",
+    "ishist11Pair",
+    "ishist11SourceText",
+    "ishist11RenderWordMeanings",
+    "ishist11RenderPair",
+    "ishist11RenderFigure",
+    "ishist11RenderSectionBody",
+    "ishist11RenderParagraphs",
+    "renderIshist11Tab",
+    "ishist11RenderEquation",
+    "ishist11RenderTable",
+    "ishist11TableCell",
+    "ishist11SourceSearchText"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/cs_11_data.js",
+   "bytes": 2799923,
+   "sha256": "d7e30b040c3d5484a205cd39176c5e77bab883cddde7c1216837663df0d09d86",
+   "stubs": [
+    {
+     "name": "CS_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "cs11WordVocabulary",
+     "kind": "object"
+    }
+   ],
+   "keys": {
+    "CLASS11_BOOKS": [
+     "cs"
+    ]
+   },
+   "fns": [
+    "cs11AddSection",
+    "cs11Pair",
+    "cs11SourceText",
+    "cs11RenderWordMeanings",
+    "cs11RenderPair",
+    "cs11RenderFigure",
+    "cs11RenderSectionBody",
+    "cs11RenderParagraphs",
+    "renderCs11Tab",
+    "cs11RenderEquation",
+    "cs11RenderTable",
+    "cs11TableCell",
+    "cs11SourceSearchText"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/ikhtiari_11_data.js",
+   "bytes": 2707132,
+   "sha256": "1b9bcf94e606bb323ca77179b84ea42d1cd60260183c73514c45605347e1406f",
+   "stubs": [
+    {
+     "name": "IKHTIARI_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "ikhtiari11WordVocabulary",
+     "kind": "object"
+    }
+   ],
+   "keys": {
+    "CLASS11_BOOKS": [
+     "ikhtiari"
+    ]
+   },
+   "fns": [
+    "ikhtiari11AddSection",
+    "ikhtiari11Pair",
+    "ikhtiari11SourceText",
+    "ikhtiari11RenderWordMeanings",
+    "ikhtiari11RenderPair",
+    "ikhtiari11RenderFigure",
+    "ikhtiari11RenderSectionBody",
+    "ikhtiari11RenderParagraphs",
+    "renderIkhtiari11Tab",
+    "ikhtiari11RenderEquation",
+    "ikhtiari11RenderTable",
+    "ikhtiari11TableCell",
+    "ikhtiari11SourceSearchText"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/civics_11_data.js",
+   "bytes": 1851889,
+   "sha256": "de51c84e59db09ccc4087487015bc6d572fa70de7b6cfb90e08a8699dd648a26",
+   "stubs": [
+    {
+     "name": "CIVICS_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "civics11WordVocabulary",
+     "kind": "object"
+    }
+   ],
+   "keys": {
+    "CLASS11_BOOKS": [
+     "civics"
+    ]
+   },
+   "fns": [
+    "civics11AddSection",
+    "civics11Pair",
+    "civics11SourceText",
+    "civics11RenderWordMeanings",
+    "civics11RenderPair",
+    "civics11RenderFigure",
+    "civics11RenderSectionBody",
+    "civics11RenderParagraphs",
+    "renderCivics11Tab",
+    "civics11RenderEquation",
+    "civics11RenderTable",
+    "civics11TableCell",
+    "civics11SourceSearchText"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/urdu_11_data.js",
+   "bytes": 1512133,
+   "sha256": "45b2a28e9cd6b688d131e1dc72ec417e336ed7b7ea58c554db097cb25a3ded93",
+   "stubs": [
+    {
+     "name": "URDU_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "urdu11WordVocabulary",
+     "kind": "object"
+    }
+   ],
+   "keys": {
+    "CLASS11_BOOKS": [
+     "urdu"
+    ]
+   },
+   "fns": [
+    "urdu11AddSection",
+    "urdu11Pair",
+    "urdu11SourceText",
+    "urdu11RenderWordMeanings",
+    "urdu11RenderPair",
+    "urdu11RenderFigure",
+    "urdu11RenderSectionBody",
+    "urdu11RenderParagraphs",
+    "renderUrdu11Tab",
+    "urdu11RenderEquation",
+    "urdu11RenderTable",
+    "urdu11TableCell",
+    "urdu11SourceSearchText"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/mq_11_data.js",
+   "bytes": 2619726,
+   "sha256": "29ada914f6e97544f052eb3da4570b09dfa3d86e3bd283ee35d0c1caece02cd8",
+   "stubs": [
+    {
+     "name": "MQ_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "mq11WordVocabulary",
+     "kind": "object"
+    }
+   ],
+   "keys": {
+    "CLASS11_BOOKS": [
+     "mq"
+    ]
+   },
+   "fns": [
+    "mq11AddSection",
+    "mq11Pair",
+    "mq11SourceText",
+    "mq11RenderWordMeanings",
+    "mq11RenderPair",
+    "mq11RenderFigure",
+    "mq11RenderSectionBody",
+    "mq11RenderParagraphs",
+    "renderMutaliaQuran11Tab",
+    "mq11RenderEquation",
+    "mq11RenderTable",
+    "mq11TableCell",
+    "mq11SourceSearchText"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/hpe_11_data.js",
+   "bytes": 993323,
+   "sha256": "d3cd7d8223ec8c6dd8a28b66974894722d10bb3b7b8b0d5c62656bf03eac0e1b",
+   "stubs": [
+    {
+     "name": "HPE_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "hpe11WordVocabulary",
+     "kind": "object"
+    }
+   ],
+   "keys": {
+    "CLASS11_BOOKS": [
+     "hpe"
+    ]
+   },
+   "fns": [
+    "hpe11AddSection",
+    "hpe11Pair",
+    "hpe11SourceText",
+    "hpe11RenderWordMeanings",
+    "hpe11RenderPair",
+    "hpe11RenderFigure",
+    "hpe11RenderSectionBody",
+    "hpe11RenderParagraphs",
+    "renderHPE11Tab",
+    "hpe11RenderEquation",
+    "hpe11RenderTable",
+    "hpe11TableCell",
+    "hpe11SourceSearchText"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/isl_11_data.js",
+   "bytes": 1193938,
+   "sha256": "155b9ef21846d50649e340da7af6adf618dbc814cdd96c31ccf13a916cea1052",
+   "stubs": [
+    {
+     "name": "ISL_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "isl11WordVocabulary",
+     "kind": "object"
+    }
+   ],
+   "keys": {
+    "CLASS11_BOOKS": [
+     "isl"
+    ]
+   },
+   "fns": [
+    "isl11AddSection",
+    "isl11Pair",
+    "isl11SourceText",
+    "isl11RenderWordMeanings",
+    "isl11RenderPair",
+    "isl11RenderFigure",
+    "isl11RenderSectionBody",
+    "isl11RenderParagraphs",
+    "renderIslamiat11Tab",
+    "isl11RenderEquation",
+    "isl11RenderTable",
+    "isl11TableCell",
+    "isl11SourceSearchText"
+   ],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/phys_12_data.js",
+   "bytes": 17982405,
+   "sha256": "26d190d219be2b9e3a2d28c3ca2a60706219332d4ce6bdaea64f4a1cdf6f3ae1",
+   "stubs": [
+    {
+     "name": "PHYS_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": [
+    {
+     "src": "js/phys12_unit11_study.js",
+     "bytes": 27497,
+     "sha256": "f45ee02c4b79d88474149617abd13956d85bc3c95978a59d28985df4c6c02316"
+    },
+    {
+     "src": "js/phys12_exercise_banks.js",
+     "bytes": 151450,
+     "sha256": "455741652fff78c097df0e7dce30bb712be57900a8ecebeb430a9a5413d66371"
+    }
+   ]
+  },
+  {
+   "src": "js/chem_12_data.js",
+   "bytes": 19968059,
+   "sha256": "d347a917054f203b700d1d63a8c9d502cbec2e7f57345a4e49c4d8f9f58d8ced",
+   "stubs": [
+    {
+     "name": "CHEM_12_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "chapter",
+     "kind": "object"
+    },
+    {
+     "name": "continuation",
+     "kind": "object"
+    },
+    {
+     "name": "source",
+     "kind": "object"
+    },
+    {
+     "name": "definition",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": [
+    {
+     "src": "js/chem12_unit13_study.js",
+     "bytes": 41086,
+     "sha256": "d44e44f362874b8a0f6ca24c64188b295e2bc9da8072ebcc6fcffed9bd8b52cb"
+    },
+    {
+     "src": "js/chem12_exercise_banks.js",
+     "bytes": 163167,
+     "sha256": "c3828493e21a0e2264a3da6d20cbd6ae380a86e65048b09cc03f1a0a3070d6d8"
+    }
+   ]
+  },
+  {
+   "src": "js/stat_12_data.js",
+   "bytes": 9020121,
+   "sha256": "fcd8e69d26a0ee43fa7efacd4c0292d566673cb65c92343b58cb197d9ee0db28",
+   "stubs": [
+    {
+     "name": "STAT_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": [
+    {
+     "src": "js/stat12_exercise_banks.js",
+     "bytes": 84651,
+     "sha256": "dcd72963456f4fd276d81bef86468ae126fb6eac03213e2301c2daa7483b9a11"
+    }
+   ]
+  },
+  {
+   "src": "js/english_12_data.js",
+   "bytes": 5821811,
+   "sha256": "df2f33c6c648b57b5dc07e64b9c8695213654ef21cdf9fde730bce16aba84867",
+   "stubs": [
+    {
+     "name": "ENGLISH_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "eng12Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/eng12_exercise_banks.js",
+     "bytes": 130769,
+     "sha256": "69d850783bcb36bd4c8d44897dc821aaca62a93e24e826377f7011fc7513bd5c"
+    }
+   ]
+  },
+  {
+   "src": "js/pakstudy_12_data.js",
+   "bytes": 7383913,
+   "sha256": "ee49b32b317c47a67ef191bf75fe963710ba27b239b5bf85aa129974a1b8a44b",
+   "stubs": [
+    {
+     "name": "PAKSTUDY_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "pak12Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/pakstudy12_exercise_banks.js",
+     "bytes": 141932,
+     "sha256": "e92f60bb381f2963b0b1cba8cc63ac1422598b876ae5abd29ea02646832c6e18"
+    }
+   ]
+  },
+  {
+   "src": "js/urdu_12_data.js",
+   "bytes": 7497642,
+   "sha256": "2348c9ee303cf021e595148e9342f85ebf17d26135e69e9ece2860ab5259921a",
+   "stubs": [
+    {
+     "name": "URDU_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "urdu12Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/urdu12_exercise_banks.js",
+     "bytes": 228934,
+     "sha256": "ad809c27e5295d2c899db5236befd2c95ef06f2f76c083402dedba53dc1eeace"
+    }
+   ]
+  },
+  {
+   "src": "js/biology_12_data.js",
+   "bytes": 10613705,
+   "sha256": "358708c41683f7b959c40718c974837ae47d1dc6cfc08d4ba46488aad1f86d06",
+   "stubs": [
+    {
+     "name": "BIOLOGY_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/computer_12_data.js",
+   "bytes": 5687643,
+   "sha256": "588cff68336b13af46721e55454003f4e2a93500c85104a2cd649e154c15bcff",
+   "stubs": [
+    {
+     "name": "COMP_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "comp12Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/comp12_exercise_banks.js",
+     "bytes": 69264,
+     "sha256": "43315d0b550ee860674b85305f97f6b7885c0b019f67c6ac95e1eb573693bb8f"
+    }
+   ]
+  },
+  {
+   "src": "js/civics_12_data.js",
+   "bytes": 7232914,
+   "sha256": "f051a9693ca27a91a450b795d2420a465952d5dd2b662a85243c6f39c71cc2a8",
+   "stubs": [
+    {
+     "name": "CIVICS_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "civics12Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/civics12_exercise_banks.js",
+     "bytes": 129714,
+     "sha256": "91182eb9d98ed8e10fcd7e1448906b259148c2c89293a8fca8937871de42670d"
+    }
+   ]
+  },
+  {
+   "src": "js/economics_12_data.js",
+   "bytes": 17961321,
+   "sha256": "0371d5c2529ab1087dd61d3d6d02eb90873ea94ffc02693ac407500a96ae78d4",
+   "stubs": [
+    {
+     "name": "ECON_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "econ12Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/econ12_exercise_banks.js",
+     "bytes": 106603,
+     "sha256": "7e889f6d10eebf847eab2d973bc36b290f7258d99d4000e5fa121c2651ee7b72"
+    }
+   ]
+  },
+  {
+   "src": "js/hpe_12_data.js",
+   "bytes": 3847293,
+   "sha256": "9019c91812b8ff64759c9beadba2ef68653b6b0d7387aba92e52e5649a704ac1",
+   "stubs": [
+    {
+     "name": "HPE_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "hpe12Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/hpe12_exercise_banks.js",
+     "bytes": 83690,
+     "sha256": "2dbc7fc850dcfa9cd3ca33658b3eb6a94a326e9c03da17ab4b87eb245d331676"
+    }
+   ]
+  },
+  {
+   "src": "js/islamiat_ikhtiari_12_data.js",
+   "bytes": 8839895,
+   "sha256": "dcb1f4146916ff328b34bd08a0651d91214dfb4058258584fdb17ff551d1cb87",
+   "stubs": [
+    {
+     "name": "ISLAMIAT_OPT_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "islopt12Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/islopt12_exercise_banks.js",
+     "bytes": 144367,
+     "sha256": "247dd25f04c93569ea5f6e79453bcb724a5319a68f0e9a758777c799c8fbea42"
+    }
+   ]
+  },
+  {
+   "src": "js/islamic_history_12_data.js",
+   "bytes": 5937017,
+   "sha256": "61e26bce1f23058531c5846b107822b5f07274334ee8476e7bd63b3a5399c607",
+   "stubs": [
+    {
+     "name": "ISLAMIC_HISTORY_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "islhist12Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/islhist12_exercise_banks.js",
+     "bytes": 198442,
+     "sha256": "082e4e773cf1efb81cffb7689da79d435944a6222b91df08e57db1d928498b34"
+    }
+   ]
+  },
+  {
+   "src": "js/quran_12_data.js",
+   "bytes": 12838203,
+   "sha256": "683d6e1b48578a62a83e5c5171caff129ffc3c4b364bcceda823ef1b29e58453",
+   "stubs": [
+    {
+     "name": "QURAN_12_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [
+    "quran12Chapters"
+   ],
+   "also": [],
+   "after": [
+    {
+     "src": "js/quran12_exercise_banks.js",
+     "bytes": 262427,
+     "sha256": "dd83afcb663a16710d33ca72e09857a87ce0f1b3db3d581ca8f8d0ee841ab46e"
+    }
+   ]
+  },
+  {
+   "src": "js/math_4_data.js",
+   "bytes": 1952654,
+   "sha256": "4d0991a03bbe5c016c765f680a97d88fd59e212964283a1b56a933e380bd35a2",
+   "stubs": [
+    {
+     "name": "MATH_4_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS4_BOOKS": [
+     "math"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/english_4_data.js",
+   "bytes": 1699901,
+   "sha256": "c58e672e61fd19ab0db8d4f578a48432148aa271d2553d47336d86df0987abe0",
+   "stubs": [
+    {
+     "name": "ENGLISH_4_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS4_BOOKS": [
+     "eng"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/urdu_4_data.js",
+   "bytes": 1916147,
+   "sha256": "1be12d1dcb1292579d7d4c7ecf7b8d1d2ce5cd9b583dcdb6f54f67f617b514f0",
+   "stubs": [
+    {
+     "name": "URDU_4_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS4_BOOKS": [
+     "urdu"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/general_science_4_data.js",
+   "bytes": 1280608,
+   "sha256": "c12d51ab205ef445a2ce3bf2ff0a4de36b3b6988881d294b7a21f62387c9c2b7",
+   "stubs": [
+    {
+     "name": "GENERAL_SCIENCE_4_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS4_BOOKS": [
+     "sci"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/social_studies_4_data.js",
+   "bytes": 1529527,
+   "sha256": "d69f09081c294bc18f447359f24bcd58b1726dc2b6a2034cb5c6e33a027ea1b3",
+   "stubs": [
+    {
+     "name": "SOCIAL_STUDIES_4_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS4_BOOKS": [
+     "sst"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/social_studies_um_4_data.js",
+   "bytes": 1718225,
+   "sha256": "115142b427289584b5889eec05186f9436b4ae9e27cb8e6929e5f453c3f71af2",
+   "stubs": [
+    {
+     "name": "SOCIAL_STUDIES_UM_4_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS4_BOOKS": [
+     "sstum"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamiat_4_data.js",
+   "bytes": 1258534,
+   "sha256": "29a3125eaa33871c62439574c8ac4c73e007084a51fc2bba9ea743d54823aaa3",
+   "stubs": [
+    {
+     "name": "ISLAMIAT_4_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS4_BOOKS": [
+     "isl"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/pashto_4_data.js",
+   "bytes": 1117020,
+   "sha256": "6ccece1f604e67a9459c862115961023ce135eb32f9ff0315a6e93dcefd00876",
+   "stubs": [
+    {
+     "name": "PASHTO_4_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS4_BOOKS": [
+     "pashto"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_5_data.js",
+   "bytes": 1750483,
+   "sha256": "29853c31111353ba36cccdddd8d03a1020b1fb64267668bd56a75fbfd7b78c85",
+   "stubs": [
+    {
+     "name": "MATH_5_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "MATH_5_BOOK",
+     "kind": "object"
+    },
+    {
+     "name": "MATH_5_WORDS",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/general_science_5_data.js",
+   "bytes": 1672719,
+   "sha256": "f3436c4b13a5386519a8989ec6bfa3cc627e0bbe2fe5e2aa277ad07ffd621ba7",
+   "stubs": [
+    {
+     "name": "GENERAL_SCIENCE_5_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS5_BOOKS": [
+     "sci"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/english_5_data.js",
+   "bytes": 1384710,
+   "sha256": "3b351f63b63bc49d2a0965b970a85294d2c4d7d448a3a98d3ac08677c35a5b3d",
+   "stubs": [
+    {
+     "name": "ENGLISH_5_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS5_BOOKS": [
+     "eng"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/urdu_5_data.js",
+   "bytes": 2163567,
+   "sha256": "b31d41c51bb31de6a42be144cb54c439c84f41a771936593b7183473c52a79d2",
+   "stubs": [
+    {
+     "name": "URDU_5_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS5_BOOKS": [
+     "urdu"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamiat_5_data.js",
+   "bytes": 1321188,
+   "sha256": "382ffcc461db9f369dfc9056ac951a1efa3b13c21917915f03b342b7a2d26f93",
+   "stubs": [
+    {
+     "name": "ISLAMIAT_5_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS5_BOOKS": [
+     "isl"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/social_studies_5_data.js",
+   "bytes": 1322355,
+   "sha256": "5a0caa50f5382c2766ae62e826b62dcf28f8b7b5fd51e176f1f3deb55259e707",
+   "stubs": [
+    {
+     "name": "SOCIAL_STUDIES_5_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS5_BOOKS": [
+     "sst"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/social_studies_um_5_data.js",
+   "bytes": 1510313,
+   "sha256": "47ed8c3bae55b7bae36d0a61d1ffa9f8785ae65aa689ad70ab7807b6bb2e6d2d",
+   "stubs": [
+    {
+     "name": "SOCIAL_STUDIES_UM_5_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS5_BOOKS": [
+     "sstum"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/pashto_5_data.js",
+   "bytes": 1338419,
+   "sha256": "8de27891557fd5f9914ffc7d26e0adff5988acc15d4cfec999a6073b7647945f",
+   "stubs": [
+    {
+     "name": "PASHTO_5_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS5_BOOKS": [
+     "pashto"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_6_data.js",
+   "bytes": 2960907,
+   "sha256": "73c88e0d08f0ab7fbe7357d2bcfc0dd19211e4dc722304b7cf196427da718a21",
+   "stubs": [
+    {
+     "name": "MATH_6_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "MATH_6_BOOK",
+     "kind": "object"
+    },
+    {
+     "name": "MATH_6_WORDS",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_7_data.js",
+   "bytes": 3578135,
+   "sha256": "3b82edc91b86a7732bac770f13de388843b2b90bcd6e54238f4a6a04c1a16b0c",
+   "stubs": [
+    {
+     "name": "MATH_7_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "MATH_7_BOOK",
+     "kind": "object"
+    },
+    {
+     "name": "MATH_7_WORDS",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/english_7_data.js",
+   "bytes": 1257078,
+   "sha256": "c40495bbda59f092a1f0a7855f351006e0cbda77496353d1d90627017326617b",
+   "stubs": [
+    {
+     "name": "ENGLISH_7_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS7_BOOKS": [
+     "eng"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/general_science_7_data.js",
+   "bytes": 1683312,
+   "sha256": "3c44fb0cfa1e295e7dd9b808278146b52d178bdf38db952f876c35ac37be7296",
+   "stubs": [
+    {
+     "name": "GENERAL_SCIENCE_7_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS7_BOOKS": [
+     "sci"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/computer_7_data.js",
+   "bytes": 881272,
+   "sha256": "557928df1b4e280c4f68d610ea6f7d35793da21f28888ad647ea3e5f32110589",
+   "stubs": [
+    {
+     "name": "COMPUTER_7_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS7_BOOKS": [
+     "comp"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/geography_7_data.js",
+   "bytes": 903403,
+   "sha256": "c807151f7479869c923eb306106cede4f9dae4b4ce37adcb10d255376435991d",
+   "stubs": [
+    {
+     "name": "GEOGRAPHY_7_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS7_BOOKS": [
+     "geo"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/history_7_data.js",
+   "bytes": 1266573,
+   "sha256": "9457bc8d0eca12afff8fa9063a3af87b4e60f8651632d131ef0de7d149cc7a6b",
+   "stubs": [
+    {
+     "name": "HISTORY_7_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS7_BOOKS": [
+     "hist"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/urdu_7_data.js",
+   "bytes": 2127308,
+   "sha256": "03115b572e1238c490cab7cd9d5691da90ffc28092463b5b4faf93023022217c",
+   "stubs": [
+    {
+     "name": "URDU_7_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS7_BOOKS": [
+     "urdu"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamiat_7_data.js",
+   "bytes": 2253817,
+   "sha256": "ccdbca68b823e5034d392ad41303cf28a66dc5ed07b8187b142d0a62e162f929",
+   "stubs": [
+    {
+     "name": "ISLAMIAT_7_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS7_BOOKS": [
+     "isl"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/mutalia_quran_7_data.js",
+   "bytes": 2281947,
+   "sha256": "7e9b0ba97d2fd91a10d09a6f764e022bff2e99fa59b0b036c089cb249326b085",
+   "stubs": [
+    {
+     "name": "MUTALIA_QURAN_7_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS7_BOOKS": [
+     "quran"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/arabic_7_data.js",
+   "bytes": 1489773,
+   "sha256": "5671f3afd8b441b55044689310f358d523773668e58d62f1628a0ec3b18cd03c",
+   "stubs": [
+    {
+     "name": "ARABIC_7_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS7_BOOKS": [
+     "arabic"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/drawing_7_data.js",
+   "bytes": 590836,
+   "sha256": "a252bed6e8cd56aaa42e165462a9f79d97dac5b71666fdc1fb74527fd50271bf",
+   "stubs": [
+    {
+     "name": "DRAWING_7_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS7_BOOKS": [
+     "drawing"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/hpe_7_data.js",
+   "bytes": 1112555,
+   "sha256": "72aca73e8c4e881a4843f37337ad1adbf9bf2ee8aebeea3aeec7307f5dcded62",
+   "stubs": [
+    {
+     "name": "HPE_7_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS7_BOOKS": [
+     "hpe"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/general_science_6_data.js",
+   "bytes": 1473894,
+   "sha256": "d6718f9c926ab80522b882cf6d749247b50d1df88a77cb821c6ff213933c0758",
+   "stubs": [
+    {
+     "name": "GENERAL_SCIENCE_6_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS6_BOOKS": [
+     "sci"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/english_6_data.js",
+   "bytes": 1393077,
+   "sha256": "6cacd871529821d685f663880f35fbabb72f6bcb1714ddd5be0aedbcb44cea58",
+   "stubs": [
+    {
+     "name": "ENGLISH_6_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS6_BOOKS": [
+     "eng"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/urdu_6_data.js",
+   "bytes": 2232870,
+   "sha256": "86f22a7666eb238ce326845862e49513e17b591f32dfc2879762edbefef3a817",
+   "stubs": [
+    {
+     "name": "URDU_6_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS6_BOOKS": [
+     "urdu"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamiat_6_data.js",
+   "bytes": 2315587,
+   "sha256": "1e5e6870edaad8f682e589d6c226a43e09da4e5be1a792fb3db634e4bb260d00",
+   "stubs": [
+    {
+     "name": "ISLAMIAT_6_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS6_BOOKS": [
+     "isl"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/computer_6_data.js",
+   "bytes": 743985,
+   "sha256": "9f5235d2c2c0d8dfa63b5e4538e49a25ff8004eb6157f03a28942d1fb4e1f33b",
+   "stubs": [
+    {
+     "name": "COMPUTER_6_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS6_BOOKS": [
+     "comp"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/geography_6_data.js",
+   "bytes": 822354,
+   "sha256": "bab63d43bf403931c37b79f4f26c94cfab49d8e75432660673c5b8e0d2e39330",
+   "stubs": [
+    {
+     "name": "GEOGRAPHY_6_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS6_BOOKS": [
+     "geo"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/history_6_data.js",
+   "bytes": 1010984,
+   "sha256": "599055058802a1340592cd3c73b5f952408c19617bc24bbe6190866644e3b966",
+   "stubs": [
+    {
+     "name": "HISTORY_6_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS6_BOOKS": [
+     "hist"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/hpe_6_data.js",
+   "bytes": 808215,
+   "sha256": "1626f6e4eb60893b5581cf751ca0f811e8a50ca68ad853094d56d5bf41e10c71",
+   "stubs": [
+    {
+     "name": "HPE_6_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS6_BOOKS": [
+     "hpe"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/drawing_6_data.js",
+   "bytes": 380065,
+   "sha256": "7517f26160586d05109688abbbd8de6d55e0cdd9c4e60111361fea3caed3e385",
+   "stubs": [
+    {
+     "name": "DRAWING_6_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS6_BOOKS": [
+     "drawing"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/arabic_6_data.js",
+   "bytes": 1249300,
+   "sha256": "0ba1bf57234b4760c946e613ca9882354e431cb3862a6e643a8e553df698d34d",
+   "stubs": [
+    {
+     "name": "ARABIC_6_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS6_BOOKS": [
+     "arabic"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/mutalia_quran_6_data.js",
+   "bytes": 1971921,
+   "sha256": "f8353f1dd29e0ecb8910d990e07750f73cabe7f0c2168a519ab5fa5dc49e4be5",
+   "stubs": [
+    {
+     "name": "MUTALIA_QURAN_6_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS6_BOOKS": [
+     "quran"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/pashto_6_data.js",
+   "bytes": 1178732,
+   "sha256": "e9ed5e90fa4c5e0487a53bc626167bb2393075f31fa4c4df2f1705870463c6c8",
+   "stubs": [
+    {
+     "name": "PASHTO_6_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS6_BOOKS": [
+     "pashto"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/english_8_data.js",
+   "bytes": 1039668,
+   "sha256": "5ad0b073e3c54d33c582b338ebd38fd7a3249ecf1864db9e52679fce89b5f151",
+   "stubs": [
+    {
+     "name": "ENGLISH_8_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS8_BOOKS": [
+     "eng"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_8_data.js",
+   "bytes": 3750869,
+   "sha256": "92de15065f635d681c5980aaeccb5668793ac1e758a7169c19a752f75f836f0c",
+   "stubs": [
+    {
+     "name": "MATH_8_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "MATH_8_BOOK",
+     "kind": "object"
+    },
+    {
+     "name": "MATH_8_WORDS",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/general_science_8_data.js",
+   "bytes": 1978794,
+   "sha256": "97c34a65a7e16990a71dbac8355768303e5e219126d0adb363c1fc7f991b4429",
+   "stubs": [
+    {
+     "name": "GENERAL_SCIENCE_8_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS8_BOOKS": [
+     "sci"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/computer_8_data.js",
+   "bytes": 721420,
+   "sha256": "e0516f95b1a65590a345a265872bc56dfccf3772b2db1dfc24817623ca2aeef0",
+   "stubs": [
+    {
+     "name": "COMPUTER_8_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS8_BOOKS": [
+     "comp"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/geography_8_data.js",
+   "bytes": 801895,
+   "sha256": "3f6d6ccb67ba05a6f1e8c076241800394aa9db47629049b95b0a090dc4185e48",
+   "stubs": [
+    {
+     "name": "GEOGRAPHY_8_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS8_BOOKS": [
+     "geo"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/history_8_data.js",
+   "bytes": 1165766,
+   "sha256": "f3f7ae4ae91d714eca0ca93e18f27f47527e57f2f4bf5119ffcf239a67d7b84e",
+   "stubs": [
+    {
+     "name": "HISTORY_8_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS8_BOOKS": [
+     "hist"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/urdu_8_data.js",
+   "bytes": 2151298,
+   "sha256": "fcc759acbc76c7d965f8246e7fdfee1c57f42cda2906cccc8b2ad31dcc2608c5",
+   "stubs": [
+    {
+     "name": "URDU_8_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS8_BOOKS": [
+     "urdu"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/islamiat_8_data.js",
+   "bytes": 1785227,
+   "sha256": "13635b6bcc34ee46cb063bf27db6b7c3e7b1b8570ef8915b68e8d29ca5c67a86",
+   "stubs": [
+    {
+     "name": "ISLAMIAT_8_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS8_BOOKS": [
+     "isl"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/mutalia_quran_8_data.js",
+   "bytes": 2295826,
+   "sha256": "aac27117a3ab14267deb0a8de5ea9b6bd27cbc6fc3d925eb65497db33e567b9e",
+   "stubs": [
+    {
+     "name": "MUTALIA_QURAN_8_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS8_BOOKS": [
+     "quran"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/pashto_8_data.js",
+   "bytes": 691651,
+   "sha256": "dcabed6fdcc1b241ca2a5a72e6e909428cfd2e5db0ddf4ed27a2337f65f120d1",
+   "stubs": [
+    {
+     "name": "PASHTO_8_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS8_BOOKS": [
+     "pashto"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/arabic_8_data.js",
+   "bytes": 1441760,
+   "sha256": "cc8272eb5dd007ca727510aa36948a66ff4255bd547e6c3523e22a0cf90ce2c3",
+   "stubs": [
+    {
+     "name": "ARABIC_8_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS8_BOOKS": [
+     "arabic"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/drawing_8_data.js",
+   "bytes": 189579,
+   "sha256": "2bae8eefe943e691a55afd9ed25972716dc372bc7748afeec6d014b298a9fc97",
+   "stubs": [
+    {
+     "name": "DRAWING_8_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS8_BOOKS": [
+     "drawing"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/hpe_8_data.js",
+   "bytes": 407162,
+   "sha256": "6b5136179a13fbf98aa8d8ed8c75feb50f4c70085ab189070a136fd8bca4a855",
+   "stubs": [
+    {
+     "name": "HPE_8_DATA",
+     "kind": "array"
+    }
+   ],
+   "keys": {
+    "CLS8_BOOKS": [
+     "hpe"
+    ]
+   },
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/math_11_data.js",
+   "bytes": 5480397,
+   "sha256": "05090ab2db9b3eb3688173e8ba3b16479ae4475ae4571eb217f7b648a97630e7",
+   "stubs": [
+    {
+     "name": "MATH_11_DATA",
+     "kind": "array"
+    },
+    {
+     "name": "MATH_11_BOOK",
+     "kind": "object"
+    },
+    {
+     "name": "MATH_11_WORDS",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/lexicon_data.js",
+   "bytes": 2622857,
+   "sha256": "a37f2f840c0397768994c76bc8f09eac6a394eb263a34ea2ad5c7d3ad78c8542",
+   "stubs": [
+    {
+     "name": "SB_LEXICON_V1",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_0.js",
+   "bytes": 135102,
+   "sha256": "57dcff37160eb5e4de6ed67e57a49266fa3f3917d2ad9b68a5458ac448696c20",
+   "stubs": [
+    {
+     "name": "SB_SENT_0",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_1.js",
+   "bytes": 138430,
+   "sha256": "5a5fcb27cae2f5d3f886c4d6daa3068af0fcc1ad08caf4628a33d8840e230c14",
+   "stubs": [
+    {
+     "name": "SB_SENT_1",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_2.js",
+   "bytes": 141958,
+   "sha256": "f13b44b0f2d939bbf222223bc2528408b9d0b627a84adbc1a4195b37dfed8524",
+   "stubs": [
+    {
+     "name": "SB_SENT_2",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_3.js",
+   "bytes": 132638,
+   "sha256": "607d3b9c01956592a0242f7b5d1e2c864d0adf87096463ca056b75dfaca9d0f5",
+   "stubs": [
+    {
+     "name": "SB_SENT_3",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_4.js",
+   "bytes": 141704,
+   "sha256": "a1037b799b23f67f8b36613a0b9e6bf0b572618ae8c2d1901ad7e8b6d42e6035",
+   "stubs": [
+    {
+     "name": "SB_SENT_4",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_5.js",
+   "bytes": 145964,
+   "sha256": "95bd88906c4817db074f83b17708f6db32e13093f11d993473549b5e8189a41a",
+   "stubs": [
+    {
+     "name": "SB_SENT_5",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_6.js",
+   "bytes": 156030,
+   "sha256": "4d353ae5e95101793f7adec717e0f53e88b690f67e8b7224c257deab5ecf6c65",
+   "stubs": [
+    {
+     "name": "SB_SENT_6",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_7.js",
+   "bytes": 138165,
+   "sha256": "e78c5c2a2dc4c52fa9f52ea31e24fca22ac81a85924ba416ce0c5e3c0b49d27b",
+   "stubs": [
+    {
+     "name": "SB_SENT_7",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_8.js",
+   "bytes": 145622,
+   "sha256": "c65dbb23c1a0fedc1dc7cb1fb089337f8a1d439975b88ccceaaf8b33e63ea73b",
+   "stubs": [
+    {
+     "name": "SB_SENT_8",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_9.js",
+   "bytes": 139498,
+   "sha256": "2b032f634db54492f03aeb09954876c7b1797ccfa88745fd7e98cf48a836a4ee",
+   "stubs": [
+    {
+     "name": "SB_SENT_9",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_10.js",
+   "bytes": 145494,
+   "sha256": "4d065881c35622ebec71b1c22a5d14256250593954cfc174b5e62a6a683d9ada",
+   "stubs": [
+    {
+     "name": "SB_SENT_10",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_11.js",
+   "bytes": 142269,
+   "sha256": "58b5f1229daac8f5201e5100de27831486d2924a0643fbd3d4d212ed0b47fb75",
+   "stubs": [
+    {
+     "name": "SB_SENT_11",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_12.js",
+   "bytes": 150193,
+   "sha256": "f51ee5e9684cd5b0a53971f5abcce3d1d384a87ea7290e3d351a3e847da8d15f",
+   "stubs": [
+    {
+     "name": "SB_SENT_12",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_13.js",
+   "bytes": 150242,
+   "sha256": "8caefef84d3a2342bc4bba60f0d706167b77aa9754e642dc5baaaffb0a7b4cdb",
+   "stubs": [
+    {
+     "name": "SB_SENT_13",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_14.js",
+   "bytes": 141586,
+   "sha256": "150981a29d7b7eb0c0526d46a09aa81e751fcc6f6794430581be618c145ac966",
+   "stubs": [
+    {
+     "name": "SB_SENT_14",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/sent_data_15.js",
+   "bytes": 139623,
+   "sha256": "d2717bfe91a48a7cb6f35e3ef7f9aafa2751453b3b6228cfc91da2c458109f07",
+   "stubs": [
+    {
+     "name": "SB_SENT_15",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/study_plan_index.js",
+   "bytes": 224676,
+   "sha256": "c9693335f3b0fd4d78747a48e0d7bc90fc3e1625814786343e36d58cf4cf9758",
+   "stubs": [
+    {
+     "name": "SB_STUDY_INDEX",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  }
+ ]
+}

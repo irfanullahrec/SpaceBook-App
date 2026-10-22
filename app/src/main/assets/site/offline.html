@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1d4ed8">
+  <title>Offline - TuitionHub</title>
+  <style>
+    :root { --bg: #eaf6ff; --fg: #0f172a; --muted: #475569; --brand: #1d4ed8; --card: #ffffff; --line: #bfdbfe; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #0b1220; --fg: #e2e8f0; --muted: #94a3b8; --brand: #60a5fa; --card: #111a2e; --line: #1e3a5f; } }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 16px; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 30rem; padding: 24px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; text-align: center; }
+    img { width: 96px; height: 96px; border-radius: 20px; }
+    h1 { font-size: 1.35rem; margin: 12px 0 8px; }
+    p { color: var(--muted); margin: 8px 0; }
+    a.btn { display: inline-block; margin-top: 14px; padding: 10px 18px; border-radius: 10px; background: var(--brand); color: #fff; text-decoration: none; font-weight: 600; }
+    @media (prefers-color-scheme: dark) { a.btn { color: #0b1220; } }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="icons/icon-192.png" alt="" width="96" height="96">
+    <h1>You are offline</h1>
+    <p>This page could not be loaded and is not saved on this device yet.</p>
+    <p>Subjects you downloaded keep working: open the app again from the home screen or the link below.</p>
+    <a class="btn" href="./">Open the app</a>
+  </main>
+</body>
+</html>

@@ -1,0 +1,45 @@
+/* Offline books dialog, header button, offline badge and update banner (js/core/offline.js). Everything is scoped under .sb-off-* classes. */
+.sb-off-btn { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; margin-inline-end: 8px; border: 1px solid #bfdbfe; border-radius: 50%; background: #fff; color: #1d4ed8; font-size: 1.1rem; cursor: pointer; }
+.sb-off-btn:hover, .sb-off-btn:focus-visible { background: #eff6ff; outline: 2px solid #1d4ed8; outline-offset: 2px; }
+
+.sb-off-badge { position: fixed; left: 12px; bottom: 12px; z-index: 9998; max-width: min(92vw, 26rem); padding: 8px 14px; border-radius: 999px; background: #1e293b; color: #fff; font-size: .85rem; box-shadow: 0 4px 14px rgba(0, 0, 0, .25); }
+.sb-off-badge[hidden] { display: none; }
+
+.sb-off-banner { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 9999; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; max-width: 92vw; padding: 10px 14px; border-radius: 12px; background: #1d4ed8; color: #fff; font-size: .9rem; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
+.sb-off-banner button { padding: 6px 12px; border: 0; border-radius: 8px; background: #fff; color: #1d4ed8; font-weight: 600; cursor: pointer; }
+.sb-off-banner button[data-act="later"] { background: transparent; color: #fff; text-decoration: underline; }
+
+.sb-off-overlay { position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(15, 23, 42, .55); }
+.sb-off-box { width: min(100%, 34rem); max-height: 92vh; overflow: auto; padding: 18px; border-radius: 16px; background: #fff; color: #0f172a; box-shadow: 0 12px 40px rgba(0, 0, 0, .35); }
+.sb-off-box .sb-off-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.sb-off-box h2 { margin: 0; font-size: 1.2rem; }
+.sb-off-close { width: 36px; height: 36px; border: 0; border-radius: 50%; background: #f1f5f9; font-size: 1rem; cursor: pointer; }
+.sb-off-note { margin: 10px 0; color: #475569; font-size: .9rem; }
+.sb-off-meter { margin: 6px 0 10px; font-size: .85rem; color: #334155; }
+.sb-off-list details { border: 1px solid #e2e8f0; border-radius: 10px; margin: 6px 0; padding: 4px 10px; }
+.sb-off-list summary { cursor: pointer; padding: 8px 0; font-weight: 600; }
+.sb-off-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid #f1f5f9; }
+.sb-off-row input { width: 20px; height: 20px; flex: none; }
+.sb-off-name { flex: 1; }
+.sb-off-row small { color: #64748b; }
+.sb-off-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.sb-off-actions button { flex: 1 1 10rem; padding: 10px 14px; border: 0; border-radius: 10px; background: #1d4ed8; color: #fff; font-weight: 600; cursor: pointer; }
+.sb-off-actions button[data-act="remove"] { background: #fff; color: #b91c1c; border: 1px solid #fca5a5; }
+.sb-off-actions button:disabled { opacity: .45; cursor: not-allowed; }
+.sb-off-progress { height: 10px; margin-top: 12px; border-radius: 999px; background: #e2e8f0; overflow: hidden; }
+.sb-off-bar { height: 100%; width: 0; background: #1d4ed8; transition: width .2s; }
+.sb-off-msg { min-height: 1.4em; margin: 8px 0 0; font-size: .88rem; color: #334155; }
+.sb-off-bad { color: #b91c1c; }
+.sb-off-busy .sb-off-actions button { pointer-events: none; opacity: .6; }
+
+@media (prefers-color-scheme: dark) {
+  .sb-off-btn { background: #111a2e; border-color: #1e3a5f; color: #93c5fd; }
+  .sb-off-box { background: #0f172a; color: #e2e8f0; }
+  .sb-off-close { background: #1e293b; color: #e2e8f0; }
+  .sb-off-note, .sb-off-meter, .sb-off-msg { color: #cbd5e1; }
+  .sb-off-list details { border-color: #1e293b; }
+  .sb-off-row { border-color: #1e293b; }
+  .sb-off-row small { color: #94a3b8; }
+  .sb-off-actions button[data-act="remove"] { background: transparent; color: #fca5a5; border-color: #7f1d1d; }
+  .sb-off-progress { background: #1e293b; }
+}

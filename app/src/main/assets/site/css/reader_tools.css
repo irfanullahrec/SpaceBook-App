@@ -1,0 +1,83 @@
+/* reader_tools.css — lesson ticks, lesson filter, text-size control (js/reader_tools.js) */
+
+/* ✓ on lessons opened before */
+.math-ch-list .rt-done { position: relative; }
+.math-ch-list .rt-done::after {
+  content: '✓';
+  position: absolute; top: 6px; right: 6px;
+  width: 18px; height: 18px; border-radius: 999px;
+  display: grid; place-items: center;
+  background: #0c855d; color: #fff;
+  font: 800 11px/1 'Segoe UI', system-ui, sans-serif;
+  box-shadow: 0 0 0 2px #fff;
+  pointer-events: none;
+}
+
+/* Find a lesson */
+.rt-filter { padding: 0 0 0.5rem; }
+.rt-filter-input {
+  width: 100%; min-height: 36px; padding: 0 0.75rem;
+  border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc;
+  font: 500 0.85rem 'Segoe UI', system-ui, sans-serif; color: #0f172a;
+}
+.rt-filter-input:focus { outline: none; border-color: #38bdf8; background: #fff; box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2); }
+.rt-filter-empty { padding: 0.5rem 0.25rem 0; font-size: 0.8rem; color: #64748b; }
+
+/* Aa text size */
+.rt-size {
+  position: fixed; right: 16px; bottom: calc(var(--footer-h, 52px) + 16px); z-index: 99980;
+  display: none; align-items: center; gap: 6px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+.rt-size.rt-show { display: flex; }
+.rt-size-toggle {
+  width: 42px; height: 42px; border-radius: 999px; border: 1px solid #e2e8f0;
+  background: #fff; color: #0f172a; font-weight: 800; font-size: 0.95rem;
+  box-shadow: 0 6px 18px -6px rgba(15, 23, 42, 0.35);
+}
+.rt-size-toggle:hover { border-color: #7dd3fc; color: #0284c7; }
+.rt-size-panel {
+  display: flex; align-items: center; gap: 2px;
+  padding: 4px; border-radius: 999px; background: #0f172a; color: #f8fafc;
+  box-shadow: 0 8px 22px -6px rgba(15, 23, 42, 0.45);
+}
+.rt-size-panel[hidden] { display: none; }
+.rt-size-panel button {
+  min-width: 38px; height: 34px; border: 0; border-radius: 999px;
+  background: transparent; color: inherit; font-weight: 800; font-size: 0.9rem;
+}
+.rt-size-panel button:hover { background: rgba(255, 255, 255, 0.14); }
+.rt-size-val { min-width: 46px; text-align: center; font-size: 0.8rem; font-variant-numeric: tabular-nums; opacity: 0.85; }
+@media print { .rt-size, .rt-filter { display: none !important; } }
+
+/* Phones: every reader stacks the lesson list above the lesson (the Class 12 layout, applied to all
+   classes). Without this the 290px list leaves the lesson about 44px wide on a 375px screen. */
+.math-unified-view { grid-template-columns: 290px minmax(0, 1fr); }
+.math-unified-view .math-topic-area { min-width: 0; }
+@media (max-width: 760px) {
+  .math-unified-view {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(130px, 23vh) minmax(0, 1fr);
+    height: calc(100dvh - var(--top-total-h) - 28px);
+    max-height: calc(100dvh - var(--top-total-h) - 28px);
+    gap: .5rem;
+  }
+  .math-unified-view .math-sidebar-footer { display: none; }
+  .math-unified-view .math-acc-header { flex-wrap: wrap; gap: .5rem; }
+  .math-unified-view .math-nav-tabs { min-width: 0; max-width: 100%; overflow-x: auto; }
+  .rt-filter { padding: .4rem .5rem .3rem; }
+  .rt-filter-input { min-height: 32px; }
+  .rt-size { bottom: 16px; }
+}
+
+/* structure_harmonizer.js: old readers use the standard lesson-level language bar */
+.sh-converted .para-lang-tabs-bar { display: none !important; }
+.sh-bar { margin: 0 0 .75rem; }
+.sh-converted .sh-trans { margin-top: .35rem; padding-inline-start: .75rem; border-inline-start: 3px solid #bae6fd; }
+.sh-mt { margin: .3rem 0 .7rem; padding: .35rem .7rem; border-inline-start: 3px solid #bae6fd; background: #f8fafc; border-radius: 6px; color: #0f172a; font-size: .95em; line-height: 1.7; }
+.sh-mt[hidden] { display: none; }
+.sh-mt.sh-rtl { font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Segoe UI', serif; font-size: 1.05em; line-height: 2; text-align: right; }
+.sh-mt.sh-ps { font-family: 'Noto Naskh Arabic', 'Pashto Koodak', 'Segoe UI', Tahoma, serif; }
+.sh-wait { color: #64748b; font: 500 .8rem 'Segoe UI', system-ui, sans-serif; }
+.sh-tag { display: block; margin-top: .15rem; color: #94a3b8; font: 500 .66rem 'Segoe UI', system-ui, sans-serif; text-align: start; direction: ltr; }
+li > .sh-mt { margin-bottom: .3rem; }

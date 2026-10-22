@@ -1,0 +1,17 @@
+[data-class12-subject] .class12-question{margin:1rem 0;padding:1rem;overflow-wrap:anywhere;}
+[data-class12-subject] .class12-question-text{font-weight:650;line-height:1.8;white-space:pre-line;margin:.65rem 0;}
+[data-class12-subject] .class12-choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:.6rem;margin:.8rem 0;}
+[data-class12-subject] .class12-choices button{font:inherit;text-align:start;padding:.7rem;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;color:#0f172a;white-space:pre-line;}
+[data-class12-subject] .class12-choices .class12-correct{background:#dcfce7;border-color:#15803d;}
+[data-class12-subject] .class12-choices .class12-incorrect{background:#fee2e2;border-color:#b91c1c;}
+[data-class12-subject] .class12-answer{border-top:1px solid #e2e8f0;padding-top:.8rem;margin-top:.8rem;line-height:1.9;}
+[data-class12-subject] .class12-answer>summary,[data-class12-subject] .class12-language>summary,[data-class12-subject] .class12-source-exercise>summary{cursor:pointer;font-weight:650;}
+[data-class12-subject] .class12-answer-text{white-space:pre-line;}
+[data-class12-subject] .class12-study-note{padding:.7rem;background:#f1f5f9;border-radius:8px;line-height:1.7;color:#334155;}
+[data-class12-subject] .class12-language{margin:.7rem 0;}
+[data-class12-subject] .class12-language p{line-height:2.1;}
+[data-class12-subject] .class12-source-exercise{margin:1rem 0;padding:1rem;}
+
+/* Very long units (e.g. Physics Unit 11: 108k nodes, 358 diagrams) crash the tab when painted at once; paint cards lazily. */
+.science-lesson-cards-list > *{content-visibility:auto;contain-intrinsic-size:auto 700px;}
+[data-class12-subject] .class12-answer-code{white-space:pre;overflow-x:auto;background:var(--code-bg,rgba(127,127,127,.12));padding:.6em .8em;border-radius:6px;font-size:.92em;line-height:1.45;margin:.3em 0;}
