@@ -18,3 +18,5 @@ artwork/demo/scenes/
 artwork/demo/prep_saved.json*
 artwork/demo/timeline.json
 artwork/demo/mask.png
+artwork/demo/voice_*/
+artwork/demo/timeline_*.json

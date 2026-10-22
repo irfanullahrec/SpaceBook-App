@@ -69,6 +69,21 @@
   #outro h1 { font-size: 150px; }
   #outro .logo { width: 150px; height: 150px; margin-bottom: 20px; filter: drop-shadow(0 8px 30px rgba(109,92,255,.9)); }
   #fade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
+
+  /* ---------- Urdu: right to left, Nastaliq, no letter spacing (it would break the joins) ---------- */
+  body.ur { font-family: "Jameel Noori Nastaleeq", "Noto Nastaliq Urdu", "Segoe UI", serif; }
+  body.ur .badge { letter-spacing: 0; font-size: 36px; padding: 6px 30px 14px; font-family: "Jameel Noori Nastaleeq", serif; }
+  body.ur .caption { direction: rtl; text-align: right; font-size: 54px; line-height: 1.85; font-weight: 400; }
+  body.ur .classCard + .bigNum { }
+  body.ur .bigNum small { letter-spacing: 0; font-size: 70px; font-family: "Jameel Noori Nastaleeq", serif; margin-bottom: 14px; }
+  body.ur .count { font-size: 46px; font-family: "Jameel Noori Nastaleeq", serif; direction: rtl; text-align: left; }
+  body.ur .chips { direction: rtl; }
+  body.ur .chips span { font-family: "Jameel Noori Nastaleeq", serif; font-size: 30px; padding: 4px 22px 12px; }
+  body.ur .brand span { letter-spacing: 0; text-transform: none; font-size: 40px; font-family: "Jameel Noori Nastaleeq", serif; }
+  body.ur #intro .lib { letter-spacing: 0; font-size: 150px; padding-left: 0; font-family: "Jameel Noori Nastaleeq", serif; }
+  body.ur #intro .sub, body.ur #outro .sub { letter-spacing: 0; font-size: 62px; font-weight: 400; font-family: "Jameel Noori Nastaleeq", serif; }
+  body.ur #outro .soon { font-size: 230px; letter-spacing: 0; text-transform: none; font-family: "Jameel Noori Nastaleeq", serif; line-height: 1.5; }
+
 </style>
 </head>
 <body>
@@ -82,18 +97,18 @@
     <svg viewBox="12 10 96 80"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6d5cff"/><stop offset="1" stop-color="#ff5c8a"/></linearGradient></defs>
       <rect x="14" y="10" width="92" height="80" rx="22" fill="url(#lg)"/><path fill="#fff" d="M54 40 C46 34 36 33 28 35 L28 72 C36 70 46 71 54 77 C62 71 72 70 80 72 L80 35 C72 33 62 34 54 40 Z"/>
       <path fill="#6d5cff" d="M52.5 42 L55.5 42 L55.5 75 L52.5 75 Z"/><path fill="#ffd54a" d="M54 18 L57 26 L65.5 26.6 L59 32 L61.2 40.2 L54 35.6 L46.8 40.2 L49 32 L42.5 26.6 L51 26 Z"/></svg>
-    <b>SpaceBook</b><span>Library</span>
+    <b>SpaceBook</b><span id="brandLib">Library</span>
   </div>
   <div id="content"></div>
 </div>
 
 <div id="intro">
-  <h1>SpaceBook</h1><div class="lib">LIBRARY</div><div class="sub">Every textbook &middot; Classes 1 to 12</div>
+  <h1>SpaceBook</h1><div class="lib" id="introLib">LIBRARY</div><div class="sub" id="introSub">Every textbook &middot; Classes 1 to 12</div>
 </div>
 <div id="outro">
   <svg class="logo" viewBox="12 10 96 80"><rect x="14" y="10" width="92" height="80" rx="22" fill="url(#lg)"/><path fill="#fff" d="M54 40 C46 34 36 33 28 35 L28 72 C36 70 46 71 54 77 C62 71 72 70 80 72 L80 35 C72 33 62 34 54 40 Z"/>
     <path fill="#6d5cff" d="M52.5 42 L55.5 42 L55.5 75 L52.5 75 Z"/><path fill="#ffd54a" d="M54 18 L57 26 L65.5 26.6 L59 32 L61.2 40.2 L54 35.6 L46.8 40.2 L49 32 L42.5 26.6 L51 26 Z"/></svg>
-  <h1>SpaceBook</h1><div class="soon">Coming Soon</div><div class="sub">Read &middot; Learn &middot; Play</div>
+  <h1>SpaceBook</h1><div class="soon" id="soon">Coming Soon</div><div class="sub" id="outroSub">Read &middot; Learn &middot; Play</div>
 </div>
 <div id="fade"></div>
 
@@ -116,6 +131,9 @@
   // Draws the frame. s = { mode: 'intro'|'panel'|'outro', t (global seconds), dt (seconds since the current event began), panel: {...}, fade: 0..1 }
   window.setFrame = function (s, catalog) {
     stars.forEach(z => { z.el.style.opacity = z.base.toFixed(3); });   // steady, so unchanged frames can be reused
+    const T = s.l10n || { classWord: 'CLASS', books: '{n} books', introLib: 'LIBRARY', introSub: 'Every textbook · Classes 1 to 12', soon: 'Coming Soon', outroSub: 'Read · Learn · Play' };
+    document.body.classList.toggle('ur', s.lang === 'ur');
+    $('brandLib').textContent = T.brandLib || 'Library'; $('introLib').textContent = T.introLib; $('introSub').textContent = T.introSub; $('soon').textContent = T.soon; $('outroSub').textContent = T.outroSub;
     $('phone').style.display = s.mode === 'panel' ? 'block' : 'none';
     $('panel').style.display = s.mode === 'panel' ? 'block' : 'none';
     $('intro').style.display = s.mode === 'intro' ? 'flex' : 'none';
@@ -136,14 +154,16 @@
         const c = catalog.classes.find(c => c.id === 'cls' + p.n);
         const names = c ? c.subjects.map(x => x.name) : [];
         h += `<div class="classCard" style="opacity:${a};transform:translateX(${(1 - a) * -60}px)"><img src="${cardUrl(p.n)}"></div>`;
-        h += `<div class="bigNum" style="opacity:${a};transform:translateY(${(1 - a) * 40}px);font-size:300px"><small>CLASS</small>${p.n}</div>`;
-        h += `<div class="count" style="opacity:${a}">${names.length} books</div>`;
-        h += `<div class="chips">${names.map((n, i) => `<span style="opacity:${easeOut(clamp((d - .25 - i * .06) / .3))}">${esc(n)}</span>`).join('')}</div>`;
-        h += `<div class="caption" style="top:628px;width:1040px;font-size:44px;color:#e9e2ff;opacity:${a}">${esc(p.text || '')}</div>`;
+        const ur = s.lang === 'ur';
+        const shown = ur ? (c ? c.subjects.map(x => (/[؀-ۿ]/.test(x.ur || '') ? x.ur : ((T.subjects && T.subjects[x.name]) || x.name))) : []) : names;
+        h += `<div class="bigNum" style="opacity:${a};transform:translateY(${(1 - a) * 40}px);font-size:300px"><small>${esc(T.classWord)}</small>${p.n}</div>`;
+        h += `<div class="count" style="opacity:${a};top:${ur ? 560 : 470}px">${esc(T.books.replace('{n}', names.length))}</div>`;
+        h += `<div class="chips" style="top:${ur ? 840 : 800}px">${shown.map((n, i) => `<span style="opacity:${easeOut(clamp((d - .25 - i * .06) / .3))}">${esc(n)}</span>`).join('')}</div>`;
+        h += `<div class="caption" style="top:${ur ? 655 : 628}px;width:1040px;font-size:${ur ? 42 : 44}px;line-height:${ur ? 1.75 : 1.22};color:#e9e2ff;opacity:${a}">${esc(p.text || '')}</div>`;
       } else if (p.type === 'math') {
         h += `<div style="position:absolute;left:0;top:190px;opacity:${a}"><span class="badge">${esc(p.badge || '')}</span></div>`;
         h += `<div class="math" style="opacity:${a}">${(p.lines || []).map((l, i) => `<div class="${i === 0 ? 'expr' : l.big ? 'done' : 'line'}" style="opacity:${easeOut(clamp((d - i * .35) / .4))}">${l.html || esc(l.text || l)}</div>`).join('')}</div>`;
-        h += `<div class="caption" style="top:800px;font-size:50px;color:#e9e2ff;opacity:${a}">${esc(p.text || '')}</div>`;
+        h += `<div class="caption" style="top:${s.lang === 'ur' ? 780 : 800}px;font-size:${s.lang === 'ur' ? 40 : 50}px;color:#e9e2ff;opacity:${a}">${esc(p.text || '')}</div>`;
       } else {
         h += `<div style="position:absolute;left:0;top:230px;opacity:${a};transform:translateY(${(1 - a) * 30}px)"><span class="badge">${esc(p.badge || '')}</span></div>`;
         h += `<div class="caption" style="top:340px;opacity:${a};transform:translateY(${(1 - a) * 30}px)">${p.html || esc(p.text || '')}</div>`;
