@@ -114,7 +114,7 @@ The app's own coin steps always go through `api/v2/sync.php` (it has no older en
 * **Study reminders**: a WebView has no Notification API. `ReminderReader` loads the start page in a hidden WebView (`SB_BACKGROUND_READ` set, API refused),
   calls `SBStudyPlan.reminders(7)` (the website's own words), and `ReminderScheduler` schedules each as a WorkManager job that posts a notification; a
   daily job refreshes them; the switch is in Settings (asks for the notification permission on Android 13+).
-* **Games**: the website's arcade opens from Practice (same page, same coins); per-page quests (`ui/games/PageGames.kt`) are in the reader's Games tab.
+* **Games**: the Games button of the reader footer opens the website's page arcade (`js/sb_arcade*.js`, fifteen games made from the page on screen, same coins, see "Games tab" below); the website's level-by-level games open from Practice.
 
 ## Code map (`app/src/main/java/pk/wantuch/spacebook`)
 
@@ -177,12 +177,17 @@ record, never somebody else's.
 the plan does not come back with the next sync, then reports `done` and the screen closes. Not seen yet with a real signed-in
 account on a phone: the 1.5 s waits around the call (for the sign-in to reach the page and for the sync outbox) are a precaution.
 
-## Games tab
+## Games tab (changed 2026-10-24)
 
-Every page has a Games tab. `PageGame` is the interface (`supports(page)`, `Play(page, onStep)`); `GameRegistry.games` is
-empty for now. A game reports `onStep(step, total)`; the app sends it as a `step` reward event under a key of the shape the
-server accepts (`GameKeys.rewardKey`, tested against the server's pattern), so coins come from the same rules as the web (+1
-per new step, +5 for finishing, daily caps), decided on the server.
+Every page has a Games button in the reader footer. It runs `SBApp.openGames()` (`assets/reader_bridge.js`), which opens the website's own **page
+arcade** (`js/sb_arcade.js` and the four `sb_arcade_*.js` game files) over the page on screen: fifteen arcade games (snake, lane runner, fruit slicing,
+penalty shoot-out ...) made from that page's text, not multiple choice; a page with nothing to make questions from says "There are no games on this
+page". The overlay lives inside the WebView, so the footer stays; the system Back button goes game -> hub -> closed (`SBApp.gamesBack()`), and the
+overlay tells the app when it closes itself (`SBHost.onAction("gamesClosed")`). Coins are the page's own `SBRewards.step` with the keys
+`cls<N>|g-pg-<game>-<subject>|u<chapter>|count|<hash>|<steps>`, decided by the server like every other game.
+
+The old native per-page quests (`ui/games/PageGames.kt`: `PageGame`, `GameRegistry`, `GameKeys`, `GamesPanel`) are no longer shown; they are kept, with their
+key-shape tests, until the owner deletes them (parity row `games.pagequests`, retired).
 
 ## Not done / not verified (honest list)
 
@@ -194,3 +199,39 @@ See `PARITY_CHECKLIST.md`. In short: the app has been compiled and unit-tested o
 exercised against the real website in a desktop browser at phone size, but **it has not been run on an Android phone or
 emulator** (none is attached to this PC and the SDK has no emulator image). Layout, touch, WebView behaviour and
 performance on a low-end phone are therefore unchecked.
+
+## The page first: the reader layout (2026-10-24)
+
+When a page is open nothing else is on the screen: no chapter title, no page title, no board strip, no hint line, no floating buttons. From the top:
+the status bar, the tab strip (Lessons, Exercises ...; 36 dp, sticky), the page's own Board SLOs / Exercise / Games bar, and the page edge to edge.
+It is layout only and App only (`assets/reader_mobile.css`, `reader_bridge.js`; parity row `read.fullbleed`):
+
+* the bridge now treats **every topic / page card of a tab** as a page, however deep the tab nests them, so Classes 9-12 open one topic at a time like Classes 1-8,
+  and opens the closed topic headings inside the page; it marks the website's chrome (hint lines, the "Textbook Lesson & Translations" heading) so the CSS can hide it;
+* `ReaderScreen` has no top bar: back, bookmark, read aloud, go to page and the chapter's name are in the footer's menu; the footer is 48 dp (previous page, page number,
+  Read / Games / Notes as icons, menu, next page);
+* a Class 11 Physics lesson used to rewrite its card titles forever (`js/sb_medium.js` split a text node on every pass, every change ran it again); it now decides on a copy first.
+
+Pictures to compare: `SpaceBook Web/tests/app/gallery.js` (12 book families at phone width), `tests/app/phone.js` (the site with this CSS and bridge in a phone-sized Chrome).
+
+## Papers, Plan, Practice (2026-10-24)
+
+* **Papers** is the website's paper maker again: its own strip (class, subject, paper mode, columns, option style, marks, categories, Info, Blueprint, Print) is shown
+  at the top; the wizard and the live paper scroll with the page. `window.print()` does nothing in a WebView, so the bridge turns it into
+  `SBHost.onAction("print")` and `SbWebView.printPage()` opens the phone's print dialog (which also saves a PDF) on the page's own print layout.
+* **Study Plan** and **Tests Preps** have a phone theme (cards, a header, two columns) in `reader_mobile.css`; the website is unchanged.
+* **Practice** is a hero card (Tests Preps) and a grid of tiles (Papers, Games, Study Plan), all on one screen (`ui/practice/PracticeScreen.kt`).
+* The pages opened from Practice have no title bar of their own on a main tab, and only a 40 dp line with Back when pushed (`FeatureScreen`).
+
+## Loading screens (2026-10-24)
+
+`ui/components/Loading.kt`: `LoadingPanel` (a bar and a percent). A WebView screen (book, Papers, Plan ...) shows the **real** page progress for the first 60 % (`WebChromeClient.onProgressChanged`),
+then an estimate that slows down near the end and stops at 98 until the page is really open (`LoadProgress`, tested); Home uses a timed percent while it reads the student's record; every download
+screen shows its percent. The website has the same idea in `js/sb_loading.js` (the bar is a CSS transform, so it keeps moving while the page is busy).
+
+## The copy on the phone is encrypted (2026-10-24)
+
+`data/offline/Vault.kt`: everything `SiteStore` writes (the books, pictures, the page) is AES-256-GCM encrypted in 64 KiB chunks with a key per file; the data key is
+random, made on first start and kept only wrapped by a non-exportable Android Keystore key. Plain copies from an older version are served and then encrypted in the background
+(`SpaceBookApp`). The device token in the DataStore is sealed with the same key. `security/Integrity.kt` and `FLAG_SECURE` (release builds). What this does and does not do:
+`SpaceBook Web/docs/PHASE8_SECURITY.md` (2026-10-24 section): it protects the copy on the phone, not the public files of the website.

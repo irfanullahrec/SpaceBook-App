@@ -7,6 +7,7 @@
  *   SBApp.openAccount()                               the website's own "My account" dialog (details, password, download my data, delete my account)
  *   SBApp.setAuth(user, device, flags) / clearAuth()  hand the app's sign-in to the web page (cookie is shared already); flags = the owner's switches as the server published them
  *   SBApp.pageText()                                  text of the page on screen (for read aloud)
+ *   SBApp.openGames() / gamesBack() / closeGames()    the arcade (js/sb_arcade.js) made from the page on screen; it reports SBHost.onAction('gamesClosed') when it closes itself
  *   SBApp.state()                                     {ready, pages, page, tab, title}
  *
  * Calls back into the app through window.SBHost (an Android JavascriptInterface; absent in a desktop browser):
@@ -125,9 +126,17 @@
     $$('[class$="-help"], [class*="-help "], .sh-help, .sh-bar').forEach(function (h) {
       if (!h.classList.contains('sbapp-hint') && h.children.length < 3 && HINT_RX.test((h.textContent || '').slice(0, 260))) h.classList.add('sbapp-hint');
     });
+    // the "Textbook Lesson & Translations" heading and its description above the cards of a lesson (Classes 9-12) are the website's own chrome
+    if (units.length) $$('h3[data-sbg]', root()).filter(function (h) { return !units.some(function (u) { return u.contains(h); }); }).forEach(function (h) {
+      var e = h; while (e.parentElement && !e.parentElement.contains(units[0])) e = e.parentElement;
+      if (e !== units[0] && !e.contains(units[0]) && e.parentElement && !e.querySelector('input, select, textarea')) e.classList.add('sbapp-hint');
+    });
     // the tab strip's sticky offset depends on whether a second strip (Lesson text / Videos ...) is under it
     var sub = $('#subjSubTabsBar button, .topic-sub-tabs-bar-fixed button');
     html.classList.toggle('sbapp-subbar', !!sub);
+    // a page is read, not browsed: the closed topic headings inside it (Classes 9-12) are opened, so the page shows its text
+    var u = units[cur];
+    if (u) [u].concat($$('.sb-topic-closed', u)).forEach(function (c) { if (!c.classList.contains('sb-topic-closed')) return; var h = c.querySelector(':scope > .sb-topic-head'); if (h) h.click(); });
   }
 
   function openCard(card) {
@@ -204,7 +213,7 @@
     sx = e.touches[0].clientX; sy = e.touches[0].clientY; st = Date.now();
     var t = e.target;
     // not on things that scroll sideways or are being selected
-    swipeOk = !(t.closest && t.closest('input, textarea, select, table, svg, canvas, .katex-display, .math-nav-tabs, .no-swipe'));
+    swipeOk = !(t.closest && t.closest('input, textarea, select, table, svg, canvas, .katex-display, .math-nav-tabs, .no-swipe, .sba'));
   }, { passive: true });
   doc.addEventListener('touchend', function (e) {
     if (!swipeOk || !cfg.paginate || units.length < 2) return;
@@ -229,6 +238,13 @@
       var u = units[cur] || root();
       return u ? (u.innerText || '').replace(/\n{3,}/g, '\n\n').trim() : '';
     },
+    // the arcade: fifteen games made from the text of the page on screen (the website's own js/sb_arcade.js, same coins as on the web)
+    openGames: function () {
+      if (!window.SBArcade) { host('onAction', ['error', 'Games did not load. Check your connection.']); return false; }
+      try { window.SBArcade.open(units[cur] || root() || document.body); return true; } catch (e) { host('onAction', ['error', String(e && e.message || e)]); return false; }
+    },
+    gamesBack: function () { if (window.SBArcade && window.SBArcade.current) window.SBArcade.back(); else host('onAction', ['gamesClosed', '']); },
+    closeGames: function () { if (window.SBArcade) window.SBArcade.close(); },
     selectedText: function () { return String(window.getSelection ? window.getSelection() : '').trim(); },
     setTextZoom: function (pct) { html.style.fontSize = pct + '%'; },
     clickTab: function (label) {
@@ -544,7 +560,7 @@
   window.addEventListener('pointerdown', function (e) {
     cancelHold();
     if (e.pointerType === 'mouse' || !e.isPrimary || !cfg.paginate) return;
-    var t = e.target; if (!t || !t.closest || t.closest('input, textarea, select, svg, canvas, .katex, .math-nav-tabs, button, a')) return;
+    var t = e.target; if (!t || !t.closest || t.closest('input, textarea, select, svg, canvas, .katex, .math-nav-tabs, button, a, .sba')) return;
     var x = e.clientX, y = e.clientY;
     hold = { x: x, y: y, t: setTimeout(function () {
       hold = null;
@@ -559,6 +575,9 @@
   ['pointerup', 'pointercancel'].forEach(function (n) { window.addEventListener(n, cancelHold, true); });
   window.addEventListener('scroll', cancelHold, true);
   window.addEventListener('contextmenu', function (e) { e.preventDefault(); }, true);          // no system menu on a long press
+
+  // Printing a paper (and saving it as a PDF): a WebView's window.print() does nothing, so the phone's own print dialog is asked for instead
+  try { window.print = function () { host('onAction', ['print', '']); }; } catch (e) { /* the page keeps its own print */ }
 
   // The website's own sign-in / sign-up buttons open the app's screen instead.
   doc.addEventListener('click', function (e) {

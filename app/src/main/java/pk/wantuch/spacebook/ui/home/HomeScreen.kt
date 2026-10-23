@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -40,6 +39,8 @@ import pk.wantuch.spacebook.data.remote.UserDto
 import pk.wantuch.spacebook.expiry.ExpiryGate
 import pk.wantuch.spacebook.expiry.LockState
 import pk.wantuch.spacebook.ui.AppViewModel
+import pk.wantuch.spacebook.ui.components.LoadingPanel
+import pk.wantuch.spacebook.ui.components.rememberTimedPercent
 
 /** Where Home can send the student. */
 data class HomeActions(
@@ -125,7 +126,10 @@ private fun MyStatsTab(
     LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 6.dp, bottom = 24.dp)) {
         when {
             prep == null -> item(key = "loading") {
-                Box(Modifier.fillMaxWidth().padding(48.dp), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
+                Box(Modifier.fillMaxWidth().padding(24.dp), contentAlignment = Alignment.Center) {
+                    val pct by rememberTimedPercent(true)
+                    LoadingPanel("Loading your progress…", pct, emoji = "📊")
+                }
             }
             else -> {
                 if (prep.isEmpty) item(key = "empty") { EmptyPrep(actions) }

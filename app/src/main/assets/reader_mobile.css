@@ -3,7 +3,7 @@
    column fill the phone, and gives the one-page-at-a-time view. Nothing here changes the book's own look. */
 html.sbapp, html.sbapp body { background: #fff !important; margin: 0 !important; padding: 0 !important; overflow-x: hidden !important; -webkit-text-size-adjust: 100%; }
 html.sbapp #top-header, html.sbapp #sidebar, html.sbapp #footer, html.sbapp #subpage-nav-bar,
-html.sbapp #paperStatisticalHeader, html.sbapp #overlay, html.sbapp .header-nav-tabs,
+html.sbapp #overlay, html.sbapp .header-nav-tabs,
 html.sbapp #navGlobalBackBtn, html.sbapp .sb-fs-btn, html.sbapp .sb-card-fs,
 html.sbapp #hamburger { display: none !important; }
 html.sbapp #main-wrapper { margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; left: 0 !important; }
@@ -25,7 +25,7 @@ html.sbapp .math-topic-area { max-height: none !important; height: auto !importa
 html.sbapp { --sbapp-nav: 36px; --sbapp-sub: 0px; --sbapp-edge: 3px; }
 html.sbapp.sbapp-subbar { --sbapp-sub: 32px; }
 html.sbapp .math-compact-header-bar, html.sbapp .bise-strip, html.sbapp .sh-bar, html.sbapp .cl-pill, html.sbapp .cl-strip,
-html.sbapp .rt-size, html.sbapp .sbapp-hint, html.sbapp .sbapp-page-on > .math-acc-header { display: none !important; }
+html.sbapp .rt-size, html.sbapp .sbapp-hint, html.sbapp .sbapp-page-on > .math-acc-header, html.sbapp .sbapp-page-on > .para-card-header { display: none !important; }
 html.sbapp .math-nav-tabs { position: sticky !important; top: 0 !important; z-index: 70; box-sizing: border-box; height: var(--sbapp-nav); min-height: 0 !important;
   margin: 0 !important; padding: 2px var(--sbapp-edge) !important; gap: 4px !important; align-items: center; background: #fff !important; border-bottom: 1px solid #cbd5e1 !important; }
 html.sbapp .math-nav-tabs button { min-height: 0 !important; height: 30px; padding: 0 11px !important; font-size: 12.5px !important; line-height: 1; border-radius: 15px !important; gap: 4px !important; }
@@ -83,3 +83,50 @@ html.sbapp .ut-root, html.sbapp #wordHoverTooltip, html.sbapp .word-hover-toolti
 
 /* a solution shows whole: the play / pause / next-step controls of the typing effect are not needed */
 html.sbapp .sbs-ctl { display: none !important; }
+
+/* ---- Papers: the same paper maker as the website ------------------------------------------------------------------------
+   The website's strip under its header (class, subject, paper mode, columns, marks, the categories, Info, Blueprint, Print) is what makes a
+   paper, so it stays: one scrolling line at the top of the screen. The wizard and the live paper then scroll with the page. */
+html.sbapp #paperStatisticalHeader[style*="flex"] { display: flex !important; position: sticky !important; top: 0 !important; left: auto !important; right: auto !important; height: 42px !important;
+  padding: 0 6px !important; gap: 6px !important; z-index: 90 !important; border-bottom-width: 1px !important; }
+html.sbapp .psh-item { min-height: 30px; }
+html.sbapp .psh-inline-select { font-size: 13px !important; max-width: 130px; }
+html.sbapp .psh-dropdown-menu { position: fixed !important; top: 48px !important; right: 8px !important; left: auto !important; }
+html.sbapp body:has(.papers-creator-view), html.sbapp body:has(.preps-one-look-view) { overflow-y: auto !important; overflow-x: hidden !important; }
+html.sbapp .papers-creator-view { display: block !important; height: auto !important; overflow: visible !important; }
+html.sbapp .paper-creator-sidebar, html.sbapp .paper-preview-canvas { position: static !important; height: auto !important; max-height: none !important; overflow: visible !important; width: 100% !important; max-width: 100% !important; padding-left: 4px !important; padding-right: 4px !important; box-sizing: border-box; }
+html.sbapp .paper-preview-canvas { min-height: 0 !important; }
+html.sbapp #page-content:has(.papers-creator-view) { padding: 0 !important; }
+
+/* ---- Study Plan and Tests Preps: a phone layout with a look of its own (app only; the website keeps its desktop layout) ------------------ */
+html.sbapp body:has(.spx), html.sbapp body:has(.preps-one-look-view) { background: linear-gradient(180deg, #eef6ff 0, #f8fafc 220px) !important; }
+html.sbapp html:has(.spx), html.sbapp:has(.spx), html.sbapp:has(.preps-one-look-view) { background: #f4f8fd !important; }
+html.sbapp:has(.spx) body, html.sbapp:has(.preps-one-look-view) body { background: linear-gradient(180deg, #e8f2ff 0, #f6f9fd 260px) !important; }
+html.sbapp .spx { padding: 12px 12px 28px !important; }
+html.sbapp .spx-head { background: linear-gradient(135deg, #0369a1, #0ea5e9) !important; color: #fff !important; border-radius: 20px !important; padding: 16px 16px 14px !important; box-shadow: 0 10px 24px -12px rgba(3, 105, 161, .7); display: block !important; margin-bottom: 12px; }
+html.sbapp .spx-head h2 { color: #fff !important; font-size: 1.35rem !important; margin: 0 0 4px !important; }
+html.sbapp .spx-head .spx-muted { color: rgba(255, 255, 255, .88) !important; font-size: .86rem !important; line-height: 1.5; margin: 0 0 12px !important; }
+html.sbapp .spx-head-act { display: flex !important; gap: 8px !important; flex-wrap: nowrap !important; }
+html.sbapp .spx-head-act .spx-btn { flex: 1 1 0; min-height: 44px; border-radius: 14px !important; font-weight: 800 !important; font-size: .9rem !important; border: 0 !important; background: rgba(255, 255, 255, .22) !important; color: #fff !important; }
+html.sbapp .spx .spx-head-act .spx-btn.spx-pri { background: #fff !important; color: #0369a1 !important; box-shadow: none !important; }
+html.sbapp .spx-note { border-radius: 14px !important; font-size: .84rem !important; }
+html.sbapp .spx-empty { background: #fff !important; border: 0 !important; border-radius: 20px !important; box-shadow: 0 8px 22px -14px rgba(15, 23, 42, .35); padding: 26px 18px !important; }
+html.sbapp .spx-empty .spx-btn.spx-pri, html.sbapp .spx .spx-btn.spx-pri { background: linear-gradient(135deg, #0369a1, #0ea5e9) !important; color: #fff !important; border: 0 !important; border-radius: 14px !important; min-height: 46px; font-weight: 800 !important; box-shadow: 0 8px 18px -10px rgba(3, 105, 161, .8); }
+html.sbapp .spx-card { border-radius: 18px !important; box-shadow: 0 8px 22px -14px rgba(15, 23, 42, .35) !important; border: 0 !important; background: #fff !important; margin-bottom: 12px !important; }
+
+html.sbapp .preps-universe-wrapper { padding: 10px !important; gap: 10px !important; }
+html.sbapp .preps-stage-bar { display: block !important; border-radius: 20px !important; padding: 14px 14px 12px !important; background: linear-gradient(135deg, #1e3a8a, #0284c7) !important; box-shadow: 0 10px 24px -12px rgba(30, 58, 138, .8); }
+html.sbapp .psb-left { display: flex !important; align-items: flex-start; gap: 10px; }
+html.sbapp .psb-icon { font-size: 1.9rem !important; line-height: 1; }
+html.sbapp .psb-titles { display: block !important; min-width: 0; flex: 1 1 auto; }
+html.sbapp .psb-title { display: block !important; font-size: 1.08rem !important; line-height: 1.3 !important; color: #fff !important; white-space: normal !important; word-break: normal !important; }
+html.sbapp .psb-sub { display: block !important; font-size: .76rem !important; color: rgba(255, 255, 255, .85) !important; line-height: 1.4; margin-top: 4px; white-space: normal !important; }
+html.sbapp .psb-pill { display: inline-block !important; margin-top: 10px; font-size: .72rem !important; padding: 5px 12px !important; border-radius: 999px !important; background: rgba(255, 255, 255, .2) !important; color: #fff !important; white-space: normal !important; }
+html.sbapp .preps-jewel-grid { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 10px !important; }
+html.sbapp .prep-jewel-card { display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 8px; min-height: 116px; padding: 12px 12px 10px !important; border-radius: 18px !important; border: 0 !important; background: #fff !important; box-shadow: 0 8px 20px -14px rgba(15, 23, 42, .45) !important; position: relative; }
+html.sbapp .prep-jewel-card .pjc-arrow { position: absolute; top: 10px; right: 12px; opacity: .45; }
+html.sbapp .prep-jewel-card .pjc-icon-wrap { width: 38px; height: 38px; border-radius: 12px !important; font-size: 1.3rem !important; display: flex; align-items: center; justify-content: center; }
+html.sbapp .prep-jewel-card .pjc-name-wrap { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+html.sbapp .prep-jewel-card .pjc-name { font-size: 1rem !important; font-weight: 900 !important; }
+html.sbapp .prep-jewel-card .pjc-fullname { font-size: .78rem !important; line-height: 1.3; color: #334155; white-space: normal !important; }
+html.sbapp .prep-jewel-card .pjc-focus { font-size: .68rem !important; color: #64748b; white-space: normal !important; line-height: 1.35; }

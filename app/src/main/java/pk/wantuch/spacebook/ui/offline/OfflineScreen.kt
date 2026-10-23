@@ -136,7 +136,7 @@ fun OfflineScreen(onBack: () -> Unit, vm: OfflineViewModel = hiltViewModel()) {
                         )
                         Spacer(Modifier.height(10.dp))
                         Text(
-                            "On this phone: ${formatBytes(ui.usedBytes)}  ·  all books: ${formatBytes(ui.total.totalBytes)}",
+                            "On this phone: ${formatBytes(ui.usedBytes)}  ·  all books: ${formatBytes(ui.total.totalBytes)}  ·  ${(ui.total.fraction * 100).toInt()}%",
                             style = MaterialTheme.typography.labelLarge,
                         )
                         LinearProgressIndicator(progress = { ui.total.fraction }, modifier = Modifier.fillMaxWidth().padding(top = 8.dp))
@@ -182,7 +182,7 @@ private fun RunningDownload(p: DownloadProgress, onCancel: () -> Unit) {
             Column(Modifier.weight(1f)) {
                 Text("Downloading ${p.label}…", style = MaterialTheme.typography.titleSmall)
                 Text(
-                    if (p.totalBytes > 0) "${formatBytes(p.doneBytes)} of ${formatBytes(p.totalBytes)}" else "Preparing…",
+                    if (p.totalBytes > 0) "${(p.doneBytes * 100 / p.totalBytes).coerceIn(0, 100)}%  ·  ${formatBytes(p.doneBytes)} of ${formatBytes(p.totalBytes)}" else "Preparing…",
                     style = MaterialTheme.typography.bodySmall,
                 )
             }

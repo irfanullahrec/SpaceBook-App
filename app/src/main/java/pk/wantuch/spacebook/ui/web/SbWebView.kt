@@ -73,6 +73,10 @@ class WebController(
     var state by mutableStateOf(WebPageState())
         private set
 
+    /** how much of the page the WebView has loaded, 0..100 (the loading screens show it as a percent) */
+    var pageProgress by mutableStateOf(0)
+        private set
+
     /** the sentence or word the student tapped / held: shown by the app over the page */
     var meaning by mutableStateOf<MeaningState?>(null)
         private set
@@ -113,10 +117,21 @@ class WebController(
                 "meaning" -> runCatching { json.decodeFromString<MeaningDto>(detail).toState() }.getOrNull()?.let { m -> main.post { meaning = m } }
                 "meaningUpdate" -> runCatching { json.decodeFromString<MeaningUpdateDto>(detail) }.getOrNull()?.let { u -> main.post { meaning = meaning?.apply(u) } }
                 "haptic" -> main.post { webView?.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS) }
+                "print" -> main.post { printPage() }
                 "saveFile" -> runCatching { json.decodeFromString<SaveFileDto>(detail) }.getOrNull()?.let { f -> main.post { shareFile(f) } }
                 else -> main.post { onAction.invoke(name, detail) }
             }
         }
+    }
+
+    /** the paper maker's Print: the phone's own print dialog (it also saves a PDF), fed by the page's print layout */
+    private fun printPage() {
+        val wv = webView ?: return
+        runCatching {
+            val pm = wv.context.getSystemService(Context.PRINT_SERVICE) as android.print.PrintManager
+            val name = "SpaceBook paper"
+            pm.print(name, wv.createPrintDocumentAdapter(name), android.print.PrintAttributes.Builder().setMediaSize(android.print.PrintAttributes.MediaSize.ISO_A4).build())
+        }.onFailure { Toast.makeText(appContext, "Printing is not available on this phone.", Toast.LENGTH_LONG).show() }
     }
 
     /** a file the page made (the data download): written to the app's cache and offered to the phone's share sheet, so the student can save or send it */
@@ -215,6 +230,10 @@ class WebController(
             else -> openPage(p[0])
         }
     }
+    /** the website's arcade over the page on screen; it reports ("gamesClosed") through [onAction] when it closes itself */
+    fun openGames() = run("SBApp.openGames()")
+    fun gamesBack() = run("SBApp.gamesBack()")
+    fun closeGames() = run("SBApp.closeGames()")
     fun go(page: Int) = run("SBApp.go($page)")
     fun next() = run("SBApp.next()")
     fun prev() = run("SBApp.prev()")
@@ -269,7 +288,7 @@ class WebController(
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? = store.intercept(request)
 
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
-                ready = false
+                ready = false; pageProgress = 0
             }
 
             override fun onPageFinished(view: WebView, url: String) {
@@ -298,6 +317,7 @@ class WebController(
             }
         }
         wv.webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView, newProgress: Int) { pageProgress = newProgress }
             override fun onPermissionRequest(request: android.webkit.PermissionRequest) = request.deny()
         }
         webView = wv

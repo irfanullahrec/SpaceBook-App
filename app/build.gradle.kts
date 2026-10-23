@@ -31,6 +31,8 @@ android {
         buildConfigField("String", "UNLOCK_SALT", "\"${unlockProps.getProperty("salt", "00")}\"")
         buildConfigField("String", "UNLOCK_HASH", "\"${unlockProps.getProperty("hash", "00")}\"")
         buildConfigField("int", "UNLOCK_ITERATIONS", unlockProps.getProperty("iterations", "1"))
+        // SHA-256 of the release signing certificate; a release build with a different one refuses to start (security/Integrity.kt). Empty = not pinned yet.
+        buildConfigField("String", "CERT_SHA256", "\"${providers.gradleProperty("spacebook.certSha256").orNull ?: ""}\"")
     }
 
     // SITE_URL is the web app (pages, books, API). No database host, user or password is ever put in the APK: the app only

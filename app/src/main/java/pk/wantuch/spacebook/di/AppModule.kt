@@ -14,6 +14,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import pk.wantuch.spacebook.BuildConfig
 import pk.wantuch.spacebook.data.local.MIGRATION_1_2
 import pk.wantuch.spacebook.data.local.SpaceBookDb
+import pk.wantuch.spacebook.data.offline.KeyProvider
+import pk.wantuch.spacebook.data.offline.KeystoreKeyProvider
 import pk.wantuch.spacebook.data.remote.ApiService
 import pk.wantuch.spacebook.data.remote.Endpoint
 import pk.wantuch.spacebook.data.remote.SiteInterceptor
@@ -26,6 +28,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    /** the key the phone's copy of the books is encrypted with (data/offline/Vault.kt) */
+    @Provides @Singleton
+    fun keyProvider(@ApplicationContext context: Context): KeyProvider = KeystoreKeyProvider.of(context)
 
     @Provides @Singleton
     fun json(): Json = Json {

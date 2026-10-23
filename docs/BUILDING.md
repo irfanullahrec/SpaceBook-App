@@ -51,3 +51,13 @@ website's `tools/app/lib` (the app's data is generated from the website, never t
 
 `assembleRelease` needs a signing key, which the owner must create (keep it outside the repository). R8 shrinking is on;
 `proguard-rules.pro` keeps the API models and the JavaScript bridge.
+
+## Pinning the release certificate (security/Integrity.kt)
+
+After the owner has made the release key, build with the SHA-256 of its certificate so that a re-signed copy refuses to start:
+
+```
+.\gradlew.bat :app:assembleRelease -Pspacebook.certSha256=<64 hex characters, colons allowed>
+```
+
+Without the property the check is skipped. Debug builds never check.

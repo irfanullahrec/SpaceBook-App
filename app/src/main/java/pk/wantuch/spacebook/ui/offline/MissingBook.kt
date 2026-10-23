@@ -52,7 +52,7 @@ fun MissingBookPanel(
         val running = progress?.takeIf { !it.finished }
         if (running != null) {
             Text(
-                if (running.totalBytes > 0) "Downloading… ${formatBytes(running.doneBytes)} of ${formatBytes(running.totalBytes)}" else "Preparing…",
+                if (running.totalBytes > 0) "Downloading… ${(running.doneBytes * 100 / running.totalBytes).coerceIn(0, 100)}%  ·  ${formatBytes(running.doneBytes)} of ${formatBytes(running.totalBytes)}" else "Preparing…",
                 style = MaterialTheme.typography.titleSmall,
             )
             if (running.totalBytes > 0) LinearProgressIndicator(progress = { (running.doneBytes.toFloat() / running.totalBytes).coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth().padding(top = 10.dp))

@@ -30,6 +30,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // a release build that is not the owner's (wrong certificate, debugger attached) does not start
+        if (!pk.wantuch.spacebook.security.Integrity.ok(this)) { finishAndRemoveTask(); return }
+        // no screenshots, screen recordings or app-switcher thumbnails of the books in a release build
+        if (!pk.wantuch.spacebook.BuildConfig.DEBUG) window.setFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE, android.view.WindowManager.LayoutParams.FLAG_SECURE)
         enableEdgeToEdge()
         gate = ExpiryGate.forApp(this)
         lock = gate.check()

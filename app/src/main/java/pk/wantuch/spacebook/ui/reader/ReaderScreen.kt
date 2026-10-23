@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -30,9 +32,13 @@ import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.BookmarkBorder
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.FormatListNumbered
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.SportsEsports
 import androidx.compose.material.icons.rounded.Stop
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -49,8 +55,6 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.contentDescription
@@ -79,8 +83,8 @@ import pk.wantuch.spacebook.data.local.ReadingPosition
 import pk.wantuch.spacebook.data.splitTitle
 import pk.wantuch.spacebook.ui.AppViewModel
 import pk.wantuch.spacebook.ui.components.EmptyState
-import pk.wantuch.spacebook.ui.games.GamePage
-import pk.wantuch.spacebook.ui.games.GamesPanel
+import pk.wantuch.spacebook.ui.components.LoadingPanel
+import pk.wantuch.spacebook.ui.components.rememberLoadPercent
 import pk.wantuch.spacebook.ui.offline.MissingBookPanel
 import pk.wantuch.spacebook.ui.theme.Sb
 import pk.wantuch.spacebook.ui.web.SbWebView
@@ -129,6 +133,7 @@ fun ReaderScreen(
                 val r = snackbar.showSnackbar("End of this chapter", "Next chapter", duration = SnackbarDuration.Short)
                 if (r == SnackbarResult.ActionPerformed) { chapter += 1; pendingPage = 0 }
             }
+            "gamesClosed" -> tab = ReaderTab.Read
             "start" -> if (chapter > 0) scope.launch {
                 val r = snackbar.showSnackbar("Start of this chapter", "Previous chapter", duration = SnackbarDuration.Short)
                 if (r == SnackbarResult.ActionPerformed) { chapter -= 1; pendingPage = 0 }
@@ -168,44 +173,64 @@ fun ReaderScreen(
     val notes by vm.notesFor(subjectId, chapter, tabName, web.page).collectAsStateWithLifecycle(emptyList())
 
     val speaker = rememberSpeaker()
-    BackHandler(enabled = tab != ReaderTab.Read) { tab = ReaderTab.Read }
+    // Games are the website's arcade (js/sb_arcade.js) opened over the page: the same fifteen games and coins as on the web, made from this page's text
+    LaunchedEffect(tab, controller.ready) {
+        if (!controller.ready) return@LaunchedEffect
+        if (tab == ReaderTab.Games) controller.openGames() else controller.closeGames()
+    }
+    BackHandler(enabled = tab != ReaderTab.Read) { if (tab == ReaderTab.Games) controller.gamesBack() else tab = ReaderTab.Read }
 
-    val gamePage = GamePage(classDto?.id.orEmpty(), subjectId, subject?.name.orEmpty(), chapter, chapterDto?.t.orEmpty(), web.page, text = pageTextSnapshot(controller, web.page, tab))
+    var menuOpen by remember { mutableStateOf(false) }
+    val pageLine = listOfNotNull(classDto?.name, subject?.name, title.primary.takeIf { it.isNotBlank() }).joinToString(" · ")
 
+    // The page comes first: no title bar. Back, bookmark, read aloud and "go to page" live in the footer's menu, so the page starts
+    // right under the status bar and uses the whole width.
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(title.primary.ifBlank { subject?.name.orEmpty() }, maxLines = 1, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.titleMedium)
-                        Text(
-                            listOfNotNull(classDto?.name, subject?.name, "Page ${web.page + 1} of ${web.pages.coerceAtLeast(1)}").joinToString(" · "),
-                            maxLines = 1, overflow = TextOverflow.Ellipsis, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.clickable(onClickLabel = "Go to a page") { showJump = true },
-                        )
-                    }
-                },
-                navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
-                actions = {
-                    IconButton(onClick = {
-                        if (speaker.speaking) speaker.stop() else controller.pageText { speaker.speak(it) }
-                    }) { Icon(if (speaker.speaking) Icons.Rounded.Stop else Icons.AutoMirrored.Rounded.VolumeUp, if (speaker.speaking) "Stop reading" else "Read this page aloud") }
-                    IconButton(onClick = {
-                        if (subject != null && classDto != null) vm.setBookmark(!bookmarked, Bookmark(subject.id, classDto.id, chapter, tabName, web.page, title.primary, System.currentTimeMillis()))
-                    }) { Icon(if (bookmarked) Icons.Rounded.Bookmark else Icons.Rounded.BookmarkBorder, if (bookmarked) "Remove bookmark" else "Bookmark this page", tint = if (bookmarked) Sb.Pink else MaterialTheme.colorScheme.onSurface) }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface),
-            )
-        },
         bottomBar = {
-            // one line: previous page at the left corner, Read / Games / Notes in the middle, next page at the right corner
-            Surface(color = MaterialTheme.colorScheme.surface, shadowElevation = 8.dp) {
-                Row(Modifier.fillMaxWidth().navigationBarsPadding().height(64.dp), verticalAlignment = Alignment.CenterVertically) {
+            Surface(color = MaterialTheme.colorScheme.surface, shadowElevation = 6.dp) {
+                Row(Modifier.fillMaxWidth().navigationBarsPadding().height(48.dp), verticalAlignment = Alignment.CenterVertically) {
                     CornerArrow(left = true) { tab = ReaderTab.Read; controller.prev() }
+                    Text(
+                        "${web.page + 1}/${web.pages.coerceAtLeast(1)}", style = MaterialTheme.typography.labelLarge, maxLines = 1,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.clip(RoundedCornerShape(12.dp)).clickable(onClickLabel = "Go to a page") { showJump = true }.padding(horizontal = 8.dp, vertical = 8.dp),
+                    )
                     Row(Modifier.weight(1f), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
                         TabButton(tab == ReaderTab.Read, "Read", Icons.AutoMirrored.Rounded.MenuBook) { tab = ReaderTab.Read }
                         TabButton(tab == ReaderTab.Games, "Games", Icons.Rounded.SportsEsports) { tab = ReaderTab.Games }
                         TabButton(tab == ReaderTab.Notes, if (notes.isNotEmpty()) "Notes ${notes.size}" else "Notes", Icons.Rounded.Edit) { tab = ReaderTab.Notes }
+                    }
+                    Box {
+                        IconButton(onClick = { menuOpen = true }, modifier = Modifier.size(44.dp)) { Icon(Icons.Rounded.MoreVert, "More") }
+                        DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
+                            if (pageLine.isNotBlank()) {
+                                Text(pageLine, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2, overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp).width(220.dp))
+                            }
+                            DropdownMenuItem(
+                                text = { Text(if (bookmarked) "Remove bookmark" else "Bookmark this page") },
+                                leadingIcon = { Icon(if (bookmarked) Icons.Rounded.Bookmark else Icons.Rounded.BookmarkBorder, null, tint = if (bookmarked) Sb.Pink else MaterialTheme.colorScheme.onSurface) },
+                                onClick = {
+                                    menuOpen = false
+                                    if (subject != null && classDto != null) vm.setBookmark(!bookmarked, Bookmark(subject.id, classDto.id, chapter, tabName, web.page, title.primary, System.currentTimeMillis()))
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(if (speaker.speaking) "Stop reading" else "Read this page aloud") },
+                                leadingIcon = { Icon(if (speaker.speaking) Icons.Rounded.Stop else Icons.AutoMirrored.Rounded.VolumeUp, null) },
+                                onClick = { menuOpen = false; if (speaker.speaking) speaker.stop() else controller.pageText { speaker.speak(it) } },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Go to page…") },
+                                leadingIcon = { Icon(Icons.Rounded.FormatListNumbered, null) },
+                                onClick = { menuOpen = false; showJump = true },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Back to the chapters") },
+                                leadingIcon = { Icon(Icons.AutoMirrored.Rounded.ArrowBack, null) },
+                                onClick = { menuOpen = false; onBack() },
+                            )
+                        }
                     }
                     CornerArrow(left = false) { tab = ReaderTab.Read; controller.next() }
                 }
@@ -213,17 +238,16 @@ fun ReaderScreen(
         },
         snackbarHost = { SnackbarHost(snackbar) },
         containerColor = MaterialTheme.colorScheme.background,
+        contentWindowInsets = WindowInsets(0),
     ) { pad ->
-        Box(Modifier.fillMaxSize().padding(pad)) {
+        Box(Modifier.fillMaxSize().padding(pad).statusBarsPadding()) {
             // the page stays alive under the Games / Notes tabs so nothing reloads when the student comes back
             SbWebView(controller, textZoom = state.fontScale, modifier = Modifier.fillMaxSize())
             if (controller.loading || !controller.ready) {
                 Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center) {
-                    if (controller.error == null) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("📖", style = MaterialTheme.typography.headlineLarge)
-                            Text("Opening your book…", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 8.dp))
-                        }
+                    if (controller.error == null && controller.missing == null) {
+                        val pct by rememberLoadPercent(true, controller.pageProgress, controller.ready)
+                        LoadingPanel("Opening your book…", pct)
                     }
                 }
             }
@@ -241,11 +265,6 @@ fun ReaderScreen(
             controller.error?.let { msg ->
                 Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
                     EmptyState("📡", "No connection", msg) { Button(onClick = controller::reload) { Text("Try again") } }
-                }
-            }
-            AnimatedVisibility(tab == ReaderTab.Games, enter = fadeIn(), exit = fadeOut()) {
-                Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    GamesPanel(gamePage, onStep = { g, step, total -> vm.gameStep(gamePage, g, step, total) })
                 }
             }
             AnimatedVisibility(tab == ReaderTab.Notes, enter = fadeIn(), exit = fadeOut()) {
@@ -272,43 +291,32 @@ fun ReaderScreen(
     if (showJump) JumpDialog(web.page, web.pages, onDismiss = { showJump = false }, onGo = { controller.go(it); showJump = false })
 }
 
-/** The page text for games: only read when the Games tab is open, so reading does not pay for it. */
-@Composable
-private fun pageTextSnapshot(controller: pk.wantuch.spacebook.ui.web.WebController, page: Int, tab: ReaderTab): String {
-    var text by remember { mutableStateOf("") }
-    LaunchedEffect(page, tab, controller.ready) {
-        if (tab == ReaderTab.Games && controller.ready) controller.pageText { text = it }
-    }
-    return text
-}
-
 /** A page-turn button in a corner of the footer. */
 @Composable
 private fun CornerArrow(left: Boolean, onClick: () -> Unit) {
-    IconButton(onClick = onClick, modifier = Modifier.size(60.dp).semantics { contentDescription = if (left) "Previous page" else "Next page" }) {
+    IconButton(onClick = onClick, modifier = Modifier.size(48.dp).semantics { contentDescription = if (left) "Previous page" else "Next page" }) {
         Icon(
             if (left) Icons.AutoMirrored.Rounded.KeyboardArrowLeft else Icons.AutoMirrored.Rounded.KeyboardArrowRight,
-            null, Modifier.size(38.dp), tint = MaterialTheme.colorScheme.primary,
+            null, Modifier.size(34.dp), tint = MaterialTheme.colorScheme.primary,
         )
     }
 }
 
-/** Read / Games / Notes: an icon over a short label, 56dp tall. */
+/** Read / Games / Notes: an icon in a pill; the chosen one shows its word beside the icon. */
 @Composable
 private fun TabButton(selected: Boolean, label: String, icon: androidx.compose.ui.graphics.vector.ImageVector, onClick: () -> Unit) {
-    Column(
+    val tint = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
+    Row(
         Modifier
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(18.dp))
             .background(if (selected) MaterialTheme.colorScheme.primaryContainer else androidx.compose.ui.graphics.Color.Transparent)
             .clickable(onClick = onClick)
-            .padding(horizontal = 14.dp, vertical = 6.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .semantics { contentDescription = label }
+            .padding(horizontal = if (selected) 12.dp else 10.dp, vertical = 7.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(icon, null, Modifier.size(24.dp), tint = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(
-            label, style = MaterialTheme.typography.labelMedium, maxLines = 1,
-            color = if (selected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        Icon(icon, null, Modifier.size(22.dp), tint = tint)
+        if (selected) Text(label, style = MaterialTheme.typography.labelMedium, maxLines = 1, color = tint, modifier = Modifier.padding(start = 5.dp))
     }
 }
 

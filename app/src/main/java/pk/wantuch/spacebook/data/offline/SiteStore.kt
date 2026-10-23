@@ -35,6 +35,9 @@ private data class ShellIndex(val files: Map<String, String> = emptyMap())
  *
  * Files are immutable per `?v=<hash>` (the site names every script and book file by its content hash), so a copy is never stale.
  * `api/...` calls are never answered here: they go to the real server (and fail quietly when offline; the page keeps its own queue).
+ *
+ * Everything on the phone's disk is encrypted ([SiteVault]); copies kept by an older version are plain and are encrypted by [migrate]
+ * (until then they are still served). The shell inside the app (`assets/site/`) is the website's own public files, it is not secret.
  */
 @Singleton
 class SiteStore @Inject constructor(
@@ -42,6 +45,7 @@ class SiteStore @Inject constructor(
     private val endpoint: Endpoint,
     http: OkHttpClient,
     private val json: Json,
+    private val vault: SiteVault,
 ) {
     private val root = File(context.filesDir, "site")
     private val tmp = File(context.filesDir, "site-tmp")
@@ -69,13 +73,13 @@ class SiteStore @Inject constructor(
     fun open(path: String, v: String?): InputStream? {
         if (!safe(path)) return null
         val f = diskFile(path, v)
-        if (f.isFile) return runCatching { f.inputStream() }.getOrNull()
+        if (f.isFile) return runCatching { vault.open(f) }.getOrNull()
         val b = bundled[path]
         if (b != null && (v.isNullOrEmpty() || b == v)) return runCatching { context.assets.open("site/$path") }.getOrNull()
         return null
     }
 
-    fun size(path: String, v: String?): Long = diskFile(path, v).takeIf { it.isFile }?.length() ?: 0
+    fun size(path: String, v: String?): Long = diskFile(path, v).takeIf { it.isFile }?.let { vault.plainSize(it) } ?: 0
 
     private fun target(path: String, v: String?) =
         endpoint.url.resolve(path.split('/').joinToString("/") { Uri.encode(it) } + if (v.isNullOrEmpty()) "" else "?v=$v")
@@ -97,7 +101,7 @@ class SiteStore @Inject constructor(
                 if (!r.isSuccessful) return false
                 val body = r.body
                 val md = if (sha256 != null) MessageDigest.getInstance("SHA-256") else null
-                part.outputStream().use { out ->
+                vault.encrypt(part.outputStream().buffered()).use { out ->
                     val buf = ByteArray(64 * 1024)
                     body.byteStream().use { input ->
                         while (true) {
@@ -129,6 +133,16 @@ class SiteStore @Inject constructor(
 
     fun delete(path: String, v: String?) { diskFile(path, v).delete() }
 
+    /** Encrypts the plain copies an older version of the app left on the phone (a few at a time is fine: called from a background thread). Returns how many were done. */
+    fun migrate(limit: Int = Int.MAX_VALUE): Int {
+        var n = 0
+        for (f in root.walkTopDown()) {
+            if (n >= limit) break
+            if (f.isFile && !vault.isEncrypted(f) && vault.migrate(f)) n++
+        }
+        return n
+    }
+
     // ---------------------------------------------------------------------------------------------------------------- WebView
 
     /**
@@ -152,7 +166,7 @@ class SiteStore @Inject constructor(
         val networkFirst = rel == "lazy.html" || (rel.startsWith("content/") && v == null)
         if (networkFirst) {
             val fresh = if (rel == "lazy.html") refreshEntry() else download(rel, null, quickTimeout = true, force = true)
-            if (fresh) diskFile(rel, null).takeIf { it.isFile }?.let { return respond(rel, it.inputStream()) }
+            if (fresh) diskFile(rel, null).takeIf { it.isFile }?.let { f -> runCatching { vault.open(f) }.getOrNull()?.let { return respond(rel, it) } }
         }
         open(rel, v)?.let { return respond(rel, it) }
         if (!networkFirst && download(rel, v)) {
@@ -179,9 +193,7 @@ class SiteStore @Inject constructor(
         if (!html.contains("<html", ignoreCase = true)) return false
         val refs = ENTRY_REF.findAll(html).map { it.groupValues[1] to it.groupValues[2] }.filter { !it.first.contains("://") }.toSet()
         for ((p, v) in refs) if (!has(p, v) && !download(p, v)) return false
-        val dest = diskFile("lazy.html", null)
-        dest.parentFile?.mkdirs()
-        dest.writeText(html)
+        vault.write(diskFile("lazy.html", null), html.toByteArray())
         return true
     }
 

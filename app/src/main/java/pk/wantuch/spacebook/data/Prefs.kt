@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import pk.wantuch.spacebook.data.offline.KeyProvider
+import pk.wantuch.spacebook.data.offline.KeystoreKeyProvider
+import pk.wantuch.spacebook.data.offline.Seal
 import pk.wantuch.spacebook.data.remote.DeviceDto
 import pk.wantuch.spacebook.data.remote.UserDto
 import java.util.UUID
@@ -44,6 +47,7 @@ data class AppState(
 
 @Singleton
 class Prefs @Inject constructor(@ApplicationContext private val context: Context, private val json: Json) {
+    private val keys: KeyProvider get() = KeystoreKeyProvider.of(context)
     private object K {
         val device = stringPreferencesKey("device")
         val user = stringPreferencesKey("user")
@@ -61,7 +65,7 @@ class Prefs @Inject constructor(@ApplicationContext private val context: Context
 
     val state: Flow<AppState> = context.sbStore.data.map { p ->
         AppState(
-            device = p[K.device]?.let { runCatching { json.decodeFromString<DeviceDto>(it) }.getOrNull() },
+            device = p[K.device]?.let { stored -> Seal.open(keys, stored)?.let { runCatching { json.decodeFromString<DeviceDto>(it) }.getOrNull() } },
             user = p[K.user]?.let { runCatching { json.decodeFromString<UserDto>(it) }.getOrNull() },
             installId = p[K.installId].orEmpty(),
             baseUrlOverride = p[K.baseUrl].orEmpty(),
@@ -92,7 +96,7 @@ class Prefs @Inject constructor(@ApplicationContext private val context: Context
                 p.remove(K.device)
             } else {
                 p[K.user] = json.encodeToString(user)
-                p[K.device] = json.encodeToString(device)
+                p[K.device] = Seal.seal(keys, json.encodeToString(device))          // the device token is kept sealed with the vault key, never as plain text
             }
         }
     }

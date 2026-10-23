@@ -20,7 +20,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import pk.wantuch.spacebook.data.offline.FixedKeyProvider
 import pk.wantuch.spacebook.data.offline.SiteStore
+import pk.wantuch.spacebook.data.offline.SiteVault
 import pk.wantuch.spacebook.data.remote.Endpoint
 import java.io.File
 import java.security.MessageDigest
@@ -52,7 +54,7 @@ class SiteStoreTest {
         server.start()
         endpoint = Endpoint()
         assertTrue(endpoint.override(server.url("/").toString()))
-        store = SiteStore(ApplicationProvider.getApplicationContext(), endpoint, OkHttpClient(), Json { ignoreUnknownKeys = true })
+        store = SiteStore(ApplicationProvider.getApplicationContext(), endpoint, OkHttpClient(), Json { ignoreUnknownKeys = true }, SiteVault(FixedKeyProvider(ByteArray(32) { it.toByte() })))
     }
 
     @After fun tearDown() = runCatching { server.shutdown() }.let { }
