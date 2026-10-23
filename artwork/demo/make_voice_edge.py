@@ -34,8 +34,8 @@ async def one(line_id, text):
             print('  retry', line_id, e)
             await asyncio.sleep(2)
     wav = os.path.join(out_dir, line_id + '.wav')
-    # a short lead-in silence is cut away so the line starts when the screen changes
-    subprocess.run([FF, '-y', '-loglevel', 'error', '-i', mp3, '-af', 'silenceremove=start_periods=1:start_threshold=-48dB:start_silence=0.05',
+    # the silence before and after the line is cut away (a little is kept at the end), so the line starts and ends with the screen
+    subprocess.run([FF, '-y', '-loglevel', 'error', '-i', mp3, '-af', 'silenceremove=start_periods=1:start_threshold=-48dB:start_silence=0.05,areverse,silenceremove=start_periods=1:start_threshold=-48dB:start_silence=0.12,areverse',
                     '-ar', '44100', '-ac', '1', '-c:a', 'pcm_s16le', wav], check=True)
     os.remove(mp3)
     with wave.open(wav) as w:

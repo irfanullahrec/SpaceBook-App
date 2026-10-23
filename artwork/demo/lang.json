@@ -7,7 +7,25 @@
     "introSub": "Every textbook · Classes 1 to 12",
     "soon": "Coming Soon",
     "outroSub": "Read · Learn · Play",
-    "badges": {}
+    "badges": {},
+    "hookWords": [
+      [
+        "READ",
+        "every lesson"
+      ],
+      [
+        "LISTEN",
+        "every sentence aloud"
+      ],
+      [
+        "SOLVE",
+        "step by step"
+      ],
+      [
+        "PRACTISE",
+        "tests and quizzes"
+      ]
+    ]
   },
   "ur": {
     "dir": "rtl",
@@ -72,6 +90,24 @@
       "Health and Physical Education": "صحت و جسمانی تعلیم",
       "Islamiat (Compulsory)": "اسلامیات (لازمی)",
       "Economics": "معاشیات"
-    }
+    },
+    "hookWords": [
+      [
+        "پڑھیں",
+        "ہر سبق"
+      ],
+      [
+        "سنیں",
+        "ہر جملہ آواز میں"
+      ],
+      [
+        "حل کریں",
+        "قدم بہ قدم"
+      ],
+      [
+        "مشق کریں",
+        "ٹیسٹ اور کوئز"
+      ]
+    ]
   }
 }

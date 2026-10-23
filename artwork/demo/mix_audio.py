@@ -131,7 +131,35 @@ def fx_fanfare():
     return out
 
 
-FX = {'tap': fx_tap, 'swish': fx_swish, 'whoosh': fx_whoosh, 'pop': fx_pop, 'wrong': fx_wrong, 'success': fx_success, 'fanfare': fx_fanfare}
+def fx_boom():
+    # an impact: a falling thump with a click and a bright hit on top
+    d = .8
+    out = sweep(150, 42, d, .17) * .95
+    c = noise(.03) * np.exp(-np.arange(int(.03 * SR)) / (.006 * SR))
+    out[:len(c)] += c * .5
+    hit = tone(hz(7), .5, .002, .12, ((1, 1.0), (2, .5), (3, .3))) * .22
+    out[:len(hit)] += hit
+    return out
+
+
+def fx_riser():
+    # a rising sweep with noise, building up to the first word
+    d = .55
+    n = int(d * SR); x = np.arange(n) / SR
+    return (sweep(180, 2400, d, 10) * .35 + lowpass(noise(d), 6) * 1.1) * (x / d) ** 2
+
+
+def fx_flash():
+    # the flash into the logo: a big whoosh with sparkles
+    a, b = fx_whoosh() * 1.3, fx_success() * 1.1
+    out = np.zeros(max(len(a), len(b)))
+    out[:len(a)] += a; out[:len(b)] += b
+    f = fx_fanfare()[:int(1.8 * SR)] * .55
+    out[:len(f)] += f[:len(out)]
+    return out
+
+
+FX = {'boom': fx_boom, 'riser': fx_riser, 'flash': fx_flash, 'tap': fx_tap, 'swish': fx_swish, 'whoosh': fx_whoosh, 'pop': fx_pop, 'wrong': fx_wrong, 'success': fx_success, 'fanfare': fx_fanfare}
 fxcache = {}
 
 

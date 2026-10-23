@@ -28,6 +28,13 @@ const dur = rj(path.join(voiceDir, 'durations.json'));
 const L10N = rj(path.join(HERE, 'lang.json'))[LANG];
 const catalog = rj(path.join(HERE, '..', '..', 'app', 'src', 'main', 'assets', 'app_catalog.json'));
 const scenes = rj(path.join(HERE, 'scenes.json')).scenes;
+const COVER_DIR = path.join(HERE, '..', '..', 'app', 'src', 'main', 'assets', 'covers');
+const coverUrls = (() => {                                              // every book cover, in a fixed shuffled order, for the hook's wall
+  const names = fs.readdirSync(COVER_DIR).filter(f => /^cls\d+-.+\.webp$/.test(f)).sort();
+  let seed = 20261023; const rnd = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
+  for (let i = names.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [names[i], names[j]] = [names[j], names[i]]; }
+  return names.map(n => 'file:///' + path.join(COVER_DIR, n).replace(/\\/g, '/').replace(/ /g, '%20'));
+})();
 const run = (args, opts = {}) => execFileSync(FF, ['-y', '-loglevel', 'error', ...args], { stdio: 'inherit', ...opts });
 
 // ---------------------------------------------------------------- segments: one per recorded event
@@ -42,17 +49,21 @@ for (const sc of scenes) {
 }
 
 // ---------------------------------------------------------------- timeline for this language
-const GAP = 0.35, MAXSTRETCH = 1.35;
-const INTRO = dur.intro + 1.0, OUTRO = dur.outro + 2.4;
+const GAP = 0.35, MAXSTRETCH = 1.35, LIBRARY_MIN_K = 0.62;           // the library tour may be played up to 1.6 times faster
+// the opening hook: four big words, each said as it lands, a flash, then the logo with the tagline
+const HOOK_IDS = ['h_read', 'h_hear', 'h_solve', 'h_practise'], HOOK_W = [0.5, 1.35, 2.2, 3.05], LOGO_AT = 4.0;
+const INTRO = LOGO_AT + 0.3 + dur.intro + 0.6, OUTRO = dur.outro + 2.4;
 let cursor = INTRO, busy = 0;
-const voice = [{ say: 'intro', at: .35 }], sfx = [];
+const voice = [...HOOK_IDS.map((id, i) => ({ say: id, at: HOOK_W[i] + 0.03 })), { say: 'intro', at: LOGO_AT + 0.3 }];
+const sfx = [{ kind: 'riser', at: 0 }, ...HOOK_W.map(at => ({ kind: 'boom', at })), { kind: 'flash', at: LOGO_AT }];
 segs.forEach((s, i) => {
   s.start = cursor;
   if (s.say) { s.voiceAt = s.start + .12; busy = s.voiceAt + dur[s.say] + GAP; voice.push({ say: s.say, at: s.voiceAt }); }
   const next = segs[i + 1];
   const passOn = next && !next.say && next.scene !== s.scene;           // the line may run on into the next clip's opening seconds
-  s.len = Math.max(s.orig, passOn ? 0 : Math.max(0, busy - s.start));
-  s.k = s.len > s.orig ? Math.min(MAXSTRETCH, s.len / s.orig) : 1;
+  const minK = s.scene.id === 'library' ? LIBRARY_MIN_K : 1;            // only the class tour is sped up; the rest keeps its pace
+  s.len = Math.max(s.orig * minK, passOn ? 0 : Math.max(0, busy - s.start));
+  s.k = s.len >= s.orig ? Math.min(MAXSTRETCH, s.len / s.orig) : s.len / s.orig;
   s.pad = s.len - s.orig * s.k;
   cursor += s.len;
 });
@@ -137,13 +148,16 @@ const localized = s => {
   await page.goto('file:///' + path.join(HERE, 'compose.html').replace(/\\/g, '/'));
   await page.waitForFunction('window.__ready === true');
   await page.evaluate(() => document.fonts.ready);
+  // build the hook's wall and wait until every cover picture is decoded, so the first frames are not empty
+  await page.evaluate(([s, c]) => window.setFrame(s, c), [{ mode: 'intro', t: 0.1, hook: { words: HOOK_W, logoAt: LOGO_AT }, covers: coverUrls, lang: LANG, l10n: L10N }, catalog]);
+  await page.evaluate(() => Promise.all([...document.images].map(i => i.decode().catch(() => 0))));
   const frames = Math.round(TOTAL * FPS), started = Date.now();
   const panels = segs.map(localized);
   let lastKey = null, lastJpg = null, si = 0;
   for (let i = 0; i < frames; i++) {
     const T = i / FPS;
     let state, segIndex = -1;
-    if (T < INTRO) state = { mode: 'intro', t: T };
+    if (T < INTRO) state = { mode: 'intro', t: T, hook: { words: HOOK_W, logoAt: LOGO_AT }, covers: coverUrls };
     else if (T >= outroStart) state = { mode: 'outro', t: T - outroStart };
     else {
       while (si < segs.length - 1 && T >= segs[si].start + segs[si].len) si++;
@@ -152,7 +166,7 @@ const localized = s => {
     }
     state.lang = LANG; state.l10n = L10N;
     // an animation lasts about two seconds; after that the layer is the same until the next segment, so the last picture is reused
-    const steady = state.mode === 'panel' ? state.dt > 2.0 : state.t > 2.2;
+    const steady = state.mode === 'panel' ? state.dt > 2.0 : state.mode === 'intro' ? state.t > LOGO_AT + 2.2 : state.t > 2.2;
     const key = state.mode + '|' + segIndex + '|' + (state.mode === 'panel' ? JSON.stringify(state.panel) : '');
     let jpg;
     if (steady && key === lastKey && lastJpg) jpg = lastJpg;

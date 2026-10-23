@@ -70,6 +70,23 @@
   #outro .logo { width: 150px; height: 150px; margin-bottom: 20px; filter: drop-shadow(0 8px 30px rgba(109,92,255,.9)); }
   #fade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
 
+  /* ---------- the opening hook: a tilted wall of real book covers, then one big word at a time ---------- */
+  #hook { position: absolute; inset: 0; display: none; overflow: hidden; }
+  #wallWrap { position: absolute; inset: 0; perspective: 1500px; perspective-origin: 50% 38%; }
+  #wall { position: absolute; left: 50%; top: 50%; width: 2700px; height: 5800px; margin-left: -1350px; margin-top: -2900px; transform-style: preserve-3d;
+    display: grid; grid-template-columns: repeat(9, 270px); gap: 30px; align-content: start; opacity: .62; will-change: transform; }
+  #wall img { width: 270px; height: 380px; object-fit: cover; border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.6); }
+  #hookVig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 48%, rgba(7,5,34,.15) 20%, rgba(7,5,34,.9) 100%); }
+  #hookWord { position: absolute; left: 50%; width: max-content; top: 215px; text-align: center; white-space: nowrap; font-family: "Arial Black", "Segoe UI Black", sans-serif;
+    font-size: 430px; line-height: 1.05; letter-spacing: -8px; color: transparent; -webkit-background-clip: text; background-clip: text; }
+  #hookSub { position: absolute; left: 0; right: 0; top: 735px; text-align: center; font-size: 62px; font-weight: 800; letter-spacing: 9px; text-transform: uppercase; color: #fff;
+    text-shadow: 0 4px 24px rgba(0,0,0,.7); }
+  .subpill { display: inline-block; background: rgba(7,5,34,.72); padding: 6px 38px 12px; border-radius: 999px; }
+  #ring { position: absolute; left: 50%; top: 480px; width: 200px; height: 200px; margin: -100px 0 0 -100px; border-radius: 50%; border: 16px solid #fff; opacity: 0; }
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+  body.ur #hookWord { font-family: "Jameel Noori Nastaleeq", serif; font-size: 600px; font-weight: 700; letter-spacing: 0; line-height: 1.25; top: 150px; }
+  body.ur #hookSub { letter-spacing: 0; font-size: 68px; font-weight: 400; font-family: "Jameel Noori Nastaleeq", serif; text-transform: none; top: 760px; }
+
   /* ---------- Urdu: right to left, Nastaliq, no letter spacing (it would break the joins) ---------- */
   body.ur { font-family: "Jameel Noori Nastaleeq", "Noto Nastaliq Urdu", "Segoe UI", serif; }
   body.ur .badge { letter-spacing: 0; font-size: 36px; padding: 6px 30px 14px; font-family: "Jameel Noori Nastaleeq", serif; }
@@ -102,6 +119,10 @@
   <div id="content"></div>
 </div>
 
+<div id="hook">
+  <div id="wallWrap"><div id="wall"></div></div><div id="hookVig"></div>
+  <div id="ring"></div><div id="hookWord"></div><div id="hookSub"></div>
+</div>
 <div id="intro">
   <h1>SpaceBook</h1><div class="lib" id="introLib">LIBRARY</div><div class="sub" id="introSub">Every textbook &middot; Classes 1 to 12</div>
 </div>
@@ -110,6 +131,7 @@
     <path fill="#6d5cff" d="M52.5 42 L55.5 42 L55.5 75 L52.5 75 Z"/><path fill="#ffd54a" d="M54 18 L57 26 L65.5 26.6 L59 32 L61.2 40.2 L54 35.6 L46.8 40.2 L49 32 L42.5 26.6 L51 26 Z"/></svg>
   <h1>SpaceBook</h1><div class="soon" id="soon">Coming Soon</div><div class="sub" id="outroSub">Read &middot; Learn &middot; Play</div>
 </div>
+<div id="flash"></div>
 <div id="fade"></div>
 
 <script>
@@ -125,6 +147,14 @@
     s.style.cssText = `left:${rnd() * 1920}px;top:${rnd() * 1080}px;width:${z}px;height:${z}px;` + (z > 3 ? 'box-shadow:0 0 12px 3px rgba(255,255,255,.8);' : '');
     $('stars').appendChild(s); stars.push({ el: s, base: .3 + rnd() * .7, ph: rnd() * 6.28, sp: 1 + rnd() * 2 }); }
 
+  // the wall of covers is built once from the list the page is given
+  let wallBuilt = false;
+  function buildWall(urls) {
+    if (wallBuilt || !urls.length) return;
+    wallBuilt = true;
+    const w = $('wall');
+    for (let i = 0; i < 9 * 14; i++) { const im = document.createElement('img'); im.src = urls[i % urls.length]; w.appendChild(im); }
+  }
   const esc = s => String(s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
   const cardUrl = n => 'file:///D:/SpaceBook/SpaceBook%20App/app/src/main/assets/covers/class-cls' + n + '.webp';
 
@@ -140,9 +170,40 @@
     $('outro').style.display = s.mode === 'outro' ? 'flex' : 'none';
     $('fade').style.opacity = s.fade || 0;
     const d = s.dt || 0;
+    $('hook').style.display = 'none'; $('flash').style.opacity = 0;
     if (s.mode === 'intro') {
-      const k = easeOut(clamp(s.t / 1.1));
-      $('intro').style.opacity = clamp(s.t / .6); $('intro').style.transform = `scale(${.9 + .1 * k})`;
+      const H = s.hook || { words: [], logoAt: 0 };
+      if (s.t < H.logoAt) {
+        // ---- the hook
+        $('intro').style.display = 'none'; $('hook').style.display = 'block';
+        buildWall(s.covers || []);
+        $('wall').style.transform = `rotateX(58deg) rotateZ(-22deg) translate3d(${-120 + s.t * 40}px, ${-1300 + s.t * 330}px, 0) scale(${1 + s.t * .05})`;
+        const COL = [['#9a8bff', '#4b25a6'], ['#4ff0c6', '#0a6a58'], ['#ffd36b', '#9a6200'], ['#ff7fae', '#8a1f4d']];
+        let i = -1; H.words.forEach((w, j) => { if (s.t >= w) i = j; });
+        const wd = $('hookWord'), sb = $('hookSub'), rg = $('ring');
+        if (i < 0) {
+          wd.style.opacity = 0; sb.style.opacity = 0; rg.style.opacity = 0;
+          $('wall').style.opacity = (.12 + .5 * clamp(s.t / (H.words[0] || 1))).toFixed(3);    // the wall rises out of the dark with the riser
+        } else {
+          $('wall').style.opacity = .62;
+          const u = s.t - H.words[i], pop = clamp(u / .22), c = COL[i % 4];
+          const shake = (1 - clamp(u / .18)) * 16 * Math.sin(u * 95);
+          const hw = s.l10n.hookWords[i] || ['', '']; wd.textContent = hw[0]; sb.innerHTML = '<span class="subpill">' + esc(hw[1]) + '</span>';
+          const fit = Math.min(1, 1700 / (hw[0].length * (s.lang === 'ur' ? .36 : .68) * (s.lang === 'ur' ? 600 : 430)));
+          wd.style.background = `linear-gradient(180deg, #ffffff 8%, ${c[0]} 92%)`; wd.style.webkitBackgroundClip = 'text'; wd.style.backgroundClip = 'text';
+          wd.style.filter = `drop-shadow(0 10px 0 ${c[1]}) drop-shadow(0 0 50px ${c[0]})`;
+          wd.style.opacity = clamp(u / .05);
+          wd.style.transform = `translateX(-50%) translate(${shake}px, ${-shake * .5}px) scale(${fit * (1 + 1.6 * Math.pow(1 - pop, 3)) * (1 + .05 * clamp((u - .22) / .6))}) rotate(${-5 * (1 - pop)}deg)`;
+          sb.style.opacity = clamp((u - .12) / .2); sb.style.transform = `translateY(${(1 - clamp((u - .12) / .25)) * 30}px)`;
+          rg.style.borderColor = c[0]; rg.style.opacity = (.9 * (1 - clamp(u / .55))).toFixed(3); rg.style.transform = `scale(${.3 + 9 * easeOut(clamp(u / .55))})`;
+        }
+      } else {
+        // ---- the logo, after a white flash
+        const lt = s.t - H.logoAt, k = easeOut(clamp(lt / 1.1));
+        $('intro').style.display = 'flex';
+        $('intro').style.opacity = clamp(lt / .25); $('intro').style.transform = `scale(${.85 + .15 * k})`;
+        $('flash').style.opacity = (1 - Math.pow(clamp(lt / .5), .6)).toFixed(3);
+      }
     } else if (s.mode === 'outro') {
       const k = easeBack(clamp(s.t / .9));
       $('outro').style.opacity = clamp(s.t / .5); $('outro').firstElementChild.style.transform = `scale(${.8 + .2 * k})`;
