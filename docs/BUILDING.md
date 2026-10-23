@@ -24,9 +24,11 @@ Needs JDK 17 and the Android SDK (platform 36, build-tools 36). `local.propertie
 
 ## Pointing the app at a server
 
-* Production: `https://wantuch.pk/spacebook/` (the default, `BuildConfig.SITE_URL`). **It is not deployed yet** (the site returned
-  404 on 2026-10-22), so the app needs the website put on that address first.
-* Local: start the PHP server (`.claude/launch.json` entry `spacebook-php`, port 8790) and in the app go to
+* Live site: `https://wantuch.pk/spacebook/` is the default of every build, debug included (`BuildConfig.SITE_URL`). It has been deployed
+  since 2026-10-23. Until 2026-10-24 a debug build pointed at `http://localhost:8790/` and needed `adb reverse tcp:8790 tcp:8790`; once the
+  USB tunnel was gone, every page whose files were not on the phone yet came up empty and the rest was slow. A phone needs no cable now.
+* Local PHP server on the PC (developers only): build with `gradlew assembleDebug -Pspacebook.siteUrl=http://localhost:8790/`, run
+  `adb reverse tcp:8790 tcp:8790`, or instead start the PHP server (`.claude/launch.json` entry `spacebook-php`, port 8790) and in the app go to
   **Me, Settings, Server** and enter `http://10.0.2.2:8790/` (emulator) or `http://<PC address>:8790/` (phone on the same wifi;
   plain http is accepted only for 10.0.2.2, localhost and 127.0.0.1, so for a phone use a tunnel with https).
 

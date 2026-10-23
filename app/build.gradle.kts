@@ -39,10 +39,12 @@ android {
     // talks to the PHP API under this address, and the PHP side holds the DB credentials.
     buildTypes {
         debug {
-            // Debug builds talk to the PHP server on the developer's PC. On a phone on USB run
-            //   adb reverse tcp:8790 tcp:8790
-            // so that "localhost" on the phone is the PC (plain http to localhost is the only http the app allows).
-            buildConfigField("String", "SITE_URL", "\"http://localhost:8790/\"")
+            // Debug builds use the live site too, so a phone needs no cable and no PC server: with "localhost" as the address every page
+            // whose files were not on the phone yet came up empty as soon as the USB tunnel was gone. To work against the PHP server on the PC:
+            //   gradlew assembleDebug -Pspacebook.siteUrl=http://localhost:8790/     and on the phone     adb reverse tcp:8790 tcp:8790
+            // (plain http to localhost is the only http the app allows).
+            val siteUrl = providers.gradleProperty("spacebook.siteUrl").orNull ?: "https://wantuch.pk/spacebook/"
+            buildConfigField("String", "SITE_URL", "\"$siteUrl\"")
             buildConfigField("long", "EXPIRES_AT_MILLIS", expiryMillis(debugExpireDays))
         }
         release {
