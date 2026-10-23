@@ -73,6 +73,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import pk.wantuch.spacebook.data.local.Bookmark
+import pk.wantuch.spacebook.data.local.ItemCodec
 import pk.wantuch.spacebook.data.local.Note
 import pk.wantuch.spacebook.data.local.ReadingPosition
 import pk.wantuch.spacebook.data.splitTitle
@@ -97,6 +98,7 @@ fun ReaderScreen(
     subjectId: String,
     startChapter: Int,
     startPage: Int,
+    startTab: String,
     onBack: () -> Unit,
     onSignIn: () -> Unit,
     onOpenOffline: () -> Unit,
@@ -137,15 +139,17 @@ fun ReaderScreen(
     // open the chapter as soon as the page's bridge is ready, and again whenever the chapter changes
     LaunchedEffect(controller.ready, chapter, subject?.id) {
         if (controller.ready && subject != null && chapterDto != null && classDto != null) {
-            val resume = if (pendingPage > 0) pendingPage else if (chapter == startChapter && startPage == 0) (vm.position(subjectId)?.takeIf { it.chapterIndex == chapter }?.page ?: 0) else 0
-            controller.openChapter(classDto.id, subject.id, chapterDto.o, resume)
+            val saved = vm.position(subjectId)?.takeIf { it.chapterIndex == chapter }
+            val resume = if (pendingPage > 0) pendingPage else if (chapter == startChapter && startPage == 0) (saved?.page ?: 0) else 0
+            val tabToOpen = if (chapter == startChapter && startTab.isNotBlank()) startTab else if (chapter == startChapter && startPage == 0) saved?.tab.orEmpty() else ""
+            controller.openChapter(classDto.id, subject.id, chapterDto.o, resume, tabToOpen)
             pendingPage = 0
         }
     }
     // hand the app's sign-in to the page (rewards, plans and tests then belong to the same account)
-    LaunchedEffect(controller.ready, state.user?.id, state.device?.id) {
+    LaunchedEffect(controller.ready, state.user?.id, state.device?.id, state.syncOn) {
         val u = state.user; val d = state.device
-        if (controller.ready) { if (u != null && d != null) controller.signIn(u, d) }
+        if (controller.ready) { if (u != null && d != null) controller.signIn(u, d, state.syncOn) }
     }
     // the book finished downloading while the "not on this phone" panel was up: open it
     val finishedDownload by vm.offline.progress.collectAsStateWithLifecycle()
@@ -154,13 +158,14 @@ fun ReaderScreen(
         if (d != null && d.finished && d.failed == 0 && d.label == subject?.name && controller.missing != null) controller.reload()
     }
     // remember where the student is
-    LaunchedEffect(web.page, web.pages, chapter, controller.loading) {
+    val tabName = ItemCodec.cleanTab(web.tab)           // "Lessons", "Exercises" ...: the same text the website stores
+    LaunchedEffect(web.page, web.pages, web.tab, chapter, controller.loading) {
         if (subject != null && classDto != null && chapterDto != null && web.ready && !controller.loading) {
-            vm.savePosition(ReadingPosition(subject.id, classDto.id, chapter, chapterDto.t, web.page, web.pages, System.currentTimeMillis()))
+            vm.savePosition(ReadingPosition(subject.id, classDto.id, chapter, chapterDto.t, web.page, web.pages, System.currentTimeMillis(), tabName))
         }
     }
-    val bookmarked by vm.isBookmarked(subjectId, chapter, web.page).collectAsStateWithLifecycle(false)
-    val notes by vm.notesFor(subjectId, chapter, web.page).collectAsStateWithLifecycle(emptyList())
+    val bookmarked by vm.isBookmarked(subjectId, chapter, tabName, web.page).collectAsStateWithLifecycle(false)
+    val notes by vm.notesFor(subjectId, chapter, tabName, web.page).collectAsStateWithLifecycle(emptyList())
 
     val speaker = rememberSpeaker()
     BackHandler(enabled = tab != ReaderTab.Read) { tab = ReaderTab.Read }
@@ -186,7 +191,7 @@ fun ReaderScreen(
                         if (speaker.speaking) speaker.stop() else controller.pageText { speaker.speak(it) }
                     }) { Icon(if (speaker.speaking) Icons.Rounded.Stop else Icons.AutoMirrored.Rounded.VolumeUp, if (speaker.speaking) "Stop reading" else "Read this page aloud") }
                     IconButton(onClick = {
-                        if (subject != null && classDto != null) vm.setBookmark(!bookmarked, Bookmark(subject.id, classDto.id, chapter, web.page, title.primary, System.currentTimeMillis()))
+                        if (subject != null && classDto != null) vm.setBookmark(!bookmarked, Bookmark(subject.id, classDto.id, chapter, tabName, web.page, title.primary, System.currentTimeMillis()))
                     }) { Icon(if (bookmarked) Icons.Rounded.Bookmark else Icons.Rounded.BookmarkBorder, if (bookmarked) "Remove bookmark" else "Bookmark this page", tint = if (bookmarked) Sb.Pink else MaterialTheme.colorScheme.onSurface) }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -246,14 +251,24 @@ fun ReaderScreen(
             AnimatedVisibility(tab == ReaderTab.Notes, enter = fadeIn(), exit = fadeOut()) {
                 Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     NotesPanel(notes, onAdd = { text ->
-                        if (subject != null && classDto != null) vm.addNote(Note(subjectId = subject.id, classId = classDto.id, chapterIndex = chapter, page = web.page, title = title.primary, text = text, createdAt = System.currentTimeMillis()))
+                        if (subject != null && classDto != null) vm.saveNote(Note("", subject.id, classDto.id, chapter, tabName, web.page, title.primary, text, "", false, System.currentTimeMillis()))
                     }, onDelete = vm::deleteNote)
                 }
             }
         }
     }
 
-    controller.meaning?.let { MeaningSheet(it, speaker, onDismiss = controller::dismissMeaning) }
+    controller.meaning?.let { m ->
+        MeaningSheet(
+            m, speaker, onDismiss = controller::dismissMeaning,
+            // a sentence can be kept as a highlight: the same item the website's Highlight button saves
+            onHighlight = if (m.isWord || subject == null || classDto == null) null else ({
+                vm.saveNote(Note("", subject.id, classDto.id, chapter, tabName, web.page, title.primary, "", m.text.take(500), true, System.currentTimeMillis()))
+                scope.launch { snackbar.showSnackbar("Highlight saved") }
+                controller.dismissMeaning()
+            }),
+        )
+    }
     if (showJump) JumpDialog(web.page, web.pages, onDismiss = { showJump = false }, onGo = { controller.go(it); showJump = false })
 }
 
@@ -318,7 +333,7 @@ private fun JumpDialog(page: Int, pages: Int, onDismiss: () -> Unit, onGo: (Int)
 }
 
 @Composable
-private fun NotesPanel(notes: List<Note>, onAdd: (String) -> Unit, onDelete: (Long) -> Unit) {
+private fun NotesPanel(notes: List<Note>, onAdd: (String) -> Unit, onDelete: (String) -> Unit) {
     var text by remember { mutableStateOf("") }
     Column(Modifier.fillMaxSize().padding(12.dp)) {
         Text("Notes for this page", style = MaterialTheme.typography.titleMedium)
@@ -327,13 +342,16 @@ private fun NotesPanel(notes: List<Note>, onAdd: (String) -> Unit, onDelete: (Lo
             Spacer(Modifier.width(8.dp))
             Button(onClick = { if (text.isNotBlank()) { onAdd(text.trim()); text = "" } }, enabled = text.isNotBlank()) { Text("Save") }
         }
-        if (notes.isEmpty()) EmptyState("📝", "No notes yet", "Your notes stay on this phone.")
+        if (notes.isEmpty()) EmptyState("📝", "No notes yet", "Your notes and highlights follow your account to the website and your other phone.")
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(notes, key = { it.id }) { n ->
                 Surface(shape = MaterialTheme.shapes.medium, color = MaterialTheme.colorScheme.surfaceVariant) {
                     Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text(n.text, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                        IconButton(onClick = { onDelete(n.id) }) { Icon(Icons.Rounded.Delete, "Delete note") }
+                        Column(Modifier.weight(1f)) {
+                            if (n.quote.isNotBlank()) Text("“${n.quote}”", style = MaterialTheme.typography.bodyMedium, fontStyle = androidx.compose.ui.text.font.FontStyle.Italic, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            if (n.text.isNotBlank()) Text(n.text, style = MaterialTheme.typography.bodyLarge)
+                        }
+                        IconButton(onClick = { onDelete(n.id) }) { Icon(Icons.Rounded.Delete, if (n.isHighlight && n.text.isBlank()) "Delete highlight" else "Delete note") }
                     }
                 }
             }

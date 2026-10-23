@@ -118,7 +118,7 @@ fun AuthScreen(onDone: () -> Unit, onBack: () -> Unit, vm: AuthViewModel = hiltV
         AlertDialog(
             onDismissRequest = {},
             title = { Text("Add your progress?") },
-            text = { Text("This phone has ${ui.guestEvents} study ${if (ui.guestEvents == 1) "step" else "steps"} from before you signed in. Add them to your account?") },
+            text = { Text("This phone has ${ui.guestEvents} saved ${if (ui.guestEvents == 1) "thing" else "things"} (study steps, bookmarks or notes) from before you signed in. Add them to your account?") },
             confirmButton = { TextButton(onClick = { vm.resolveGuest(true, user.id) }) { Text("Yes, add") } },
             dismissButton = { TextButton(onClick = { vm.resolveGuest(false, user.id) }) { Text("No, keep separate") } },
         )

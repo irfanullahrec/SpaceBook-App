@@ -59,11 +59,11 @@ object Routes {
     const val REELS = "reels"
     const val OFFLINE = "offline"
     const val SUBJECT = "subject/{id}"
-    const val READER = "reader/{id}/{chapter}/{page}"
+    const val READER = "reader/{id}/{chapter}/{page}?tab={tab}"
     const val WEB = "web/{page}/{title}"
 
     fun subject(id: String) = "subject/${Uri.encode(id)}"
-    fun reader(id: String, chapter: Int, page: Int = 0) = "reader/${Uri.encode(id)}/$chapter/$page"
+    fun reader(id: String, chapter: Int, page: Int = 0, tab: String = "") = "reader/${Uri.encode(id)}/$chapter/$page?tab=${Uri.encode(tab)}"
     fun web(page: String, title: String) = "web/${Uri.encode(page)}/${Uri.encode(title)}"
 }
 
@@ -78,12 +78,17 @@ private val tabs = listOf(
 )
 
 @Composable
-fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController()) {
+fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController(), openRequest: String? = null, onOpenHandled: () -> Unit = {}) {
     val backStack by nav.currentBackStackEntryAsState()
     val route = backStack?.destination?.route
     val showBar = tabs.any { it.route == route }
 
     fun go(r: String) = nav.navigate(r) { launchSingleTop = true }
+    // a study reminder was tapped: the Plan tab
+    androidx.compose.runtime.LaunchedEffect(openRequest) {
+        if (openRequest == "plan") switchTab(nav, Routes.PLAN)
+        if (openRequest != null) onOpenHandled()
+    }
     val actions = HomeActions(
         openTestPrep = { test, tab -> go(Routes.web("tests-preps:$test:$tab", "Test Prep")) },
         openPlan = { plan -> go(Routes.web("study-plan:$plan", "Study Plan")) },
@@ -117,12 +122,12 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController()) 
                 composable(Routes.LIBRARY) { LibraryScreen(app, onOpenSubject = { go(Routes.subject(it)) }, onSearch = { go(Routes.SEARCH) }) }
                 composable(Routes.PRACTICE) { PracticeScreen(onOpen = { page, title -> go(Routes.web(page, title)) }) }
                 composable(Routes.PLAN) { FeatureScreen(app, "study-plan", "Study Plan", onBack = null, onSignIn = { go(Routes.AUTH) }, onOpenOffline = { go(Routes.OFFLINE) }) }
-                composable(Routes.ME) { MeScreen(app, onSignIn = { go(Routes.AUTH) }, onSaved = { go(Routes.SAVED) }, onSettings = { go(Routes.SETTINGS) }, onOffline = { go(Routes.OFFLINE) }) }
+                composable(Routes.ME) { MeScreen(app, onSignIn = { go(Routes.AUTH) }, onSaved = { go(Routes.SAVED) }, onSettings = { go(Routes.SETTINGS) }, onOffline = { go(Routes.OFFLINE) }, onAccount = { go(Routes.web("account", "My account")) }) }
                 composable(Routes.AUTH) { AuthScreen(onDone = { nav.popBackStack() }, onBack = { nav.popBackStack() }) }
                 composable(Routes.SEARCH) {
                     SearchScreen(app, onBack = { nav.popBackStack() }, onOpen = { subject, chapter -> go(Routes.reader(subject, chapter)) })
                 }
-                composable(Routes.SAVED) { SavedScreen(app, onBack = { nav.popBackStack() }, onOpen = { s, c, p -> go(Routes.reader(s, c, p)) }) }
+                composable(Routes.SAVED) { SavedScreen(app, onBack = { nav.popBackStack() }, onOpen = { s, c, p, t -> go(Routes.reader(s, c, p, t)) }) }
                 composable(Routes.SETTINGS) { SettingsScreen(app, onBack = { nav.popBackStack() }) }
                 composable(Routes.QUIZ) { QuizScreen(onBack = { nav.popBackStack() }, onReels = { nav.popBackStack(); go(Routes.REELS) }) }
                 composable(Routes.REELS) { ReelsScreen(onBack = { nav.popBackStack() }) }
@@ -137,11 +142,12 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController()) 
                         navArgument("id") { type = NavType.StringType },
                         navArgument("chapter") { type = NavType.IntType },
                         navArgument("page") { type = NavType.IntType },
+                        navArgument("tab") { type = NavType.StringType; defaultValue = "" },
                     ),
                 ) { e ->
                     ReaderScreen(
                         app, subjectId = e.arguments?.getString("id").orEmpty(),
-                        startChapter = e.arguments?.getInt("chapter") ?: 0, startPage = e.arguments?.getInt("page") ?: 0,
+                        startChapter = e.arguments?.getInt("chapter") ?: 0, startPage = e.arguments?.getInt("page") ?: 0, startTab = e.arguments?.getString("tab").orEmpty(),
                         onBack = { nav.popBackStack() }, onSignIn = { go(Routes.AUTH) }, onOpenOffline = { go(Routes.OFFLINE) },
                     )
                 }

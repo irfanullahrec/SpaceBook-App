@@ -109,7 +109,16 @@ data class PullResponse(
     val coins: Int = 0,
     val progress: JsonObject = JsonObject(emptyMap()),
     val plans: List<JsonObject> = emptyList(),
+    /** bookmarks, notes, positions ... (api/lib/items.php); the app keeps the kinds it has screens for */
+    val items: List<ItemDto> = emptyList(),
+    val itemsDeleted: List<ItemGoneDto> = emptyList(),
 )
+
+@Serializable
+data class ItemDto(val kind: String, val key: String, val value: JsonObject = JsonObject(emptyMap()), val at: Long = 0)
+
+@Serializable
+data class ItemGoneDto(val kind: String, val key: String, val at: Long = 0)
 
 @Serializable
 data class EntitlementsDto(
@@ -120,5 +129,7 @@ data class EntitlementsDto(
     /** "all" or a list; kept as JSON because the server may send either */
     val classes: JsonElement? = null,
     val features: Map<String, Boolean> = emptyMap(),
+    /** the owner's switches (api/lib/flags.php): syncV2 */
+    val flags: Map<String, Boolean> = emptyMap(),
     val version: Int = 1,
 )

@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -43,6 +44,8 @@ fun FeatureScreen(app: AppViewModel, page: String, title: String, onBack: (() ->
     controller.onAction = { name, detail ->
         when (name) {
             "auth" -> onSignIn()
+            // the account was deleted inside the page: the app forgets this phone's sign-in too
+            "signedOut" -> if (page == "account") { app.logout(); android.widget.Toast.makeText(context, "You are signed out.", android.widget.Toast.LENGTH_SHORT).show(); onBack?.invoke() }
             // a job Home asked for (deleting a plan) is finished: say so and go back to Home
             "done" -> { android.widget.Toast.makeText(context, detail, android.widget.Toast.LENGTH_SHORT).show(); onBack?.invoke() }
             "error" -> if (page.startsWith("study-plan-delete")) { android.widget.Toast.makeText(context, detail, android.widget.Toast.LENGTH_LONG).show(); onBack?.invoke() }
@@ -55,9 +58,13 @@ fun FeatureScreen(app: AppViewModel, page: String, title: String, onBack: (() ->
             controller.openFeature(page)
         }
     }
-    LaunchedEffect(controller.ready, state.user?.id, state.device?.id) {
+    // the dialog can rename the student: ask the server who is signed in again when leaving it
+    if (page == "account") DisposableEffect(Unit) { onDispose { app.refreshUser() } }
+    // the plans may have changed: schedule the reminders again when the student leaves them
+    if (page.startsWith("study-plan")) DisposableEffect(Unit) { onDispose { app.refreshReminders() } }
+    LaunchedEffect(controller.ready, state.user?.id, state.device?.id, state.syncOn) {
         val u = state.user; val d = state.device
-        if (controller.ready && u != null && d != null) controller.signIn(u, d)
+        if (controller.ready && u != null && d != null) controller.signIn(u, d, state.syncOn)
     }
 
     Scaffold(

@@ -12,6 +12,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pk.wantuch.spacebook.BuildConfig
+import pk.wantuch.spacebook.data.local.MIGRATION_1_2
 import pk.wantuch.spacebook.data.local.SpaceBookDb
 import pk.wantuch.spacebook.data.remote.ApiService
 import pk.wantuch.spacebook.data.remote.Endpoint
@@ -64,11 +65,9 @@ object AppModule {
 
     @Provides @Singleton
     fun db(@ApplicationContext ctx: Context): SpaceBookDb =
-        Room.databaseBuilder(ctx, SpaceBookDb::class.java, "spacebook.db").build()
+        Room.databaseBuilder(ctx, SpaceBookDb::class.java, "spacebook.db").addMigrations(MIGRATION_1_2).build()
 
     @Provides fun outboxDao(db: SpaceBookDb) = db.outbox()
-    @Provides fun readingDao(db: SpaceBookDb) = db.reading()
-    @Provides fun bookmarkDao(db: SpaceBookDb) = db.bookmarks()
-    @Provides fun noteDao(db: SpaceBookDb) = db.notes()
+    @Provides fun itemDao(db: SpaceBookDb) = db.items()
     @Provides fun reactionDao(db: SpaceBookDb) = db.reactions()
 }

@@ -42,6 +42,15 @@
                 tools:node="remove" />
         </provider>
 
+        <!-- The student's data download (My account > Download my data) is shared from the app's cache. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.files"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
+        </provider>
+
         <!-- Book downloads run as a data-sync foreground job (a progress notification), so they survive the screen turning off. -->
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"

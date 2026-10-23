@@ -62,12 +62,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import pk.wantuch.spacebook.data.local.ReadingDao
 import pk.wantuch.spacebook.data.local.ReadingPosition
 import pk.wantuch.spacebook.data.remote.Catalog
+import pk.wantuch.spacebook.data.repo.LibraryRepository
 import pk.wantuch.spacebook.data.remote.ClassDto
 import pk.wantuch.spacebook.data.remote.SubjectDto
 import pk.wantuch.spacebook.data.splitTitle
@@ -79,9 +80,9 @@ import pk.wantuch.spacebook.ui.components.SubjectAvatar
 import pk.wantuch.spacebook.ui.theme.Sb
 
 @HiltViewModel
-class LibraryViewModel @javax.inject.Inject constructor(readingDao: ReadingDao) : ViewModel() {
+class LibraryViewModel @javax.inject.Inject constructor(library: LibraryRepository) : ViewModel() {
     /** subject id -> where the student stopped */
-    val reading: StateFlow<Map<String, ReadingPosition>> = readingDao.recent(500)
+    val reading: StateFlow<Map<String, ReadingPosition>> = library.recentPositions(500)
         .map { list -> list.associateBy { it.subjectId } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyMap())
 }
@@ -233,12 +234,50 @@ private fun search(catalog: Catalog?, q: String): List<Hit> {
     return out
 }
 
-/** Offline search over every chapter title of every book. */
+/** Words inside the books: the website's own search (data/search/BookSearch.kt) over the books on this phone, or over all of them on request. */
+@HiltViewModel
+class SearchViewModel @javax.inject.Inject constructor(
+    private val books: pk.wantuch.spacebook.data.search.BookSearch,
+    private val offline: pk.wantuch.spacebook.data.offline.OfflineRepository,
+) : ViewModel() {
+    var inBooks by mutableStateOf<List<pk.wantuch.spacebook.data.search.BookHit>>(emptyList())
+        private set
+    var searching by mutableStateOf(false)
+        private set
+    var note by mutableStateOf("")
+        private set
+    private var job: kotlinx.coroutines.Job? = null
+
+    fun run(query: String, all: Boolean) {
+        job?.cancel()
+        if (query.trim().length < 3) { inBooks = emptyList(); note = ""; searching = false; return }
+        job = viewModelScope.launch {
+            kotlinx.coroutines.delay(300)
+            searching = true
+            val map = offline.map()
+            val ids = if (all) map.subjects.filter { it.value.files.isNotEmpty() }.keys.toList()
+            else offline.allSubjectIds(map).filter { offline.stat(map, listOf(it)).complete }
+            note = when {
+                all -> "Searched all ${ids.size} books."
+                ids.isEmpty() -> "No book is on this phone yet. Download books in Me > Books on this phone to search inside them."
+                else -> "Searched ${ids.size} ${if (ids.size == 1) "book" else "books"} on this phone."
+            }
+            inBooks = books.search(query, ids)
+            searching = false
+        }
+    }
+
+    override fun onCleared() { job?.cancel(); books.close() }
+}
+
+/** Search over every chapter title of every book (offline), and over the words inside the books on this phone. */
 @Composable
-fun SearchScreen(app: AppViewModel, onBack: () -> Unit, onOpen: (subjectId: String, chapter: Int) -> Unit) {
+fun SearchScreen(app: AppViewModel, onBack: () -> Unit, onOpen: (subjectId: String, chapter: Int) -> Unit, vm: SearchViewModel = hiltViewModel()) {
     val catalog by app.catalog.collectAsStateWithLifecycle()
     var query by remember { mutableStateOf("") }
     val hits = remember(query, catalog) { search(catalog, query) }
+    var all by remember { mutableStateOf(false) }
+    androidx.compose.runtime.LaunchedEffect(query, all) { vm.run(query, all) }
     val focus = remember { FocusRequester() }
     androidx.compose.runtime.LaunchedEffect(Unit) { runCatching { focus.requestFocus() } }
     Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
@@ -255,7 +294,7 @@ fun SearchScreen(app: AppViewModel, onBack: () -> Unit, onOpen: (subjectId: Stri
         }
         when {
             query.trim().length < 2 -> EmptyState("🔎", "Find any lesson", "Type a chapter or a subject name, like “fractions” or “Urdu”.")
-            hits.isEmpty() -> EmptyState("🤔", "Nothing found", "Try a shorter word.")
+            hits.isEmpty() && vm.inBooks.isEmpty() && !vm.searching && vm.note.isEmpty() -> EmptyState("🤔", "Nothing found", "Try a shorter word.")
             else -> LazyColumn(contentPadding = PaddingValues(bottom = 24.dp)) {
                 items(hits, key = { "${it.subject.id}:${it.chapter}" }) { h ->
                     val t = splitTitle(h.title)
@@ -266,6 +305,28 @@ fun SearchScreen(app: AppViewModel, onBack: () -> Unit, onOpen: (subjectId: Stri
                             Text(t.primary, style = MaterialTheme.typography.titleSmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
                             Text("${h.classDto.name} · ${h.subject.name}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
+                    }
+                }
+                if (query.trim().length >= 3) {
+                    item(key = "inbooks") {
+                        Text("IN THE BOOKS", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 4.dp))
+                        if (vm.searching) Text("Searching…", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                    }
+                    items(vm.inBooks, key = { "b${it.id}:${it.chapter}" }) { b ->
+                        val subj = catalog?.subject(b.id)
+                        val cls = catalog?.classOf(b.id)
+                        Row(Modifier.fillMaxWidth().clickable { onOpen(b.id, b.chapter) }.padding(horizontal = 16.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                            SubjectAvatar(subj?.emoji ?: "📘", b.id, size = 40.dp)
+                            Spacer(Modifier.width(12.dp))
+                            Column {
+                                Text(splitTitle(b.title).primary.ifBlank { subj?.name.orEmpty() }, style = MaterialTheme.typography.titleSmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                                Text("${cls?.name.orEmpty()} · ${subj?.name.orEmpty()} · ${b.hits} ${if (b.hits == 1) "match" else "matches"}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                        }
+                    }
+                    item(key = "inbooksnote") {
+                        if (!vm.searching && vm.note.isNotEmpty()) Text(vm.note, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+                        if (!vm.searching && !all) androidx.compose.material3.TextButton(onClick = { all = true }, modifier = Modifier.padding(horizontal = 8.dp)) { Text("Search all classes") }
                     }
                 }
             }

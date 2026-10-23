@@ -19,7 +19,7 @@ import pk.wantuch.spacebook.ui.components.GradientBanner
 import pk.wantuch.spacebook.ui.components.PostAction
 import pk.wantuch.spacebook.ui.components.PostCard
 
-/** Practice tab: the website's test tools, as three big posts. Each opens the website's own page inside the app. */
+/** Practice tab: the website's test tools and games, as big posts. Each opens the website's own page inside the app. */
 @Composable
 fun PracticeScreen(onOpen: (page: String, title: String) -> Unit) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
@@ -36,6 +36,12 @@ fun PracticeScreen(onOpen: (page: String, title: String) -> Unit) {
             onClick = { onOpen("papers", "Papers") },
             banner = { GradientBanner("papers", "📄", "Build a paper from your textbook", "Choose chapters · print or practise", 130.dp) },
             actions = { PostAction(Icons.Rounded.PlayArrow, "Open", { onOpen("papers", "Papers") }, tint = MaterialTheme.colorScheme.primary) },
+        )
+        PostCard(
+            "🎮", "games", "Games", "Six games, ten levels each · earn coins",
+            onClick = { onOpen("games", "Games") },
+            banner = { GradientBanner("games", "🎮", "Play your way up the levels", "The same games and coins as on the website", 130.dp) },
+            actions = { PostAction(Icons.Rounded.PlayArrow, "Play", { onOpen("games", "Games") }, tint = MaterialTheme.colorScheme.primary) },
         )
         PostCard(
             "📅", "plan", "Study Plan", "Plan every lesson before your exam",

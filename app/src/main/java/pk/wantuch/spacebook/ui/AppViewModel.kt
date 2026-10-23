@@ -13,9 +13,11 @@ import pk.wantuch.spacebook.data.Prefs
 import pk.wantuch.spacebook.data.remote.Catalog
 import pk.wantuch.spacebook.data.remote.Endpoint
 import pk.wantuch.spacebook.data.remote.EntitlementsDto
+import pk.wantuch.spacebook.data.reminders.ReminderScheduler
 import pk.wantuch.spacebook.data.repo.AuthRepository
 import pk.wantuch.spacebook.data.repo.CatalogRepository
 import pk.wantuch.spacebook.data.repo.EntitlementsRepository
+import pk.wantuch.spacebook.data.repo.LibraryRepository
 import pk.wantuch.spacebook.data.repo.SyncRepository
 import javax.inject.Inject
 
@@ -28,6 +30,8 @@ class AppViewModel @Inject constructor(
     private val entitlementsRepo: EntitlementsRepository,
     private val sync: SyncRepository,
     private val auth: AuthRepository,
+    private val library: LibraryRepository,
+    private val reminders: ReminderScheduler,
 ) : ViewModel() {
 
     val state: StateFlow<AppState> = prefs.state.stateIn(viewModelScope, SharingStarted.Eagerly, AppState())
@@ -47,6 +51,7 @@ class AppViewModel @Inject constructor(
             launch { catalogRepo.load() }
             launch { entitlementsRepo.refresh() }
             launch { sync.flush() }
+            launch { reminders.refresh() }
             prefs.state.collect { applyNetwork(it) }
         }
     }
@@ -70,7 +75,7 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    fun setClass(id: String) = viewModelScope.launch { prefs.setClass(id) }
+    fun setClass(id: String) = viewModelScope.launch { library.setClass(id) }       // also saved as the item pref/class, so the website and the other phone know it
     fun setTheme(mode: Int) = viewModelScope.launch { prefs.setTheme(mode) }
     fun setFontScale(percent: Int) = viewModelScope.launch { prefs.setFontScale(percent) }
 
@@ -82,6 +87,15 @@ class AppViewModel @Inject constructor(
     }
 
     fun logout() = viewModelScope.launch { auth.logout() }
+
+    /** Study reminders on or off. On: the plans are read and the coming week's reminders scheduled; off: everything scheduled is cancelled. */
+    fun setReminders(on: Boolean) = viewModelScope.launch { prefs.setRemindersOn(on); reminders.refresh() }
+
+    /** The plans changed (the Plan tab was used): schedule the reminders again. */
+    fun refreshReminders() = viewModelScope.launch { reminders.refresh() }
+
+    /** Asks the server who this phone is signed in as (the name may have been changed in My account); a deleted or blocked account signs out. */
+    fun refreshUser() = viewModelScope.launch { auth.refreshUser() }
 
     fun siteUrl(path: String): String = endpoint.absolute(path)
 }

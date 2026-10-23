@@ -25,12 +25,15 @@ class MainActivity : ComponentActivity() {
     private val app: AppViewModel by viewModels()
     private lateinit var gate: ExpiryGate
     private var lock: LockState by mutableStateOf(LockState.Open)
+    /** a notification asked for a screen ("plan"): AppNav goes there once and clears it */
+    private var openRequest: String? by mutableStateOf(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         gate = ExpiryGate.forApp(this)
         lock = gate.check()
+        openRequest = intent?.getStringExtra(EXTRA_OPEN)
         setContent {
             val state by app.state.collectAsStateWithLifecycle()
             SpaceBookTheme(themeMode = state.themeMode, fontScalePercent = state.fontScale) {
@@ -38,11 +41,19 @@ class MainActivity : ComponentActivity() {
                     val locked = lock as? LockState.Locked
                     if (locked != null) LockScreen(locked.expiredAt) { code ->
                         gate.tryUnlock(code).also { lock = gate.check() }
-                    } else AppNav(app)
+                    } else AppNav(app, openRequest = openRequest, onOpenHandled = { openRequest = null })
                 }
             }
         }
     }
+
+    override fun onNewIntent(intent: android.content.Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        openRequest = intent.getStringExtra(EXTRA_OPEN)
+    }
+
+    companion object { const val EXTRA_OPEN = "open" }
 
     /** a phone left open for days must lock when the date passes, not only at the next cold start */
     override fun onResume() {

@@ -55,7 +55,7 @@ import pk.wantuch.spacebook.ui.web.MeaningState
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MeaningSheet(m: MeaningState, speaker: Speaker, onDismiss: () -> Unit) {
+fun MeaningSheet(m: MeaningState, speaker: Speaker, onDismiss: () -> Unit, onHighlight: (() -> Unit)? = null) {
     var note by remember(m.id) { mutableStateOf<String?>(null) }
     var playing by remember(m.id) { mutableStateOf<String?>(null) }     // which line is being read: "src" or a language code
     fun say(text: String, lang: String, key: String) {
@@ -107,6 +107,7 @@ fun MeaningSheet(m: MeaningState, speaker: Speaker, onDismiss: () -> Unit) {
                 MeaningLine(row, active = playing == row.lang && speaker.speaking) { say(row.text, row.lang, row.lang) }
             }
             note?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 8.dp)) }
+            if (onHighlight != null) androidx.compose.material3.OutlinedButton(onClick = onHighlight, modifier = Modifier.padding(top = 12.dp)) { Text("🖍 Keep as a highlight") }
             if (m.rows.any { it.approx }) {
                 Text(
                     "≈ is a computer or word-by-word meaning. Check it with your teacher.",

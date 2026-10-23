@@ -93,6 +93,7 @@ class AuthRepository @Inject constructor(
     private val prefs: Prefs,
     private val endpoint: Endpoint,
     private val outbox: OutboxDao,
+    private val library: LibraryRepository,
     private val json: Json,
 ) {
     suspend fun login(whatsapp: String, password: String): ApiResult<UserDto> =
@@ -123,6 +124,19 @@ class AuthRepository @Inject constructor(
         return ApiResult.Success(user)
     }
 
+    /** Updates the stored name and number from the server. A sign-in that no longer exists (account deleted, device revoked) signs out here too. */
+    suspend fun refreshUser() {
+        val state = prefs.state.first()
+        val device = state.device ?: return
+        when (val r = apiCall(json) { api.me() }) {
+            is ApiResult.Failure -> Unit                                   // offline: keep what we have
+            is ApiResult.Success -> {
+                val u = r.value.user
+                if (u == null) logout() else prefs.setSession(u, device)
+            }
+        }
+    }
+
     /** Ends this phone's access on the server (best effort), then forgets it here. Unsent events stay on the phone. */
     suspend fun logout() {
         runCatching { apiCall(json) { api.logout(EmptyBody()) } }
@@ -135,9 +149,10 @@ class AuthRepository @Inject constructor(
         }
     }
 
-    suspend fun guestEventCount(): Int = outbox.guestCount()
+    /** Study steps, bookmarks, notes and positions saved while nobody was signed in: the student is asked before they join the account. */
+    suspend fun guestEventCount(): Int = outbox.guestCount() + library.guestCount()
 
-    suspend fun adoptGuestEvents(userId: Int) = outbox.adoptGuest(userId)
+    suspend fun adoptGuestEvents(userId: Int) { outbox.adoptGuest(userId); library.adoptGuest(userId) }
 
     suspend fun keepGuestEventsOnDevice() = Unit
 }
@@ -148,6 +163,7 @@ class SyncRepository @Inject constructor(
     @ApplicationContext private val context: Context,
     private val api: ApiService,
     private val outbox: OutboxDao,
+    private val library: LibraryRepository,
     private val prefs: Prefs,
     private val json: Json,
 ) {
@@ -182,6 +198,7 @@ class SyncRepository @Inject constructor(
         val state = prefs.state.first()
         val uid = state.user?.id ?: return true
         if (state.device == null) return true
+        library.sendPending()                       // bookmarks, notes and positions not yet queued (only while the owner's sync switch is on)
         while (true) {
             val batch = outbox.pending(uid, BATCH)
             if (batch.isEmpty()) break
@@ -202,14 +219,19 @@ class SyncRepository @Inject constructor(
         return true
     }
 
-    /** Brings the coin total (and the cursor) up to date from other devices and the website. */
+    /** Brings the coin total, the saved items (bookmarks, notes, positions, my class) and the cursor up to date from other devices and the website. */
     suspend fun pull() {
         val state = prefs.state.first()
         if (!state.signedIn) return
-        val r = apiCall(json) { api.pull(state.syncCursor) }
-        if (r is ApiResult.Success && r.value.ok) {
-            prefs.setCursor(r.value.cursor)
+        var cursor = state.syncCursor
+        repeat(MAX_PULL_PAGES) {
+            val r = apiCall(json) { api.pull(cursor) }
+            if (r !is ApiResult.Success || !r.value.ok) return
+            library.merge(r.value.items, r.value.itemsDeleted)
+            cursor = r.value.cursor
+            prefs.setCursor(cursor)
             prefs.setCoins(r.value.coins)
+            if (!r.value.more) return
         }
     }
 
@@ -217,6 +239,7 @@ class SyncRepository @Inject constructor(
 
     companion object {
         const val BATCH = 200
+        const val MAX_PULL_PAGES = 50
 
         fun schedule(context: Context) {
             val req = OneTimeWorkRequestBuilder<SyncWorker>()
@@ -240,7 +263,10 @@ class EntitlementsRepository @Inject constructor(
 
     suspend fun refresh() {
         val r = apiCall(json) { api.entitlements() }
-        if (r is ApiResult.Success && r.value.ok) prefs.setEntitlements(json.encodeToString(r.value))
+        if (r is ApiResult.Success && r.value.ok) {
+            prefs.setEntitlements(json.encodeToString(r.value))
+            prefs.setSyncOn(r.value.flags["syncV2"] == true)      // one switch for the website and the app (api/lib/flags.php)
+        }
     }
 
     companion object {

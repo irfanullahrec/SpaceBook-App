@@ -57,8 +57,7 @@ interface PageGame {
 }
 
 object GameRegistry {
-    /** Empty for now: the games are designed next. The tab and the reward path already work. */
-    val games: MutableList<PageGame> = mutableListOf()
+    val games: MutableList<PageGame> = mutableListOf(BlankQuest, WordBuilder)
 
     fun forPage(page: GamePage): List<PageGame> = games.filter { it.supports(page) }
 }

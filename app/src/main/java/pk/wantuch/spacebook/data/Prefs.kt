@@ -1,6 +1,7 @@
 package pk.wantuch.spacebook.data
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -33,6 +34,10 @@ data class AppState(
     val entitlementsJson: String = "",
     /** how far this phone has read the server's change log (api/v2/sync.php?since=) */
     val syncCursor: Long = 0,
+    /** the owner's switch for client sync, as the server last published it (flags.syncV2 in entitlements, api/lib/flags.php); the website follows the same value */
+    val syncOn: Boolean = false,
+    /** study-plan reminders as phone notifications (data/reminders); the student switches them on in Settings */
+    val remindersOn: Boolean = false,
 ) {
     val signedIn get() = user != null && device != null
 }
@@ -50,6 +55,8 @@ class Prefs @Inject constructor(@ApplicationContext private val context: Context
         val coins = intPreferencesKey("coins")
         val entitlements = stringPreferencesKey("entitlements")
         val cursor = stringPreferencesKey("syncCursor")
+        val syncOn = booleanPreferencesKey("syncOn")
+        val remindersOn = booleanPreferencesKey("remindersOn")
     }
 
     val state: Flow<AppState> = context.sbStore.data.map { p ->
@@ -64,6 +71,8 @@ class Prefs @Inject constructor(@ApplicationContext private val context: Context
             coins = p[K.coins] ?: 0,
             entitlementsJson = p[K.entitlements].orEmpty(),
             syncCursor = p[K.cursor]?.toLongOrNull() ?: 0L,
+            syncOn = p[K.syncOn] ?: false,
+            remindersOn = p[K.remindersOn] ?: false,
         )
     }
 
@@ -114,6 +123,14 @@ class Prefs @Inject constructor(@ApplicationContext private val context: Context
 
     suspend fun setCursor(cursor: Long) {
         context.sbStore.edit { it[K.cursor] = cursor.toString() }
+    }
+
+    suspend fun setRemindersOn(on: Boolean) {
+        context.sbStore.edit { it[K.remindersOn] = on }
+    }
+
+    suspend fun setSyncOn(on: Boolean) {
+        context.sbStore.edit { it[K.syncOn] = on }
     }
 
     suspend fun setEntitlements(raw: String) {

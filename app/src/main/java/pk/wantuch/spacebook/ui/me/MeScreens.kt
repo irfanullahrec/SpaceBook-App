@@ -29,6 +29,7 @@ import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,6 +46,7 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -66,13 +68,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import pk.wantuch.spacebook.BuildConfig
 import pk.wantuch.spacebook.data.local.Bookmark
-import pk.wantuch.spacebook.data.local.BookmarkDao
 import pk.wantuch.spacebook.data.local.Note
-import pk.wantuch.spacebook.data.local.NoteDao
+import pk.wantuch.spacebook.data.repo.LibraryRepository
 import pk.wantuch.spacebook.data.splitTitle
 import pk.wantuch.spacebook.ui.AppViewModel
 import pk.wantuch.spacebook.ui.components.CoinChip
@@ -82,19 +84,27 @@ import pk.wantuch.spacebook.ui.theme.Sb
 import javax.inject.Inject
 
 @HiltViewModel
-class SavedViewModel @Inject constructor(private val bookmarks: BookmarkDao, private val notes: NoteDao) : ViewModel() {
-    val bookmarkList: StateFlow<List<Bookmark>> = bookmarks.all().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
-    val noteList: StateFlow<List<Note>> = notes.all().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+class SavedViewModel @Inject constructor(private val library: LibraryRepository, private val prefs: pk.wantuch.spacebook.data.Prefs) : ViewModel() {
+    val bookmarkList: StateFlow<List<Bookmark>> = library.bookmarks().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    val noteList: StateFlow<List<Note>> = library.notes().stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
-    fun removeBookmark(b: Bookmark) = viewModelScope.launch { bookmarks.remove(b.subjectId, b.chapterIndex, b.page) }
-    fun removeNote(n: Note) = viewModelScope.launch { notes.remove(n.id) }
+    /** bookmarks, notes and positions made on this phone before anybody signed in (shown only to a signed-in student) */
+    val guestCount = kotlinx.coroutines.flow.MutableStateFlow(0)
+
+    init { viewModelScope.launch { refreshGuest() } }
+
+    private suspend fun refreshGuest() { guestCount.value = if (prefs.state.first().user != null) library.guestCount() else 0 }
+
+    fun removeBookmark(b: Bookmark) = viewModelScope.launch { library.setBookmark(false, b) }
+    fun removeNote(n: Note) = viewModelScope.launch { library.deleteNote(n.id) }
+    fun addGuestItems() = viewModelScope.launch { prefs.state.first().user?.let { library.adoptGuest(it.id) }; refreshGuest() }
 }
 
 @Composable
-fun MeScreen(app: AppViewModel, onSignIn: () -> Unit, onSaved: () -> Unit, onSettings: () -> Unit, onOffline: () -> Unit) {
+fun MeScreen(app: AppViewModel, onSignIn: () -> Unit, onSaved: () -> Unit, onSettings: () -> Unit, onOffline: () -> Unit, onAccount: () -> Unit = {}) {
     val state by app.state.collectAsStateWithLifecycle()
     val catalog by app.catalog.collectAsStateWithLifecycle()
-    MeContent(state.user, state.coins, catalog?.classes.orEmpty(), state.classId, onPickClass = { app.setClass(it) }, onSignIn = onSignIn, onSignOut = { app.logout() }, onSaved = onSaved, onSettings = onSettings, onOffline = onOffline)
+    MeContent(state.user, state.coins, catalog?.classes.orEmpty(), state.classId, onPickClass = { app.setClass(it) }, onSignIn = onSignIn, onSignOut = { app.logout() }, onSaved = onSaved, onSettings = onSettings, onOffline = onOffline, onAccount = onAccount)
 }
 
 @Composable
@@ -109,6 +119,7 @@ internal fun MeContent(
     onSaved: () -> Unit,
     onSettings: () -> Unit,
     onOffline: () -> Unit,
+    onAccount: () -> Unit = {},
 ) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
         Text("Me", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 8.dp))
@@ -143,8 +154,9 @@ internal fun MeContent(
             }
         }
         Spacer(Modifier.height(12.dp))
+        if (user != null) MenuRow(Icons.Rounded.Person, "My account", "Details, password, download my data, delete my account", onAccount)
         MenuRow(Icons.Rounded.Download, "Books on this phone", "Download classes to read with no internet", onOffline)
-        MenuRow(Icons.Rounded.Bookmark, "Saved pages and notes", "Bookmarks and notes on this phone", onSaved)
+        MenuRow(Icons.Rounded.Bookmark, "Saved pages and notes", "Bookmarks, notes and highlights; they follow your account", onSaved)
         MenuRow(Icons.Rounded.Settings, "Settings", "Dark mode, text size", onSettings)
         Text("SpaceBook ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(16.dp))
     }
@@ -167,10 +179,11 @@ private fun MenuRow(icon: ImageVector, title: String, subtitle: String, onClick:
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SavedScreen(app: AppViewModel, onBack: () -> Unit, onOpen: (subjectId: String, chapter: Int, page: Int) -> Unit, vm: SavedViewModel = hiltViewModel()) {
+fun SavedScreen(app: AppViewModel, onBack: () -> Unit, onOpen: (subjectId: String, chapter: Int, page: Int, tab: String) -> Unit, vm: SavedViewModel = hiltViewModel()) {
     val catalog by app.catalog.collectAsStateWithLifecycle()
     val marks by vm.bookmarkList.collectAsStateWithLifecycle()
     val notes by vm.noteList.collectAsStateWithLifecycle()
+    val guest by vm.guestCount.collectAsStateWithLifecycle()
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Saved") }, navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } },
@@ -178,31 +191,40 @@ fun SavedScreen(app: AppViewModel, onBack: () -> Unit, onOpen: (subjectId: Strin
         },
         containerColor = MaterialTheme.colorScheme.background,
     ) { pad ->
-        if (marks.isEmpty() && notes.isEmpty()) {
+        if (marks.isEmpty() && notes.isEmpty() && guest == 0) {
             EmptyState("🔖", "Nothing saved yet", "Tap the bookmark while reading a page, or write a note, and it shows up here.", Modifier.padding(pad))
         } else LazyColumn(Modifier.fillMaxSize().padding(pad), contentPadding = PaddingValues(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            if (guest > 0) item(key = "guest") {
+                Surface(shape = MaterialTheme.shapes.medium, color = MaterialTheme.colorScheme.secondaryContainer, modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(12.dp)) {
+                        Text("$guest saved ${if (guest == 1) "item was" else "items were"} made on this phone before you signed in. Add ${if (guest == 1) "it" else "them"} to your account?", style = MaterialTheme.typography.bodyMedium)
+                        TextButton(onClick = vm::addGuestItems) { Text("Yes, add to my account") }
+                    }
+                }
+            }
             if (marks.isNotEmpty()) item { Text("Bookmarks", style = MaterialTheme.typography.titleMedium) }
-            items(marks, key = { "b${it.subjectId}:${it.chapterIndex}:${it.page}" }) { b ->
+            items(marks, key = { "b${it.subjectId}:${it.chapterIndex}:${it.tab}:${it.page}" }) { b ->
                 val s = catalog?.subject(b.subjectId)
-                Surface(shape = MaterialTheme.shapes.medium, shadowElevation = 1.dp, modifier = Modifier.fillMaxWidth().clickable { onOpen(b.subjectId, b.chapterIndex, b.page) }) {
+                Surface(shape = MaterialTheme.shapes.medium, shadowElevation = 1.dp, modifier = Modifier.fillMaxWidth().clickable { onOpen(b.subjectId, b.chapterIndex, b.page, b.tab) }) {
                     Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                         SubjectAvatar(s?.emoji ?: "📘", b.subjectId, size = 40.dp)
                         Spacer(Modifier.width(12.dp))
                         Column(Modifier.weight(1f)) {
                             Text(b.title, style = MaterialTheme.typography.titleSmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
-                            Text("${s?.name ?: ""} · page ${b.page + 1}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text("${s?.name ?: ""} · ${if (b.tab.isNotBlank()) b.tab + " · " else ""}page ${b.page + 1}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         IconButton(onClick = { vm.removeBookmark(b) }) { Icon(Icons.Rounded.Delete, "Remove bookmark") }
                     }
                 }
             }
-            if (notes.isNotEmpty()) item { Text("Notes", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 8.dp)) }
+            if (notes.isNotEmpty()) item { Text("Notes and highlights", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 8.dp)) }
             items(notes, key = { "n${it.id}" }) { n ->
-                Surface(shape = MaterialTheme.shapes.medium, color = MaterialTheme.colorScheme.surfaceVariant, modifier = Modifier.fillMaxWidth().clickable { onOpen(n.subjectId, n.chapterIndex, n.page) }) {
+                Surface(shape = MaterialTheme.shapes.medium, color = MaterialTheme.colorScheme.surfaceVariant, modifier = Modifier.fillMaxWidth().clickable { onOpen(n.subjectId, n.chapterIndex, n.page, n.tab) }) {
                     Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
-                            Text(n.text, style = MaterialTheme.typography.bodyLarge)
-                            Text("${n.title} · page ${n.page + 1}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                            if (n.quote.isNotBlank()) Text("“${n.quote}”", style = MaterialTheme.typography.bodyMedium, fontStyle = androidx.compose.ui.text.font.FontStyle.Italic)
+                            if (n.text.isNotBlank()) Text(n.text, style = MaterialTheme.typography.bodyLarge)
+                            Text("${n.title} · ${if (n.tab.isNotBlank()) n.tab + " · " else ""}page ${n.page + 1}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                         IconButton(onClick = { vm.removeNote(n) }) { Icon(Icons.Rounded.Delete, "Delete note") }
                     }
@@ -237,6 +259,22 @@ fun SettingsScreen(app: AppViewModel, onBack: () -> Unit) {
             Text("Text size: ${scale.toInt()}%", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 12.dp))
             Slider(scale, { scale = it }, valueRange = 80f..160f, steps = 7, onValueChangeFinished = { app.setFontScale(scale.toInt()) })
             Text("Books and the app both get bigger. Small children may like 130%.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+
+            val ctx = androidx.compose.ui.platform.LocalContext.current
+            val askNotifications = androidx.activity.compose.rememberLauncherForActivityResult(androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { granted ->
+                app.setReminders(granted)
+                if (!granted) android.widget.Toast.makeText(ctx, "Reminders need permission to show notifications. You can allow it in the phone's settings.", android.widget.Toast.LENGTH_LONG).show()
+            }
+            Row(Modifier.fillMaxWidth().padding(top = 20.dp), verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text("Study reminders", style = MaterialTheme.typography.titleMedium)
+                    Text("A notification when a session of your study plan starts, with what to study.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                androidx.compose.material3.Switch(checked = state.remindersOn, onCheckedChange = { on ->
+                    if (on && !pk.wantuch.spacebook.data.reminders.ReminderScheduler.canNotify(ctx)) askNotifications.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                    else app.setReminders(on)
+                })
+            }
 
             Text("Server (for developers)", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 20.dp))
             Text("Leave empty to use wantuch.pk/spacebook. On the emulator, http://10.0.2.2:8790/ reaches the PHP server on your PC.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)

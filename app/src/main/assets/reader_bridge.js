@@ -1,10 +1,11 @@
 /* Runs inside the SpaceBook web app in the Android WebView (injected after the page loads, safe to inject twice).
  * It is the only place that knows the web page's structure; the Kotlin side only talks to window.SBApp.
  *
- *   SBApp.open(classId, subjectId, call, startPage)   open a chapter: openSubject() then the chapter's own button
+ *   SBApp.open(classId, subjectId, call, startPage, tab)   open a chapter: openSubject() then the chapter's own button, then its tab ("Lessons" ...)
  *   SBApp.openPage(name)                              a web section: tests-preps | papers | study-plan | subjects | home
  *   SBApp.go(n) / next() / prev()                     one-page view
- *   SBApp.setAuth(user, device) / clearAuth()         hand the app's sign-in to the web page (cookie is shared already)
+ *   SBApp.openAccount()                               the website's own "My account" dialog (details, password, download my data, delete my account)
+ *   SBApp.setAuth(user, device, flags) / clearAuth()  hand the app's sign-in to the web page (cookie is shared already); flags = the owner's switches as the server published them
  *   SBApp.pageText()                                  text of the page on screen (for read aloud)
  *   SBApp.state()                                     {ready, pages, page, tab, title}
  *
@@ -219,7 +220,7 @@
     tabs: function () { return $$('.math-nav-tabs button').map(function (b) { return (b.textContent || '').replace(/\s+/g, ' ').trim(); }); },
 
     // Open a chapter exactly the way the website's own search does: openSubject, then the chapter's button.
-    open: async function (classId, subjectId, call, startPage) {
+    open: async function (classId, subjectId, call, startPage, tab) {
       var token = ++opening;
       lastKey = ''; units = []; cur = 0; pendingStart = startPage >= 0 ? startPage : 0;
       var fn = await until(function () { return typeof window.openSubject === 'function'; }, 20000, 100);
@@ -235,6 +236,18 @@
       }
       await until(function () { var c = collect(); return c.units.length || (root() && root().children.length); }, 12000, 120);
       observe(); refresh();
+      // a saved place also names the tab (Lessons, Exercises ...): the same words the website stores, without the emoji
+      var clean = function (t) { return String(t || '').replace(/[^A-Za-z0-9 _-]/g, '').trim(); };
+      if (tab && clean(activeTab()) !== clean(tab)) {
+        var tb = $$('.math-nav-tabs button, .topic-sub-tabs-bar button').find(function (x) { return clean(x.textContent) === clean(tab); });
+        if (tb && token === opening) {
+          pendingStart = startPage >= 0 ? startPage : 0;
+          tb.click();
+          await wait(250);
+          await until(function () { return collect().units.length; }, 5000, 120);
+          refresh();
+        }
+      }
       return true;
     },
     openPage: async function (name) {
@@ -274,7 +287,7 @@
       var sp = await until(function () { return window.SBStudyPlan && typeof window.SBStudyPlan.removePlan === 'function'; }, 20000, 100);
       if (!sp) { host('onAction', ['error', 'Study plans did not load.']); return false; }
       var syncs = false;
-      try { syncs = localStorage.getItem('sb_sync_v2') === 'on'; } catch (e) { /* storage blocked */ }
+      try { syncs = !!(window.SBSync && window.SBSync.isEnabled && window.SBSync.isEnabled()); } catch (e) { /* sync not loaded */ }
       if (syncs) await wait(1500);                       // the sign-in reaches the page a moment after it loads; a deletion before that stays on this phone only
       var find = function () { return window.SBStudyPlan.plans().find(function (p) { return p.id === planId; }); };
       var stored = function () {
@@ -291,16 +304,38 @@
       return true;
     },
 
+    // The website's own account dialog (js/auth.js): the same details, password change, data download and deletion as on the web.
+    openAccount: async function () {
+      var auth = await until(function () { return window.SpaceBookAuth && window.SpaceBookAuth.openAccount; }, 20000, 100);
+      if (!auth) { host('onAction', ['error', 'The account page did not load.']); return false; }
+      // the page learns who is signed in from the session cookie the app shares with it: wait a moment for that answer
+      await until(function () { return window.SpaceBookAuth.user; }, 6000, 100);
+      if (!window.SpaceBookAuth.user) { host('onAction', ['auth', '']); return false; }
+      window.SpaceBookAuth.openAccount();
+      return true;
+    },
+
     // The app signed in (or out): tell the page so rewards, plans and tests sync to the same account.
-    setAuth: async function (user, device) {
-      try { localStorage.setItem('sb_sync_v2', 'on'); } catch (e) { /* storage blocked: the cookie still works */ }
+    setAuth: async function (user, device, flags) {
+      // The page follows the owner's one switch (api/lib/flags.php), exactly as the website does: this does not switch sync on by itself.
       var sync = await until(function () { return window.SBSync; }, 15000, 150);
+      try { if (sync && sync.setServerFlags && flags) sync.setServerFlags(flags); } catch (e) { /* storage blocked */ }
       try { if (sync && sync.setDevice && user && device) await sync.setDevice(user.id, device); } catch (e) { /* falls back to the cookie */ }
       doc.dispatchEvent(new CustomEvent('spacebook:auth', { detail: { user: user || null } }));
     },
     clearAuth: function () { doc.dispatchEvent(new CustomEvent('spacebook:auth', { detail: { user: null } })); },
   };
   window.SBApp = api;
+
+  // a file the page wants the student to keep (the data download): a blob link cannot be saved in a WebView, so the phone's share sheet gets it
+  window.SBDownload = function (name, mime, text) { host('onAction', ['saveFile', JSON.stringify({ name: String(name), mime: String(mime), text: String(text) })]); };
+  // the account was deleted (or the session ended) inside the page: the app signs out too
+  var hadUser = false;
+  doc.addEventListener('spacebook:auth', function (e) {
+    var u = e.detail && e.detail.user;
+    if (u) hadUser = true;
+    else if (hadUser) { hadUser = false; host('onAction', ['signedOut', '']); }
+  });
 
   // ---------- meanings: tap a sentence, hold a word ----------
   // Both open a native pop-up in the app (with speaker buttons). The listeners sit on `window` in the capture phase, so they run

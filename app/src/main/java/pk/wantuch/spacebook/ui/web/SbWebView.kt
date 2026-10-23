@@ -36,6 +36,10 @@ import pk.wantuch.spacebook.data.remote.Endpoint
 import pk.wantuch.spacebook.data.remote.UserDto
 import pk.wantuch.spacebook.ui.reader.Lang
 
+/** A file the page asked the app to save (SBDownload in reader_bridge.js). */
+@Serializable
+data class SaveFileDto(val name: String = "", val mime: String = "", val text: String = "")
+
 /** What reader_bridge.js reports about the page on screen. */
 @Serializable
 data class WebPageState(
@@ -109,9 +113,23 @@ class WebController(
                 "meaning" -> runCatching { json.decodeFromString<MeaningDto>(detail).toState() }.getOrNull()?.let { m -> main.post { meaning = m } }
                 "meaningUpdate" -> runCatching { json.decodeFromString<MeaningUpdateDto>(detail) }.getOrNull()?.let { u -> main.post { meaning = meaning?.apply(u) } }
                 "haptic" -> main.post { webView?.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS) }
+                "saveFile" -> runCatching { json.decodeFromString<SaveFileDto>(detail) }.getOrNull()?.let { f -> main.post { shareFile(f) } }
                 else -> main.post { onAction.invoke(name, detail) }
             }
         }
+    }
+
+    /** a file the page made (the data download): written to the app's cache and offered to the phone's share sheet, so the student can save or send it */
+    private fun shareFile(f: SaveFileDto) {
+        runCatching {
+            val dir = java.io.File(appContext.cacheDir, "exports").apply { mkdirs() }
+            val safe = f.name.filter { it.isLetterOrDigit() || it in "-_." }.ifBlank { "spacebook-file" }
+            val file = java.io.File(dir, safe).apply { writeText(f.text) }
+            val uri = androidx.core.content.FileProvider.getUriForFile(appContext, appContext.packageName + ".files", file)
+            val send = Intent(Intent.ACTION_SEND).setType(f.mime.ifBlank { "application/octet-stream" })
+                .putExtra(Intent.EXTRA_STREAM, uri).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            appContext.startActivity(Intent.createChooser(send, "Save or send your data").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        }.onFailure { Toast.makeText(appContext, "Could not save the file.", Toast.LENGTH_LONG).show() }
     }
 
     // ---- speech for the page (the Animate Solution voice): Android's own text-to-speech, nothing is sent anywhere ----
@@ -171,9 +189,9 @@ class WebController(
 
     private fun quote(s: String) = JSONObject.quote(s)
 
-    fun openChapter(classId: String, subjectId: String, call: String, page: Int) {
+    fun openChapter(classId: String, subjectId: String, call: String, page: Int, tab: String = "") {
         loading = true; missing = null; meaning = null
-        run("SBApp.open(${quote(classId)},${quote(subjectId)},${quote(call)},$page)")
+        run("SBApp.open(${quote(classId)},${quote(subjectId)},${quote(call)},$page,${quote(tab)})")
     }
 
     fun openPage(name: String) { loading = true; run("SBApp.openPage(${quote(name)})") }
@@ -193,6 +211,7 @@ class WebController(
             p[0] == "tests-preps" && p.size >= 2 && p[1].isNotBlank() -> openTestPrep(p[1], p.getOrElse(2) { "practice" })
             p[0] == "study-plan" && p.size >= 2 && p[1].isNotBlank() -> openPlan(p[1])
             p[0] == "study-plan-delete" && p.size >= 2 && p[1].isNotBlank() -> deletePlan(p[1])
+            p[0] == "account" -> { loading = true; run("SBApp.openAccount()") }
             else -> openPage(p[0])
         }
     }
@@ -201,8 +220,9 @@ class WebController(
     fun prev() = run("SBApp.prev()")
     fun setMode(paginate: Boolean) = run("SBApp.setMode({paginate:$paginate})")
     fun clickTab(label: String) = run("SBApp.clickTab(${quote(label)})")
-    fun signIn(user: UserDto, device: DeviceDto) =
-        run("SBApp.setAuth(${json.encodeToString(UserDto.serializer(), user)},${json.encodeToString(DeviceDto.serializer(), device)})")
+    /** [syncOn] is the owner's switch as the server published it: the page follows it (it does not switch sync on by itself) */
+    fun signIn(user: UserDto, device: DeviceDto, syncOn: Boolean) =
+        run("SBApp.setAuth(${json.encodeToString(UserDto.serializer(), user)},${json.encodeToString(DeviceDto.serializer(), device)},{syncV2:$syncOn})")
     fun signOut() = run("SBApp.clearAuth()")
 
     fun pageText(callback: (String) -> Unit) {
