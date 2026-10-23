@@ -2,7 +2,8 @@
  * It is the only place that knows the web page's structure; the Kotlin side only talks to window.SBApp.
  *
  *   SBApp.open(classId, subjectId, call, startPage, tab)   open a chapter: openSubject() then the chapter's own button, then its tab ("Lessons" ...)
- *   SBApp.openPage(name)                              a web section: tests-preps | papers | study-plan | subjects | home
+ *   SBApp.openPage(name)                              a web section: tests-preps | papers | create-test | assistant | study-plan | subjects | home
+ *   SBApp.openGrammar(lang)                           the Grammar Stats page on one language: en | ur | ps | ar
  *   SBApp.go(n) / next() / prev()                     one-page view
  *   SBApp.openAccount()                               the website's own "My account" dialog (details, password, download my data, delete my account)
  *   SBApp.setAuth(user, device, flags) / clearAuth()  hand the app's sign-in to the web page (cookie is shared already); flags = the owner's switches as the server published them
@@ -336,6 +337,15 @@
         if (syncs) await wait(1500);                     // time for the deletion to be written to the sync outbox
       }
       host('onAction', ['done', plan ? 'Plan deleted' : 'That plan was already gone']);
+      return true;
+    },
+
+    // Home's Project Stats sends the student to the website's Grammar Stats page on one language (en | ur | ps | ar)
+    openGrammar: async function (lang) {
+      if (!(await api.openPage('grammar-stats'))) return false;
+      var g = await until(function () { return window.SBGrammar && typeof window.SBGrammar.open === 'function'; }, 20000, 100);
+      if (!g) { host('onAction', ['error', 'Grammar Stats did not load.']); return false; }
+      window.SBGrammar.open(lang || 'en');
       return true;
     },
 

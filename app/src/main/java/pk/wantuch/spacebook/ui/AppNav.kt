@@ -97,6 +97,7 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController(), 
         newPlan = { switchTab(nav, Routes.PLAN) },
         signIn = { go(Routes.AUTH) },
         openProfile = { switchTab(nav, Routes.ME) },
+        openGrammar = { lang -> go(Routes.web("grammar-stats:$lang", "Grammar Stats")) },
     )
 
     Scaffold(

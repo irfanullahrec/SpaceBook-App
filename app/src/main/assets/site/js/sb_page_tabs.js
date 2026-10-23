@@ -342,7 +342,8 @@
     .sb-pt .sb-tp-fb{margin-top:.4rem;font-weight:600;font-size:.85rem}
     .sb-pt .sb-tp-ans{margin-top:.5rem;background:#f0fdf4;border-inline-start:3px solid #16a34a;padding:.45rem .7rem;border-radius:6px;line-height:1.75}
     .sb-pt .sb-tp-show{margin-top:.5rem}
-    .bk-page>.sb-pt{margin-bottom:.8rem}
+    .bk-page>.sb-pt{margin-bottom:.8rem;margin-right:5.6rem}   /* the page's Bookmark / Notes buttons sit in the top corner, beside the bar */
+    .bk-page>.sb-pt .sb-pt-tab{padding:.28rem .7rem;font-size:.8rem}
     .math-accordion-body>.sb-pt{margin-top:-.2rem}
     @media (max-width:560px){.sb-pt-tab,.sb-pt-subtab{padding:.26rem .55rem;font-size:.76rem;gap:.25rem}.sb-pt-tab{flex:1 1 0;justify-content:center}.sb-pt-panel{max-height:38vh}}
     `;

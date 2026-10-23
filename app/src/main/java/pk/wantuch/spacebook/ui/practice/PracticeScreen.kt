@@ -39,6 +39,8 @@ private data class Tool(val page: String, val title: String, val line: String, v
 private val tests = Tool("tests-preps", "Tests Preps", "MCQs from your books, practice or a timed mock test. See every mistake.", "📝", listOf(Color(0xFF5B4BFF), Color(0xFFB249F8)))
 private val tiles = listOf(
     Tool("papers", "Papers", "Make an exam paper, Set A, B, C, and print it", "📄", listOf(Color(0xFF14B8A6), Color(0xFF5EEAD4))),
+    Tool("create-test", "Create Test", "A test from a class, subjects, chapters or one topic. Take it or print it", "✏️", listOf(Color(0xFF6D28D9), Color(0xFFA78BFA))),
+    Tool("assistant", "Ask SpaceBook", "Ask the books anything, offline, in English, Urdu, Pashto or Arabic", "🤖", listOf(Color(0xFFBE185D), Color(0xFFF472B6))),
     Tool("games", "Games", "Arcade games from every page, earn coins", "🎮", listOf(Color(0xFFFF5C8A), Color(0xFFFF9A6B))),
     Tool("study-plan", "Study Plan", "A plan for every lesson before your exam", "📅", listOf(Color(0xFF2F8CFF), Color(0xFF63C6FF))),
 )

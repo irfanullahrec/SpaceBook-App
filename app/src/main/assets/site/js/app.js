@@ -140,7 +140,7 @@ const dashHeaderSub   = () => $("dash-sub");
 document.addEventListener("DOMContentLoaded", () => {
   updateHeaderStats();
   const hash = (window.location.hash || "").replace("#", "");
-  const startPage = (hash && ["home", "subjects", "tests-preps", "papers", "study-plan", "games"].includes(hash)) ? hash : "subjects";
+  const startPage = (hash && ["home", "subjects", "tests-preps", "papers", "create-test", "grammar-stats", "assistant", "study-plan", "games"].includes(hash)) ? hash : "subjects";
   setActiveNav(startPage);
   renderPage(startPage);
   setupNavListeners();
@@ -202,6 +202,9 @@ function renderPage(page) {
   else if (page === "subjects")                             renderClasses();
   else if (page === "tests-preps" || page === "test-preps") renderTestsPreps();
   else if (page === "papers")                               renderPapersView();
+  else if (page === "create-test" && typeof renderCreateTest === "function") renderCreateTest();
+  else if (page === "grammar-stats" && typeof renderGrammarStats === "function") renderGrammarStats();
+  else if (page === "assistant" && typeof renderTutor === "function") renderTutor();
   else if (page === "study-plan")                           renderStudyPlan();
   else if (page === "games" && typeof renderGames === "function") renderGames();
   else if (page === "books")                                renderBooksView();
@@ -438,7 +441,10 @@ function switchHomeStatsTab(tab) {
   mine.hidden = tab !== 'mine';
   project.hidden = tab !== 'project';
   if (pill) pill.textContent = tab === 'project' ? '📖 Words in every book' : '⚡ Auto-saved Live Metrics';
-  if (tab === 'project' && window.SBWordStats) window.SBWordStats.renderPanel(project, 'project');
+  if (tab === 'project' && window.SBWordStats) {
+    window.SBWordStats.renderPanel(project, 'project');
+    if (window.SBGrammar) { const g = document.createElement('div'); g.id = 'homeGrammar'; project.appendChild(g); window.SBGrammar.renderPanel(g); }     // Grammar Stats next to the word counts
+  }
   try { localStorage.setItem('sbHomeStatsTab', tab); } catch (e) { /* storage unavailable */ }
 }
 
@@ -14931,13 +14937,9 @@ function openMathView(classId, subj) {
           </div>
         </div>
         <div class="math-ch-list">${chapBtns}</div>
-        <div class="math-sidebar-footer">
-          ${classId === 'cls12'
-            ? `<div class="math-pdf-btn" aria-label="Class 12 mathematics lessons use typeset equations"><span>∑</span> Interactive lessons with typeset math</div>`
-            : classId === 'cls9' || classId === 'cls11'
-              ? `<div class="math-pdf-btn" aria-label="Mathematics lessons use typeset equations"><span>∑</span> Interactive lessons with typeset math</div>`
-              : (sbPdf(pdfFile) ? `<a href="${sbPdf(pdfFile)}" target="_blank" class="math-pdf-btn"><span>📥</span> Official Math Book PDF${classId === 'cls3' ? ' · Part 1 of 5' : ''}</a>` : '')}
-        </div>
+        ${classId === 'cls12' || classId === 'cls9' || classId === 'cls11'
+          ? ''      // these books have no PDF link; the footer only said "Interactive lessons with typeset math", so there is no footer
+          : (sbPdf(pdfFile) ? `<div class="math-sidebar-footer"><a href="${sbPdf(pdfFile)}" target="_blank" class="math-pdf-btn"><span>📥</span> Official Math Book PDF${classId === 'cls3' ? ' · Part 1 of 5' : ''}</a></div>` : '')}
       </div>
       <div class="math-topic-area" id="mathTopicArea"></div>
     </div>`;

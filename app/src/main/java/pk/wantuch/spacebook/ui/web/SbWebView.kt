@@ -227,6 +227,8 @@ class WebController(
             p[0] == "study-plan" && p.size >= 2 && p[1].isNotBlank() -> openPlan(p[1])
             p[0] == "study-plan-delete" && p.size >= 2 && p[1].isNotBlank() -> deletePlan(p[1])
             p[0] == "account" -> { loading = true; run("SBApp.openAccount()") }
+            // Grammar Stats on one language (Home's Project Stats links to it): "grammar-stats:en|ur|ps|ar"
+            p[0] == "grammar-stats" -> { loading = true; run("SBApp.openGrammar(${quote(p.getOrElse(1) { "en" })})") }
             else -> openPage(p[0])
         }
     }

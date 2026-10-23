@@ -6978,6 +6978,38 @@
    "after": []
   },
   {
+   "src": "js/answers_extra.js",
+   "bytes": 29060,
+   "sha256": "0ce540825b561fd4b1877b4e8ad3329bc1887fd3729126219376016819ec8e2b",
+   "stubs": [
+    {
+     "name": "SB_EXTRA_ANSWERS",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/fills_data.js",
+   "bytes": 116780,
+   "sha256": "f9978291712a6f0d58a5d77f911d650d3a4f8584e22894553cb4a412b5e47f9c",
+   "stubs": [
+    {
+     "name": "SB_FILLS",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
    "src": "js/math_11_data.js",
    "bytes": 5480397,
    "sha256": "05090ab2db9b3eb3688173e8ba3b16479ae4475ae4571eb217f7b648a97630e7",
@@ -7276,7 +7308,7 @@
   {
    "src": "js/study_plan_index.js",
    "bytes": 224601,
-   "sha256": "2e9d8fb30b88313ed86706a7832fc4f9719459b0919fc640af63bc81f8e772d7",
+   "sha256": "d598483aea978b6316c936adaee94a3be4bcea97094266beeab349d40a83f4f9",
    "stubs": [
     {
      "name": "SB_STUDY_INDEX",

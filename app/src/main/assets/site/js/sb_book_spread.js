@@ -6,8 +6,22 @@
  * holds the end of the lesson and the start of the exercise appear together. Outside full screen nothing changes. */
 (function () {
   'use strict';
-  const fsOn = () => !!(document.fullscreenElement || document.webkitFullscreenElement || document.querySelector('.sb-fs-fallback'));
+  const realFs = () => !!(document.fullscreenElement || document.webkitFullscreenElement || document.querySelector('.sb-fs-fallback'));
+  // The website's wide screens show the reader the way full screen does (thin chapter rail, tight header and tabs, the open book);
+  // the Android app (html.sbapp, set after the page loads, so asked each time) and narrow screens keep their own layout.
+  const wide = window.matchMedia ? window.matchMedia('(min-width:761px)') : null;
+  const look = () => !document.documentElement.classList.contains('sbapp') && !!wide && wide.matches;
+  const fsOn = () => realFs() || look();
   const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+
+  // One rule for the compact reader look: in full screen (every width) and, inside the page, on the website's wide screens.
+  // thin = only while the chapter rail is closed; lookBody = what the in-page version says when it differs.
+  const FS_HOST = ['.math-unified-view.sb-fs-host:fullscreen', '.math-unified-view.sb-fs-fallback'];
+  const LOOK_HOST = 'html:not(.sbapp) .math-unified-view.sb-fs-host';
+  function compact(sub, body, thin, lookBody) {
+    const not = thin ? ':not(.sb-rail-open)' : '', tail = sub ? ' ' + sub : '';
+    return `@media(min-width:761px){${LOOK_HOST}${not}${tail}{${lookBody || body}}}${FS_HOST.map(h => h + not + tail).join(',')}{${body}}`;
+  }
 
   const css = `
   .bk-wrap{margin:0 0 2.2rem}
@@ -57,30 +71,36 @@
   .bk-spread .bk-page .m6-h3.c1-banner{display:block;width:max-content;max-width:100%;background:linear-gradient(180deg,#34b36b,#17894b);color:#fff;font-size:1.3rem;font-weight:800;padding:.25rem 1.1rem;margin:.9rem 0 .5rem;border-radius:7px}
   .bk-page .katex-display>.katex{text-align:left}
   .bk-spread:not(.bk-ans) .sb-ans,.bk-spread:not(.bk-ans) .sb-solve,.bk-spread:not(.bk-ans) .m6-ans{display:none!important}
-  .math-unified-view.sb-fs-host:fullscreen,.math-unified-view.sb-fs-fallback{grid-template-columns:76px minmax(0,1fr)!important}
-  .math-unified-view.sb-fs-host:fullscreen .math-ch-sidebar :is(.mcb-info,.math-sidebar-title-wrap,.rt-filter,.mcb-check),.math-unified-view.sb-fs-fallback .math-ch-sidebar :is(.mcb-info,.math-sidebar-title-wrap,.rt-filter,.mcb-check){display:none!important}
-  .math-unified-view.sb-fs-host:fullscreen .math-ch-sidebar .math-ch-btn,.math-unified-view.sb-fs-fallback .math-ch-sidebar .math-ch-btn{justify-content:center;padding:.55rem 0;gap:0}
-  .math-unified-view.sb-fs-host:fullscreen .math-ch-sidebar-header,.math-unified-view.sb-fs-fallback .math-ch-sidebar-header{justify-content:center;padding:.8rem .3rem}
-  .math-unified-view.sb-fs-host:fullscreen .math-ch-sidebar .rt-done::before,.math-unified-view.sb-fs-host:fullscreen .math-ch-sidebar .rt-done::after,.math-unified-view.sb-fs-fallback .math-ch-sidebar .rt-done::before,.math-unified-view.sb-fs-fallback .math-ch-sidebar .rt-done::after{content:none!important;display:none!important}
+  ${compact('', 'grid-template-columns:76px minmax(0,1fr)!important')}
+  @media(min-width:761px){html:not(.sbapp) .math-unified-view.sb-fs-host.sb-rail-open,.math-unified-view.sb-fs-host.sb-rail-open:is(:fullscreen,.sb-fs-fallback){grid-template-columns:292px minmax(0,1fr)!important}}
+  ${compact('.math-ch-sidebar :is(.mcb-info,.math-sidebar-title-wrap,.rt-filter,.mcb-check)', 'display:none!important', 1)}
+  ${compact('.math-ch-sidebar .math-ch-btn', 'justify-content:center;padding:.55rem 0;gap:0', 1)}
+  ${compact('.math-ch-sidebar-header', 'justify-content:center;padding:.8rem .3rem', 1)}
+  ${compact('.math-ch-sidebar .rt-done::before', 'content:none!important;display:none!important', 1)}
+  ${compact('.math-ch-sidebar .rt-done::after', 'content:none!important;display:none!important', 1)}
   .bk-nav{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:9100;display:flex;align-items:center;gap:.4rem;padding:.3rem;background:rgba(15,23,42,.92);color:#fff;border-radius:999px;box-shadow:0 6px 20px rgba(15,23,42,.4);font:700 .9rem system-ui,sans-serif}
   .bk-nav[hidden]{display:none}
   .bk-nav button{border:0;border-radius:999px;background:#16a34a;color:#fff;font:700 .9rem system-ui,sans-serif;padding:.45rem 1rem;cursor:pointer}
   .bk-nav button:hover:not(:disabled){background:#15803d}
   .bk-nav button:disabled{background:#475569;cursor:default;opacity:.6}
   .bk-nav span{min-width:7.5rem;text-align:center}
-  .math-unified-view.sb-fs-host:fullscreen,.math-unified-view.sb-fs-fallback{padding:0!important;gap:.4rem!important}
-  .math-unified-view.sb-fs-host:fullscreen .math-ch-sidebar,.math-unified-view.sb-fs-fallback .math-ch-sidebar{max-height:100vh!important;border-radius:0!important}
-  .math-unified-view.sb-fs-host:fullscreen .math-topic-area,.math-unified-view.sb-fs-fallback .math-topic-area{max-height:100vh!important;border-radius:0!important}
-  .math-unified-view.sb-fs-host:fullscreen .math-compact-header-bar,.math-unified-view.sb-fs-fallback .math-compact-header-bar{padding:.2rem .8rem!important;min-height:0!important;margin:0!important;border-radius:0!important}
-  .math-unified-view.sb-fs-host:fullscreen .math-compact-header-bar *,.math-unified-view.sb-fs-fallback .math-compact-header-bar *{line-height:1.2!important}
-  .math-unified-view.sb-fs-host:fullscreen .math-nav-tabs,.math-unified-view.sb-fs-fallback .math-nav-tabs{padding:.1rem .6rem!important;margin:0!important;min-height:0!important;gap:.2rem!important}
-  .math-unified-view.sb-fs-host:fullscreen .math-nav-tabs button,.math-unified-view.sb-fs-fallback .math-nav-tabs button{padding:.3rem .8rem!important;font-size:.85rem!important}
-  .math-unified-view.sb-fs-host:fullscreen .math-ch-sidebar-header,.math-unified-view.sb-fs-fallback .math-ch-sidebar-header{padding:.35rem .3rem!important;min-height:0!important}
-  .math-unified-view.sb-fs-host:fullscreen .sb-fs-btn,.math-unified-view.sb-fs-fallback .sb-fs-btn{top:.2rem!important;padding:.2rem .55rem!important}
-  .bk-page{min-height:0!important;padding:1rem 1.6rem 3.4rem!important}
+  ${compact('', 'padding:0!important;gap:.4rem!important')}
+  ${compact('.math-ch-sidebar', 'max-height:100vh!important;border-radius:0!important', 0, 'border-radius:0!important')}
+  ${compact('.math-topic-area', 'max-height:100vh!important;border-radius:0!important', 0, 'border-radius:0!important')}
+  ${compact('.math-compact-header-bar', 'padding:.2rem .8rem!important;min-height:0!important;margin:0!important;border-radius:0!important')}
+  ${compact('.math-compact-header-bar *', 'line-height:1.2!important')}
+  ${compact('.math-nav-tabs', 'padding:.1rem .6rem!important;margin:0!important;min-height:0!important;gap:.2rem!important')}
+  ${compact('.math-nav-tabs button', 'padding:.3rem .8rem!important;font-size:.85rem!important')}
+  ${compact('.math-ch-sidebar-header', 'padding:.35rem .3rem!important;min-height:0!important')}
+  ${compact('.sb-fs-btn', 'top:.2rem!important;padding:.2rem .55rem!important')}
+  ${compact('.topic-sub-tabs-bar-fixed:empty', 'display:none!important')}
+  ${compact('.topic-sub-tabs-bar-fixed', 'margin-bottom:.3rem!important')}
+  ${compact('.math-tab-content-scroll', 'padding-top:.3rem!important')}
+  @media(min-width:761px){html:not(.sbapp) .math-unified-view.sb-fs-host:not(.sb-fs-fallback){margin:-14px -22px 0!important}}
+  .bk-page{min-height:0!important;padding:.55rem 1.6rem 3.4rem!important}
   .bk-page .m6-root{font-size:.96rem;line-height:1.5}
-  .bk-wrap{margin:0 0 1rem}
-  .bk-head{margin-bottom:.3rem}
+  .bk-wrap{margin:0 0 .6rem}
+  .bk-head{margin-bottom:.25rem}
   .bk-modal{position:fixed;inset:0;z-index:9300;background:rgba(15,23,42,.62);display:flex;align-items:center;justify-content:center;padding:2.5vh 3vw}
   .bk-modal-card{position:relative;width:min(1280px,100%);height:100%;background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden}
   .bk-modal-bar{display:flex;justify-content:space-between;align-items:center;padding:.5rem .9rem;background:#0f172a;color:#fff;font:700 .95rem system-ui,sans-serif}
@@ -261,7 +281,8 @@
     if (!fsOn() || i < 0) { nav.hidden = true; return; }
     nav.hidden = false;
     const lb = ws[i].dataset.label || '';
-    nav.querySelector('span').textContent = lb ? (lb.indexOf('–') > 0 ? 'Pages ' : 'Page ') + lb : '';
+    const text = lb ? (lb.indexOf('–') > 0 ? 'Pages ' : 'Page ') + lb : '', span = nav.querySelector('span');
+    if (span.textContent !== text) span.textContent = text;       // every 300 ms: an unchanged write would still wake every observer of the page
     nav.querySelector('.bk-prev').disabled = i === 0;
     nav.querySelector('.bk-next').disabled = i === ws.length - 1;
   }
@@ -276,12 +297,14 @@
       nav.querySelector('.bk-prev').addEventListener('click', () => go(-1));
       nav.querySelector('.bk-next').addEventListener('click', () => go(1));
     }
-    if (nav.parentElement !== (document.fullscreenElement || host)) (document.fullscreenElement || host).appendChild(nav);
+    if (nav.parentElement !== host) host.appendChild(nav);
     if (!navTimer) navTimer = setInterval(refreshNav, 300);
     refreshNav();
   }
   document.addEventListener('keydown', e => {
     if (!fsOn() || !wraps().length || /^(INPUT|TEXTAREA|SELECT)$/.test((e.target && e.target.tagName) || '')) return;
+    // the arrows belong to a tab strip, a text box or a dialog that has the focus
+    if (e.ctrlKey || e.metaKey || (e.target && e.target.closest && e.target.closest('[role="tablist"],[role="tab"],[contenteditable="true"],[role="dialog"],.bk-modal,.ut-root'))) return;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown' && e.altKey) { e.preventDefault(); go(1); }
     else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
   });
@@ -299,7 +322,7 @@
   }
   function openModal(panel) {
     if (modal || panel.closest('.bk-modal')) return;
-    const host = document.fullscreenElement || document.querySelector('.sb-fs-host') || document.body;
+    const host = document.querySelector('.sb-fs-host') || document.body;
     const btn = panel.previousElementSibling && panel.previousElementSibling.matches('.sb-ans') ? panel.previousElementSibling : null;
     const q = panel.closest('.m6-q');
     const label = (q && q.querySelector('.m6-qno') ? 'Question ' + q.querySelector('.m6-qno').textContent.trim() : 'Solution');
@@ -334,18 +357,17 @@
     b.textContent = '⛶ Full screen';
     b.addEventListener('click', e => {
       e.stopPropagation();
-      const fb = document.querySelector('.sb-fs-fallback');
-      if (fb) { fb.classList.remove('sb-fs-fallback'); b.textContent = '⛶ Full screen'; document.dispatchEvent(new CustomEvent('sb-fs-change')); return; }
-      if (document.fullscreenElement) { document.exitFullscreen(); return; }
-      const done = () => { b.textContent = fsOn() ? '🗗 Exit full screen' : '⛶ Full screen'; document.dispatchEvent(new CustomEvent('sb-fs-change')); };
-      (host.requestFullscreen ? host.requestFullscreen() : Promise.reject()).then(() => setTimeout(done, 100)).catch(() => { host.classList.add('sb-fs-fallback'); done(); });
+      if (window.SBFullscreen) window.SBFullscreen.toggle(host);     // sb_global_ui.js: the whole page goes full screen, the workspace is laid over it
+      setTimeout(() => { b.textContent = realFs() ? '🗗 Exit full screen' : '⛶ Full screen'; }, 150);
     });
-    (document.fullscreenElement || document.body).appendChild(b);
+    document.body.appendChild(b);
   }
-  setInterval(() => { try { if (!fsOn() || document.fullscreenElement) ensureFsButton(); const f = document.getElementById('bk-fs-float'); if (f && (!tabBox() || document.querySelector('.sb-fs-btn:not(#bk-fs-float)'))) f.remove(); } catch (e) { /* ignore */ } }, 1500);
+  setInterval(() => { try { if (!realFs() || document.fullscreenElement) ensureFsButton(); const f = document.getElementById('bk-fs-float'); if (f && (!tabBox() || document.querySelector('.sb-fs-btn:not(#bk-fs-float)'))) f.remove(); } catch (e) { /* ignore */ } }, 1500);
 
   addCss();
-  window.SBSpread6 = {on: fsOn, resolve, book, exercises: ch => book(ch, 'ex')};
+  window.SBSpread6 = {on: fsOn, look, resolve, book, exercises: ch => book(ch, 'ex')};
+  // crossing the width where the compact look starts redraws the open tab, as entering full screen does
+  if (wide && wide.addEventListener) wide.addEventListener('change', () => document.dispatchEvent(new CustomEvent('sb-fs-change')));
 
 
   // Books whose data is not in the shared page format (Classes 9-12 science, maths, Class 11-12 subjects): the cards the

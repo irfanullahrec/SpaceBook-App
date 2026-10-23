@@ -289,7 +289,7 @@
       ${hasSteps ? `<ol class="sbs-steps">${panel._steps.map(s => `<li class="sbs-step${s.m ? ' sbs-hasm' : ''}" hidden><span class="sbs-teacher" aria-hidden="true">🧑‍🏫</span><div class="sbs-say" aria-live="polite"></div>${s.m ? `<div class="sbs-show" hidden>${inl('$$' + s.m + '$$', false)}</div>` : ''}${s.svg ? `<div class="sbs-show" hidden>${s.svg}</div>` : ''}</li>`).join('')}</ol>` : ''}
       <p class="sbs-src"></p>
       <div class="sbs-final"${hasSteps ? ' hidden' : ''}>${finalHtml(panel)}</div>
-      <p class="sbs-note" dir="ltr">SpaceBook ${hasSteps ? 'explanation' : 'answer'} · not printed in the textbook</p></div>`;
+      <p class="sbs-note" dir="ltr">${sol.src === 'book' ? 'Printed answer from the textbook' : `SpaceBook ${hasSteps ? 'explanation' : 'answer'} · not printed in the textbook`}</p></div>`;
     // Visual reasoning (additive): when the English steps hold equations, offer the animated board next to the language buttons
     if (hasSteps && window.SBVR && window.SBVR.autoFromSolve) { try { window.SBVR.autoFromSolve(panel, panel._steps, declared, slots); } catch (e) { /* never break the panel */ } }
     const playBtn = panel.querySelector('[data-a="play"]');

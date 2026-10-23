@@ -164,9 +164,11 @@
 
   function attach(svg) {
     if (svg.dataset.sbt) return;
+    if (svg.closest('button, .math-acc-header, .c1-tools, .ut-root, .sbt-skip')) { svg.dataset.sbt = '1'; return; }
+    // small or hidden now: try again later. Nothing is written for such a figure (the open book holds hundreds of small formula
+    // glyphs, and marking and unmarking each of them on every scan kept the page busy)
+    const r = svg.getBoundingClientRect(); if (r.width < 120) return;
     svg.dataset.sbt = '1';
-    if (svg.closest('button, .math-acc-header, .c1-tools, .ut-root, .sbt-skip')) return;
-    const r = svg.getBoundingClientRect(); if (r.width < 120) { delete svg.dataset.sbt; return; }   // hidden now: try again later
     const els = [...svg.querySelectorAll(GEOM)].filter(el => !el.closest('defs, clipPath, mask, marker, pattern') && !el.dataset.sbtTmp && dashed(el));
     const segs = [];
     els.forEach(el => segmentsOf(el).forEach(s => { if (sample(s)) segs.push(s); }));

@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import pk.wantuch.spacebook.data.prep.GrammarSummary
 import pk.wantuch.spacebook.data.prep.PlanDto
 import pk.wantuch.spacebook.data.prep.PrepSnapshot
 import pk.wantuch.spacebook.data.prep.ProjectWords
@@ -55,6 +56,8 @@ data class HomeActions(
     val signIn: () -> Unit = {},
     /** the Me tab: class, saved pages, settings */
     val openProfile: () -> Unit = {},
+    /** the website's Grammar Stats page on one language: "en" | "ur" | "ps" | "ar" */
+    val openGrammar: (lang: String) -> Unit = {},
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,6 +70,7 @@ fun HomeScreen(app: AppViewModel, actions: HomeActions, vm: HomeViewModel = hilt
     val refreshing by vm.refreshing.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val projectWords = remember { ProjectWords.load(context) }
+    val grammar = remember { GrammarSummary.load(context) }
     var tab by rememberSaveable { mutableIntStateOf(TAB_STATS) }
     var gate by remember { mutableStateOf(ExpiryGate.forApp(context).check()) }
     // what was practised on the website while Home was away shows the moment the student comes back
@@ -74,7 +78,7 @@ fun HomeScreen(app: AppViewModel, actions: HomeActions, vm: HomeViewModel = hilt
     PullToRefreshBox(isRefreshing = refreshing, onRefresh = vm::refresh, modifier = Modifier.fillMaxSize()) {
         HomeContent(
             tab, { tab = it }, prep, projectWords, catalog, accountInfo(state.user, state.coins, entitlements.plan, gate), actions,
-            nowMillis = System.currentTimeMillis(),
+            nowMillis = System.currentTimeMillis(), grammar = grammar,
         )
     }
 }
@@ -96,13 +100,14 @@ internal fun accountInfo(user: UserDto?, coins: Int, plan: String, gate: LockSta
 internal fun HomeContent(
     tab: Int, onTab: (Int) -> Unit,
     prep: PrepSnapshot?, projectWords: ProjectWords?, catalog: Catalog?, account: AccountInfo, actions: HomeActions, nowMillis: Long,
+    grammar: GrammarSummary? = null,
 ) {
     var toDelete by remember { mutableStateOf<PlanDto?>(null) }
     Column(Modifier.fillMaxSize()) {
         HomeTitle()
         HomeTabRow(tab, onTab)
         when (tab) {
-            TAB_PROJECT -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = 6.dp, bottom = 24.dp)) { ProjectStatsTab(projectWords, catalog) }
+            TAB_PROJECT -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = 6.dp, bottom = 24.dp)) { ProjectStatsTab(projectWords, catalog, grammar, actions.openGrammar) }
             TAB_ACCOUNT -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = 6.dp, bottom = 24.dp)) { AccountTab(account, prep, actions) }
             else -> MyStatsTab(prep, projectWords, catalog, actions, nowMillis, onDelete = { toDelete = it })
         }

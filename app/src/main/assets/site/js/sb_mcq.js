@@ -57,6 +57,11 @@
   function splitInline(text) {
     const t = String(text == null ? '' : text).replace(/\s+/g, ' ').trim();
     if (!t) return null;
+    // Class 9 / 10 review questions print the options after small circles: "Stem ○ one ○ two ○ three ○ four"
+    if (t.includes('○')) {
+      const seg = t.split('○').map(s => s.trim()), opts = seg.slice(1);
+      if (opts.length >= 3 && opts.length <= 4 && seg[0].length >= 2 && opts.every(o => o && o.length <= 220)) return {stem: seg[0], opts, circles: true};
+    }
     const rx = /(?:^|\s|—)(?:\(([a-d])\)|([a-d])[.)]|\((الف|ب|ج|د)\)|(الف|ب|ج|د)[.۔)])(?=\s)/g;
     const marks = [];
     let m;
@@ -179,7 +184,7 @@
     const api = resolvers[ctx.src] || {};
     const solId = b.solId && !isAuto(b.solId) ? b.solId : '';
     const keyText = ctx.textbook || '';
-    if (!solId && !keyText) {
+    if (!solId && !keyText && !sp.circles) {
       // no answer anywhere: only clear-cut MCQs (short options, a question-like stem) become widgets
       if (NOT_MCQ.test(sp.stem) || sp.opts.some(o => o.length > 90) || !/[?:]\s*$|_{2,}|\.{3}|…|—\s*$|\b(is|are|was|were|of|by|the|called|known as)\s*$/i.test(sp.stem)) return '';
     }

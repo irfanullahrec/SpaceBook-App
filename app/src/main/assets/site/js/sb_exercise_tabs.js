@@ -8,7 +8,8 @@
  * Loaded after sb_book_spread.js and sb_global_ui.js. It only post-processes what the readers drew; no book data is touched. */
 (function () {
   'use strict';
-  const fsOn = () => !!(document.fullscreenElement || document.webkitFullscreenElement || document.querySelector('.sb-fs-fallback'));
+  // the open book: full screen, and the website's wide screens (sb_book_spread.js decides)
+  const fsOn = () => window.SBSpread6 && window.SBSpread6.on ? window.SBSpread6.on() : !!(document.fullscreenElement || document.webkitFullscreenElement || document.querySelector('.sb-fs-fallback'));
   const box = () => document.getElementById('subjTabContent') || document.getElementById('mathTabContent');
   const onExercises = () => document.getElementById('subjTabContent') ? state.activeSubjTab === 'exercise' : state.activeMathTab === 'exercises' || state.activeMathTab === 'exercise';
   const clean = s => String(s == null ? '' : s).replace(/\s+/g, ' ').trim();

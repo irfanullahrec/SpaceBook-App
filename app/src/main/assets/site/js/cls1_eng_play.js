@@ -1180,15 +1180,7 @@ textarea.c1a-inp{min-height:4.2rem;resize:vertical}
       let w; try { w = build(spec); } catch (e) { if (window.console) console.warn('c1 play build', e); return; }
       w.dataset.c1p = spec.kind; loc(w, langOf(subjOfRoot(q.closest('.m6-root'))));
       const anchor = spec.after || item;
-      if (!spec.after && w.classList.contains('c1a-card') && w.querySelector(':scope > .c1a-tools > .c1a-bigstar') && !w.querySelector('input,textarea,.c1a-chipw,.c1a-opt')) {
-        // "Let's do it!" fallback: a pill the size of the Ans button; the task card opens when it is pressed
-        const pill = h('button', 'c1a-doit', "🌟 Let's do it!", null); pill.type = 'button';
-        pill.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;height:1.6em;padding:0 .55em;margin-inline-start:.35em;border:none;border-radius:999px;background:#f59e0b;color:#fff;font:inherit;font-size:.72em;font-weight:800;line-height:1;vertical-align:middle;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.2)';
-        w.style.display = 'none'; pill.setAttribute('aria-expanded', 'false');
-        pill.addEventListener('click', e => { e.stopPropagation(); const open = w.style.display === 'none'; w.style.display = open ? '' : 'none'; pill.setAttribute('aria-expanded', String(open)); });
-        const ans = item.querySelector(':scope > .sb-ans, :scope > .m6-s .sb-ans');
-        if (ans) ans.after(pill); else item.appendChild(pill);
-      }
+      // every card, "Let's do it!" included, is folded behind a pill by js/sb_card_fold.js
       if (spec.kind === 'trace' && spec.fig) {
         spec.fig.style.display = 'none';
         const b = h('button', 'c1a-btn', '📖 Book picture', null); b.type = 'button';

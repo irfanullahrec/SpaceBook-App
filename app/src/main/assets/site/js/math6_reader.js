@@ -156,7 +156,9 @@
   function sentenceWhole(rec, tag, cls) {
     tag = tag || 'p';
     if (!rec.ur) return `<${tag} class="${cls || ''}"${primaryAttrs()}>${inline(rec.en, true)}</${tag}>`;
-    return `<${tag} class="m6-s ${cls || ''}"${primaryAttrs()} role="button" tabindex="0" aria-expanded="false" onclick="m6Toggle(this,event)" onkeydown="if(event.key==='Enter'||event.key===' '){m6Toggle(this,event)}">${inline(rec.en, true)}</${tag}>${translations(rec)}`;
+    // A sentence holds word buttons (m6-w) and a Listen button, and a button may not hold controls: so the sentence has no role, like the
+    // sentences of the Class 9 renderer (js/core/a11y.js). It stays one Tab stop; Enter or Space opens its translation.
+    return `<${tag} class="m6-s ${cls || ''}"${primaryAttrs()} tabindex="0" onclick="m6Toggle(this,event)" onkeydown="if(event.key==='Enter'||event.key===' '){m6Toggle(this,event)}">${inline(rec.en, true)}</${tag}>${translations(rec)}`;
   }
 
   window.m6Toggle = function (el, event) {
@@ -164,9 +166,7 @@
     if (event && event.type === 'keydown') event.preventDefault();
     const panel = el.nextElementSibling;
     if (!panel || !panel.classList.contains('m6-tr')) return;
-    const open = panel.hidden;
-    panel.hidden = !open;
-    el.setAttribute('aria-expanded', String(open));
+    panel.hidden = !panel.hidden;
   };
   window.m6Word = function (el, event) {
     event.preventDefault(); event.stopPropagation();
@@ -197,13 +197,73 @@
   function answersFor(exId) {
     const list = (BOOK.answers || {})[exId] || [];
     const map = {};
-    list.forEach(a => { map[a.q] = a; });
+    // a long printed answer is stored as several lines of the same question: join them, do not keep only the last
+    list.forEach(a => { const p = map[a.q]; map[a.q] = p ? Object.assign({}, p, {a: String(p.a || '').trim() + ' ' + String(a.a || '').trim()}) : a; });
     return map;
   }
   // ---- SpaceBook answers: the Ans button opens the shared step-by-step panel (js/sb_solve.js) ----
   function solButton(sid) {
     if (!sid) return '';
     return `<button type="button" class="sb-ans" data-langs="${LANGS.join(',')}" aria-expanded="false" title="Answer and step-by-step explanation" onclick="event.stopPropagation();m6SolOpen(this,'${esc(sid)}')">Ans</button><div class="sb-solve" hidden></div>`;
+  }
+
+  // ---- the printed answer key (and answers written for what the key leaves out) as Ans records ----
+  // Books that have the key but no solutions of their own (Class 9 and 10 Mathematics, Class 12 Statistics): every question and every part gets an
+  // Ans button, and its panel shows the printed answer. A key line such as "(i) 2 (ii) 3" is split by part; a line that cannot be split (the list of
+  // parts that qualify, a graph described in words) is shown whole under each part, never guessed. js/answers_extra.js holds answers written for
+  // parts the printed key has no line for: SB_EXTRA_ANSWERS[book title]["exercise|question|part"] = {answer, steps?}.
+  const KEYREC = Object.create(null), KEYIDS = new Map();
+  // "(i)." "iii)" "a)" "i) AB" → "i" "iii" "a" "i": the label of a part, whatever else its number field holds
+  const partKey = no => {
+    const s = String(no == null ? '' : no).trim(), m = /^\(?([A-Za-z]{1,5}|\d{1,3})(?:\)\.|\)|\.)?(?:\s|$)/.exec(s);
+    return (m ? m[1] : s.replace(/[()\s.]/g, '')).toLowerCase();
+  };
+  const isRoman = k => !!k && /^x{0,3}(?:ix|iv|v?i{0,3})$/.test(k);
+  // A line is split by part only when it starts with a label and every labelled piece is an answer of its own: "(i) 2 (ii) 3", "i) c ii) a".
+  // Prose such as "(i) is a polynomial. (ii), (iii) are not.", "(i) and (iii) are in lowest terms" or "Symmetric matrices: (ii)." is not split.
+  // A key line that starts with [Derived] or [Check] was worked out and checked by SpaceBook (the printed key has no line, or a wrong one, for it).
+  const KEYTAG = /^\[(?:derived|check)\]\s*/i;
+  function keyParts(a) {
+    const math = [];
+    const s = String(a || '').trim().replace(KEYTAG, '').replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$/g, m => '\u0001' + (math.push(m) - 1) + '\u0002');
+    const back = t => t.replace(/\u0001(\d+)\u0002/g, (_, i) => math[+i]);
+    const re = /(^|[\s,;])\(?([ivx]{1,5}|[a-z])\)(?=[\s,;.]|$)/g;
+    const marks = []; let m;
+    while ((m = re.exec(s))) marks.push({k: m[2], end: re.lastIndex, at: m.index + m[1].length});
+    const out = marks.map((mk, i) => ({k: mk.k, t: back(s.slice(mk.end, i + 1 < marks.length ? marks[i + 1].at : s.length)).replace(/^[\s:.,;-]+|[\s,;]+$/g, '').trim()}));
+    const lead = marks.length ? back(s.slice(0, marks[0].at)).trim() : '';
+    const clean = marks.length > 0 && (!lead || /:$/.test(lead)) && out.every(p => p.t && !/^(?:and|or|&)\.?$/i.test(p.t) && !/^(?:is|are)\b/i.test(p.t));
+    if (!clean) return [];
+    return lead ? out.map(p => ({k: p.k, t: lead + ' ' + p.t})) : out;     // "Third side by calculation: (i) 2.0 cm …" keeps its lead
+  }
+  function partAnswer(a, no) {
+    const k = partKey(no);
+    const hit = k ? keyParts(a).find(x => x.k === k) : null;
+    return hit ? hit.t : '';
+  }
+  const extraRec = (exId, qNo, partNo) => {
+    const E = window.SB_EXTRA_ANSWERS && window.SB_EXTRA_ANSWERS[(BOOK && BOOK.title) || ''];
+    return E ? E[exId + '|' + qNo + '|' + partKey(partNo)] || null : null;
+  };
+  const keyRec = (answer, hit, note) => KEYTAG.test(String(hit.a || ''))
+    ? {answer, steps: [{en: 'SpaceBook answer: worked out and checked' + (note || '')}]}                         // not printed in the textbook
+    : {answer, steps: [{en: 'Textbook answer key, page ' + hit.printed + (note || '')}], src: 'book'};
+  // the record behind one Ans button: the printed line of that part, else an answer written for it, else the printed line of the whole question
+  // An answer written and checked for a part comes first: where it differs from the printed key (the key has misprints) it is the one shown.
+  function leafRec(exId, q, hit, partNo, optText) {
+    const ex = extraRec(exId, q.no, partNo);
+    if (ex) return ex;
+    const whole = hit ? String(hit.a || '').trim() : '';
+    let own = whole && partNo ? partAnswer(whole, partNo) : '';
+    if (own && optText) { const k = partKey(own); if (/^[a-e]$/.test(k) && optText[k]) own = k + ') ' + optText[k]; }   // "c" → "c) the text of option c"
+    if (own) return keyRec(own, hit);
+    return whole ? keyRec(whole.replace(KEYTAG, ''), hit, partNo ? ' (one line for the whole question)' : '') : null;
+  }
+  function keyButton(rec) {
+    const sig = JSON.stringify(rec);
+    let id = KEYIDS.get(sig);
+    if (!id) { id = 'k' + (KEYIDS.size + 1); KEYIDS.set(sig, id); KEYREC[id] = rec; }
+    return `<button type="button" class="sb-ans" data-langs="${LANGS.join(',')}" aria-expanded="false" title="Answer" onclick="event.stopPropagation();m6SolOpen(this,'${id}')">Ans</button><div class="sb-solve" hidden></div>`;
   }
   let solLoad = null;
   function loadSolutions() {
@@ -223,6 +283,7 @@
   }
   const plain = text => String(text || '').replace(/\$([^$]*)\$/g, (_, m) => m.replace(/\\times/g, '×').replace(/\\div/g, '÷').replace(/\^\{([^}]*)\}/g, '^$1').replace(/\\text\{([^}]*)\}/g, '$1').replace(/[{}\\]/g, ''));
   window.m6SolOpen = function (btn, id) {
+    if (KEYREC[id]) { SBSolve.toggle(btn, KEYREC[id], {inline, plain}); return; }
     const other = id.includes('-');   // other Class 6 books ship their answers inline (CLS6_SOLUTIONS)
     if (!other && !window.MATH_6_SOLUTIONS) {
       const panel = SBSolve.loading(btn, 'Loading the solution…');
@@ -241,25 +302,82 @@
   const mcqHtml = (b, key, after, partNo) => window.SBMcq ? SBMcq.book(b, {src: 'm6', inline, sentence, after, textbook: key && key.a, partNo}) : '';
 
 
-  function question(q, ans, showAns) {
-    const mcq = mcqHtml(q, ans[q.no], showAns ? solButton(q.solId) : '');
-    const partMcq = (q.parts || []).map(p => mcqHtml(p, null, showAns ? solButton(p.solId) : '', p.no));
-    const hasSol = q.parts && q.parts.some(p => p.solId);
-    const parts = q.parts && q.parts.length ? `<div class="m6-parts${partMcq.some(Boolean) || hasSol || q.parts.some(p => p.ur || (p.en || '').length > 28) ? ' block' : ''}">${q.parts.map((p, pi) => `<div class="m6-part">${p.no ? `<strong>${esc(p.no)})</strong> ` : ''}${partMcq[pi] || `${p.ur ? sentence(p, 'span') : inline(p.en, true)}${showAns ? solButton(p.solId) : ''}`}</div>`).join('')}</div>` : '';
+  // The labels of the parts of one question, with a repeated label read as the next one ("i, ii, ii, iv" is a misprint for "i, ii, iii, iv"), so a part never
+  // takes the answer of its neighbour.
+  const ROMAN_SEQ = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x', 'xi', 'xii', 'xiii', 'xiv', 'xv', 'xvi', 'xvii', 'xviii', 'xix', 'xx'];
+  function partLabels(parts) {
+    let prev = '';
+    return (parts || []).map(p => {
+      let k = partKey(p.no);
+      if (k && k === prev && ROMAN_SEQ.includes(k)) k = ROMAN_SEQ[ROMAN_SEQ.indexOf(k) + 1] || k;
+      prev = k;
+      return k;
+    });
+  }
+  // owner: for a "parts" block, the question that came before it (its parts are answered by that question's printed line)
+  function question(q, ans, showAns, exId, owner) {
+    const own = owner || q;
+    const hit = ans[own.no];
+    const parts = q.parts || [];
+    const labels = partLabels(parts);
+    // the a) b) c) d) lines after a roman-numbered part are that part's options, not questions of their own
+    const isOpt = parts.map((p, i) => /^[a-e]$/.test(labels[i]) && labels.slice(0, i).some(x => isRoman(x)));
+    const optionsOf = i => {
+      const o = {}, circles = String(parts[i].en || '').split('○');
+      if (circles.length === 4 || circles.length === 5) circles.slice(1).forEach((t, k) => { o['abcd'[k]] = t.trim(); });   // "Stem ○ one ○ two ○ three ○ four"
+      for (let j = i + 1; j < parts.length && isOpt[j]; j++) o[labels[j]] = parts[j].en;
+      return o;
+    };
+    let fromKey = false;
+    // the Ans button of a question or part: its own solution, else the printed key / an answer written for it
+    const button = (node, partNo, optText) => {
+      if (!showAns) return '';
+      if (node.solId) return solButton(node.solId);
+      const rec = leafRec(exId, own, hit, partNo, optText);
+      if (!rec) return '';
+      if (rec.src === 'book') fromKey = true;
+      return keyButton(rec);
+    };
+    const keyOf = (p, partNo) => { if (p.solId) return null; const ex = extraRec(exId, own.no, partNo); return ex ? {a: ex.answer} : hit || null; };
+    const mcq = mcqHtml(q, hit, parts.length ? (showAns ? solButton(q.solId) : '') : button(q, null));
+    const pb = parts.map((p, i) => isOpt[i] ? '' : button(p, labels[i], optionsOf(i)));
+    const partMcq = parts.map((p, i) => isOpt[i] ? '' : mcqHtml(p, keyOf(p, labels[i]), pb[i], labels[i]));
+    const hasSol = pb.some(Boolean);
+    const partsHtml = parts.length ? `<div class="m6-parts${partMcq.some(Boolean) || hasSol || parts.some(p => p.ur || (p.en || '').length > 28) ? ' block' : ''}">${parts.map((p, pi) => `<div class="m6-part">${p.no ? `<strong>${esc(p.no)})</strong> ` : ''}${partMcq[pi] || `${p.ur ? sentence(p, 'span') : inline(p.en, true)}${pb[pi]}`}</div>`).join('')}</div>` : '';
     let a = '';
-    if (showAns) {
-      const hit = ans[q.no];
+    if (showAns && !fromKey) {
       a = hit ? `<div class="m6-ans"><strong>Textbook answer:</strong> ${inline(hit.a, false)} <span style="color:#64748b">(p. ${esc(hit.printed)})</span></div>` : '';
     }
     if (mcq) a = '';
     const head = mcq || (q.en ? (q.ur ? sentence(q, 'span') : inline(q.en, true)) : '');
-    return `<div class="m6-q"><span class="m6-qno">${esc(q.no)}${/^[0-9A-Za-z]+$/.test(q.no) ? "." : ""}</span>${head}${!mcq && showAns ? solButton(q.solId) : ''}${parts}${a}</div>`;
+    return `<div class="m6-q"><span class="m6-qno">${esc(q.no)}${/^[0-9A-Za-z]+$/.test(q.no) ? "." : ""}</span>${head}${!mcq && showAns ? (parts.length ? solButton(q.solId) : button(q, null)) : ''}${partsHtml}${a}</div>`;
   }
   function cell(c) {
     const parts = String(c).split('||').map(x => x.trim());
     if (parts.length !== 3) return inline(c, false);
     return `${inline(parts[0], true)}<span class="m6-hsub"><span lang="ur">${inline(parts[1], false)}</span> · <span lang="ps">${inline(parts[2], false)}</span></span>`;
   }
+  // ---- fills: a table with empty cells or a project box has a button when js/fills_data.js holds its answer (js/sb_fill.js opens it) ----
+  // The key is a hash of the book title and the text of the table / box, so a fill never shows up on a table that was edited since it was written.
+  function fillHash(str) {
+    let a = 0x811c9dc5, b = 0x9747b28c;
+    for (let i = 0; i < str.length; i++) { const c = str.charCodeAt(i); a = Math.imul(a ^ c, 0x01000193); b = Math.imul(b ^ c, 0x85ebca6b) ^ (b >>> 13); }
+    return (a >>> 0).toString(16).padStart(8, '0') + (b >>> 0).toString(16).padStart(8, '0');
+  }
+  const cellText = c => String(typeof c === 'string' ? c : (c && c.en) || '').replace(/\s+/g, ' ').trim();
+  function plainOf(list) {
+    return (list || []).map(x => {
+      if (!x || typeof x !== 'object') return '';
+      if (x.t === 'ul') return (x.items || []).map(i => cellText(i)).join(' ');
+      if (x.t === 'table') return (x.rows || []).map(r => r.map(cellText).join(' ')).join(' ');
+      if (x.t === 'q') return cellText(x.no) + ' ' + cellText(x.en) + ' ' + plainOf(x.parts);
+      return cellText(x.en) + ' ' + plainOf(x.blocks);
+    }).join(' ').replace(/\s+/g, ' ').trim();
+  }
+  const fillKeyOfTable = b => fillHash(((BOOK && BOOK.title) || '') + '|T|' + b.rows.map(r => r.map(cellText).join('¦')).join('¶'));
+  const fillKeyOfBox = b => fillHash(((BOOK && BOOK.title) || '') + '|B|' + cellText(b.title) + '|' + plainOf(b.blocks));
+  const hasFill = k => !!(window.SB_FILLS && window.SB_FILLS[k]);
+  const hasEmpty = b => b.rows.slice(b.head || 0).some(r => r.some(c => !cellText(c)));
   // Book figures without an explicit width draw at about their viewBox size instead of stretching to the column.
   function natural(svg) {
     return svg.replace(/<svg(?![^>]*\swidth=)([^>]*\sviewBox="[\d.\-]+ [\d.\-]+ ([\d.]+) [\d.]+")/, (m, attrs, w) => `<svg width="${Math.round(w * 1.3)}"${attrs}`);
@@ -267,29 +385,32 @@
 
   function blocks(list, ctx) {
     ctx = ctx || {};
+    let lastQ = null;       // a "parts" block continues the question before it
     return (list || []).map(b => {
       switch (b.t) {
         case 'page': return ctx.noPages ? '' : `<div class="m6-page" aria-label="Source page">${b.printed != null ? `Textbook page ${esc(b.printed)}` : 'Unnumbered page'} · PDF page ${esc(b.pdf)}</div>`;
         case 'h': return heading(b);
         case 'p': return sentence(b, 'p');
         case 'm': return `<p class="m6-m">${inline(b.en, false)}</p>`;
-        case 'eq': return b.ur ? `<div class="m6-eq m6-s" role="button" tabindex="0" aria-expanded="false" onclick="m6Toggle(this,event)">${inline('$$' + b.tex + '$$', false)}</div>${translations(b)}` : `<div class="m6-eq">${inline('$$' + b.tex + '$$', false)}</div>`;
+        case 'eq': return b.ur ? `<div class="m6-eq m6-s" tabindex="0" onclick="m6Toggle(this,event)" onkeydown="if(event.key==='Enter'||event.key===' '){m6Toggle(this,event)}">${inline('$$' + b.tex + '$$', false)}</div>${translations(b)}` : `<div class="m6-eq">${inline('$$' + b.tex + '$$', false)}</div>`;
         case 'ul': return `<ul class="m6-ul">${b.items.map(i => `<li class="lv${i.lv || 1}">${sentence(i, 'span')}</li>`).join('')}</ul>`;
         case 'box': {
           const label = b.title ? b.title : (BOX_LABEL[b.kind] ? {en: BOX_LABEL[b.kind]} : null);
-          return `<aside class="m6-box ${esc(b.kind)}">${label ? `<div class="m6-box-t">${label.ur ? sentence(label, 'span') : esc(label.en)}</div>` : ''}${blocks(b.blocks, ctx)}</aside>`;
+          const fk = fillKeyOfBox(b), fb = hasFill(fk) ? `<button type="button" class="sb-fill-btn" aria-expanded="false" onclick="SBFill.work(this)">Show the work</button>` : '';
+          return `<aside class="m6-box ${esc(b.kind)}"${fb ? ` data-fkey="${fk}"` : ''}>${label || fb ? `<div class="m6-box-t">${label ? (label.ur ? sentence(label, 'span') : esc(label.en)) : ''}${fb}</div>` : ''}${blocks(b.blocks, ctx)}</aside>`;
         }
         case 'example': return `<section class="m6-example"><div class="m6-example-t">${/^\d/.test(b.no) ? 'Example ' + esc(b.no) : esc(b.no)}${b.title ? ': ' : ''}${b.title ? (b.title.ur ? sentence(b.title, 'span') : inline(b.title.en, true)) : ''}</div>${blocks(b.blocks, ctx)}</section>`;
         case 'exercise': {
           const ans = answersFor(b.id);
-          return `<section class="m6-exercise"><div class="m6-exercise-t">${/^\d/.test(b.id) ? 'Exercise ' : ''}${esc(b.id)}</div>${blocks(b.blocks, Object.assign({}, ctx, {ans}))}</section>`;
+          return `<section class="m6-exercise"><div class="m6-exercise-t">${/^\d/.test(b.id) ? 'Exercise ' : ''}${esc(b.id)}</div>${blocks(b.blocks, Object.assign({}, ctx, {ans, exId: b.id}))}</section>`;
         }
-        case 'q': return question(b, ctx.ans || {}, !!ctx.showAnswers);
-        case 'parts': return question({no: '', parts: b.parts}, {}, !!ctx.showAnswers).replace('<span class="m6-qno">.</span>', '');
+        case 'q': lastQ = b; return question(b, ctx.ans || {}, !!ctx.showAnswers, ctx.exId);
+        case 'parts': return question({no: '', parts: b.parts}, ctx.ans || {}, !!ctx.showAnswers, ctx.exId, lastQ).replace('<span class="m6-qno">.</span>', '');
         case 'svg': return `<figure class="m6-fig">${natural(b.svg)}${b.cap ? `<figcaption>${b.cap.ur ? sentence(b.cap, 'span') : inline(b.cap.en, true)}</figcaption>` : ''}</figure>`;
         case 'table': {
           const head = b.rows.slice(0, b.head), body = b.rows.slice(b.head);
-          return `<div class="m6-table"><table>${b.cap ? `<caption>${b.cap.ur ? sentence(b.cap, 'span') : esc(b.cap.en)}</caption>` : ''}${head.length ? `<thead>${head.map(r => `<tr>${r.map(c => `<th scope="col">${cell(c)}</th>`).join('')}</tr>`).join('')}</thead>` : ''}<tbody>${body.map(r => `<tr>${r.map(c => `<td>${cell(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+          const tk = hasEmpty(b) ? fillKeyOfTable(b) : '', tf = tk && hasFill(tk);
+          return `<div class="m6-table"${tf ? ` data-fkey="${tk}"` : ''}>${tf ? `<div class="sb-fill-bar"><button type="button" class="sb-fill-btn" aria-pressed="false" onclick="SBFill.table(this)">Fill the table</button></div>` : ''}<table>${b.cap ? `<caption>${b.cap.ur ? sentence(b.cap, 'span') : esc(b.cap.en)}</caption>` : ''}${head.length ? `<thead>${head.map(r => `<tr>${r.map(c => `<th scope="col">${cell(c)}</th>`).join('')}</tr>`).join('')}</thead>` : ''}<tbody>${body.map(r => `<tr>${r.map(c => `<td>${cell(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
         }
         default: return '';
       }
@@ -483,5 +604,16 @@
     st.textContent = '.sb-pgcard .math-accordion-body{padding-bottom:1.8rem}.sb-pgcard.open>.math-accordion-body{animation:sbpgslide .28s ease}@keyframes sbpgslide{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}';
     document.head.appendChild(st);
   }
-  window.MATH6_READER = {blocks, inline, sentence, card, root, withBook, esc, pageCards, css: true};
+  // what an Ans button of a part would open, for tools/audit/answers_audit.js: {kind: 'part' | 'extra' | 'whole' | 'none', answer}
+  function answerOf(exId, q, partNo, optText) {
+    const ex = extraRec(exId, q.no, partNo);
+    if (ex) return {kind: 'extra', answer: ex.answer};
+    const hit = answersFor(exId)[q.no];
+    const whole = hit ? String(hit.a || '').trim() : '';
+    if (whole && partNo && partAnswer(whole, partNo)) return {kind: 'part', answer: partAnswer(whole, partNo)};
+    return whole ? {kind: partNo ? 'whole' : 'part', answer: whole} : {kind: 'none', answer: ''};
+  }
+  // leafAnswer: the Ans record of one question or part as its button would show it (printed key, written answer), for tools/tests/build_test_bank.js
+  const leafAnswer = (exId, q, owner, partNo, optText) => { const own = owner || q; return leafRec(exId, own, answersFor(exId)[own.no], partNo, optText); };
+  window.MATH6_READER = {blocks, inline, sentence, card, root, withBook, esc, pageCards, css: true, answerOf, partKey, partLabels, isRoman, keyParts, fillKeyOfTable, fillKeyOfBox, cellText, leafAnswer};
 })();

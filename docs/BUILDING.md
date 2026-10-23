@@ -40,7 +40,9 @@ from the website by one command, run from a clean checkout of the commit being r
 ```
 cd "SpaceBook Web"
 node --max-old-space-size=8192 tools/build/all.js           # the website's generated files (includes content/app_catalog.json)
-node tools/app/sync_app.js --covers                         # shell (site/), catalog, offline question bank, test list, golden test files, covers
+node tools/app/sync_app.js --covers                         # shell (site/), catalog, offline question bank, test list, golden test files, covers,
+                                                            # and the files of Create Test, Ask SpaceBook and Grammar Stats (site/content/testbank, assistant,
+                                                            # grammar, and the Class 11 search files), so those three work offline from the first start
 node tools/app/sync_app.js --check                          # exits 1 and lists what is stale
 node --max-old-space-size=8192 tools/parity/data_parity.js  # every class, subject, chapter, file and the app's shell against the website
 ```

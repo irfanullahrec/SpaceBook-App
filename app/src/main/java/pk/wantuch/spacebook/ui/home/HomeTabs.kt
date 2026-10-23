@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pk.wantuch.spacebook.data.prep.GrammarSummary
 import pk.wantuch.spacebook.data.prep.PrepSnapshot
 import pk.wantuch.spacebook.data.prep.ProjectWords
 import pk.wantuch.spacebook.data.prep.WordCounts
@@ -135,9 +136,10 @@ internal fun WordsCard(words: WordsDto, projectTotal: Int) {
 
 /** How many distinct words the books hold, for the whole project and for each class. */
 @Composable
-internal fun ProjectStatsTab(words: ProjectWords?, catalog: Catalog?) {
+internal fun ProjectStatsTab(words: ProjectWords?, catalog: Catalog?, grammar: GrammarSummary? = null, onOpenGrammar: (lang: String) -> Unit = {}) {
     if (words == null) {
         Card { Text("The word counts of the books are not on this phone yet.", style = MaterialTheme.typography.bodyMedium) }
+        GrammarStatsCard(grammar, onOpenGrammar)
         return
     }
     val p = words.project
@@ -163,6 +165,38 @@ internal fun ProjectStatsTab(words: ProjectWords?, catalog: Catalog?) {
         val ordered = words.classes.keys.sortedBy { id -> id.filter { it.isDigit() }.toIntOrNull() ?: Int.MAX_VALUE }
         ordered.forEach { id ->
             ClassRow(catalog?.cls(id)?.name ?: prettyClass(id), words.classes[id], header = false)
+        }
+    }
+    GrammarStatsCard(grammar, onOpenGrammar)
+}
+
+/** "Grammar Stats": one row per language with what the books hold; tapping a language opens the website's Grammar Stats page (the lessons and practice) on it. */
+@Composable
+internal fun GrammarStatsCard(grammar: GrammarSummary?, onOpen: (lang: String) -> Unit) {
+    if (grammar == null || grammar.langs.isEmpty()) return
+    Card {
+        Text("🧩 Grammar Stats", style = MaterialTheme.typography.titleMedium)
+        Text(
+            "Lessons and practice questions from the English, Urdu, Pashto and Arabic books, from easy to hard. Tap a language to learn it.",
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Spacer(Modifier.height(10.dp))
+        grammar.ordered().forEach { (code, l) ->
+            Surface(
+                onClick = { onOpen(code) }, shape = RoundedCornerShape(14.dp), color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = .55f),
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+            ) {
+                Row(Modifier.padding(horizontal = 14.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text(if (l.native.isNotBlank() && l.native != l.name) "${l.name}  ${l.native}" else l.name, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                        Text(
+                            "${fmt(l.total.topics)} topics · ${fmt(l.total.lessons)} lessons · ${fmt(l.total.exercises)} practice questions",
+                            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Text("Learn ›", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                }
+            }
         }
     }
 }
