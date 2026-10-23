@@ -17,8 +17,46 @@ html.sbapp .math-topic-area { display: block !important; overflow: visible !impo
 html.sbapp .math-tab-content-scroll { flex: none !important; height: auto !important; min-height: 0 !important; }
 html.sbapp .math-ch-sidebar { display: none !important; }
 html.sbapp .math-topic-area { max-height: none !important; height: auto !important; border-radius: 0 !important; border: 0 !important; box-shadow: none !important; }
-html.sbapp .math-compact-header-bar { border-radius: 0 !important; margin: 0 !important; }
-html.sbapp .math-tab-content-scroll { max-height: none !important; overflow: visible !important; padding: .35rem .5rem 5.5rem !important; }
+
+/* ---- the page first -------------------------------------------------------------------------------------------------
+   Nothing is above the page but the tab strip (Lessons, Exercises ...) and, under it, the page's own Board SLOs / Exercise tabs.
+   No chapter title, no page title, no board strip, no hint line, no floating buttons: the app's footer holds the controls.
+   The strip sits flush under the status bar (the app pads the status bar itself); every edge of the page is as near the screen as it can be. */
+html.sbapp { --sbapp-nav: 36px; --sbapp-sub: 0px; --sbapp-edge: 3px; }
+html.sbapp.sbapp-subbar { --sbapp-sub: 32px; }
+html.sbapp .math-compact-header-bar, html.sbapp .bise-strip, html.sbapp .sh-bar, html.sbapp .cl-pill, html.sbapp .cl-strip,
+html.sbapp .rt-size, html.sbapp .sbapp-hint, html.sbapp .sbapp-page-on > .math-acc-header { display: none !important; }
+html.sbapp .math-nav-tabs { position: sticky !important; top: 0 !important; z-index: 70; box-sizing: border-box; height: var(--sbapp-nav); min-height: 0 !important;
+  margin: 0 !important; padding: 2px var(--sbapp-edge) !important; gap: 4px !important; align-items: center; background: #fff !important; border-bottom: 1px solid #cbd5e1 !important; }
+html.sbapp .math-nav-tabs button { min-height: 0 !important; height: 30px; padding: 0 11px !important; font-size: 12.5px !important; line-height: 1; border-radius: 15px !important; gap: 4px !important; }
+html.sbapp #subjSubTabsBar, html.sbapp .topic-sub-tabs-bar-fixed { position: sticky !important; top: var(--sbapp-nav) !important; z-index: 69; box-sizing: border-box; min-height: 0 !important;
+  margin: 0 !important; padding: 2px var(--sbapp-edge) !important; gap: 4px !important; background: #f8fafc !important; border-bottom: 1px solid #cbd5e1 !important; }
+html.sbapp #subjSubTabsBar:not(:has(button)), html.sbapp .topic-sub-tabs-bar-fixed:not(:has(button)) { display: none !important; }
+html.sbapp .topic-sub-tabs-bar-fixed button { min-height: 0 !important; height: 26px; padding: 0 10px !important; font-size: 12px !important; line-height: 1; border-radius: 13px !important; }
+/* the page's own Board SLOs / Exercise tabs stick right under those */
+html.sbapp .sb-pt { top: calc(var(--sbapp-nav) + var(--sbapp-sub)) !important; margin: 0 !important; border-radius: 0 !important; border-left: 0 !important; border-right: 0 !important; box-shadow: 0 2px 6px -3px rgba(15,23,42,.35) !important; z-index: 60; }
+html.sbapp .sb-pt-bar { padding: 2px var(--sbapp-edge) !important; gap: 4px !important; }
+html.sbapp .sb-pt-tab, html.sbapp .sb-pt-subtab { padding: 0 8px !important; min-height: 0 !important; height: 26px; font-size: 12px !important; }
+html.sbapp .math-accordion-body > .sb-pt, html.sbapp .bk-page > .sb-pt { margin: 0 !important; }
+
+/* the page: edge to edge, no card frame, text from the very edge (the direction of the book decides which side is which) */
+html.sbapp .math-tab-content-scroll { max-height: none !important; overflow: visible !important; padding: 0 0 12px !important; margin: 0 !important; }
+html.sbapp .math-topic-card, html.sbapp .math-accordion-card, html.sbapp .para-card, html.sbapp .sb-pgcard, html.sbapp .bk-wrap, html.sbapp .bk-spread, html.sbapp .bk-page {
+  margin: 0 !important; border-radius: 0 !important; border-width: 0 !important; box-shadow: none !important; max-width: 100% !important; }
+html.sbapp .math-accordion-body { margin: 0 !important; padding: 2px var(--sbapp-edge) 8px !important; border: 0 !important; }
+html.sbapp [class*="-root"] { padding-left: 0 !important; padding-right: 0 !important; margin-left: 0 !important; margin-right: 0 !important; max-width: 100% !important; }
+html.sbapp .bk-page { padding: 4px var(--sbapp-edge) !important; }
+html.sbapp .math-topic-card, html.sbapp .math-accordion-card, html.sbapp .para-card, html.sbapp .sb-pgcard { padding: 0 !important; }
+/* the coloured page frame and the boxes of the picture books (Classes 1-8): thin, so the text keeps the width */
+html.sbapp [class*="-sheet"] { border-width: 3px !important; padding: 5px 4px !important; border-radius: 8px !important; margin: 0 !important; }
+html.sbapp aside[class*="-box"], html.sbapp [class$="-lo"] { padding: 6px 7px !important; margin-left: 0 !important; margin-right: 0 !important; }
+html.sbapp [class*="-banner"] { padding: 8px 10px !important; }
+html.sbapp figure[class*="-fig"] { padding: 4px !important; margin-left: 0 !important; margin-right: 0 !important; }
+html.sbapp [class*="-box-t"] { padding-left: 6px !important; padding-right: 6px !important; }
+html.sbapp ul[class$="-ul"], html.sbapp ol[class$="-ol"] { padding-inline-start: 18px !important; }
+html.sbapp .sbapp-hint { display: none !important; }
+
+html.sbapp [class*="-root"] > [class*="-tr"], html.sbapp [class*="-root"] > p, html.sbapp [class*="-root"] > ul, html.sbapp [class*="-root"] > ol { margin-left: 0 !important; margin-right: 0 !important; }
 
 /* touch: big enough tap targets, no accidental zoom on double tap */
 html.sbapp button, html.sbapp [onclick], html.sbapp .math-nav-tabs button { touch-action: manipulation; }

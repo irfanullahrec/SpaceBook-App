@@ -1,0 +1,34 @@
+{
+  "schema": "spacebook.parity.events/1",
+  "note": "One example of every fact a device can send to api/v2/sync.php, and of every user item. The website's e2e test (tests/sync/parity_e2e.js) sends them to the real server as if from the app and reads them back through the website's own client; tools/app/sync_app.js copies this file into the app's test resources, where EventContractTest checks that what the app itself sends has the same fields and types for the events it sends (step, item.put, item.del).",
+  "events": {
+    "step": { "emittedBy": ["web", "app"], "payload": { "key": "cls5|g-quiz|u2|count|abc123|10", "title": "Quiz Quest: Fractions", "total": 10, "step": 0 } },
+    "again": { "emittedBy": ["web"], "payload": { "key": "cls5|g-quiz|u2|count|abc123|10" } },
+    "plan.save": { "emittedBy": ["web"], "payload": { "baseRev": 0, "plan": { "id": "plan_contract1", "name": "Contract plan", "updatedAt": 1700000000000, "sessions": [{ "id": "s1", "date": "2026-10-24", "tasks": [{ "id": "t1", "n": 3, "done": 1, "cat": "rd" }] }] } } },
+    "plan.delete": { "emittedBy": ["web"], "payload": { "id": "plan_contract1" } },
+    "tp.answer": { "emittedBy": ["web"], "payload": { "mcqId": "g1", "track": "pst", "day": "2026-10-23", "correct": true, "ms": 4200, "ts": 1700000000000 } },
+    "tp.session": { "emittedBy": ["web"], "payload": { "session": { "id": "sess_contract1", "track": "pst", "mode": "practice", "n": 5, "c": 4, "ms": 90000, "ts": 1700000000000 } } },
+    "tp.run": { "emittedBy": ["web"], "payload": { "run": { "id": "run_contract1", "track": "pst", "mode": "practice", "ids": [], "answers": [], "i": 0, "savedAt": 1700000000000 } } },
+    "tp.run.clear": { "emittedBy": ["web"], "payload": { "clearedAt": 1700000001000 } },
+    "tp.import": { "emittedBy": ["web"], "payload": { "record": { "q": { "old1": [3, 2, 1700000000000, 1, 5000] }, "days": { "pst": { "2026-10-01": [60000, 5, 4] } } } } },
+    "item.put": {
+      "emittedBy": ["web", "app"],
+      "payloads": {
+        "bm": { "kind": "bm", "key": "cls5-math|2|Lessons|3", "value": { "c": "cls5", "s": "cls5-math", "ch": 2, "p": 3, "tb": "Lessons", "t": "3 Fractions" }, "at": 1700000000000 },
+        "note": { "kind": "note", "key": "11111111-2222-4333-8444-555555555555", "value": { "c": "cls5", "s": "cls5-math", "ch": 2, "p": 3, "tb": "Lessons", "t": "3 Fractions", "x": "Add the numerators", "q": "common denominator", "k": "note" }, "at": 1700000000001 },
+        "pos": { "kind": "pos", "key": "cls5-math", "value": { "c": "cls5", "ch": 2, "p": 4, "tb": "Lessons", "n": 12, "t": "3 Fractions" }, "at": 1700000000002 },
+        "pref": { "kind": "pref", "key": "class", "value": { "id": "cls5" }, "at": 1700000000003 },
+        "word": { "kind": "word", "key": "en:fraction", "value": { "s": "l" }, "at": 1700000000004 },
+        "gbest": { "kind": "gbest", "key": "cls5|g-quiz|u2|count|abc123|10", "value": { "b": 0.8 }, "at": 1700000000005 },
+        "slo": { "kind": "slo", "key": "cls9-phy|1|0", "value": {}, "at": 1700000000006 },
+        "drill": { "kind": "drill", "key": "cls9-phy|1700000000000", "value": { "n": 10, "c": 7, "ms": 45000 }, "at": 1700000000007 }
+      }
+    },
+    "item.del": { "emittedBy": ["web", "app"], "payload": { "kind": "bm", "key": "cls5-math|2|Lessons|3", "at": 1700000009000 } }
+  },
+  "pull": {
+    "requiredByTheApp": ["ok", "cursor", "more", "coins", "progress", "plans", "items", "itemsDeleted"],
+    "item": ["kind", "key", "value", "at"],
+    "itemDeleted": ["kind", "key", "at"]
+  }
+}

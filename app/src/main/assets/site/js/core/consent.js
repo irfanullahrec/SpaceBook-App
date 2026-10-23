@@ -14,7 +14,7 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
   const NO_FOR_MS = 7 * 24 * 3600 * 1000;
-  const MESSAGE = 'Progress, study plans or practice were saved on this device while nobody was signed in.\n\nAdd them to your account?\n\n' +
+  const MESSAGE = 'Progress, study plans, practice, bookmarks or notes were saved on this device while nobody was signed in.\n\nAdd them to your account?\n\n' +
     'OK = add them to my account      Cancel = leave them on this device only';
 
   function create(opts) {

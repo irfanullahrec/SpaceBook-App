@@ -75,6 +75,7 @@
       const keys = Object.keys(d).sort((a, b) => d[b].ts - d[a].ts);
       keys.slice(MAX_RECENT).forEach(k => delete d[k]);
       save(d);
+      document.dispatchEvent(new CustomEvent('sbcontinue:record', { detail: { entry: d[key] } }));       // js/sb_library.js sends the place to the account
     }, 60);
   }
 
@@ -126,6 +127,7 @@
       // refresh timestamp so it stays at the front of the list
       const db = load(); const k = entry.classId + '|' + entry.subjId;
       if (db[k]) { db[k].ts = Date.now(); save(db); }
+      document.dispatchEvent(new CustomEvent('sbcontinue:resumed', { detail: { entry } }));            // the tab and page of a place saved on another device
     }, 120);
   }
 
@@ -240,6 +242,14 @@
     resume,
     clear: () => save({}),
     current: () => current,
-    entry: (classId, subjId) => load()[classId + '|' + subjId] || null
+    entry: (classId, subjId) => load()[classId + '|' + subjId] || null,
+    // a place saved on another device (js/sb_library.js): kept when it is newer than what this browser knows
+    adopt: e => {
+      const db = load(), k = e.classId + '|' + e.subjId, old = db[k];
+      if (old && old.ts >= e.ts) return false;
+      db[k] = Object.assign({}, old || {}, e);
+      save(db);
+      return true;
+    }
   };
 })();

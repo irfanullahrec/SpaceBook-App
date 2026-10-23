@@ -30,16 +30,22 @@ Needs JDK 17 and the Android SDK (platform 36, build-tools 36). `local.propertie
   **Me, Settings, Server** and enter `http://10.0.2.2:8790/` (emulator) or `http://<PC address>:8790/` (phone on the same wifi;
   plain http is accepted only for 10.0.2.2, localhost and 127.0.0.1, so for a phone use a tunnel with https).
 
-## Regenerating the catalog the app bundles
+## Regenerating what the app bundles (never by hand)
+
+Everything under `app/src/main/assets` that is not the app's own (`reader_bridge.js`, `reader_mobile.css`, `search_bridge.js`, `prep_summary.js`) is made
+from the website by one command, run from a clean checkout of the commit being released (`SpaceBook Web/docs/RELEASE_AND_ROLLBACK.md` section 1):
 
 ```
 cd "SpaceBook Web"
-node --max-old-space-size=8192 tools/build/all.js          # as usual, after book data changes
-node tools/build/make_app_catalog.js                        # writes content/app_catalog.json
-copy content\app_catalog.json "..\SpaceBook App\app\src\main\assets\app_catalog.json"
+node --max-old-space-size=8192 tools/build/all.js           # the website's generated files (includes content/app_catalog.json)
+node tools/app/sync_app.js --covers                         # shell (site/), catalog, offline question bank, test list, golden test files, covers
+node tools/app/sync_app.js --check                          # exits 1 and lists what is stale
+node --max-old-space-size=8192 tools/parity/data_parity.js  # every class, subject, chapter, file and the app's shell against the website
 ```
 
-The app also downloads the site's `content/app_catalog.json` on every start, so the bundled copy is only the first-run fallback.
+`sync_app.js` refuses to copy a shell file that differs from the last commit. The app also downloads the site's `content/app_catalog.json` on every
+start, so the bundled copy is only the first-run fallback. The old `pack_mcq_bank.js` and `pack_prep_meta.js` of this repository were moved into the
+website's `tools/app/lib` (the app's data is generated from the website, never typed here).
 
 ## Release
 

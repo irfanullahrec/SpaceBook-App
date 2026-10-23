@@ -77,15 +77,51 @@ pictures), so the app keeps its own copy and answers the WebView from it:
 * A book that is not on the phone and cannot be fetched shows **"This book is not on this phone yet" with a Download button** instead
   of a blank page (`MissingBookPanel`), and opens by itself when the download finishes.
 * Covers and class cards are bundled (`assets/covers/`, 4.3 MB, made by `tools/app/make_app_covers.py`).
-* The catalog is bundled and cached. Notes, bookmarks, reading position and likes are in Room. Study events wait in the outbox and are
-  sent by WorkManager when there is a network (nothing is dropped on a 5xx, 429 or 401).
+* The catalog is bundled and cached. Study events wait in the outbox and are sent by WorkManager when there is a network (nothing is
+  dropped on a 5xx, 429 or 401).
+
+## Saved items: bookmarks, notes, highlights, reading position, my class (one account on every device)
+
+They are the website's `user_items` kinds (`bm`, `note`, `pos`, `pref/class`; server rules in `SpaceBook Web/api/lib/items.php`, website client
+`js/core/items.js` + `js/sb_library.js`). `LibraryRepository` keeps them in Room (`items`: userId, kind, key, value JSON, `at`, deleted, sent), local first,
+and:
+
+* **sends** unsent rows as `item.put` / `item.del` events through the outbox, only when signed in and only while the owner's sync switch is on;
+* **merges** what a pull returns (`items`, `itemsDeleted`) with the website's rule: the later `at` wins, the server's copy at equal times, a delete is a
+  tombstone, so an older copy arriving late cannot bring a deleted item back;
+* keeps what was saved while nobody was signed in under userId 0: the next sign-in asks "Add your progress to your account?" (same dialog as for study
+  steps), and Saved shows a banner for a student who was already signed in. `MIGRATION_1_2` carries the old bookmarks / notes / position tables over as such
+  items (nothing is lost);
+* writes a tab as the website does (`ItemCodec.cleanTab`: letters, digits, space, `_`, `-`, 30 characters), so a bookmark made in one platform opens the
+  same page in the other. `tests/parity/locator_golden.json` and `events_contract.json` of the website (copied into `src/test/resources/parity/` by
+  `tools/app/sync_app.js`) are checked by `EventContractTest`.
+
+Marked words, game level bests, ticked SLOs and the like are kept by the website's page inside the WebView, which sends them with the same events.
+
+## The owner's sync switch
+
+`flags.syncV2` (server: `api/lib/flags.php`, published in `entitlements` and `me`) is stored as `AppState.syncOn`. The app passes it to the page
+(`SBApp.setAuth(user, device, flags)`; the page no longer forces sync on) and uses it for the saved items. Off: nothing is sent, no request is made.
+The app's own coin steps always go through `api/v2/sync.php` (it has no older endpoint), which the server accepts alongside the website's older one.
+
+## Search, account, reminders, Games
+
+* **Search in the books**: `BookSearch` runs the website's `js/core/search.js` (bundled in the shell) in a hidden WebView through `SiteStore`, so the index
+  files of a book on the phone are searched with no internet; `assets/search_bridge.js` is the one-line call. The search screen shows chapter-title hits
+  first, then "In the books"; "Search all classes" widens the scope.
+* **My account**: the website's own dialog (details, password, download my data, delete my account) opens inside the page (`SBApp.openAccount`); the data
+  file goes to the share sheet (`SBDownload` in the bridge, `FileProvider` cache path), a deletion signs the app out.
+* **Study reminders**: a WebView has no Notification API. `ReminderReader` loads the start page in a hidden WebView (`SB_BACKGROUND_READ` set, API refused),
+  calls `SBStudyPlan.reminders(7)` (the website's own words), and `ReminderScheduler` schedules each as a WorkManager job that posts a notification; a
+  daily job refreshes them; the switch is in Settings (asks for the notification permission on Android 13+).
+* **Games**: the website's arcade opens from Practice (same page, same coins); per-page quests (`ui/games/PageGames.kt`) are in the reader's Games tab.
 
 ## Code map (`app/src/main/java/pk/wantuch/spacebook`)
 
 | Package | Contents |
 |---|---|
 | `data/offline` | `SiteStore` (the phone's copy of the website + WebView interceptor), `OfflineRepository` (what each book needs, what is on the phone), `DownloadWorker` (in `work/`) |
-| `data/` | `Prefs` (DataStore), `Titles` (split "2 My Family and I میرا…"), `local/Database` (Room: outbox, reading position, bookmarks, notes, reactions), `remote/` (Retrofit `ApiService`, `Endpoint`, interceptors, models), `repo/Repositories` (catalog, auth, sync, entitlements) |
+| `data/` | `Prefs` (DataStore), `Titles` (split "2 My Family and I میرا…"), `local/Database` (Room v2: outbox, **items**, reactions; `MIGRATION_1_2`), `local/LibraryItems` (Bookmark, Note, ReadingPosition and their keys, `ItemCodec`), `remote/` (Retrofit `ApiService`, `Endpoint`, interceptors, models), `repo/Repositories` (catalog, auth, sync, entitlements), `repo/LibraryRepository` (the saved items, below), `search/BookSearch` (words inside the books), `reminders/` (study-plan reminders) |
 | `di/AppModule` | Hilt: Json, OkHttp, Retrofit, Room |
 | `work/SyncWorker` | sends the outbox |
 | `ui/home` | Home: My Stats / Project Stats / My Account tabs (see "Home" below). `FeedBuilder` (the old feed) is still there and unit-tested but no longer shown |

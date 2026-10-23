@@ -1,0 +1,22 @@
+{
+  "schema": "spacebook.parity.locator/1",
+  "note": "Where a page is: the same on the website (js/sb_library.js) and in the app (ItemCodec in LibraryItems.kt). tests/parity/locator.js checks the website against this file, tools/app/sync_app.js copies it into the app's test resources, and LibraryRepositoryTest checks the app against it.",
+  "tabs": [
+    ["📖 Lessons", "Lessons"],
+    ["📐 Summary & Formulas", "Summary  Formulas"],
+    ["✍️ Exercises", "Exercises"],
+    ["🎯 Learning Outcomes", "Learning Outcomes"],
+    ["📊 Word Stats", "Word Stats"],
+    ["🎯 بورڈ SLOs 0", "SLOs 0"],
+    ["📖 سبق", ""],
+    ["Lessons", "Lessons"],
+    ["  Spaced   out  ", "Spaced   out"],
+    ["under_score-dash 12", "under_score-dash 12"],
+    ["abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJ", "abcdefghijklmnopqrstuvwxyz0123"]
+  ],
+  "bookmarkKeys": [
+    ["cls5-math", 2, "📖 Lessons", 3, "cls5-math|2|Lessons|3"],
+    ["cls9-phy", 0, "", 0, "cls9-phy|0||0"],
+    ["cls12-urdu", 14, "✍️ Exercises", 11, "cls12-urdu|14|Exercises|11"]
+  ]
+}

@@ -1,5 +1,11 @@
 # Feature parity: website to app
 
+> **2026-10-23: this list is superseded** by the website's `docs/PARITY_MATRIX.md` (generated from `docs/parity.json`, checked by
+> `node tools/parity/check.js`, `data_parity.js` and the end-to-end test `tests/sync/parity_e2e.js`). The table below is kept as history; where it
+> disagrees with the matrix, the matrix is right. Changed since it was written: bookmarks, notes, highlights, the reading position and "my class" are
+> items of the account (server table `user_items`) shared with the website; search inside the books, the Games arcade, account actions (My account),
+> study reminders and the owner's one sync switch were added; Home became My Stats / Project Stats / My Account.
+
 Status words: **web** = done by the website's own renderer inside the app's WebView (so it behaves as on the web);
 **native** = built in Kotlin; **partial**; **not yet**. "Checked" says how it was verified; nothing here has been run on an
 Android device (none available), so "web" items are verified only where stated.

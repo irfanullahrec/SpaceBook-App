@@ -1,0 +1,55 @@
+/* sb_library.js: the bookmark / note buttons on a book page, the note editor, highlights, the Saved page, "my class".
+   Nothing here changes the layout of a page: the buttons are positioned over a corner. */
+.sbl-tools{position:absolute;top:6px;right:8px;z-index:6;display:flex;gap:4px;opacity:.55;transition:opacity .15s}
+.bk-page:hover .sbl-tools,.sbl-tools:focus-within,.sbl-tools:hover{opacity:1}
+.math-acc-header .sbl-tools{position:static;margin-inline-start:auto;opacity:.8}
+.sbl-btn{position:relative;border:1px solid #cbd5e1;background:#fff;color:#0f172a;border-radius:8px;min-width:34px;height:34px;padding:0 6px;font-size:16px;line-height:1;cursor:pointer}
+.sbl-btn:hover,.sbl-btn:focus-visible{border-color:#2563eb;outline:none;box-shadow:0 0 0 2px #bfdbfe}
+.sbl-btn.on{background:#fef3c7;border-color:#f59e0b}
+.sbl-n{position:absolute;top:-6px;right:-6px;min-width:16px;height:16px;border-radius:8px;background:#2563eb;color:#fff;font-size:10px;line-height:16px;text-align:center;padding:0 3px}
+.sbl-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.sbl-flash{animation:sbl-flash 2.2s ease-out}
+@keyframes sbl-flash{0%{box-shadow:0 0 0 3px #f59e0b}100%{box-shadow:0 0 0 3px rgba(245,158,11,0)}}
+mark.sbl-mark{background:#fde68a;color:inherit;border-radius:3px;padding:0 1px;cursor:pointer}
+mark.sbl-mark.has-note{background:#bfdbfe;border-bottom:2px solid #2563eb}
+.sbl-pop{position:absolute;z-index:1000;display:flex;gap:4px;background:#0f172a;border-radius:10px;padding:4px;box-shadow:0 6px 20px rgba(15,23,42,.35)}
+.sbl-pop button{border:0;background:transparent;color:#fff;font-size:14px;padding:8px 12px;border-radius:7px;cursor:pointer;min-height:36px}
+.sbl-pop button:hover,.sbl-pop button:focus-visible{background:#1e293b;outline:none}
+.sbl-modal{position:fixed;inset:0;z-index:1100;background:rgba(15,23,42,.5);display:flex;align-items:center;justify-content:center;padding:16px}
+.sbl-card{position:relative;width:min(520px,100%);max-height:88vh;overflow:auto;background:#fff;color:#0f172a;border-radius:14px;padding:18px 18px 16px;box-shadow:0 20px 50px rgba(15,23,42,.4)}
+.sbl-card h3{margin:0 28px 2px 0;font-size:17px}
+.sbl-sub{margin:0 0 10px;color:#475569;font-size:13px}
+.sbl-x{position:absolute;top:10px;right:10px;border:0;background:transparent;font-size:18px;cursor:pointer;min-width:34px;min-height:34px}
+.sbl-item{position:relative;background:#f1f5f9;border-radius:10px;padding:8px 36px 8px 10px;margin:6px 0;font-size:14px;white-space:pre-wrap}
+.sbl-item q,.sbl-quote{display:block;color:#475569;font-style:italic;margin-bottom:4px}
+.sbl-quote{border-left:3px solid #f59e0b;padding:2px 10px;margin:8px 0}
+.sbl-item .sbl-del{position:absolute;top:4px;right:4px;border:0;background:transparent;cursor:pointer;font-size:15px;min-width:30px;min-height:30px}
+.sbl-text{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;font-size:15px;margin-top:6px;resize:vertical}
+.sbl-row{display:flex;gap:8px;margin-top:10px}
+.sbl-row button{border:0;border-radius:10px;padding:10px 16px;font-weight:700;cursor:pointer;background:#2563eb;color:#fff;min-height:40px}
+.sbl-row .sbl-hl-only{background:#e2e8f0;color:#0f172a}
+.sbl-page{max-width:760px;margin:0 auto;padding:18px 14px 40px}
+.sbl-page h2{margin:0 0 4px}
+.sbl-page h3{margin:22px 0 8px;font-size:16px}
+.sbl-count{background:#e2e8f0;border-radius:10px;padding:1px 8px;font-size:12px;margin-left:6px}
+.sbl-intro,.sbl-empty{color:#64748b;font-size:14px}
+.sbl-row-item{display:flex;align-items:stretch;gap:6px;margin:6px 0}
+.sbl-open{flex:1;display:flex;gap:10px;align-items:flex-start;text-align:left;border:1px solid #e2e8f0;background:#fff;border-radius:12px;padding:10px 12px;cursor:pointer;color:inherit;font:inherit}
+.sbl-open:hover,.sbl-open:focus-visible{border-color:#2563eb;outline:none}
+.sbl-em{font-size:22px}
+.sbl-body{display:flex;flex-direction:column;gap:2px;min-width:0}
+.sbl-body small{color:#64748b}
+.sbl-body q{color:#475569;font-style:italic}
+.sbl-note{white-space:pre-wrap}
+.sbl-row-item .sbl-del{border:1px solid #e2e8f0;background:#fff;border-radius:12px;cursor:pointer;min-width:44px;font-size:16px}
+.sbl-class-star{display:inline-block;margin:8px 0 4px;border:1px solid #f59e0b;background:#fffbeb;color:#92400e;border-radius:999px;padding:7px 14px;font-weight:700;cursor:pointer}
+.sbl-class-star.on{background:#f59e0b;color:#451a03}
+.class-jewel-card{position:relative}
+.sbl-mine-tag{position:absolute;top:8px;left:8px;background:#f59e0b;color:#451a03;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .sbl-card{background:#0f172a;color:#e2e8f0}
+  :root:not([data-theme="light"]) .sbl-item{background:#1e293b}
+  :root:not([data-theme="light"]) .sbl-text{background:#1e293b;color:#e2e8f0;border-color:#334155}
+}
+@media (max-width:600px){.sbl-tools{top:4px;right:4px}.sbl-btn{min-width:38px;height:38px}}
+@media print{.sbl-tools,.sbl-pop,.sbl-modal,.sbl-class-star{display:none!important}mark.sbl-mark{background:none}}

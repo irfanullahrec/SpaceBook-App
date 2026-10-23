@@ -2816,7 +2816,13 @@
    "fns": [],
    "dataKeys": [],
    "also": [],
-   "after": []
+   "after": [
+    {
+     "src": "js/math12_pagebook_answers.js",
+     "bytes": 3792,
+     "sha256": "e9232bdff1e1990007e1644d217c25b0cfc65e771973d86cfbd8a762c814e293"
+    }
+   ]
   },
   {
    "src": "js/statistics_12_book_data.js",
@@ -6997,8 +7003,8 @@
   },
   {
    "src": "js/lexicon_data.js",
-   "bytes": 2622857,
-   "sha256": "a37f2f840c0397768994c76bc8f09eac6a394eb263a34ea2ad5c7d3ad78c8542",
+   "bytes": 3098058,
+   "sha256": "24c1eadbab956425cb2f7235f86d82688721bb2bba33293991f248b69c025f6c",
    "stubs": [
     {
      "name": "SB_LEXICON_V1",
@@ -7269,11 +7275,27 @@
   },
   {
    "src": "js/study_plan_index.js",
-   "bytes": 224676,
-   "sha256": "c9693335f3b0fd4d78747a48e0d7bc90fc3e1625814786343e36d58cf4cf9758",
+   "bytes": 224601,
+   "sha256": "8727f15030d66e5f4e52ea20afc7e6d3aab599ea5bb65ce2db63aad8b7d75ed1",
    "stubs": [
     {
      "name": "SB_STUDY_INDEX",
+     "kind": "object"
+    }
+   ],
+   "keys": {},
+   "fns": [],
+   "dataKeys": [],
+   "also": [],
+   "after": []
+  },
+  {
+   "src": "js/games_vocab.js",
+   "bytes": 6873,
+   "sha256": "ebad355b22ee77d1e1e740c2529ac576874c0c3427899ee3624eaf00132332a7",
+   "stubs": [
+    {
+     "name": "SB_GAMES_VOCAB",
      "kind": "object"
     }
    ],

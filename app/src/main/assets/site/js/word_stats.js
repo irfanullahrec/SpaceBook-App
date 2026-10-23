@@ -282,8 +282,32 @@
     if (!s || (P.words[k] && P.words[k].s === s)) delete P.words[k];
     else P.words[k] = { s, t: Date.now() };
     saveProgress();
+    mirrorMark(k, P.words[k]);
     refreshMyWords();
     return P.words[k] ? P.words[k].s : '';
+  }
+  // A marked word follows the student to every device (user item "word", js/core/items.js).
+  function mirrorMark(k, e) {
+    const I = window.SBItems;
+    if (!I) return;
+    if (e) I.put('word', k, { s: e.s }, { at: e.t }); else I.del('word', k);
+  }
+  function adoptMarks() {                       // words marked before they were synced (or as a guest) go in once
+    const I = window.SBItems;
+    if (!I) return;
+    const w = loadProgress().words;
+    I.adopt('word', Object.keys(w).map(k => ({ key: k, value: { s: w[k].s }, at: w[k].t })));
+  }
+  function listenMarks() {
+    const I = window.SBItems;
+    if (!I) return;
+    I.on('change', e => {                       // a mark made on another device
+      if (e.kind !== 'word' || e.origin !== 'remote') return;
+      const P = loadProgress();
+      if (e.value) P.words[e.key] = { s: e.value.s, t: e.at || Date.now() }; else delete P.words[e.key];
+      saveProgress();
+      refreshMyWords();
+    });
   }
   function progressSummary() {
     const P = loadProgress();
@@ -691,7 +715,9 @@
     placeSubjectTab();
     // the home page may already be on the Project Stats tab
     refreshMyWords();
-    document.addEventListener('spacebook:auth', () => { progress = null; refreshMyWords(); });
+    listenMarks();
+    adoptMarks();
+    document.addEventListener('spacebook:auth', () => { progress = null; refreshMyWords(); adoptMarks(); });
     const proj = document.getElementById('homeProjectStats');
     if (proj && !proj.hidden && !proj.firstChild) renderPanel(proj, 'project');
   }

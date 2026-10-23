@@ -100,17 +100,34 @@
   }
 
   // The units shown one at a time. A printed-page view (.bk-page, the web's open-book exercise pages) wins;
-  // otherwise each top-level card of the tab (one topic / exercise / section) is a page.
+  // otherwise each topic / page card of the tab (one topic / exercise / section) is a page, however deep the tab nests them.
+  var CARD_SEL = '.math-topic-card, .para-card, .sb-pgcard';
   function collect() {
     var r = root();
     if (!r) return { mode: '', units: [] };
     var pages = $$('.bk-page', r);
     if (pages.length) return { mode: 'book', units: pages };
+    var nested = $$(CARD_SEL, r).filter(function (c) {
+      var up = c.parentElement && c.parentElement.closest(CARD_SEL);
+      return !up && !c.closest('.bk-modal, .sb-tp, .sb-pt, dialog') && (c.textContent || '').trim().length > 0;
+    });
+    if (nested.length > 1) return { mode: 'cards', units: nested };
     var cards = Array.prototype.filter.call(r.children, function (c) {
       return c.nodeType === 1 && c.offsetParent !== null || (c.nodeType === 1 && c.classList.contains('sbapp-hide'));
     });
     cards = cards.filter(function (c) { return !/^(SCRIPT|STYLE)$/.test(c.tagName) && (c.textContent || '').trim().length > 0; });
     return { mode: cards.length > 1 ? 'cards' : '', units: cards.length > 1 ? cards : [] };
+  }
+
+  // the "Click any sentence ..." line the website puts above a lesson: the app teaches the gesture itself, so the line only takes room
+  var HINT_RX = /click any sentence|point at a word|tap any sentence|کلک کریں|ماؤس رکھیں|ماوس رکھیں|کلیک|ټک وکړئ/i;
+  function dressPage() {
+    $$('[class$="-help"], [class*="-help "], .sh-help, .sh-bar').forEach(function (h) {
+      if (!h.classList.contains('sbapp-hint') && h.children.length < 3 && HINT_RX.test((h.textContent || '').slice(0, 260))) h.classList.add('sbapp-hint');
+    });
+    // the tab strip's sticky offset depends on whether a second strip (Lesson text / Videos ...) is under it
+    var sub = $('#subjSubTabsBar button, .topic-sub-tabs-bar-fixed button');
+    html.classList.toggle('sbapp-subbar', !!sub);
   }
 
   function openCard(card) {
@@ -132,6 +149,7 @@
       u.classList.toggle('sbapp-page-on', i === cur);
     });
     if (mode === 'cards') openCard(units[cur]);
+    dressPage();
     nativeScrollTo(0, 0);
     report();
   }
@@ -164,7 +182,8 @@
     lastKey = key; lastTab = tab; mode = c.mode; units = c.units;
     var start = pendingStart >= 0 ? pendingStart : (changedTab ? 0 : cur);
     pendingStart = -1;
-    if (units.length) show(start); else { cur = 0; report(); }
+    if (units.length) show(start); else { cur = 0; dressPage(); report(); }
+    setTimeout(dressPage, 350);
   }
   function schedule() { clearTimeout(timer); timer = setTimeout(refresh, 160); }
 

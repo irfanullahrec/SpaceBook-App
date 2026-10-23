@@ -10,8 +10,10 @@
  *   sync()                flush, then pull.      start()  run on load, 'online', tab visible, every minute.
  *
  * Feature flag: the automatic triggers (sign-in, online, tab visible, every minute, debounce after emit) run only when
- * localStorage 'sb_sync_v2' is 'on' or window.SB_FLAGS.syncV2 is true, so the page behaves exactly as before until the
- * feature modules use this core. flush()/pull() called directly always work.
+ * the owner's switch is on: window.SB_FLAGS.syncV2, or localStorage 'sb_sync_v2' = 'on' ('off' forces it off for testing), or else
+ * what the server published (flags.syncV2 in api/auth.php?action=me, copied to localStorage 'sb_sync_server' by setServerFlags),
+ * so the website and the app follow one switch (api/lib/flags.php). flush()/pull() called directly always work; the user items
+ * (bookmarks, notes ...) call them themselves because they have no older endpoint to fall back to.
  *
  * Events recorded while nobody is signed in belong to 'guest'. When someone signs in, pendingGuest() tells how many
  * there are; adoptGuest() moves them to the account (the page asks the student first), otherwise they stay on the device.
@@ -26,7 +28,7 @@
 
   // ---- merge a pull answer into a snapshot (pure; used by pull() and by tests) ----
   function emptySnapshot() {
-    return { progress: {}, plans: {}, plansDeleted: {}, tp: { q: {}, days: {}, sessions: {}, run: null, runClearedAt: 0 }, coins: 0 };
+    return { progress: {}, plans: {}, plansDeleted: {}, tp: { q: {}, days: {}, sessions: {}, run: null, runClearedAt: 0 }, coins: 0, items: {}, itemsGone: {} };
   }
   function applyPull(snap, d) {
     Object.keys(d.progress || {}).forEach(k => { snap.progress[k] = d.progress[k]; });
@@ -41,6 +43,16 @@
     (tp.sessions || []).forEach(s => { if (s && s.id) snap.tp.sessions[s.id] = s; });
     if ('run' in tp) { snap.tp.run = tp.run || null; snap.tp.runClearedAt = tp.runClearedAt || 0; }
     if (typeof d.coins === 'number') snap.coins = d.coins;
+    // user items (bookmarks, notes, positions ...): items[kind][key] = {v, at}; a deletion is kept in itemsGone[kind][key] = at
+    snap.items = snap.items || {}; snap.itemsGone = snap.itemsGone || {};
+    (d.items || []).forEach(it => {
+      (snap.items[it.kind] = snap.items[it.kind] || {})[it.key] = { v: it.value, at: it.at };
+      if (snap.itemsGone[it.kind]) delete snap.itemsGone[it.kind][it.key];
+    });
+    (d.itemsDeleted || []).forEach(it => {
+      if (snap.items[it.kind]) delete snap.items[it.kind][it.key];
+      (snap.itemsGone[it.kind] = snap.itemsGone[it.kind] || {})[it.key] = it.at;
+    });
     return snap;
   }
 
@@ -55,8 +67,18 @@
     const rand = opts.random || Math.random;
     const T = opts.timers || { setTimeout: (f, ms) => setTimeout(f, ms), clearTimeout: id => clearTimeout(id), setInterval: (f, ms) => setInterval(f, ms) };
     const enabled = opts.enabled || (() => {
-      try { if (typeof window !== 'undefined' && window.SB_FLAGS && window.SB_FLAGS.syncV2) return true; return typeof localStorage !== 'undefined' && localStorage.getItem('sb_sync_v2') === 'on'; } catch (e) { return false; }
+      try {
+        if (typeof window !== 'undefined' && window.SB_FLAGS && window.SB_FLAGS.syncV2) return true;
+        if (typeof localStorage === 'undefined') return false;
+        const mine = localStorage.getItem('sb_sync_v2');
+        if (mine === 'on') return true;
+        if (mine === 'off') return false;
+        return localStorage.getItem('sb_sync_server') === 'on';
+      } catch (e) { return false; }
     });
+    function setServerFlags(flags) {                    // what api/auth.php?action=me published; the next page load starts with it
+      try { if (typeof localStorage !== 'undefined' && flags && typeof flags === 'object') localStorage.setItem('sb_sync_server', flags.syncV2 ? 'on' : 'off'); } catch (e) { /* storage blocked */ }
+    }
     const isOnline = opts.isOnline || (() => (typeof navigator === 'undefined' || navigator.onLine !== false));
     const uuid = opts.uuid || (() => {
       if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
@@ -291,7 +313,7 @@
     }
 
     return {
-      ready, on, emit, emitLatest, flush, pull, sync, start, setUser, setDevice, clearDevice, bearerHeaders,
+      ready, on, emit, emitLatest, flush, pull, sync, start, setUser, setDevice, clearDevice, bearerHeaders, setServerFlags,
       pending, pendingGuest, pendingEvents, adoptGuest, isEnabled: () => !!enabled(), snapshot: () => (user ? snapshot(user) : Promise.resolve(emptySnapshot())),
       rejected: async () => (await store.get('meta', 'rejected')) || [],
       status: async () => ({ user, signedIn: !!user, hasDeviceToken: !!(device && device.token), pending: await pending(), pendingGuest: await pendingGuest(),

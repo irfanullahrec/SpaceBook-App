@@ -150,7 +150,10 @@
   }
   async function exportData() {
     const r = await call('export');
-    if (r && r.schema && typeof document !== 'undefined' && typeof Blob !== 'undefined' && window.URL && URL.createObjectURL) {
+    if (r && r.schema && typeof window.SBDownload === 'function') {
+      // the Android app's page cannot save a blob link: its bridge (assets/reader_bridge.js) hands the file to the phone's share sheet
+      window.SBDownload('spacebook-my-data.json', 'application/json', JSON.stringify(r, null, 2));
+    } else if (r && r.schema && typeof document !== 'undefined' && typeof Blob !== 'undefined' && window.URL && URL.createObjectURL) {
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([JSON.stringify(r, null, 2)], { type: 'application/json' }));
       a.download = 'spacebook-my-data.json';
@@ -292,7 +295,10 @@
       avatar.addEventListener('click', e => { e.stopPropagation(); activate(); });
       avatar.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
     }
-    call('me').then(r => setUser(r.ok ? r.user : null));
+    call('me').then(r => {
+      if (r && r.flags && window.SBSync && window.SBSync.setServerFlags) window.SBSync.setServerFlags(r.flags);      // the owner's sync switch (api/lib/flags.php)
+      setUser(r.ok ? r.user : null);
+    });
   }
 
   window.SpaceBookAuth = {

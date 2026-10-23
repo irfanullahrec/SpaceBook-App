@@ -478,8 +478,33 @@
   function loadNotified() { try { return JSON.parse(localStorage.getItem(LS_NOTIFIED) || '{}'); } catch (e) { return {}; } }
   function markNotified(key) { const n = loadNotified(); n[key] = Date.now(); Object.keys(n).forEach(k => { if (Date.now() - n[k] > 7 * 864e5) delete n[k]; }); try { localStorage.setItem(LS_NOTIFIED, JSON.stringify(n)); } catch (e) { /* fine */ } }
   const remindersOn = () => { try { return localStorage.getItem('sb_study_reminders') !== 'off'; } catch (e) { return true; } };
+  // The words of a reminder, one place for the browser (tick below: banner and notification) and for the Android app's own reminders
+  // (reminders() below, read by the app and scheduled as phone notifications). soon = five minutes before the session starts.
+  function reminderText(p, s, soon) {
+    const lines = s.tasks.filter(k => k.done < k.n).slice(0, 3).map(k => { const t = taskText(p, k); return t.subj + ': ' + t.work; });
+    const pend = pendingFromEarlier(p).length;
+    return {
+      title: (soon ? 'Study time in 5 minutes' : 'Study time now') + ' · ' + hm(s.from) + '–' + hm(s.to),
+      body: (lines.join('\n') || 'Open your plan') + (pend ? `\n+ ${pend} unfinished task${pend > 1 ? 's' : ''} from earlier` : '')
+    };
+  }
+  // Every reminder the plans will want in the next `days` days (default 7), earliest first: [{key, at (ms), title, body, planId, sessionId}].
+  // A session whose tasks are all done has none; one that already started or passed has none.
+  function reminders(days) {
+    const out = [], now = Date.now(), end = now + (days || 7) * 864e5;
+    plans.forEach(p => p.sessions.forEach(s => {
+      if (s.tasks.length && s.tasks.every(k => k.done >= k.n)) return;
+      const start = parseYmd(s.date); start.setHours(0, mins(s.from), 0, 0);
+      [[true, start.getTime() - 5 * 60000], [false, start.getTime()]].forEach(([soon, at]) => {
+        if (at <= now || at > end) return;
+        const t = reminderText(p, s, soon);
+        out.push({key: p.id + '|' + s.id + (soon ? '|soon' : ''), at, title: t.title, body: t.body, planId: p.id, sessionId: s.id});
+      });
+    }));
+    return out.sort((a, b) => a.at - b.at);
+  }
   function tick() {
-    if (!remindersOn()) return;
+    if (window.SB_BACKGROUND_READ || !remindersOn()) return;      // the app reads the plans in a page nobody looks at (see reminders()): that page shows and marks nothing
     const done = loadNotified();
     plans.forEach(p => {
       const s = currentSession(p) || (() => { const n = nextSession(p); return n && n.date === today() && mins(n.from) - nowMin() <= 5 ? n : null; })();
@@ -489,10 +514,7 @@
       if (done[key]) return;
       markNotified(key);
       const first = s.tasks.find(k => k.done < k.n) || s.tasks[0];
-      const lines = s.tasks.filter(k => k.done < k.n).slice(0, 3).map(k => { const t = taskText(p, k); return t.subj + ': ' + t.work; });
-      const pend = pendingFromEarlier(p).length;
-      const title = (soon ? 'Study time in 5 minutes' : 'Study time now') + ' · ' + hm(s.from) + '–' + hm(s.to);
-      const body = (lines.join('\n') || 'Open your plan') + (pend ? `\n+ ${pend} unfinished task${pend > 1 ? 's' : ''} from earlier` : '');
+      const {title, body} = reminderText(p, s, soon);
       if ('Notification' in window && Notification.permission === 'granted') {
         try {
           const n = new Notification(title, {body, tag: key, requireInteraction: !soon});
@@ -1027,7 +1049,7 @@
     try {
       const k = 'sb_study_pending_' + today();
       const pend = plans.filter(p => p.end >= today()).reduce((a, p) => a + pendingFromEarlier(p).length, 0);
-      if (pend && !localStorage.getItem(k)) {
+      if (pend && !window.SB_BACKGROUND_READ && !localStorage.getItem(k)) {
         localStorage.setItem(k, '1');
         setTimeout(() => { const p = plans.find(x => pendingFromEarlier(x).length); if (p) { const x = pendingFromEarlier(p)[0];
           banner(p, x.s, x.k, `You have ${pend} unfinished task${pend > 1 ? 's' : ''} from earlier`, 'Start with: ' + (taskText(p, x.k).subj + ' — ' + taskText(p, x.k).work)); } }, 4000);
@@ -1036,5 +1058,5 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 
-  window.SBStudyPlan = {plans: () => plans, createPlan, replan, render, open: openPlan, go, print: printPlan, tick, persist, removePlan, add: p => { plans.push(p); persist(p); }};
+  window.SBStudyPlan = {plans: () => plans, reminders, createPlan, replan, render, open: openPlan, go, print: printPlan, tick, persist, removePlan, add: p => { plans.push(p); persist(p); }};
 })();

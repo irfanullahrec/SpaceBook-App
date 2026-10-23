@@ -429,9 +429,10 @@
     if (!dr || dr.finished) return;
     dr.finished = true; stopClock();
     const c = dr.qs.reduce((n, m, i) => n + (dr.ans[i] === m.a ? 1 : 0), 0);
-    db().drills.push({ sid: dr.sid, ts: Date.now(), n: dr.qs.length, c, ms: Math.min(Date.now(), dr.deadline) - dr.start });
+    const done = { sid: dr.sid, ts: Date.now(), n: dr.qs.length, c, ms: Math.min(Date.now(), dr.deadline) - dr.start };
+    db().drills.push(done);
     if (db().drills.length > 200) db().drills.splice(0, db().drills.length - 200);
-    save(); render(); window.scrollTo(0, 0);
+    save(); mirror('drill', done.sid + '|' + done.ts, { n: done.n, c: done.c, ms: Math.max(0, done.ms) }, true); render(); window.scrollTo(0, 0);
   }
 
   // ── tab: answer sheet ───────────────────────────────────────────────────
@@ -695,6 +696,7 @@
       const id = t.getAttribute('data-id');
       if (t.checked) db().slo[id] = 1; else delete db().slo[id];
       save();
+      mirror('slo', id, {}, t.checked);
       const lab = t.closest('.bise-slo'); if (lab) lab.classList.toggle('ok', t.checked);
       // refresh the counters without redrawing (keeps the scroll position)
       const sid = id.split('|')[0], chNo = +id.split('|')[1], s = D && D.subjects[sid], c = s && s.chapters.find(x => x.no === chNo);
@@ -770,6 +772,34 @@
         return html;
       }; }, { id: 'sb_bise.js' });
     }
+  }
+
+  // Ticked SLOs and finished drills follow the student to every device (user items "slo" and "drill", js/core/items.js).
+  function mirror(kind, key, value, on) {
+    const I = window.SBItems;
+    if (!I) return;
+    if (on) I.put(kind, key, value); else I.del(kind, key);
+  }
+  function adoptAll() {
+    const I = window.SBItems;
+    if (!I) return;
+    const d = db();
+    I.adopt('slo', Object.keys(d.slo).map(k => ({ key: k, value: {} })));
+    I.adopt('drill', d.drills.map(x => ({ key: x.sid + '|' + x.ts, value: { n: x.n, c: x.c, ms: Math.max(0, x.ms || 0) }, at: x.ts })));
+  }
+  if (window.SBItems) {
+    window.SBItems.on('change', e => {              // a tick or a drill from another device
+      if (e.origin !== 'remote' || (e.kind !== 'slo' && e.kind !== 'drill')) return;
+      const d = db();
+      if (e.kind === 'slo') { if (e.value) d.slo[e.key] = 1; else delete d.slo[e.key]; }
+      else if (e.value) {
+        const i = e.key.lastIndexOf('|'), sid = e.key.slice(0, i), ts = +e.key.slice(i + 1);
+        if (!d.drills.some(x => x.sid === sid && x.ts === ts)) { d.drills.push({ sid, ts, n: e.value.n, c: e.value.c, ms: e.value.ms }); d.drills.sort((a, b) => a.ts - b.ts); }
+      }
+      save();
+    });
+    adoptAll();
+    document.addEventListener('spacebook:auth', () => { store = null; adoptAll(); });
   }
 
   window.SBBise = { open, close, applyPaperPreset, data: () => D };

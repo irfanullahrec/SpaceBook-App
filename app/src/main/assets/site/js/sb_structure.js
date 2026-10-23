@@ -216,8 +216,14 @@
     const btns = tabButtons();
     btns.forEach(b => { b.hidden = plan.hidden.has(b.dataset.tab); b.style.display = b.hidden ? 'none' : ''; });
     // book order: lesson, concepts, summary, exercise, practice, extras (Word Stats and others stay last)
-    plan.order.forEach(id => { const b = btns.find(x => x.dataset.tab === id); if (b) bar.appendChild(b); });
-    [...bar.children].filter(b => !b.dataset.tab).forEach(b => bar.appendChild(b));
+    const ordered = plan.order.map(id => btns.find(x => x.dataset.tab === id)).filter(Boolean);
+    const final = [...bar.children].filter(b => b.dataset.tab && !ordered.includes(b)).concat(ordered, [...bar.children].filter(b => !b.dataset.tab));
+    // Moving a button drops the keyboard focus to the page, and this runs after every redraw of the bar: move only when the order is wrong,
+    // and give the focus back to the button that had it (arrow keys through the tabs, js/core/a11y.js)
+    if (final.length === bar.children.length && final.every((b, i) => b === bar.children[i])) return;
+    const focused = document.activeElement;
+    final.forEach(b => bar.appendChild(b));
+    if (focused && focused !== document.activeElement && bar.contains(focused) && (!document.activeElement || document.activeElement === document.body)) focused.focus();
   }
   function cleanLessonSubTabs() {
     const bar = document.getElementById('subjSubTabsBar'); if (!bar) return;

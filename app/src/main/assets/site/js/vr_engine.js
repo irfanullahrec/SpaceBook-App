@@ -252,6 +252,25 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
     urPhrase(sent) {
       const s = sent.replace(/[.:]+$/, '').trim(), w = x => this.urWords(x);
       const fixed = {
+        'Given': 'دیا گیا ہے', 'Write the prime factors': 'مفرد جزو لکھیں', 'Formula / rule': 'فارمولا / اصول', 'Write as a fraction': 'کسر کی صورت میں لکھیں',
+        'Take the square root of the numerator and of the denominator': 'شمار کنندہ اور نسب نما دونوں کا جذر لیں',
+        'Multiply the numerator and denominator by the same number': 'شمار کنندہ اور نسب نما کو ایک ہی عدد سے ضرب دیں',
+        'Make pairs of equal factors; take one from each pair': 'برابر جزو کی جوڑیاں بنائیں؛ ہر جوڑی سے ایک لیں',
+        'Powers (orders) come before multiplication, division, addition and subtraction': 'طاقت ضرب، تقسیم، جمع اور تفریق سے پہلے آتی ہے',
+        'Adding a negative number is the same as subtracting the positive number': 'منفی عدد جمع کرنا مثبت عدد منفی کرنے کے برابر ہے',
+        'Subtracting a negative number is the same as adding the positive number': 'منفی عدد منفی کرنا مثبت عدد جمع کرنے کے برابر ہے',
+        'Group equal factors in pairs: every prime must appear an even number of times': 'برابر جزو کی جوڑیاں بنائیں: ہر مفرد عدد جفت بار آنا چاہیے',
+        'Work out the left side': 'بایاں طرف حل کریں', 'Work out the right side': 'دایاں طرف حل کریں',
+        'Both sides are equal, so it is verified': 'دونوں طرف برابر ہیں، اس لیے تصدیق ہو گئی',
+        'Two negative signs give a positive answer': 'دو منفی علامتیں مثبت جواب دیتی ہیں',
+        'Work with the numbers without their signs': 'علامتوں کے بغیر اعداد کے ساتھ حل کریں',
+        'Change it to a mixed number': 'اسے مخلوط عدد میں بدلیں', 'Square it': 'اس کا مربع کریں', 'Compare with the number': 'عدد سے موازنہ کریں',
+        'The signs are different, so the answer is negative': 'علامتیں مختلف ہیں، اس لیے جواب منفی ہے',
+        'The results are equal, so the commutative property holds': 'نتائج برابر ہیں، اس لیے تبادلی خاصیت درست ہے',
+        'Both pairs are equal, so the associative property holds': 'دونوں جوڑے برابر ہیں، اس لیے تلازمی خاصیت درست ہے',
+        'Some power is odd, so it is NOT a perfect square': 'کوئی طاقت طاق ہے، اس لیے یہ مکمل مربع نہیں',
+        'All powers are even, so it IS a perfect square': 'تمام طاقتیں جفت ہیں، اس لیے یہ مکمل مربع ہے',
+        'Brackets first': 'پہلے قوسین', 'Start inside the parentheses': 'قوسین کے اندر سے شروع کریں',
         'Look at the line above': 'اوپر والی لائن دیکھیں', 'the next line comes from it': 'اگلی لائن اسی سے بنتی ہے',
         'Look at the line above: the next line comes from it': 'اوپر والی لائن دیکھیں: اگلی لائن اسی سے بنتی ہے',
         'Write the next line': 'اگلی لائن لکھیں', 'The next equation': 'اگلی مساوات', 'Look at the part that changes': 'وہ حصہ دیکھیں جو بدلتا ہے',
@@ -272,11 +291,20 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
       if (/^[#\d\s.,()+\-−×÷=/^√a-z²³]+$/i.test(s) && /\d/.test(s)) return w(s);   // a bare calculation: read it with Urdu maths words
       return null;
     }
+    /* No Urdu voice on this computer (Windows has none): Urdu and Hindi sound alike, so the board's own Urdu phrases are written in Devanagari for an installed Hindi voice */
+    deva(s) {
+      const D = { 'اوپر': 'ऊपर', 'والی': 'वाली', 'لائن': 'लाइन', 'دیکھیں': 'देखें', 'اگلی': 'अगली', 'اسی': 'उसी', 'سے': 'से', 'بنتی': 'बनती', 'ہے': 'है', 'لکھیں': 'लिखें', 'مساوات': 'मुसावात', 'وہ': 'वो', 'حصہ': 'हिस्सा', 'جو': 'जो', 'بدلتا': 'बदलता', 'حساب': 'हिसाब', 'لگائیں': 'लगाएं', 'تفرق': 'तफ़र्रुक़', 'نکالیں': 'निकालें', 'دوبارہ': 'दोबारा', 'تکمل': 'तकामुल', 'ہر': 'हर', 'رکن': 'रुक्न', 'کا': 'का', 'قیمت': 'क़ीमत', 'رکھیں': 'रखें', 'پھیلائیں': 'फैलाएं', 'ضرب': 'ज़र्ब', 'دیں': 'दें', 'جمع': 'जमा', 'کریں': 'करें', 'جانچ': 'जांच', 'براہِ': 'बराहे', 'راست': 'रास्त', 'نتیجہ': 'नतीजा', 'مجموعہ': 'मजमूआ', 'فرق': 'फ़र्क़', 'جزو': 'जुज़', 'اکٹھا': 'इकट्ठा', 'ملائیں': 'मिलाएं', 'ترتیب': 'तरतीब', 'بدلیں': 'बदलें', 'ڈومین': 'डोमेन', 'مربع': 'मुरब्बा', 'مکمل': 'मुकम्मल', 'اسے': 'उसे', 'صفر': 'सिफ़र', 'کے': 'के', 'برابر': 'बराबर', 'پہلا': 'पहला', 'حل': 'हल', 'جواب': 'जवाब', 'مرحلہ': 'मरहला', 'از': 'अज़', 'کو': 'को', 'بدل': 'बदल', 'کر': 'कर', 'نئی': 'नई', 'وہیں': 'वहीं', 'جہاں': 'जहां', 'عمل': 'अमल', 'تھا': 'था', 'کی': 'की', 'تقسیم': 'तक़सीम', 'منفی': 'मनफ़ी', 'بٹا': 'बटा', 'جذر': 'जज़र', 'دیا': 'दिया', 'گیا': 'गया', 'مفرد': 'मुफ़रद', 'فارمولا': 'फ़ॉर्मूला', 'اصول': 'उसूल', 'کسر': 'कसर', 'صورت': 'सूरत', 'میں': 'में', 'شمار': 'शुमार', 'کنندہ': 'कुनिंदा', 'اور': 'और', 'نسب': 'निस्ब', 'نما': 'नुमा', 'دونوں': 'दोनों', 'لیں': 'लें', 'ایک': 'एक', 'ہی': 'ही', 'عدد': 'अदद', 'جوڑیاں': 'जोड़ियां', 'بنائیں': 'बनाएं', 'جوڑی': 'जोड़ी', 'طاقت': 'ताक़त', 'تفریق': 'तफ़रीक़', 'پہلے': 'पहले', 'آتی': 'आती', 'کرنا': 'करना', 'مثبت': 'मुसबत', 'بار': 'बार', 'جفت': 'जुफ़्त', 'آنا': 'आना', 'چاہیے': 'चाहिए', 'بایاں': 'बायां', 'دایاں': 'दायां', 'طرف': 'तरफ़', 'ہیں': 'हैं', 'اس': 'इस', 'لیے': 'लिए', 'تصدیق': 'तस्दीक़', 'ہو': 'हो', 'گئی': 'गई', 'علامتوں': 'अलामतों', 'بغیر': 'बग़ैर', 'اعداد': 'अदाद', 'ساتھ': 'साथ', 'مخلوط': 'मख़लूत', 'موازنہ': 'मुवाज़ना', 'علامتیں': 'अलामतें', 'مختلف': 'मुख़्तलिफ़', 'نتائج': 'नताइज', 'تبادلی': 'तबादली', 'خاصیت': 'ख़ासियत', 'درست': 'दुरुस्त', 'تلازمی': 'तलाज़ुमी', 'جوڑے': 'जोड़े', 'کوئی': 'कोई', 'طاق': 'ताक़', 'نہیں': 'नहीं', 'تمام': 'तमाम', 'طاقتیں': 'ताक़तें', 'یہ': 'यह', 'قوسین': 'क़ौसैन', 'اندر': 'अंदर', 'شروع': 'शुरू', 'دو': 'दो', 'دیتی': 'देती', 'قدم': 'क़दम' };
+      return s.split(/\s+/).map(t => { const m = /^([^:،]*)([:،]*)$/.exec(t); return (D[m[1]] || m[1]) + (m[2] ? ',' : ''); }).join(' ');
+    }
+    hasVoice(l) { try { return root.speechSynthesis.getVoices().some(x => x.lang && x.lang.toLowerCase().startsWith(l)); } catch (e) { return false; } }
     hasUrduVoice() { try { return root.speechSynthesis.getVoices().some(x => x.lang && /^ur/i.test(x.lang)); } catch (e) { return false; } }
     voiceNote() {
       const n = this.el.querySelector('.sbt-vnote'); if (!n) return;
       const miss = this.voice && (this.vlang || 'en') === 'ur' && !this.hasUrduVoice();
       n.hidden = !miss;
+      if (miss) n.textContent = this.hasVoice('hi')
+        ? 'This computer has no Urdu voice (Windows does not offer one). The standard step phrases are spoken with the installed Hindi voice, which sounds the same; other sentences stay English. For full Urdu speech use Microsoft Edge (online Urdu voices) or the Android app.'
+        : 'This computer has no Urdu voice (Windows does not offer one), so the Urdu text is read in English. For Urdu speech use Microsoft Edge (online Urdu voices), install a Hindi voice in Settings → Time & language → Speech, or use the Android app.';
     }
     async narrate(st) {
       if (!st || !root.speechSynthesis) return;
@@ -289,18 +317,22 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
       const segs = [];
       for (const sent of text.split(/(?<=[.!?])\s+/).filter(Boolean)) {
         const own = ur && this.urPhrase(sent);
-        if (own) { segs.push({ t: own, l: 'ur' }); continue; }
+        if (own) { segs.push({ t: own, l: 'ur', own: true, en: sent }); continue; }
         if (ur && root.SBTranslate) {
-          try { const r = await root.SBTranslate.translate(sent, 'en', 'ur'); if (my !== this.say) return; if (r && r.text && r.source !== 'gloss' && r.source !== 'none') { segs.push({ t: r.text, l: 'ur' }); continue; } } catch (e) { /* English */ }
+          try { const r = await root.SBTranslate.translate(sent, 'en', 'ur'); if (my !== this.say) return; if (r && r.text && r.source !== 'gloss' && r.source !== 'none') { segs.push({ t: r.text, l: 'ur', en: sent }); continue; } } catch (e) { /* English */ }
         }
         segs.push({ t: sent, l: 'en' });
       }
       const voices = root.speechSynthesis.getVoices();
+      if (ur && !this.hasVoice('ur')) {   // no Urdu voice: the board's own phrases go to a Hindi voice, anything else is read in English
+        const hi = this.hasVoice('hi');
+        segs.forEach(g => { if (g.l !== 'ur') return; if (hi && g.own) { g.t = this.deva(g.t); g.l = 'hi'; } else { g.t = g.en || g.t; g.l = 'en'; } });
+      }
       const next = k => {
         if (my !== this.say) return;
         if (k >= segs.length) { this.speaking = false; return; }
         const g = segs[k], v = voices.find(x => x.lang && x.lang.toLowerCase().startsWith(g.l));
-        const u = new SpeechSynthesisUtterance(g.t); u.lang = g.l === 'ur' ? 'ur-PK' : 'en-US'; if (v) { u.voice = v; u.lang = v.lang; } u.rate = 0.92;
+        const u = new SpeechSynthesisUtterance(g.t); u.lang = g.l === 'ur' ? 'ur-PK' : g.l === 'hi' ? 'hi-IN' : 'en-US'; if (v) { u.voice = v; u.lang = v.lang; } u.rate = 0.92;
         u.onend = () => next(k + 1); u.onerror = () => next(k + 1);
         root.speechSynthesis.speak(u);
       };

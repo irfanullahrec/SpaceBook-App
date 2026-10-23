@@ -1,0 +1,13 @@
+{
+ "schema": "spacebook.app-sync/1",
+ "serviceWorker": "59b1417a59ab",
+ "site": {
+  "files": 162,
+  "sha256": "282456d5849dac96144e60b89f5a80036104be4ebad52471c8af24197830d35f"
+ },
+ "generated": {
+  "app_catalog.json": "bbbc7c5b65a6a966dfe1ed6932e7e5a90c2ca8395a70e96b58a4728070273a89",
+  "mcq_bank.json": "114cb784bcf2e52da3bfab7814cd07edd0873ba78772607b9e3548598aa87638",
+  "prep_tests.json": "6d18917ef43b527a59b58905e25edab569eb2a0c28256019e5eeeb354f740c2a"
+ }
+}
