@@ -81,6 +81,12 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
 .sbt-explain b.b{color:#1d4ed8}.sbt-explain b.o{color:#c2410c}.sbt-explain b.p{color:#6d28d9}.sbt-explain b.g{color:#15803d}.sbt-explain b.r{color:#b91c1c}
 .sbt-nav{position:sticky;bottom:env(safe-area-inset-bottom,0);z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;padding:.5rem .7rem;background:rgba(255,255,255,.97);border-top:1px solid #cbd5e1;box-shadow:0 -4px 10px rgba(15,23,42,.06)}
 .sbt-nav button,.sbt-nav select{font:inherit;font-size:.85rem;border:1px solid #cbd5e1;background:#fff;border-radius:999px;padding:.32rem .85rem;cursor:pointer;color:#0f172a}
+.sbt-nav{gap:.2rem;padding:.35rem .35rem;justify-content:center}
+.sbt-nav button.ic{display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;min-width:0;padding:0;font-size:.95rem;line-height:1}
+.sbt-nav button.ic.txt{font-size:.72rem;font-weight:800;letter-spacing:.02em}
+.sbt-ico{width:1.25rem;height:1.25rem;fill:currentColor;pointer-events:none}
+.sbt-fsb{display:inline-flex;align-items:center;justify-content:center;width:2rem;height:2rem;padding:0}
+.sbt-fsb .sbt-ico{width:1.1rem;height:1.1rem}
 .sbt-nav button.primary{background:#027cba;border-color:#027cba;color:#fff;font-weight:700}
 .sbt-nav button:disabled{opacity:.45;cursor:default}
 .sbt-nav .sp{flex:1 1 auto}
@@ -170,6 +176,19 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
     try { return root.katex.renderToString(unesc(a || b || c || d), { throwOnError: false, output: 'html', strict: 'ignore' }); } catch (e) { return all; }
   });
   const strip = t =>t.replace(/^\((.*)\)$/, '$1').replace(/\*/g, '');
+  /* the board's buttons are icons (a title and an aria-label say what each does), so the controls take one line of a phone */
+  const IC = {
+    play: 'M8 5v14l11-7z', pause: 'M6 19h4V5H6v14zm8-14v14h4V5h-4z', prev: 'M6 6h2v12H6zm3.5 6l8.5 6V6z', next: 'M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z',
+    replay: 'M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z',
+    list: 'M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z',
+    voice: 'M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z',
+    mute: 'M16.5 12A4.5 4.5 0 0014 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.796 8.796 0 0021 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a8.99 8.99 0 003.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z',
+    speed: 'M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z',
+    fs: 'M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z',
+    fsx: 'M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z',
+  };
+  const ico = n => '<svg class="sbt-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="' + IC[n] + '"/></svg>';
+  const MODES = [['guided', '🧭', 'Guided: the board explains every step'], ['quick', '⚡', 'Quick: the whole solution at once'], ['practice', '✍️', 'Practice: you write the next line']];
   class Tutor {
     constructor(host, spec) {
       this.host = host; this.spec = spec; this.self = this; this.i = 0; this.run = 0; this.my = 0; this.seen = new Set(); this.speed = 'normal';
@@ -181,15 +200,21 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
         `<div class="sbt" id="${this.id}"><div class="sbt-head"><span class="sbt-q">${this.spec.q}</span>
         <span class="sbt-given">${this.spec.givenText ? esc(this.spec.givenText) : tex(this.spec.given || '')}</span>
         <span class="sbt-dots">${this.spec.steps.map((s, k) => `<button type="button" class="sbt-dot" data-k="${k}" title="${s.dot}" aria-label="${s.title}">${k + 1}</button>`).join('')}</span>
-        <button type="button" class="sbt-fsb" data-act="fs" aria-pressed="false" title="Full screen board" aria-label="Full screen board">⛶</button>
+        <button type="button" class="sbt-fsb" data-act="fs" aria-pressed="false" title="Full screen board" aria-label="Full screen board">${ico('fs')}</button>
         </div>
         <div class="sbt-area"><svg class="sbt-svg"><defs></defs></svg><div class="sbt-lines"></div></div>
         <div class="sbt-practice" hidden><span class="sbt-pq"></span><input type="text" class="sbt-pin" autocomplete="off" spellcheck="false" aria-label="Your next line"><button type="button" data-act="pcheck">Check</button><button type="button" data-act="phint">Hint</button><button type="button" data-act="pshow">Show me</button><span class="sbt-pmsg" role="status"></span></div>
         <div class="sbt-explain" aria-live="polite"><h5></h5><p></p></div>
-        <div class="sbt-nav"><button type="button" class="primary" data-act="play" aria-pressed="false" title="Play all steps automatically">▶ Play</button><button type="button" data-act="prev">◀ Previous</button><button type="button" data-act="replay">↻ Replay Animation</button>
-        <button type="button" class="primary" data-act="next">Next Step ▶</button><button type="button" data-act="full" aria-pressed="false">☰ All steps</button><button type="button" data-act="voice" aria-pressed="false" title="Start / stop the voice that explains each step">🔊 Voice</button><select data-act="vlang" aria-label="Voice language" title="Voice language"><option value="en">English</option><option value="ur">اردو</option></select><span class="sbt-vnote" hidden style="flex:1 1 100%;font-size:.8rem;color:#b45309">No Urdu voice is installed on this device, so Urdu text may be read in English. On Windows add one in Settings → Time &amp; language → Speech → Add voices → Urdu; on Android install Urdu in Google text-to-speech.</span><span class="sp"></span>
-        <label>Mode <select data-act="mode"><option value="guided">Guided</option><option value="quick">Quick</option><option value="practice">Practice</option></select></label>
-        <button type="button" data-act="spd" title="Speed: click to make the animation faster or slower" aria-label="Animation speed">⏩ <span class="sbt-spv">1×</span></button></div></div>`;
+        <div class="sbt-nav" role="toolbar" aria-label="Board controls"><button type="button" class="ic" data-act="prev" title="Previous step" aria-label="Previous step">${ico('prev')}</button>
+        <button type="button" class="ic primary" data-act="play" aria-pressed="false" title="Play all steps automatically" aria-label="Play all steps automatically">${ico('play')}</button>
+        <button type="button" class="ic primary" data-act="next" title="Next step" aria-label="Next step">${ico('next')}</button>
+        <button type="button" class="ic" data-act="replay" title="Replay this step" aria-label="Replay this step">${ico('replay')}</button>
+        <button type="button" class="ic" data-act="full" aria-pressed="false" title="All steps as a list" aria-label="All steps as a list">${ico('list')}</button>
+        <button type="button" class="ic" data-act="voice" aria-pressed="false" title="Voice: explains each step aloud" aria-label="Voice: explains each step aloud">${ico('voice')}</button>
+        <button type="button" class="ic txt" data-act="vlang" title="Voice language: English" aria-label="Voice language: English">EN</button>
+        <button type="button" class="ic" data-act="mode" title="${MODES[0][2]}" aria-label="${MODES[0][2]}">${MODES[0][1]}</button>
+        <button type="button" class="ic txt" data-act="spd" title="Speed: tap to make the animation faster or slower" aria-label="Animation speed"><span class="sbt-spv">1×</span></button>
+        <span class="sbt-vnote" hidden style="flex:1 1 100%;font-size:.8rem;color:#b45309">No Urdu voice is installed on this device, so Urdu text may be read in English. On Windows add one in Settings → Time &amp; language → Speech → Add voices → Urdu; on Android install Urdu in Google text-to-speech.</span></div></div>`;
       this.el = this.host.firstElementChild;
       this.area = this.el.querySelector('.sbt-area'); this.svg = this.el.querySelector('.sbt-svg'); this.box = this.el.querySelector('.sbt-lines');
       if (this.spec.acc) this.box.classList.add('acc');   // accumulating board: every line stays, groups wrap into columns (see planAcc)
@@ -212,14 +237,24 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
         if (this.mode !== 'quick') this.speed = this.base;
         e.currentTarget.querySelector('.sbt-spv').textContent = SPEED_LABELS[this.base]; this.go(this.i);
       });
-      this.el.querySelector('[data-act="mode"]').addEventListener('change', e => { this.mode = e.target.value; this.speed = this.mode === 'quick' ? 'quick' : this.base; this.go(this.i); });
-      this.el.querySelector('[data-act="vlang"]').addEventListener('change', e => { this.vlang = e.target.value; this.voiceNote(); if (this.voice) this.narrate(this.spec.steps[this.i]); });
+      this.el.querySelector('[data-act="mode"]').addEventListener('click', e => {
+        const k = (MODES.findIndex(m => m[0] === this.mode) + 1) % MODES.length, m = MODES[k], b = e.currentTarget;
+        this.mode = m[0]; this.speed = this.mode === 'quick' ? 'quick' : this.base;
+        b.textContent = m[1]; b.title = m[2]; b.setAttribute('aria-label', m[2]);
+        this.go(this.i);
+      });
+      this.el.querySelector('[data-act="vlang"]').addEventListener('click', e => {
+        this.vlang = (this.vlang || 'en') === 'en' ? 'ur' : 'en';
+        const b = e.currentTarget, nm = this.vlang === 'ur' ? 'Urdu' : 'English';
+        b.textContent = this.vlang === 'ur' ? 'UR' : 'EN'; b.title = 'Voice language: ' + nm; b.setAttribute('aria-label', 'Voice language: ' + nm);
+        this.voiceNote(); if (this.voice) this.narrate(this.spec.steps[this.i]);
+      });
       this.el.querySelector('.sbt-pin').addEventListener('keydown', e => { if (e.key === 'Enter') this.practiceAct('pcheck'); });
     }
     togglePlay(force) {
       const on = force != null ? force : !this.playing, b = this.el.querySelector('[data-act="play"]');
       this.playing = on; clearInterval(this.pt);
-      if (b) { b.textContent = on ? '⏸ Pause' : '▶ Play'; b.setAttribute('aria-pressed', String(on)); }
+      if (b) { b.innerHTML = ico(on ? 'pause' : 'play'); b.title = b.dataset.label = on ? 'Pause' : 'Play all steps automatically'; b.setAttribute('aria-label', b.title); b.setAttribute('aria-pressed', String(on)); }
       if (!on) return;
       const last = this.spec.steps.length - 1;
       if (this.i >= last) this.go(0);
@@ -237,7 +272,7 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
     /* voice: explains each step while it is being solved, in English or Urdu (device voices only; Urdu text from the offline translator) */
     toggleVoice() {
       this.voice = !this.voice; this.vlang = this.vlang || 'en'; this.voiceNote();
-      const b = this.el.querySelector('[data-act="voice"]'); b.setAttribute('aria-pressed', String(this.voice)); b.textContent = this.voice ? '🔇 Stop voice' : '🔊 Voice';
+      const b = this.el.querySelector('[data-act="voice"]'); b.setAttribute('aria-pressed', String(this.voice)); b.innerHTML = ico(this.voice ? 'mute' : 'voice'); b.title = this.voice ? 'Stop the voice' : 'Voice: explains each step aloud'; b.setAttribute('aria-label', b.title);
       if (this.voice) this.narrate(this.spec.steps[this.i]); else this.hush();
     }
     hush() { this.speaking = false; this.say = (this.say || 0) + 1; try { root.speechSynthesis && root.speechSynthesis.cancel(); } catch (e) { /* no speech on this device */ } }
@@ -355,7 +390,7 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
       this.el.querySelector('.sbt-explain p').innerHTML = rich(st.html);
       this.el.querySelectorAll('.sbt-dot').forEach((d, k) => { d.classList.toggle('on', k === this.i); d.classList.toggle('seen', k !== this.i && this.seen.has(k)); });
       const last = this.i === STEPS.length - 1, nx = this.el.querySelector('[data-act="next"]');
-      nx.textContent = last ? '↻ Replay Solution' : 'Next Step ▶';
+      nx.innerHTML = ico(last ? 'replay' : 'next'); nx.title = last ? 'Replay the solution from the start' : 'Next step'; nx.setAttribute('aria-label', nx.title);
       this.el.querySelector('[data-act="prev"]').disabled = this.i === 0;
       this.seen.add(this.i);
       const w = Object.create(this); w.my = my;
@@ -371,10 +406,10 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
     toggleFs() {
       const el = this.el, on = !el.classList.contains('sbt-fs');
       this.plan = null;
-      const exit = () => { this.plan = null; el.classList.remove('sbt-fs'); document.documentElement.classList.remove('sbt-lock'); const b = el.querySelector('[data-act="fs"]'); if (b) { b.setAttribute('aria-pressed', 'false'); b.textContent = '⛶'; } this.fsKeys && document.removeEventListener('keydown', this.fsKeys); setTimeout(() => this.go(this.i), 150); };
+      const exit = () => { this.plan = null; el.classList.remove('sbt-fs'); document.documentElement.classList.remove('sbt-lock'); const b = el.querySelector('[data-act="fs"]'); if (b) { b.setAttribute('aria-pressed', 'false'); b.innerHTML = ico('fs'); b.title = 'Full screen board'; b.setAttribute('aria-label', 'Full screen board'); } this.fsKeys && document.removeEventListener('keydown', this.fsKeys); setTimeout(() => this.go(this.i), 150); };
       if (!on) { if (document.fullscreenElement === el && document.exitFullscreen) { document.exitFullscreen().catch(() => {}); } return exit(); }
       el.classList.add('sbt-fs'); document.documentElement.classList.add('sbt-lock');
-      const b = el.querySelector('[data-act="fs"]'); b.setAttribute('aria-pressed', 'true'); b.textContent = '✕';
+      const b = el.querySelector('[data-act="fs"]'); b.setAttribute('aria-pressed', 'true'); b.innerHTML = ico('fsx'); b.title = 'Leave full screen'; b.setAttribute('aria-label', 'Leave full screen');
       try { if (el.requestFullscreen) el.requestFullscreen().catch(() => {}); } catch (e) { /* the fixed overlay is the fallback */ }
       this.fsKeys = e => { if (e.key === 'Escape') { if (!document.fullscreenElement) exit(); } else if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); this.go(this.i === this.spec.steps.length - 1 ? 0 : this.i + 1); } else if (e.key === 'ArrowLeft') { this.go(this.i - 1); } };
       document.addEventListener('keydown', this.fsKeys);

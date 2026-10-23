@@ -256,35 +256,44 @@
     }).join('').replace(/ﷺ/g, '').trim();
   }
   const inRtlScript = s => (s.match(ARABIC_LETTER) || []).length > (s.match(LATIN_LETTER) || []).length;
+  // Keeps the part of one two-language title that is in the subject's language. Returns false (and, without `commit`, touches nothing)
+  // when the title needs no change. Splitting the separator into its own text node is itself a DOM change, and every DOM change runs
+  // apply() again, so a title that stays as it is must never be split: that used to make a Class 11 Physics lesson rewrite its titles forever.
+  function trimTitle(el, rtl, commit) {
+    // the separator becomes a text node of its own, so a title split by maths markup still divides cleanly
+    [...el.childNodes].forEach(n => {
+      let t = n;
+      while (t && t.nodeType === 3) {
+        const m = SEP.exec(t.nodeValue);
+        if (!m) break;
+        const sep = t.splitText(m.index);
+        t = sep.splitText(m[0].length);
+        sep.sbmSep = true;
+      }
+    });
+    const segs = [[]];
+    [...el.childNodes].forEach(n => { if (n.sbmSep) segs.push([]); else segs[segs.length - 1].push(n); });
+    if (segs.length < 2) return false;
+    const texts = segs.map(words);
+    let keep = texts.map(t => !!t && inRtlScript(t) === rtl);
+    // "حمد · حمد": the same words twice
+    if (texts.every(t => t === texts[0])) keep = texts.map((t, i) => i === 0);
+    if (!keep.some(Boolean) || keep.every(Boolean)) return false;
+    if (!commit) return true;
+    let i = 0;
+    [...el.childNodes].forEach(n => {
+      if (n.sbmSep) { i++; if (!(keep[i - 1] && keep[i])) n.remove(); return; }
+      if (!keep[i]) n.remove();
+    });
+    return true;
+  }
   function oneLanguage(root, lang) {
     const rtl = lang !== 'en';
     root.querySelectorAll(TITLE).forEach(el => {
       if (!/\s·\s/.test(el.textContent)) return;
       const full = el.textContent.replace(/\s+/g, ' ').trim();
-      // the separator becomes a text node of its own, so a title split by maths markup still divides cleanly
-      [...el.childNodes].forEach(n => {
-        let t = n;
-        while (t && t.nodeType === 3) {
-          const m = SEP.exec(t.nodeValue);
-          if (!m) break;
-          const sep = t.splitText(m.index);
-          t = sep.splitText(m[0].length);
-          sep.sbmSep = true;
-        }
-      });
-      const segs = [[]];
-      [...el.childNodes].forEach(n => { if (n.sbmSep) segs.push([]); else segs[segs.length - 1].push(n); });
-      if (segs.length < 2) return;
-      const texts = segs.map(words);
-      let keep = texts.map(t => !!t && inRtlScript(t) === rtl);
-      // "حمد · حمد": the same words twice
-      if (texts.every(t => t === texts[0])) keep = texts.map((t, i) => i === 0);
-      if (!keep.some(Boolean) || keep.every(Boolean)) return;
-      let i = 0;
-      [...el.childNodes].forEach(n => {
-        if (n.sbmSep) { i++; if (!(keep[i - 1] && keep[i])) n.remove(); return; }
-        if (!keep[i]) n.remove();
-      });
+      if (!trimTitle(el.cloneNode(true), rtl, false)) return;     // decided on a copy: an unchanged title is left alone
+      if (!trimTitle(el, rtl, true)) return;
       if (!el.title && !el.querySelector('.katex')) el.title = full;
     });
   }

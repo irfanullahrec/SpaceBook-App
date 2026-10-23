@@ -167,6 +167,8 @@
   async function api(action, body) {
     const o = { credentials: 'same-origin', headers: {} };
     if (body !== undefined) { o.method = 'POST'; o.headers['Content-Type'] = 'application/json'; o.body = JSON.stringify(body); }
+    // the record and the finished sessions wait in the offline queue (js/core/offline_queue.js) when there is no connection; the newest record replaces older ones
+    if (body !== undefined && signedIn() && window.SBOfflineQueue) return window.SBOfflineQueue.send(API + '?action=' + action, body, { dedupe: action === 'save' ? 'tp:save' : 'tp:' + action + ':' + ((body.session && body.session.id) || '') });
     try { const r = await fetch(API + '?action=' + action, o); return await r.json(); } catch (e) { return { ok: false }; }
   }
   let pushTimer = null, pulledFor = null;
@@ -300,12 +302,12 @@
     if (!signedIn()) return;
     const d = db();
     const r = await api('save', { record: { v: 1, q: d.q, days: d.days, run: d.run, runClearedAt: d.runClearedAt, updatedAt: d.updatedAt, resets: d.resets, rid: d.rid } });
-    if (!r.ok) return;
+    if (!r.ok && !r.queued) return;                 // queued: no connection now, the record is sent later (js/core/offline_queue.js)
     const sent = new Set(d.pushed);
     for (const sess of d.sessions) {
       if (sent.has(sess.id)) continue;
       const x = await api('session', { session: sess });
-      if (x.ok) { d.pushed.push(sess.id); sent.add(sess.id); }
+      if (x.ok || x.queued) { d.pushed.push(sess.id); sent.add(sess.id); }
     }
     save(true);
   }

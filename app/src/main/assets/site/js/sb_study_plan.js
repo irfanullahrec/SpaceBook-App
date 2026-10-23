@@ -66,6 +66,8 @@
   async function api(action, body) {
     const o = {credentials: 'same-origin', headers: {}};
     if (body !== undefined) { o.method = 'POST'; o.headers['Content-Type'] = 'application/json'; o.body = JSON.stringify(body); }
+    // a plan saved or deleted without a connection waits in the offline queue (js/core/offline_queue.js); the newest change to a plan replaces older ones
+    if (body !== undefined && signedIn && window.SBOfflineQueue) return window.SBOfflineQueue.send(API + '?action=' + action, body, {dedupe: 'plan:' + ((body.plan && body.plan.id) || body.id || action)});
     try { const r = await fetch(API + '?action=' + action, o); return await r.json(); } catch (e) { return {ok: false}; }
   }
   // ---- v2: offline-safe sync (js/core/sync.js, behind the sb_sync_v2 flag) ----

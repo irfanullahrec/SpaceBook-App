@@ -7276,7 +7276,7 @@
   {
    "src": "js/study_plan_index.js",
    "bytes": 224601,
-   "sha256": "8727f15030d66e5f4e52ea20afc7e6d3aab599ea5bb65ce2db63aad8b7d75ed1",
+   "sha256": "2e9d8fb30b88313ed86706a7832fc4f9719459b0919fc640af63bc81f8e772d7",
    "stubs": [
     {
      "name": "SB_STUDY_INDEX",

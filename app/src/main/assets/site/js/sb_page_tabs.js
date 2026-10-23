@@ -17,19 +17,19 @@
   const BISE_SRC = 'js/bise_swat_data.js?v=20261020_b1';   // same URL sb_bise.js loads, so the browser reuses its copy
 
   const LBL = {
-    en: {slo: '🎯 Board SLOs', ex: '✍️ Exercise', mcq: 'MCQs', sq: 'SQs', lq: 'LQs',
+    en: {slo: '🎯 Board SLOs', ex: '✍️ Exercise', game: '🎮 Games', mcq: 'MCQs', sq: 'SQs', lq: 'LQs',
       full: {mcq: 'Multiple Choice Questions', sq: 'Short Questions', lq: 'Long Questions'},
       covers: 'SLOs covered on this page', frompage: 'From this page', none: {mcq: 'No Board-style MCQ for this page in the book’s data.', sq: 'No short question for this page in the book’s data.', lq: 'No long question for this page in the book’s data.'},
       noex: 'The chapter’s exercise has no question for this page.', slochip: 'SLO-based practice', lvl: 'Level', board: 'Board paper', sec: {mcq: 'Section A', sq: 'Section B', lq: 'Section C'}, marks: 'marks', each: 'each', attempt: 'attempt', of: 'of', mcqs: 'MCQs', short: 'short questions', long: 'long questions', chap: 'This chapter', hint: 'Answer it from this page.', close: 'Close'},
-    ur: {slo: '🎯 بورڈ SLOs', ex: '✍️ مشق', mcq: 'MCQs', sq: 'SQs', lq: 'LQs',
+    ur: {slo: '🎯 بورڈ SLOs', ex: '✍️ مشق', game: '🎮 کھیل', mcq: 'MCQs', sq: 'SQs', lq: 'LQs',
       full: {mcq: 'کثیر الانتخابی سوالات', sq: 'مختصر سوالات', lq: 'تفصیلی سوالات'},
       covers: 'اس صفحے کے SLOs', frompage: 'اسی صفحے سے', none: {mcq: 'اس صفحے کے لیے کتاب میں کوئی MCQ نہیں ملا۔', sq: 'اس صفحے کے لیے کتاب میں کوئی مختصر سوال نہیں ملا۔', lq: 'اس صفحے کے لیے کتاب میں کوئی تفصیلی سوال نہیں ملا۔'},
       noex: 'باب کی مشق میں اس صفحے کا کوئی سوال نہیں۔', slochip: 'SLO پر مبنی مشق', lvl: 'سطح', board: 'بورڈ پیپر', sec: {mcq: 'حصہ الف', sq: 'حصہ ب', lq: 'حصہ ج'}, marks: 'نمبر', each: 'ہر ایک', attempt: 'حل کریں', of: 'میں سے', mcqs: 'MCQs', short: 'مختصر سوالات', long: 'تفصیلی سوالات', chap: 'یہ باب', hint: 'اسے اسی صفحے سے حل کریں۔', close: 'بند کریں'},
-    ps: {slo: '🎯 د بورډ SLOs', ex: '✍️ تمرین', mcq: 'MCQs', sq: 'SQs', lq: 'LQs',
+    ps: {slo: '🎯 د بورډ SLOs', ex: '✍️ تمرین', game: '🎮 لوبې', mcq: 'MCQs', sq: 'SQs', lq: 'LQs',
       full: {mcq: 'څو ځوابه پوښتنې', sq: 'لنډې پوښتنې', lq: 'اوږدې پوښتنې'},
       covers: 'د دې پاڼې SLOs', frompage: 'له دې پاڼې څخه', none: {mcq: 'د دې پاڼې لپاره په کتاب کې MCQ نشته.', sq: 'د دې پاڼې لپاره په کتاب کې لنډه پوښتنه نشته.', lq: 'د دې پاڼې لپاره په کتاب کې اوږده پوښتنه نشته.'},
       noex: 'د فصل په تمرین کې د دې پاڼې پوښتنه نشته.', slochip: 'د SLO پر بنسټ تمرین', lvl: 'کچه', board: 'د بورډ پرچه', sec: {mcq: 'الف برخه', sq: 'ب برخه', lq: 'ج برخه'}, marks: 'نمرې', each: 'هر یو', attempt: 'حل کړئ', of: 'له', mcqs: 'MCQs', short: 'لنډې پوښتنې', long: 'اوږدې پوښتنې', chap: 'دا فصل', hint: 'له دې پاڼې یې حل کړئ.', close: 'بندول'},
-    ar: {slo: '🎯 أهداف المجلس', ex: '✍️ التمارين', mcq: 'MCQs', sq: 'SQs', lq: 'LQs',
+    ar: {slo: '🎯 أهداف المجلس', ex: '✍️ التمارين', game: '🎮 ألعاب', mcq: 'MCQs', sq: 'SQs', lq: 'LQs',
       full: {mcq: 'اختيار من متعدد', sq: 'أسئلة قصيرة', lq: 'أسئلة طويلة'},
       covers: 'نواتج التعلم في هذه الصفحة', frompage: 'من هذه الصفحة', none: {mcq: 'لا يوجد سؤال اختيار من متعدد لهذه الصفحة.', sq: 'لا يوجد سؤال قصير لهذه الصفحة.', lq: 'لا يوجد سؤال طويل لهذه الصفحة.'},
       noex: 'لا يوجد سؤال من تمارين الفصل لهذه الصفحة.', slochip: 'تدريب مبني على الهدف', lvl: 'المستوى', board: 'ورقة المجلس', sec: {mcq: 'القسم أ', sq: 'القسم ب', lq: 'القسم ج'}, marks: 'درجات', each: 'لكل سؤال', attempt: 'أجب عن', of: 'من', mcqs: 'MCQs', short: 'أسئلة قصيرة', long: 'أسئلة طويلة', chap: 'هذا الفصل', hint: 'أجب من هذه الصفحة.', close: 'إغلاق'}
@@ -238,9 +238,12 @@
     const host = document.createElement('div');
     host.className = 'sb-pt'; host.setAttribute('dir', med === 'en' ? 'ltr' : 'rtl');
     let which = null, kind = 'mcq';
-    host.innerHTML = `<div class="sb-pt-bar" role="tablist" aria-label="${esc(TT.slo)} / ${esc(TT.ex)}">
+    host.innerHTML = `<div class="sb-pt-bar">
+        <span style="display:contents" role="tablist" aria-label="${esc(TT.slo)} / ${esc(TT.ex)}">
         <button type="button" class="sb-pt-tab" role="tab" data-w="slo" aria-selected="false">${TT.slo} <i>${total(st.slo)}</i></button>
         <button type="button" class="sb-pt-tab" role="tab" data-w="ex" aria-selected="false">${TT.ex} <i>${total(st.ex)}</i></button>
+        </span>
+        <button type="button" class="sb-pt-tab sb-pt-game" data-game="1" aria-haspopup="dialog">${TT.game}</button>
       </div>
       <div class="sb-pt-drawer" hidden>
         <div class="sb-pt-sub" role="tablist">${KINDS.map(k => `<button type="button" class="sb-pt-subtab" role="tab" data-k="${k}" title="${esc(TT.full[k])}"><span lang="en">${TT[k]}</span> <i></i></button>`).join('')}</div>
@@ -248,7 +251,7 @@
       </div>`;
     const drawer = host.querySelector('.sb-pt-drawer'), panel = host.querySelector('.sb-pt-panel');
     const paint = () => {
-      host.querySelectorAll('.sb-pt-tab').forEach(b => { const on = b.dataset.w === which; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
+      host.querySelectorAll('.sb-pt-tab:not(.sb-pt-game)').forEach(b => { const on = b.dataset.w === which; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
       drawer.hidden = !which;
       if (!which) return;
       host.querySelectorAll('.sb-pt-subtab').forEach(b => { const k = b.dataset.k; b.classList.toggle('on', k === kind); b.setAttribute('aria-selected', k === kind); b.querySelector('i').textContent = st[which][k].length; b.classList.toggle('zero', !st[which][k].length); });
@@ -258,6 +261,7 @@
     host.addEventListener('click', e => {
       e.stopPropagation();
       const tab = e.target.closest('.sb-pt-tab');
+      if (tab && tab.dataset.game) { if (window.SBArcade) window.SBArcade.open(unit); return; }     // the arcade: games made from this page (js/sb_arcade.js)
       if (tab) {
         if (which === tab.dataset.w) which = null;
         else { which = tab.dataset.w; if (!st[which][kind].length) kind = KINDS.find(k => st[which][k].length) || kind; }

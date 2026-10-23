@@ -20,6 +20,8 @@
   }
   function saveGuest() { try { localStorage.setItem(GUEST, JSON.stringify(data)); } catch (e) { /* storage unavailable */ } }
   async function call(action, body) {
+    // a write that cannot reach the server waits in the offline queue (js/core/offline_queue.js) and is sent when the connection is back
+    if (body !== undefined && window.SBOfflineQueue && user) return window.SBOfflineQueue.send(API + '?action=' + action, body);
     const opts = {credentials: 'same-origin', headers: {}};
     if (body !== undefined) { opts.method = 'POST'; opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
     try { const r = await fetch(API + '?action=' + action, opts); return await r.json(); } catch (e) { return {ok: false}; }
@@ -125,7 +127,8 @@
       r = {ok: true, earned: data.coins - before, completed: !wasDone && (a.times || 0) > 0, times: a.times || 0, coins: data.coins};
     } else if (user) {
       r = await call('step', {key, title, total, step: i});
-      if (r.ok) {
+      if (r.queued) { const a = applyStep(data, key, title, total, i); r = {ok: true, earned: a.earned, completed: a.completed, times: a.times, coins: data.coins}; }   // offline: counted here now, sent later
+      else if (r.ok) {
         const a = data.activities[key] || (data.activities[key] = {done: [], total, times: 0, first: null, last: null});
         if (!a.done.includes(i)) a.done.push(i);
         a.times = r.times; if (r.completed) a.first = a.last = now();
@@ -149,7 +152,8 @@
       }
     } else if (user) {
       r = await call('again', {key});
-      if (r.ok) { const a = data.activities[key]; if (a) { a.times = r.times; a.last = now(); } data.coins = r.coins; }
+      if (r.queued) { const a = applyAgain(data, key); r = a ? {ok: true, earned: a.earned, times: a.times, coins: data.coins} : {ok: false}; }
+      else if (r.ok) { const a = data.activities[key]; if (a) { a.times = r.times; a.last = now(); } data.coins = r.coins; }
     } else r = guestAgain(key);
     if (r.ok) fly(r.earned ? '+' + r.earned + ' 🪙 practice' : 'Practised again ✔', x, y);
     changed();

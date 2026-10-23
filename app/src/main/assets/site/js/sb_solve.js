@@ -138,14 +138,19 @@
   .sb-ans[aria-expanded="true"]{background:#0f766e}
   .sb-ans[aria-expanded="true"]::before{content:"✕"}
   .sb-solve{margin:.5rem 0 .9rem;border:1px solid #cbd5e1;border-radius:14px;background:#fff;overflow:hidden;box-shadow:0 2px 10px rgba(15,23,42,.07);font-size:.98rem;line-height:1.75;color:#1e293b}
-  .sbs-top{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .7rem;padding:.5rem .7rem;background:linear-gradient(90deg,#0f766e,#14b8a6);color:#fff}
-  .sbs-title{font-weight:800;font-size:.92rem}
-  .sbs-langs{display:inline-flex;flex-wrap:wrap;gap:.25rem;margin-inline-start:auto}
-  .sbs-langs button{font:inherit;font-size:.8rem;font-weight:700;border:1px solid rgba(255,255,255,.6);background:transparent;color:#fff;border-radius:999px;padding:.1rem .65rem;cursor:pointer}
+  .sbs-top{display:flex;flex-wrap:nowrap;align-items:center;gap:.3rem;padding:.3rem .45rem;background:linear-gradient(90deg,#0f766e,#14b8a6);color:#fff;direction:ltr}
+  .sbs-title{font-size:1.05rem;line-height:1;flex:none}
+  .sbs-langs{display:inline-flex;flex-wrap:nowrap;gap:.2rem;margin-inline-start:.1rem;min-width:0}
+  .sbs-langs button{font:inherit;font-size:.72rem;font-weight:800;letter-spacing:.02em;border:1px solid rgba(255,255,255,.6);background:transparent;color:#fff;border-radius:999px;min-width:2rem;height:1.7rem;padding:0 .4rem;cursor:pointer}
   .sbs-langs button[aria-pressed="true"]{background:#fff;color:#0f766e;border-color:#fff}
-  .sbs-ctl{display:flex;flex-wrap:wrap;gap:.3rem;padding:.4rem .7rem;border-bottom:1px solid #e2e8f0;background:#f8fafc}
-  .sbs-ctl button{font:inherit;font-size:.78rem;border:1px solid #cbd5e1;background:#fff;border-radius:8px;padding:.1rem .55rem;cursor:pointer}
-  .sbs-ctl button[aria-pressed="true"]{background:#0f766e;color:#fff;border-color:#0f766e}
+  .sbs-tools{display:inline-flex;flex-wrap:nowrap;align-items:center;gap:.2rem;margin-inline-start:auto}
+  .sbs-tools button{display:inline-flex;align-items:center;justify-content:center;width:1.9rem;height:1.9rem;padding:0;font:inherit;font-size:1rem;line-height:1;border:1px solid rgba(255,255,255,.6);background:transparent;color:#fff;border-radius:50%;cursor:pointer}
+  .sbs-tools button[aria-pressed="true"],.sbs-tools button[aria-selected="true"]{background:#fff;color:#0f766e;border-color:#fff}
+  .sbs-ico{width:1.1rem;height:1.1rem;fill:currentColor;pointer-events:none}
+  .sbs-fs-lock,.sbs-fs-lock body{overflow:hidden!important}
+  .sb-solve.sbs-fs{position:fixed;inset:0;z-index:2147482000;margin:0;border:0;border-radius:0;overflow:auto;background:#fff;font-size:1.1rem;box-shadow:none;max-width:none;width:auto;padding-bottom:env(safe-area-inset-bottom,0)}
+  .sb-solve.sbs-fs .sbs-top{position:sticky;top:0;z-index:4;padding-top:calc(.3rem + env(safe-area-inset-top,0))}
+  .sb-solve.sbs-fs .sbs-body{padding:.6rem .9rem 2rem}
   .sbs-body{padding:.4rem .7rem .7rem}
   .sbs-steps{list-style:none;margin:0;padding:0;counter-reset:sbs}
   .sbs-step{position:relative;margin:.4rem 0;padding-block:.4rem;padding-inline:2.3rem .5rem;border-radius:8px;transition:background .3s}
@@ -239,12 +244,30 @@
       `<p class="sbs-line${multi && l === panel._lang ? ' sel' : ''}" lang="${l}" dir="${LANG[l].dir}">${multi ? `<span class="sbs-chip">${LANG[l].name}</span>` : ''}${panel._inline(lines[l], false)}</p>`).join('');
   }
 
+  // the panel's buttons are icons (the title and aria-label say what they do): the answer box takes as little of the page as it can
+  const SICON = {
+    voice: 'M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0014 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z',
+    fs: 'M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z',
+    fsx: 'M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z',
+  };
+  const sicon = n => '<svg class="sbs-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="' + SICON[n] + '"/></svg>';
+  // full screen: the panel becomes a fixed layer over the page (no browser full-screen API: a phone's WebView may not offer it)
+  function setFs(panel, on) {
+    panel.classList.toggle('sbs-fs', on);
+    document.documentElement.classList.toggle('sbs-fs-lock', on);
+    const b = panel.querySelector('[data-a="fs"]');
+    if (b) { b.setAttribute('aria-pressed', String(on)); b.innerHTML = sicon(on ? 'fsx' : 'fs'); b.title = on ? 'Leave full screen' : 'Full screen'; b.setAttribute('aria-label', b.title); }
+    if (panel._fsKey) { document.removeEventListener('keydown', panel._fsKey); panel._fsKey = null; }
+    if (on) { panel._fsKey = e => { if (e.key === 'Escape') setFs(panel, false); }; document.addEventListener('keydown', panel._fsKey); }
+    if (!on) panel.scrollTop = 0;
+  }
+
   // Open or close the panel that belongs to an Ans button. cfg: {inline, plain, langs}
   function toggle(btn, sol, cfg) {
     addCss();
     const panel = panelFor(btn);
     const open = panel.hidden || !panel._sol;
-    if (!open) { panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); stop(panel); return; }
+    if (!open) { if (panel.classList.contains('sbs-fs')) setFs(panel, false); panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); stop(panel); return; }
     panel.hidden = false;
     btn.setAttribute('aria-expanded', 'true');
     panel.classList.add('sb-solve');
@@ -259,9 +282,9 @@
     panel._note = info.note;
     const hasSteps = panel._steps.length > 0;
     const inl = panel._inline;
-    panel.innerHTML = `<div class="sbs-top"><span class="sbs-title">🧑‍🏫 ${hasSteps ? LANG[med.label].explain : LANG[med.label].label}</span>
-      <span class="sbs-langs" role="group" aria-label="Language">${Object.keys(LANG).map(k => `<button type="button" data-l="${k}" lang="${k}" aria-pressed="${k === med.text}">${LANG[k].name}</button>`).join('')}</span></div>
-      ${hasSteps ? `<div class="sbs-ctl"><button type="button" data-a="voice" aria-pressed="false" title="Read aloud">🔊</button></div>` : ''}
+    panel.innerHTML = `<div class="sbs-top"><span class="sbs-title" title="${esc(hasSteps ? LANG[med.label].explain : LANG[med.label].label)}" aria-hidden="true">🧑‍🏫</span>
+      <span class="sbs-langs" role="group" aria-label="Language">${Object.keys(LANG).map(k => `<button type="button" data-l="${k}" lang="${k}" title="${LANG[k].name}" aria-label="${LANG[k].name}" aria-pressed="${k === med.text}">${k.toUpperCase()}</button>`).join('')}</span>
+      <span class="sbs-tools" role="group" aria-label="Tools">${hasSteps ? `<button type="button" data-a="voice" aria-pressed="false" title="Read aloud" aria-label="Read aloud">${sicon('voice')}</button>` : ''}<button type="button" data-a="fs" aria-pressed="false" title="Full screen" aria-label="Full screen">${sicon('fs')}</button></span></div>
       <div class="sbs-body" dir="${LANG[med.text].dir}">
       ${hasSteps ? `<ol class="sbs-steps">${panel._steps.map(s => `<li class="sbs-step${s.m ? ' sbs-hasm' : ''}" hidden><span class="sbs-teacher" aria-hidden="true">🧑‍🏫</span><div class="sbs-say" aria-live="polite"></div>${s.m ? `<div class="sbs-show" hidden>${inl('$$' + s.m + '$$', false)}</div>` : ''}${s.svg ? `<div class="sbs-show" hidden>${s.svg}</div>` : ''}</li>`).join('')}</ol>` : ''}
       <p class="sbs-src"></p>
@@ -284,10 +307,11 @@
       setLang(b.dataset.l);
       if (b.dataset.l === 'ar') prepareArabic(panel).then(() => { if (panel._lang === 'ar') setLang('ar'); });
     };
-    const ctl = panel.querySelector('.sbs-ctl');
+    const ctl = panel.querySelector('.sbs-tools');
     if (ctl) ctl.onclick = e => {
       const b = e.target.closest('button'); if (!b) return;
       const a = b.dataset.a, n = panel._steps.length;
+      if (a === 'fs') return setFs(panel, !panel.classList.contains('sbs-fs'));
       if (a === 'play') { panel._playing = !panel._playing; playBtn.textContent = panel._playing ? '⏸ Pause' : '▶ Play'; if (panel._playing && !panel._busy) advance(panel); }
       if (a === 'next') { pause(); finish(panel); advance(panel); }
       if (a === 'all') { stop(panel); pause(); finish(panel); while (panel._i < n - 1) reveal(panel, ++panel._i, true); advance(panel); }
