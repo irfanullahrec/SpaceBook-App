@@ -88,7 +88,8 @@ pictures), so the app keeps its own copy and answers the WebView from it:
 | `data/` | `Prefs` (DataStore), `Titles` (split "2 My Family and I میرا…"), `local/Database` (Room: outbox, reading position, bookmarks, notes, reactions), `remote/` (Retrofit `ApiService`, `Endpoint`, interceptors, models), `repo/Repositories` (catalog, auth, sync, entitlements) |
 | `di/AppModule` | Hilt: Json, OkHttp, Retrofit, Room |
 | `work/SyncWorker` | sends the outbox |
-| `ui/home` | Home feed (`FeedBuilder` is pure and unit-tested) |
+| `ui/home` | Home: My Stats / Project Stats / My Account tabs (see "Home" below). `FeedBuilder` (the old feed) is still there and unit-tested but no longer shown |
+| `data/prep` | `PrepReader` (reads the student's tests, plans, words and usage from the website's storage), `PrepModels`, `ProjectWords` |
 | `ui/library` | classes, subject tiles, chapter list, offline search |
 | `ui/reader` | `ReaderScreen` (footer with page arrows in its corners, bookmark, notes, read aloud, Games tab), `MeaningSheet` (the sentence / word pop-up), `Speaker` (the phone's voices) |
 | `ui/offline` | `OfflineScreen` ("Books on this phone"), `MissingBookPanel` |
@@ -115,6 +116,30 @@ website's own search opens a chapter: `openSubject()` then the chapter's own but
 `SBApp.setAuth`, `SBApp.pageText`. The page calls back through `SBHost` (`onReady`, `onState`, `onAction`). If the website
 changes its markup, only this file and `reader_mobile.css` need updating, and the web can ship them without an app update
 if they are later served from the site (not done: they are bundled).
+
+## Home: My Stats, Project Stats, My Account
+
+Home shows only what the student has started, in three tabs named as on the website.
+
+- **My Stats**: every test preparation (PST, CT, SST ... as many as were started) and every study plan, each with *Practice* and
+  *Statistics* buttons that open that test (on its Practice or Stats tab) or that plan; a *Delete plan* button on each plan; the
+  recent practice; and *My Vocabulary* (words marked learnt / already known while studying a subject).
+- **Project Stats**: distinct words in all the books, per language and per class. Read from `site/js/word_stats_summary.js`, which
+  the app already carries inside its offline copy of the website, so nothing is packed twice.
+- **My Account**: who is signed in, the server's plan (`entitlements.plan`), the preview expiry date (from `ExpiryGate`; only the
+  days left, never the unlock code), Free / Premium plans (Premium shows "Price to be announced": no price is invented), and usage.
+
+Where the numbers come from: the website keeps tests (`sbTP:v1:<user>`), plans (`sb_study_plans_v1`) and word marks
+(`sbWS:progress:<user>`) in the browser's own storage, which only a page of the website's address can open. `PrepReader` loads an
+empty page of that address in a WebView nobody sees, runs `assets/prep_summary.js` in it (read-only) and gets one JSON summary
+(`tools/test_prep_summary.js` tests the script on the PC; `--sample` writes the file `PrepModelsTest` decodes). Home refreshes on
+every return to it and on pull-to-refresh. A student who has an account sees the record of that account, otherwise the guest
+record, never somebody else's.
+
+**Deleting a plan** asks first (a native dialog), then opens the Study Plan screen with `study-plan-delete:<id>`; the bridge's
+`SBApp.deletePlan` calls the website's own `SBStudyPlan.removePlan`, so a signed-in student's deletion also reaches the account and
+the plan does not come back with the next sync, then reports `done` and the screen closes. Not seen yet with a real signed-in
+account on a phone: the 1.5 s waits around the call (for the sign-in to reach the page and for the sync outbox) are a precaution.
 
 ## Games tab
 

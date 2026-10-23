@@ -248,6 +248,49 @@
       return true;
     },
 
+    // Home sends the student straight to one test (PST, CT, SST ...) on one of its tabs: practice | mock | mistakes | history | stats
+    openTestPrep: async function (trackId, tab) {
+      var ok = await api.openPage('tests-preps');
+      if (!ok) return false;
+      var tp = await until(function () { return window.SBTestPrep && typeof window.SBTestPrep.open === 'function'; }, 20000, 100);
+      if (!tp) { host('onAction', ['error', 'Tests Preps did not load.']); return false; }
+      try { await window.SBTestPrep.open(trackId); if (tab && tab !== 'practice') window.SBTestPrep.tab(tab); } catch (e) { host('onAction', ['error', String(e && e.message || e)]); return false; }
+      return true;
+    },
+
+    // ... or straight to one study plan
+    openPlan: async function (planId) {
+      var ok = await api.openPage('study-plan');
+      if (!ok) return false;
+      var btn = await until(function () { return $('.spx-card[data-id="' + planId + '"] [data-act="open"]'); }, 15000, 120);
+      if (btn) btn.click();
+      return !!btn;
+    },
+
+    // ... or deletes one (Home asked the student first). The website's own removePlan does it, so a signed-in student's deletion
+    // also reaches the account and the plan does not come back with the next sync. Reports ("done", text) when finished.
+    deletePlan: async function (planId) {
+      if (!(await api.openPage('study-plan'))) return false;
+      var sp = await until(function () { return window.SBStudyPlan && typeof window.SBStudyPlan.removePlan === 'function'; }, 20000, 100);
+      if (!sp) { host('onAction', ['error', 'Study plans did not load.']); return false; }
+      var syncs = false;
+      try { syncs = localStorage.getItem('sb_sync_v2') === 'on'; } catch (e) { /* storage blocked */ }
+      if (syncs) await wait(1500);                       // the sign-in reaches the page a moment after it loads; a deletion before that stays on this phone only
+      var find = function () { return window.SBStudyPlan.plans().find(function (p) { return p.id === planId; }); };
+      var stored = function () {
+        try { return (JSON.parse(localStorage.getItem('sb_study_plans_v1') || '[]') || []).some(function (p) { return p && p.id === planId; }); } catch (e) { return false; }
+      };
+      // the page reads its plans from storage as it starts, so a plan that is stored is found at once; give it a moment, never a long wait
+      var plan = find() || (stored() ? await until(find, 2500, 150) : null);
+      if (!plan && stored()) { host('onAction', ['error', 'That plan could not be deleted. Open it in Study Plan and use its delete button.']); return false; }
+      if (plan) {
+        try { window.SBStudyPlan.removePlan(plan); } catch (e) { host('onAction', ['error', String(e && e.message || e)]); return false; }
+        if (syncs) await wait(1500);                     // time for the deletion to be written to the sync outbox
+      }
+      host('onAction', ['done', plan ? 'Plan deleted' : 'That plan was already gone']);
+      return true;
+    },
+
     // The app signed in (or out): tell the page so rewards, plans and tests sync to the same account.
     setAuth: async function (user, device) {
       try { localStorage.setItem('sb_sync_v2', 'on'); } catch (e) { /* storage blocked: the cookie still works */ }

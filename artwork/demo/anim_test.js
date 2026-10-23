@@ -39,9 +39,9 @@ async function tapCtl(sel, name) {
   console.log('controls before Animate:', await info());
   console.log('buttons now:', (await P.web(`JSON.stringify([...document.querySelectorAll('button,[role=tab]')].filter(b=>b.getClientRects().length&&b.getBoundingClientRect().top>-50&&b.getBoundingClientRect().top<innerHeight).map(b=>(b.className||'')+'|'+(b.dataset.act||'')+'|'+b.textContent.trim().slice(0,24)))`)).value);
   // the web side's new tabs / Animate button
-  const hasAnimate = (await P.web(`!!document.querySelector('button.sbs-animate')`)).value;
+  const hasAnimate = (await P.web(`!!document.querySelector('.sbs-tabs button[data-tab=animated]')`)).value;
   console.log('Animate button present:', hasAnimate);
-  await tapCtl('button.sbs-animate', 'Animate');
+  await tapCtl('.sbs-tabs button[data-tab=animated]', 'Animated tab');
   await sleep(2500);
   console.log('after Animate:', await info(), await step());
   P.shot('C:/tmp/anim_1.png');

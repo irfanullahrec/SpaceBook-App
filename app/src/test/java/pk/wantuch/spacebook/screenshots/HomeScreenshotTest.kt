@@ -11,57 +11,62 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
-import pk.wantuch.spacebook.data.local.Reaction
-import pk.wantuch.spacebook.data.local.ReadingPosition
-import pk.wantuch.spacebook.data.play.PlayState
+import pk.wantuch.spacebook.data.prep.PrepSnapshot
+import pk.wantuch.spacebook.data.prep.ProjectWords
 import pk.wantuch.spacebook.data.remote.Catalog
-import pk.wantuch.spacebook.ui.home.FeedPost
+import pk.wantuch.spacebook.ui.home.AccountInfo
 import pk.wantuch.spacebook.ui.home.HomeActions
 import pk.wantuch.spacebook.ui.home.HomeContent
-import pk.wantuch.spacebook.ui.home.buildFeed
+import pk.wantuch.spacebook.ui.home.TAB_ACCOUNT
+import pk.wantuch.spacebook.ui.home.TAB_PROJECT
+import pk.wantuch.spacebook.ui.home.TAB_STATS
 import pk.wantuch.spacebook.ui.theme.SpaceBookTheme
 import java.io.File
 
 /**
- * Draws the real Home screen on the PC (no phone needed) with the real bundled catalog, so the look can be checked and
- * compared between versions. Pictures are written to app/build/screenshots/.
- * Fonts and emoji are the test machine's, not a phone's: use these for layout, spacing and colour, not for final type.
+ * Draws the real Home screen on the PC (no phone needed): its three tabs (My Stats, Project Stats, My Account), for a student with
+ * several tests and plans started (read from the same JSON the JavaScript side makes), one with only a plan, one with nothing, and
+ * one with nothing read yet. Pictures are written to app/build/screenshots/. Fonts and emoji are the test machine's, not a phone's.
  */
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
-@Config(sdk = [35], qualifiers = "w411dp-h1700dp-xxhdpi")
+@Config(sdk = [35], qualifiers = "w411dp-h2100dp-xxhdpi")
 class HomeScreenshotTest {
     @get:Rule val rule = createComposeRule()
 
-    private val json = Json { ignoreUnknownKeys = true }
+    private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
     private val catalog: Catalog = json.decodeFromString(File("src/main/assets/app_catalog.json").readText())
-    private val actions = HomeActions({ _, _, _ -> }, {}, {}, {}, {}, {}, {})
+    private val sample: PrepSnapshot = json.decodeFromString(File("src/test/resources/prep_sample.json").readText())
+    private val project: ProjectWords = ProjectWords.parse(File("src/main/assets/site/js/word_stats_summary.js").readText())!!
+    private val now = 1_792_735_000_000L                                    // the moment the sample was made
 
-    private fun render(name: String, dark: Boolean, signedIn: Boolean, liked: Boolean, play: PlayState) {
-        val cls = catalog.cls("cls5")!!
-        val reading = listOf(ReadingPosition("cls5-math", "cls5", 1, cls.subjects.first { it.id == "cls5-math" }.chapters[1].t, 4, 9, 1L))
-        val feed = buildFeed(catalog, "cls5", reading, daySeed = 20_000)
-        val reactions = if (liked) feed.filterIsInstance<FeedPost.Chapter>().take(1).associate { it.id to Reaction(it.id, liked = true, saved = true) } else emptyMap()
+    private val guest = AccountInfo()
+    private val student = AccountInfo(
+        name = "Ayesha Khan", subtitle = "Student · 0300 1234567", signedIn = true, planId = "free", coins = 1280,
+        previewEnds = now + 24 * 86_400_000L, previewDaysLeft = 24,
+    )
+
+    private fun render(name: String, dark: Boolean, prep: PrepSnapshot?, tab: Int = TAB_STATS, account: AccountInfo = student) {
         rule.setContent {
             SpaceBookTheme(themeMode = if (dark) 2 else 1, fontScalePercent = 100) {
-              androidx.compose.material3.Surface(color = androidx.compose.material3.MaterialTheme.colorScheme.background) {
-                HomeContent(
-                    coins = 128, userName = if (signedIn) "Ayesha Khan" else null, allClasses = catalog.classes, firstRun = false, cls = cls, feed = feed,
-                    reactions = reactions, play = play, today = TODAY, greeting = "Good evening", chestReward = null, actions = actions,
-                    onPickClass = {}, onLike = {}, onSave = {}, onShare = {}, onOpenChest = {}, onCloseChest = {},
-                )
-              }
+                androidx.compose.material3.Surface(color = androidx.compose.material3.MaterialTheme.colorScheme.background) {
+                    HomeContent(tab, {}, prep, project, catalog, account, HomeActions(), nowMillis = now)
+                }
             }
         }
         rule.onRoot().captureRoboImage("build/screenshots/$name.png")
         assertTrue(File("build/screenshots/$name.png").length() > 10_000)
     }
 
-    private val TODAY = 20_000
-    /** a student part-way through the day: 4-day streak, 3 of 5 answers, lesson read, chest still closed */
-    private val busy = PlayState(xp = 320, streak = 4, bestStreak = 4, lastActiveDay = TODAY, countDay = TODAY, answeredToday = 3, correctToday = 2, lessonDay = TODAY,
-        totalAnswered = 40, totalCorrect = 30, chests = 2)
+    @Test fun homeLight() = render("home-light", dark = false, prep = sample)
+    @Test fun homeDark() = render("home-dark", dark = true, prep = sample)
+    @Test fun homeOnlyPlans() = render("home-plans-only", dark = false, prep = sample.copy(tests = sample.tests.copy(tests = emptyList(), recent = emptyList())))
+    @Test fun homeNothingStarted() = render("home-empty", dark = false, prep = PrepSnapshot(words = sample.words))       // no test, no plan, but some words marked
+    @Test fun homeLoading() = render("home-loading", dark = false, prep = null)
 
-    @Test fun homeLight() = render("home-light", dark = false, signedIn = true, liked = true, play = busy)
-    @Test fun homeDark() = render("home-dark", dark = true, signedIn = false, liked = false, play = PlayState())
+    @Test fun projectStats() = render("home-project-stats", dark = false, prep = sample, tab = TAB_PROJECT)
+    @Test fun projectStatsDark() = render("home-project-stats-dark", dark = true, prep = sample, tab = TAB_PROJECT)
+    @Test fun accountStudent() = render("home-account", dark = false, prep = sample, tab = TAB_ACCOUNT)
+    @Test fun accountStudentDark() = render("home-account-dark", dark = true, prep = sample, tab = TAB_ACCOUNT)
+    @Test fun accountGuest() = render("home-account-guest", dark = false, prep = PrepSnapshot(), tab = TAB_ACCOUNT, account = guest)
 }

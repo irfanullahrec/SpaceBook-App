@@ -1,0 +1,272 @@
+{
+ "today": "2026-10-23",
+ "tests": {
+  "key": "sbTP:v1:ayesha@x.pk",
+  "tests": [
+   {
+    "id": "sst-gen",
+    "title": "SST General",
+    "fullName": "Secondary School Teacher (General)",
+    "emoji": "📚",
+    "color": "#d97706",
+    "sessions": 1,
+    "practice": 1,
+    "mock": 0,
+    "questions": 10,
+    "correct": 9,
+    "minutes": 5,
+    "last": 1792731600000,
+    "bestMock": -1,
+    "week": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     5
+    ],
+    "running": false
+   },
+   {
+    "id": "pst",
+    "title": "PST",
+    "fullName": "Primary School Teacher",
+    "emoji": "🏫",
+    "color": "#0284c7",
+    "sessions": 2,
+    "practice": 1,
+    "mock": 1,
+    "questions": 70,
+    "correct": 49,
+    "minutes": 60,
+    "last": 1792648800000,
+    "bestMock": 70,
+    "week": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     10,
+     0,
+     50,
+     0
+    ],
+    "running": false
+   },
+   {
+    "id": "ct",
+    "title": "CT",
+    "fullName": "Certified Teacher",
+    "emoji": "📜",
+    "color": "#10b981",
+    "sessions": 0,
+    "practice": 0,
+    "mock": 0,
+    "questions": 0,
+    "correct": 0,
+    "minutes": 0,
+    "last": 0,
+    "bestMock": -1,
+    "week": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "running": true
+   }
+  ],
+  "recent": [
+   {
+    "track": "sst-gen",
+    "title": "SST General",
+    "mode": "practice",
+    "ts": 1792731600000,
+    "n": 10,
+    "c": 9
+   },
+   {
+    "track": "pst",
+    "title": "PST",
+    "mode": "mock",
+    "ts": 1792648800000,
+    "n": 50,
+    "c": 35
+   },
+   {
+    "track": "pst",
+    "title": "PST",
+    "mode": "practice",
+    "ts": 1792476000000,
+    "n": 20,
+    "c": 14
+   }
+  ],
+  "totals": {
+   "questions": 80,
+   "correct": 58,
+   "minutes": 65,
+   "sessions": 3,
+   "studyDays": 3,
+   "streak": 2
+  },
+  "week": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   10,
+   0,
+   50,
+   5
+  ]
+ },
+ "plans": [
+  {
+   "id": "p2",
+   "name": "Weekend revision",
+   "classId": "cls9",
+   "start": "2026-10-23",
+   "end": "2026-11-01",
+   "subjects": [
+    {
+     "id": "cls9-phy",
+     "chapters": 1
+    }
+   ],
+   "pct": 0,
+   "items": 1,
+   "itemsDone": 0,
+   "todayTasks": 1,
+   "todayMinutes": 20,
+   "todayItemsLeft": 1,
+   "pending": 0,
+   "nextDate": "2026-10-23",
+   "nextFrom": "20:00",
+   "nextTo": "21:00",
+   "daysLeft": 9,
+   "sessions": 1,
+   "sessionsDone": 0,
+   "byCat": {
+    "read": {
+     "n": 1,
+     "done": 0
+    }
+   },
+   "updatedAt": 9
+  },
+  {
+   "id": "p1",
+   "name": "Class 6 term 1",
+   "classId": "cls6",
+   "start": "2026-10-13",
+   "end": "2026-10-28",
+   "subjects": [
+    {
+     "id": "cls6-math",
+     "chapters": 3
+    },
+    {
+     "id": "cls6-eng",
+     "chapters": 1
+    }
+   ],
+   "pct": 48,
+   "items": 47,
+   "itemsDone": 27,
+   "todayTasks": 3,
+   "todayMinutes": 35,
+   "todayItemsLeft": 13,
+   "pending": 3,
+   "nextDate": "2026-10-23",
+   "nextFrom": "17:00",
+   "nextTo": "18:00",
+   "daysLeft": 5,
+   "sessions": 5,
+   "sessionsDone": 1,
+   "byCat": {
+    "read": {
+     "n": 5,
+     "done": 3
+    },
+    "mcq": {
+     "n": 30,
+     "done": 24
+    },
+    "sq": {
+     "n": 4,
+     "done": 0
+    },
+    "tf": {
+     "n": 6,
+     "done": 0
+    },
+    "lq": {
+     "n": 2,
+     "done": 0
+    }
+   },
+   "updatedAt": 5
+  }
+ ],
+ "words": {
+  "learnt": 4,
+  "knew": 2,
+  "today": 1,
+  "week": 3,
+  "total": 6,
+  "byLang": {
+   "en": {
+    "learnt": 2,
+    "knew": 1
+   },
+   "ur": {
+    "learnt": 1,
+    "knew": 1
+   },
+   "ps": {
+    "learnt": 1,
+    "knew": 0
+   },
+   "ar": {
+    "learnt": 0,
+    "knew": 0
+   }
+  }
+ },
+ "usage": {
+  "studiedQuestions": 42,
+  "bytes": 4002,
+  "keys": 4
+ }
+}

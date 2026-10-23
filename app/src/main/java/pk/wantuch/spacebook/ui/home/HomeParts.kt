@@ -1,45 +1,37 @@
 package pk.wantuch.spacebook.ui.home
 
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -47,204 +39,250 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import pk.wantuch.spacebook.data.play.Badge
-import pk.wantuch.spacebook.data.play.LEVEL_XP
-import pk.wantuch.spacebook.data.play.MISSION_ANSWERS
-import pk.wantuch.spacebook.data.play.PlayState
-import pk.wantuch.spacebook.data.play.XP_MISSION
-import pk.wantuch.spacebook.data.remote.ClassDto
-import pk.wantuch.spacebook.ui.components.BookCover
-import pk.wantuch.spacebook.ui.components.CoinChip
-import pk.wantuch.spacebook.ui.play.Confetti
-import pk.wantuch.spacebook.ui.play.Mascot
+import pk.wantuch.spacebook.data.prep.PlanDto
+import pk.wantuch.spacebook.data.prep.PrepSnapshot
+import pk.wantuch.spacebook.data.prep.RecentDto
+import pk.wantuch.spacebook.data.prep.TestDto
+import pk.wantuch.spacebook.ui.components.SectionTitle
 import pk.wantuch.spacebook.ui.play.ProgressRing
-import pk.wantuch.spacebook.ui.play.StatPill
 import pk.wantuch.spacebook.ui.theme.Sb
 
-fun greetingFor(hour: Int) = when (hour) { in 5..11 -> "Good morning"; in 12..16 -> "Good afternoon"; in 17..20 -> "Good evening"; else -> "Hello" }
+private fun hex(value: String, fallback: Color = Sb.Violet): Color =
+    runCatching { Color(android.graphics.Color.parseColor(value)) }.getOrDefault(fallback)
 
-/** The top of Home: who is learning, the streak, the level, the coins. */
+/** "today", "yesterday", "3 days ago", "2 weeks ago" */
+internal fun ago(ts: Long, now: Long): String {
+    if (ts <= 0) return "not yet"
+    val days = ((now - ts) / 86_400_000L).toInt()
+    return when {
+        now - ts < 3_600_000L -> "just now"
+        days < 1 && (now - ts) < 86_400_000L -> "today"
+        days < 2 -> "yesterday"
+        days < 14 -> "$days days ago"
+        else -> "${days / 7} weeks ago"
+    }
+}
+
 @Composable
-internal fun HomeHeader(
-    greeting: String, name: String?, className: String?, coins: Int, play: PlayState, today: Int,
-    actions: HomeActions, onClass: () -> Unit,
-) {
-    val first = name?.trim()?.substringBefore(' ').orEmpty()
-    Box(
-        Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp).clip(RoundedCornerShape(30.dp))
-            .background(Brush.linearGradient(listOf(Color(0xFF3B2FD1), Color(0xFF7A3DF0), Color(0xFFFF5C8A)))),
-    ) {
-        Column(Modifier.padding(18.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Mascot(52.dp)
-                Spacer(Modifier.width(12.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(greeting, color = Color.White.copy(alpha = .85f), style = MaterialTheme.typography.labelLarge)
-                    Text(if (first.isBlank()) "Explorer! 👋" else "$first! 👋", color = Color.White, style = MaterialTheme.typography.headlineSmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                }
-                IconButton(onClick = actions.openSearch) { Icon(Icons.Rounded.Search, "Search books", tint = Color.White) }
-                IconButton(onClick = actions.openProfile) {
-                    if (first.isBlank()) Icon(Icons.Rounded.Person, "Sign in", tint = Color.White)
-                    else Box(Modifier.size(34.dp).clip(CircleShape).background(Color.White.copy(alpha = .25f)), contentAlignment = Alignment.Center) {
-                        Text(first.first().uppercase(), color = Color.White, fontWeight = FontWeight.Bold)
-                    }
-                }
-            }
-            Spacer(Modifier.height(14.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
-                val streak = play.streakAt(today)
-                StatPill("🔥", if (streak == 0) "Start a streak" else "$streak-day streak", Color.White.copy(alpha = .2f), Color.White)
-                if (className != null) Surface(shape = RoundedCornerShape(50), color = Color.White.copy(alpha = .2f), contentColor = Color.White, modifier = Modifier.clickable(onClickLabel = "Change class", onClick = onClass)) {
-                    Text("$className ▾", style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp))
-                }
-                CoinChip(coins)
-            }
-            Spacer(Modifier.height(14.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Level ${play.level}", color = Color.White, style = MaterialTheme.typography.labelLarge)
-                Spacer(Modifier.width(10.dp))
-                Box(Modifier.weight(1f).height(10.dp).clip(RoundedCornerShape(50)).background(Color.White.copy(alpha = .25f))) {
-                    Box(Modifier.fillMaxWidth(play.levelProgress.coerceIn(0.02f, 1f)).height(10.dp).clip(RoundedCornerShape(50)).background(Sb.Gold))
-                }
-                Spacer(Modifier.width(10.dp))
-                Text("${play.xp % LEVEL_XP}/$LEVEL_XP XP", color = Color.White.copy(alpha = .9f), style = MaterialTheme.typography.labelMedium)
-            }
+internal fun SectionHeader(title: String, action: String?, onAction: () -> Unit) {
+    Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp, top = 18.dp), verticalAlignment = Alignment.CenterVertically) {
+        Text(title, style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+        if (action != null) TextButton(onClick = onAction) { Text(action, style = MaterialTheme.typography.labelLarge) }
+    }
+}
+
+/** Statistics of both kinds side by side: the Test Preps (questions, accuracy, minutes, streak) and the Study Plans (progress, today). */
+@Composable
+internal fun Overview(prep: PrepSnapshot) {
+    val t = prep.tests.totals
+    val plans = prep.plans
+    Column(Modifier.padding(horizontal = 12.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text("Statistics", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 4.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            StatCard(
+                "Test Preps", listOf(Color(0xFF3B2FD1), Color(0xFF7A3DF0)), Modifier.weight(1f),
+                big = if (t.questions > 0) "${t.accuracy}%" else "–", bigLabel = "accuracy",
+                lines = listOf("${t.questions} questions", "${t.minutes} min studied", if (t.streak > 0) "🔥 ${t.streak}-day streak" else "${prep.tests.tests.size} started"),
+            ) { MiniBars(prep.tests.week, Color.White) }
+            val avg = if (plans.isEmpty()) 0 else plans.sumOf { it.pct } / plans.size
+            val left = plans.sumOf { it.todayItemsLeft }
+            val pending = plans.sumOf { it.pending }
+            StatCard(
+                "Study Plans", listOf(Color(0xFF0E9F8E), Color(0xFF3FB6E8)), Modifier.weight(1f),
+                big = if (plans.isEmpty()) "–" else "$avg%", bigLabel = "average done",
+                lines = listOf("${plans.size} plan${if (plans.size == 1) "" else "s"}", "$left to do today", if (pending > 0) "⚠ $pending from earlier" else "all up to date"),
+            ) { MiniBars(plans.map { it.pct }.take(14), Color.White, max = 100) }
         }
     }
 }
 
-/** Today's mission: three small things that keep a student coming back, with a ring that fills as they are done. */
 @Composable
-internal fun MissionCard(play: PlayState, today: Int, onQuiz: () -> Unit, onLesson: () -> Unit, onChest: () -> Unit) {
-    val done = play.missionDone(today)
-    Surface(shape = RoundedCornerShape(28.dp), color = MaterialTheme.colorScheme.surface, shadowElevation = 4.dp, modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp)) {
-        Column(Modifier.padding(18.dp)) {
+private fun StatCard(title: String, colors: List<Color>, modifier: Modifier, big: String, bigLabel: String, lines: List<String>, chart: @Composable () -> Unit) {
+    Column(modifier.clip(RoundedCornerShape(24.dp)).background(Brush.linearGradient(colors)).padding(16.dp)) {
+        Text(title, color = Color.White.copy(alpha = .9f), style = MaterialTheme.typography.labelLarge)
+        Row(verticalAlignment = Alignment.Bottom, modifier = Modifier.padding(top = 4.dp)) {
+            Text(big, color = Color.White, fontSize = 38.sp, fontWeight = FontWeight.ExtraBold)
+            Text(bigLabel, color = Color.White.copy(alpha = .85f), style = MaterialTheme.typography.labelMedium, modifier = Modifier.padding(start = 6.dp, bottom = 8.dp))
+        }
+        lines.forEach { Text(it, color = Color.White, style = MaterialTheme.typography.bodySmall) }
+        Spacer(Modifier.height(10.dp))
+        chart()
+    }
+}
+
+/** Small bar chart: one bar per value (the last one is the latest day). */
+@Composable
+internal fun MiniBars(values: List<Int>, color: Color, max: Int = 0, modifier: Modifier = Modifier) {
+    val data = values.ifEmpty { List(14) { 0 } }
+    val top = (if (max > 0) max else data.max()).coerceAtLeast(1).toFloat()
+    Canvas(modifier.fillMaxWidth().height(34.dp)) {
+        val gap = 4.dp.toPx()
+        val w = ((size.width - gap * (data.size - 1)) / data.size).coerceAtMost(22.dp.toPx())
+        data.forEachIndexed { i, v ->
+            val h = (size.height * (v / top)).coerceAtLeast(3.dp.toPx())
+            drawRoundRect(
+                color.copy(alpha = if (i == data.lastIndex) 1f else .55f), Offset(i * (w + gap), size.height - h), Size(w, h), CornerRadius(w / 3),
+            )
+        }
+    }
+}
+
+@Composable
+internal fun TestPrepCard(t: TestDto, now: Long, onPractice: () -> Unit, onStats: () -> Unit) {
+    val color = hex(t.color)
+    Surface(shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surface, shadowElevation = 2.dp, modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp)) {
+        Column(Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                ProgressRing(done / 3f, 84.dp, track = MaterialTheme.colorScheme.surfaceVariant, color = if (done == 3) Sb.Mint else Sb.Violet, stroke = 10.dp) {
-                    Text(if (done == 3) "🎉" else "$done/3", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold)
+                Box(Modifier.size(48.dp).clip(CircleShape).background(color.copy(alpha = .15f)), contentAlignment = Alignment.Center) { Text(t.emoji, fontSize = 24.sp) }
+                Spacer(Modifier.width(12.dp))
+                Column(Modifier.weight(1f)) {
+                    Text(t.title, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(t.fullName, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
-                Spacer(Modifier.width(16.dp))
-                Column {
-                    Text("Today's mission", style = MaterialTheme.typography.titleLarge)
-                    Text(
-                        if (done == 3) "All done! +$XP_MISSION XP earned. See you tomorrow." else "Finish all 3 to earn +$XP_MISSION XP",
-                        style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                ProgressRing(t.accuracy / 100f, 56.dp, track = color.copy(alpha = .15f), color = color, stroke = 6.dp) {
+                    Text(if (t.questions > 0) "${t.accuracy}%" else "–", style = MaterialTheme.typography.labelLarge)
                 }
             }
             Spacer(Modifier.height(12.dp))
-            val answered = play.answeredAt(today).coerceAtMost(MISSION_ANSWERS)
-            MissionRow("⚡", "Answer $MISSION_ANSWERS questions", if (play.answersDone(today)) "done" else "$answered/$MISSION_ANSWERS", play.answersDone(today), onQuiz)
-            MissionRow("📖", "Read a lesson", if (play.lessonDone(today)) "done" else "Go", play.lessonDone(today), onLesson)
-            MissionRow("🎁", "Open your daily chest", if (play.chestDone(today)) "done" else "Ready!", play.chestDone(today), onChest, highlight = !play.chestDone(today))
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Fact("${t.questions}", "questions")
+                Fact("${t.sessions}", "sessions")
+                Fact("${t.minutes}m", "studied")
+                Fact(if (t.bestMock >= 0) "${t.bestMock}%" else "–", "best mock")
+            }
+            Spacer(Modifier.height(10.dp))
+            MiniBars(t.week, color)
+            Text(
+                (if (t.running) "A test is waiting to be finished · " else "") + "last practice ${ago(t.last, now)}",
+                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 6.dp),
+            )
+            Spacer(Modifier.height(10.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Button(onClick = onPractice, modifier = Modifier.weight(1f), shape = RoundedCornerShape(16.dp), colors = ButtonDefaults.buttonColors(containerColor = color)) {
+                    Text(if (t.running) "Resume" else "Practice")
+                }
+                OutlinedButton(onClick = onStats, modifier = Modifier.weight(1f), shape = RoundedCornerShape(16.dp)) { Text("Statistics") }
+            }
         }
     }
 }
 
 @Composable
-private fun MissionRow(emoji: String, label: String, status: String, done: Boolean, onClick: () -> Unit, highlight: Boolean = false) {
-    val pulse = rememberInfiniteTransition(label = "pulse").animateFloat(1f, 0.55f, infiniteRepeatable(tween(800), RepeatMode.Reverse), label = "p")
-    Row(
-        Modifier.fillMaxWidth().padding(vertical = 3.dp).clip(RoundedCornerShape(16.dp)).clickable(onClick = onClick)
-            .background(if (done) Sb.Mint.copy(alpha = .12f) else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = .6f)).padding(horizontal = 12.dp, vertical = 10.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box(Modifier.size(38.dp).clip(CircleShape).background(if (done) Sb.Mint else Sb.Violet.copy(alpha = .15f)), contentAlignment = Alignment.Center) {
-            Text(if (done) "✓" else emoji, fontSize = 18.sp, color = if (done) Color.White else Color.Unspecified, fontWeight = FontWeight.Bold)
-        }
-        Spacer(Modifier.width(12.dp))
-        Text(label, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
-        Text(
-            status, style = MaterialTheme.typography.labelLarge,
-            color = if (done) Sb.Mint else if (highlight) Sb.Pink else MaterialTheme.colorScheme.primary,
-            modifier = if (highlight) Modifier.alpha(pulse.value) else Modifier,
-        )
-    }
-}
-
-/** Two big doors into the play side: a five-question quiz and an endless swipe feed. */
-@Composable
-internal fun PlayShortcuts(onQuiz: () -> Unit, onReels: () -> Unit) {
-    Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        ShortcutCard("⚡", "Quick Quiz", "5 questions, earn XP", listOf(Color(0xFFFF9A3D), Color(0xFFFF5C5C)), Modifier.weight(1f), onQuiz)
-        ShortcutCard("🎬", "Swipe & Learn", "One at a time, never ends", listOf(Color(0xFF2F8CFF), Color(0xFF8B5CFF)), Modifier.weight(1f), onReels)
+private fun Fact(value: String, label: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(value, style = MaterialTheme.typography.titleMedium)
+        Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
 @Composable
-private fun ShortcutCard(emoji: String, title: String, text: String, colors: List<Color>, modifier: Modifier, onClick: () -> Unit) {
-    Box(modifier.height(150.dp).clip(RoundedCornerShape(26.dp)).background(Brush.linearGradient(colors)).clickable(onClick = onClick)) {
-        Text(emoji, fontSize = 56.sp, modifier = Modifier.align(Alignment.BottomEnd).padding(8.dp).alpha(.9f))
-        Column(Modifier.padding(16.dp)) {
-            Text(title, color = Color.White, style = MaterialTheme.typography.titleLarge)
-            Text(text, color = Color.White.copy(alpha = .92f), style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(top = 4.dp, end = 52.dp))
-        }
-        Surface(shape = RoundedCornerShape(50), color = Color.White, modifier = Modifier.align(Alignment.BottomStart).padding(14.dp)) {
-            Text("Play", color = Sb.VioletDeep, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
+internal fun PlanCard(p: PlanDto, label: String, onOpen: () -> Unit, onDelete: () -> Unit) {
+    val brush = Sb.gradientFor(p.classId.ifBlank { p.id })
+    Surface(shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surface, shadowElevation = 2.dp, modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp).clickable(onClick = onOpen)) {
+        Column {
+            Row(Modifier.fillMaxWidth().background(Brush.linearGradient(brush)).padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text(p.name, color = Color.White, style = MaterialTheme.typography.titleMedium, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    Text(label, color = Color.White.copy(alpha = .92f), style = MaterialTheme.typography.bodySmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text("${shortDate(p.start)} – ${shortDate(p.end)}" + if (p.daysLeft > 0) " · ${p.daysLeft} days left" else "", color = Color.White.copy(alpha = .85f), style = MaterialTheme.typography.labelMedium)
+                }
+                ProgressRing(p.pct / 100f, 64.dp, track = Color.White.copy(alpha = .3f), color = Color.White, stroke = 7.dp) {
+                    Text("${p.pct}%", color = Color.White, style = MaterialTheme.typography.titleSmall)
+                }
+            }
+            Column(Modifier.padding(16.dp)) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Fact("${p.itemsDone}/${p.items}", "items done")
+                    Fact("${p.sessionsDone}/${p.sessions}", "sessions")
+                    Fact("${p.todayTasks}", "tasks today")
+                    Fact(if (p.pending > 0) "${p.pending}" else "0", "from earlier")
+                }
+                Spacer(Modifier.height(10.dp))
+                Text(todayLine(p), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
+                Spacer(Modifier.height(10.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Button(onClick = onOpen, modifier = Modifier.weight(1f), shape = RoundedCornerShape(16.dp)) { Text(if (p.todayTasks > 0) "Practise" else "Open plan") }
+                    OutlinedButton(onClick = onOpen, modifier = Modifier.weight(1f), shape = RoundedCornerShape(16.dp)) { Text("Statistics") }
+                }
+                TextButton(
+                    onClick = onDelete, modifier = Modifier.align(Alignment.End),
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+                ) { Icon(Icons.Rounded.Delete, null, Modifier.size(18.dp)); Spacer(Modifier.width(6.dp)); Text("Delete plan") }
+            }
         }
     }
 }
 
-/** The class's books, as real covers. */
+private fun todayLine(p: PlanDto): String = when {
+    p.todayTasks > 0 && p.todayItemsLeft > 0 -> "Today: ${p.todayItemsLeft} item${if (p.todayItemsLeft == 1) "" else "s"} left · about ${p.todayMinutes} min"
+    p.todayTasks > 0 -> "Today's work is done. Well done!"
+    p.nextDate.isNotBlank() -> "Next study session: ${shortDate(p.nextDate)}, ${p.nextFrom}–${p.nextTo}"
+    p.pct >= 100 -> "This plan is finished."
+    else -> "No more sessions planned."
+}
+
+/** "2026-10-23" -> "23 Oct" */
+internal fun shortDate(ymd: String): String {
+    val p = ymd.split('-')
+    if (p.size != 3) return ymd
+    val months = listOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+    return "${p[2].toIntOrNull() ?: p[2]} ${months.getOrElse((p[1].toIntOrNull() ?: 1) - 1) { p[1] }}"
+}
+
 @Composable
-internal fun BookShelf(cls: ClassDto, onOpen: (String) -> Unit) {
-    Column(Modifier.padding(top = 10.dp)) {
-        Text("Your books", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
-        LazyRow(contentPadding = PaddingValues(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            items(cls.subjects, key = { it.id }) { s ->
-                Column(Modifier.width(104.dp).clickable { onOpen(s.id) }) {
-                    BookCover(s.id, s.emoji, Modifier.fillMaxWidth(), ratio = .7f, corner = 12.dp)
-                    Text(s.name, style = MaterialTheme.typography.labelMedium, maxLines = 2, overflow = TextOverflow.Ellipsis, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().padding(top = 4.dp))
+internal fun RecentPractice(rows: List<RecentDto>, now: Long, onOpen: (String) -> Unit) {
+    Surface(shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surface, shadowElevation = 2.dp, modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp)) {
+        Column(Modifier.padding(vertical = 6.dp)) {
+            rows.forEach { r ->
+                Row(Modifier.fillMaxWidth().clickable { onOpen(r.track) }.padding(horizontal = 16.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("${r.title} · ${if (r.mode == "mock") "Mock test" else "Practice"}", style = MaterialTheme.typography.titleSmall)
+                        Text(ago(r.ts, now), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                    Text("${r.c}/${r.n}", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(end = 10.dp))
+                    Text("${r.percent}%", style = MaterialTheme.typography.titleSmall, color = when { r.percent >= 70 -> Sb.Mint; r.percent >= 40 -> Color(0xFFF59E0B); else -> Color(0xFFE5484D) })
                 }
             }
         }
     }
 }
 
-/** Collectable badges: the ones earned are bright, the others show what to do. */
+/** Shown when nothing has been started at all: the two ways in. */
 @Composable
-internal fun BadgeRow(play: PlayState) {
-    Column(Modifier.padding(top = 14.dp)) {
-        Text("Badges", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
-        LazyRow(contentPadding = PaddingValues(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            items(Badge.entries.toList(), key = { it.name }) { b ->
-                val got = b.earned(play)
-                Column(Modifier.width(92.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Box(
-                        Modifier.size(64.dp).clip(CircleShape).background(if (got) Brush.linearGradient(listOf(Color(0xFFFFE08A), Color(0xFFFFB400))) else Brush.linearGradient(listOf(MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.colorScheme.surfaceVariant))),
-                        contentAlignment = Alignment.Center,
-                    ) { Text(b.emoji, fontSize = 30.sp, modifier = Modifier.alpha(if (got) 1f else .3f)) }
-                    Text(b.title, style = MaterialTheme.typography.labelMedium, maxLines = 1, textAlign = TextAlign.Center, modifier = Modifier.padding(top = 4.dp))
-                    Text(if (got) "Earned!" else b.hint, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center, maxLines = 2, fontSize = 11.sp, lineHeight = 14.sp)
-                }
+internal fun EmptyPrep(actions: HomeActions) {
+    Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        BigStart("📝", "Prepare for a test", "PST, CT, SST, lecturer and more. Practise MCQs from your books, take mock tests and see your statistics.", "Start a test prep", listOf(Color(0xFF3B2FD1), Color(0xFF7A3DF0)), actions.startTestPrep)
+        BigStart("📅", "Make a study plan", "Choose a class, some subjects or a few chapters and your dates. SpaceBook plans what to study every day.", "Make a plan", listOf(Color(0xFF0E9F8E), Color(0xFF3FB6E8)), actions.newPlan)
+        Text("You can start as many tests and plans as you like. They all appear here.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+    }
+}
+
+@Composable
+private fun BigStart(emoji: String, title: String, text: String, cta: String, colors: List<Color>, onClick: () -> Unit) {
+    Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(Brush.linearGradient(colors)).clickable(onClick = onClick).padding(20.dp)) {
+        Text(emoji, fontSize = 64.sp, modifier = Modifier.align(Alignment.TopEnd).padding(4.dp))
+        Column {
+            Text(title, color = Color.White, style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(end = 90.dp))
+            Text(text, color = Color.White.copy(alpha = .92f), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(top = 6.dp, bottom = 14.dp, end = 90.dp))
+            Surface(shape = RoundedCornerShape(50), color = Color.White) { Text(cta, color = Sb.VioletDeep, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 18.dp, vertical = 9.dp)) }
+        }
+    }
+}
+
+/** A line inside a section that has nothing yet, with the way to start. */
+@Composable
+internal fun NothingYet(emoji: String, title: String, text: String, cta: String, onClick: () -> Unit) {
+    Surface(shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = .6f), modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp)) {
+        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(emoji, fontSize = 34.sp)
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text(title, style = MaterialTheme.typography.titleSmall)
+                Text(text, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                TextButton(onClick = onClick, contentPadding = androidx.compose.foundation.layout.PaddingValues(0.dp)) { Text(cta) }
             }
         }
     }
 }
 
-/** The daily chest: a shaking gift to tap, then the reward. */
-@Composable
-internal fun ChestDialog(reward: Int?, onOpen: () -> Unit, onClose: () -> Unit) {
-    Dialog(onDismissRequest = onClose) {
-        Box(Modifier.clip(RoundedCornerShape(32.dp)).background(Brush.verticalGradient(listOf(Color(0xFF3B2FD1), Color(0xFF8B3DFF)))).fillMaxWidth()) {
-            Column(Modifier.padding(28.dp).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                if (reward == null) {
-                    val shake by rememberInfiniteTransition(label = "shake").animateFloat(-9f, 9f, infiniteRepeatable(tween(260), RepeatMode.Reverse), label = "r")
-                    Text("🎁", fontSize = 110.sp, modifier = Modifier.rotate(shake).clickable(onClick = onOpen))
-                    Text("Your daily chest", style = MaterialTheme.typography.headlineSmall, color = Color.White)
-                    Text("Tap it to see what is inside!", style = MaterialTheme.typography.bodyMedium, color = Color.White.copy(alpha = .85f), modifier = Modifier.padding(top = 4.dp))
-                    Spacer(Modifier.height(18.dp))
-                    Button(onClick = onOpen, colors = ButtonDefaults.buttonColors(containerColor = Sb.Gold, contentColor = Sb.Ink), shape = RoundedCornerShape(18.dp)) { Text("Open", style = MaterialTheme.typography.titleSmall) }
-                } else {
-                    Text(if (reward > 0) "🎉" else "🎁", fontSize = 90.sp)
-                    Text(if (reward > 0) "+$reward XP" else "Already opened", style = MaterialTheme.typography.displaySmall, color = Sb.Gold, fontWeight = FontWeight.ExtraBold)
-                    Text(if (reward > 0) "Come back tomorrow for a new chest!" else "Come back tomorrow for a new chest.", style = MaterialTheme.typography.bodyMedium, color = Color.White.copy(alpha = .9f), textAlign = TextAlign.Center, modifier = Modifier.padding(top = 4.dp))
-                    Spacer(Modifier.height(18.dp))
-                    Button(onClick = onClose, colors = ButtonDefaults.buttonColors(containerColor = Color.White, contentColor = Sb.VioletDeep), shape = RoundedCornerShape(18.dp)) { Text("Awesome", style = MaterialTheme.typography.titleSmall) }
-                }
-            }
-            if (reward != null && reward > 0) Box(Modifier.matchParentSize()) { Confetti(Modifier.fillMaxSize()) }
-        }
-    }
-}
+@Suppress("unused") private val unusedTitle: (@Composable (String) -> Unit) = { SectionTitle(it) }

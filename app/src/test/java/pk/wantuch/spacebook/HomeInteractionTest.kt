@@ -1,0 +1,109 @@
+package pk.wantuch.spacebook
+
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import kotlinx.serialization.json.Json
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import pk.wantuch.spacebook.data.prep.PrepSnapshot
+import pk.wantuch.spacebook.data.prep.ProjectWords
+import pk.wantuch.spacebook.data.remote.Catalog
+import pk.wantuch.spacebook.ui.home.AccountInfo
+import pk.wantuch.spacebook.ui.home.HomeActions
+import pk.wantuch.spacebook.ui.home.HomeContent
+import pk.wantuch.spacebook.ui.home.TAB_ACCOUNT
+import pk.wantuch.spacebook.ui.home.TAB_PROJECT
+import pk.wantuch.spacebook.ui.home.TAB_STATS
+import pk.wantuch.spacebook.ui.theme.SpaceBookTheme
+import java.io.File
+
+/** Taps on the real Home: the tabs, the buttons of the cards, and the delete question for a plan. */
+@RunWith(RobolectricTestRunner::class)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Config(sdk = [35], qualifiers = "w411dp-h2100dp-xxhdpi")
+class HomeInteractionTest {
+    @get:Rule val rule = createComposeRule()
+
+    private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
+    private val catalog: Catalog = json.decodeFromString(File("src/main/assets/app_catalog.json").readText())
+    private val sample: PrepSnapshot = json.decodeFromString(File("src/test/resources/prep_sample.json").readText())   // plans: p2 (Weekend revision), then p1
+    private val project: ProjectWords = ProjectWords.parse(File("src/main/assets/site/js/word_stats_summary.js").readText())!!
+
+    private fun show(actions: HomeActions, tab: Int = TAB_STATS, onTab: (Int) -> Unit = {}, prep: PrepSnapshot = sample, account: AccountInfo = AccountInfo()) {
+        rule.setContent {
+            SpaceBookTheme(themeMode = 1, fontScalePercent = 100) {
+                HomeContent(tab, onTab, prep, project, catalog, account, actions, nowMillis = 1_792_735_000_000L)
+            }
+        }
+    }
+
+    @Test fun deletingAPlanAsksFirstAndThenDeletesThatPlanOnly() {
+        val deleted = mutableListOf<String>()
+        show(HomeActions(deletePlan = { deleted += it }))
+        rule.onAllNodesWithText("Delete plan")[0].performClick()
+        rule.onNodeWithText("Delete this plan?").assertIsDisplayed()
+        assertTrue("nothing is deleted before the student says yes", deleted.isEmpty())
+
+        rule.onNodeWithText("Keep it").performClick()
+        rule.onNodeWithText("Delete this plan?").assertDoesNotExist()
+        assertTrue(deleted.isEmpty())
+
+        rule.onAllNodesWithText("Delete plan")[1].performClick()                  // the second card: Class 6 term 1
+        rule.onNodeWithText("Delete").performClick()
+        assertEquals(listOf("p1"), deleted)
+        rule.onNodeWithText("Delete this plan?").assertDoesNotExist()
+    }
+
+    @Test fun everyPlanCardHasADeleteButton() {
+        show(HomeActions())
+        assertEquals(sample.plans.size, rule.onAllNodesWithText("Delete plan").fetchSemanticsNodes().size)
+    }
+
+    @Test fun noPlansMeansNoDeleteButtonAndNoQuestion() {
+        show(HomeActions(), prep = sample.copy(plans = emptyList()))
+        assertTrue(rule.onAllNodesWithText("Delete plan").fetchSemanticsNodes().isEmpty())
+    }
+
+    @Test fun cardButtonsOpenThePracticeAndTheStatisticsOfThatTestOrPlan() {
+        val opened = mutableListOf<String>()
+        show(HomeActions(openTestPrep = { t, tab -> opened += "$t/$tab" }, openPlan = { opened += "plan/$it" }))
+        rule.onAllNodesWithText("Practice")[1].performClick()                      // sst-gen is the most recent test, PST the next
+        rule.onAllNodesWithText("Statistics")[2].performClick()                    // [0] is the heading of the overview, [1] SST General
+        rule.onAllNodesWithText("Practise")[0].performClick()                      // Weekend revision has a task today
+        assertEquals(listOf("pst/practice", "pst/stats", "plan/p2"), opened)
+    }
+
+    @Test fun theTabsTellTheScreenWhichOneWasTapped() {
+        val tabs = mutableListOf<Int>()
+        show(HomeActions(), onTab = { tabs += it })
+        rule.onNodeWithText("📚 Project Stats").performClick()
+        rule.onNodeWithText("👤 My Account").performClick()
+        rule.onNodeWithText("📊 My Stats").performClick()
+        assertEquals(listOf(TAB_PROJECT, TAB_ACCOUNT, TAB_STATS), tabs)
+    }
+
+    @Test fun theAccountTabLetsAGuestSignInAndOpenTheProfile() {
+        val went = mutableListOf<String>()
+        show(HomeActions(signIn = { went += "signIn" }, openProfile = { went += "profile" }), tab = TAB_ACCOUNT)
+        rule.onNodeWithText("Guest").assertIsDisplayed()
+        rule.onNodeWithText("Sign in").performClick()
+        rule.onNodeWithText("Profile & settings").performClick()
+        rule.onNodeWithText("Premium").assertIsDisplayed()
+        assertEquals(listOf("signIn", "profile"), went)
+    }
+
+    @Test fun aSignedInStudentHasNoSignInButton() {
+        show(HomeActions(), tab = TAB_ACCOUNT, account = AccountInfo(name = "Ayesha", subtitle = "Student", signedIn = true))
+        assertTrue(rule.onAllNodesWithText("Sign in").fetchSemanticsNodes().isEmpty())
+        rule.onNodeWithText("Ayesha").assertIsDisplayed()
+    }
+}

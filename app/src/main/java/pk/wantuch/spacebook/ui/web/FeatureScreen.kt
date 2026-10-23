@@ -39,12 +39,20 @@ import pk.wantuch.spacebook.ui.reader.ReaderViewModel
 fun FeatureScreen(app: AppViewModel, page: String, title: String, onBack: (() -> Unit)?, onSignIn: () -> Unit, onOpenOffline: () -> Unit, vm: ReaderViewModel = hiltViewModel()) {
     val state by app.state.collectAsStateWithLifecycle()
     val controller = remember(vm, page) { vm.newController() }
-    controller.onAction = { name, _ -> if (name == "auth") onSignIn() }
+    val context = androidx.compose.ui.platform.LocalContext.current
+    controller.onAction = { name, detail ->
+        when (name) {
+            "auth" -> onSignIn()
+            // a job Home asked for (deleting a plan) is finished: say so and go back to Home
+            "done" -> { android.widget.Toast.makeText(context, detail, android.widget.Toast.LENGTH_SHORT).show(); onBack?.invoke() }
+            "error" -> if (page.startsWith("study-plan-delete")) { android.widget.Toast.makeText(context, detail, android.widget.Toast.LENGTH_LONG).show(); onBack?.invoke() }
+        }
+    }
 
     LaunchedEffect(controller.ready, page) {
         if (controller.ready) {
             controller.setMode(false)
-            controller.openPage(page)
+            controller.openFeature(page)
         }
     }
     LaunchedEffect(controller.ready, state.user?.id, state.device?.id) {
@@ -68,7 +76,7 @@ fun FeatureScreen(app: AppViewModel, page: String, title: String, onBack: (() ->
             SbWebView(controller, textZoom = state.fontScale, modifier = Modifier.fillMaxSize())
             if (controller.loading || !controller.ready) {
                 Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center) {
-                    if (controller.error == null) Text("Opening $title…", style = MaterialTheme.typography.titleMedium)
+                    if (controller.error == null) Text(if (page.startsWith("study-plan-delete")) "Deleting the plan…" else "Opening $title…", style = MaterialTheme.typography.titleMedium)
                 }
             }
             if (controller.missing != null && controller.error == null) {

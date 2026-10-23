@@ -85,15 +85,13 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController()) 
 
     fun go(r: String) = nav.navigate(r) { launchSingleTop = true }
     val actions = HomeActions(
-        openChapter = { subject, chapter, page -> go(Routes.reader(subject, chapter, page)) },
-        openSubject = { go(Routes.subject(it)) },
-        openPractice = { switchTab(nav, Routes.PRACTICE) },
-        openPlan = { switchTab(nav, Routes.PLAN) },
-        openGames = { switchTab(nav, Routes.LIBRARY) },
-        openSearch = { go(Routes.SEARCH) },
+        openTestPrep = { test, tab -> go(Routes.web("tests-preps:$test:$tab", "Test Prep")) },
+        openPlan = { plan -> go(Routes.web("study-plan:$plan", "Study Plan")) },
+        deletePlan = { plan -> go(Routes.web("study-plan-delete:$plan", "Study Plan")) },
+        startTestPrep = { switchTab(nav, Routes.PRACTICE) },
+        newPlan = { switchTab(nav, Routes.PLAN) },
+        signIn = { go(Routes.AUTH) },
         openProfile = { switchTab(nav, Routes.ME) },
-        openQuiz = { go(Routes.QUIZ) },
-        openReels = { go(Routes.REELS) },
     )
 
     Scaffold(

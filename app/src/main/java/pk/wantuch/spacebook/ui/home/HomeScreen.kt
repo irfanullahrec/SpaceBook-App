@@ -1,246 +1,182 @@
 package pk.wantuch.spacebook.ui.home
 
-import android.content.Intent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.MenuBook
-import androidx.compose.material.icons.rounded.ArrowDropDown
-import androidx.compose.material.icons.rounded.Bookmark
-import androidx.compose.material.icons.rounded.BookmarkBorder
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Quiz
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Share
-import androidx.compose.material.icons.rounded.SportsEsports
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import androidx.compose.runtime.rememberCoroutineScope
-import pk.wantuch.spacebook.data.play.PlayState
-import pk.wantuch.spacebook.data.play.todayNumber
-import pk.wantuch.spacebook.data.remote.ClassDto
-import pk.wantuch.spacebook.data.splitTitle
+import pk.wantuch.spacebook.data.prep.PlanDto
+import pk.wantuch.spacebook.data.prep.PrepSnapshot
+import pk.wantuch.spacebook.data.prep.ProjectWords
+import pk.wantuch.spacebook.data.remote.Catalog
+import pk.wantuch.spacebook.data.remote.UserDto
+import pk.wantuch.spacebook.expiry.ExpiryGate
+import pk.wantuch.spacebook.expiry.LockState
 import pk.wantuch.spacebook.ui.AppViewModel
-import pk.wantuch.spacebook.ui.components.ClassPickerDialog
-import pk.wantuch.spacebook.ui.components.ClassStrip
-import pk.wantuch.spacebook.ui.components.CoinChip
-import pk.wantuch.spacebook.ui.components.GradientBanner
-import pk.wantuch.spacebook.ui.components.LikeAction
-import pk.wantuch.spacebook.ui.components.PostAction
-import pk.wantuch.spacebook.ui.components.PostCard
-import pk.wantuch.spacebook.ui.components.SubjectAvatar
-import pk.wantuch.spacebook.ui.theme.Sb
 
 /** Where Home can send the student. */
 data class HomeActions(
-    val openChapter: (subjectId: String, chapter: Int, page: Int) -> Unit,
-    val openSubject: (subjectId: String) -> Unit,
-    val openPractice: () -> Unit,
-    val openPlan: () -> Unit,
-    val openGames: () -> Unit,
-    val openSearch: () -> Unit,
-    val openProfile: () -> Unit,
-    val openQuiz: () -> Unit = {},
-    val openReels: () -> Unit = {},
+    /** open a test (PST, CT ...) on its tab: "practice" | "mock" | "mistakes" | "history" | "stats" */
+    val openTestPrep: (testId: String, tab: String) -> Unit = { _, _ -> },
+    val openPlan: (planId: String) -> Unit = {},
+    /** delete a plan (Home has already asked the student to confirm) */
+    val deletePlan: (planId: String) -> Unit = {},
+    /** the list of tests to start preparing for another one */
+    val startTestPrep: () -> Unit = {},
+    val newPlan: () -> Unit = {},
+    val signIn: () -> Unit = {},
+    /** the Me tab: class, saved pages, settings */
+    val openProfile: () -> Unit = {},
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(app: AppViewModel, actions: HomeActions, vm: HomeViewModel = hiltViewModel()) {
-    val state by app.state.collectAsStateWithLifecycle()
     val catalog by app.catalog.collectAsStateWithLifecycle()
-    val feed by vm.feed.collectAsStateWithLifecycle()
-    val reactions by vm.reactions.collectAsStateWithLifecycle()
-    val play by vm.play.collectAsStateWithLifecycle()
-    val chestReward by vm.chestReward.collectAsStateWithLifecycle()
+    val state by app.state.collectAsStateWithLifecycle()
+    val entitlements by app.entitlements.collectAsStateWithLifecycle()
+    val prep by vm.prep.collectAsStateWithLifecycle()
+    val refreshing by vm.refreshing.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    var refreshing by remember { mutableStateOf(false) }
-    val cls = catalog?.cls(vm.effectiveClass(state.classId, catalog))
-
-    PullToRefreshBox(
-        isRefreshing = refreshing,
-        onRefresh = { scope.launch { refreshing = true; app.refresh(); delay(900); refreshing = false } },
-        modifier = Modifier.fillMaxSize(),
-    ) {
+    val projectWords = remember { ProjectWords.load(context) }
+    var tab by rememberSaveable { mutableIntStateOf(TAB_STATS) }
+    var gate by remember { mutableStateOf(ExpiryGate.forApp(context).check()) }
+    // what was practised on the website while Home was away shows the moment the student comes back
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { vm.refresh(); gate = ExpiryGate.forApp(context).check() }
+    PullToRefreshBox(isRefreshing = refreshing, onRefresh = vm::refresh, modifier = Modifier.fillMaxSize()) {
         HomeContent(
-            coins = state.coins,
-            userName = state.user?.name,
-            allClasses = catalog?.classes.orEmpty(),
-            firstRun = state.classId.isBlank(),
-            cls = cls,
-            feed = feed,
-            reactions = reactions,
-            play = play,
-            today = remember { todayNumber() },
-            greeting = remember { greetingFor(java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)) },
-            chestReward = chestReward,
-            actions = actions,
-            onPickClass = { app.setClass(it) },
-            onLike = vm::toggleLike,
-            onSave = vm::toggleSave,
-            onShare = { text -> share(context, text, app.siteUrl("")) },
-            onOpenChest = vm::openChest,
-            onCloseChest = vm::closeChest,
+            tab, { tab = it }, prep, projectWords, catalog, accountInfo(state.user, state.coins, entitlements.plan, gate), actions,
+            nowMillis = System.currentTimeMillis(),
         )
     }
 }
 
-/** Everything Home draws, with no view model: the same composable is used by the screenshot tests. */
+/** Who the student is, what plan the server says they are on, and when this preview build stops. */
+internal fun accountInfo(user: UserDto?, coins: Int, plan: String, gate: LockState): AccountInfo {
+    val counting = gate as? LockState.Counting
+    return AccountInfo(
+        name = user?.name?.takeIf { it.isNotBlank() } ?: if (user != null) "Student" else null,
+        subtitle = if (user != null) listOf(user.userType.replaceFirstChar { it.uppercase() }, user.whatsapp).filter { it.isNotBlank() }.joinToString(" · ")
+        else "Reading without an account: progress stays on this phone",
+        signedIn = user != null, planId = plan, coins = coins,
+        previewEnds = counting?.expiresAt ?: 0, previewDaysLeft = counting?.daysLeft ?: 0,
+    )
+}
+
+/** Everything Home draws, with no view model: the screenshot tests draw it too. */
 @Composable
 internal fun HomeContent(
-    coins: Int,
-    userName: String?,
-    allClasses: List<ClassDto>,
-    /** no class chosen yet: show the "which class are you in?" cards */
-    firstRun: Boolean,
-    cls: ClassDto?,
-    feed: List<FeedPost>,
-    reactions: Map<String, pk.wantuch.spacebook.data.local.Reaction>,
-    play: PlayState,
-    today: Int,
-    greeting: String,
-    chestReward: Int?,
-    actions: HomeActions,
-    onPickClass: (String) -> Unit,
-    onLike: (String) -> Unit,
-    onSave: (String) -> Unit,
-    onShare: (String) -> Unit,
-    onOpenChest: () -> Unit,
-    onCloseChest: () -> Unit,
+    tab: Int, onTab: (Int) -> Unit,
+    prep: PrepSnapshot?, projectWords: ProjectWords?, catalog: Catalog?, account: AccountInfo, actions: HomeActions, nowMillis: Long,
 ) {
-    var pickingClass by remember { mutableStateOf(false) }
-    var chestOpen by remember { mutableStateOf(false) }
-    if (pickingClass) ClassPickerDialog(allClasses, cls?.id.orEmpty(), onPick = onPickClass, onDismiss = { pickingClass = false })
-    if (chestOpen) ChestDialog(chestReward, onOpen = onOpenChest, onClose = { chestOpen = false; onCloseChest() })
-    val resume = feed.firstOrNull { it is FeedPost.Continue } as? FeedPost.Continue
-    val firstLesson = feed.firstOrNull { it is FeedPost.Chapter } as? FeedPost.Chapter
-    val openLesson = {
+    var toDelete by remember { mutableStateOf<PlanDto?>(null) }
+    Column(Modifier.fillMaxSize()) {
+        HomeTitle()
+        HomeTabRow(tab, onTab)
+        when (tab) {
+            TAB_PROJECT -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = 6.dp, bottom = 24.dp)) { ProjectStatsTab(projectWords, catalog) }
+            TAB_ACCOUNT -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = 6.dp, bottom = 24.dp)) { AccountTab(account, prep, actions) }
+            else -> MyStatsTab(prep, projectWords, catalog, actions, nowMillis, onDelete = { toDelete = it })
+        }
+    }
+    toDelete?.let { p ->
+        AlertDialog(
+            onDismissRequest = { toDelete = null },
+            title = { Text("Delete this plan?") },
+            text = { Text("“${p.name}” and its progress will be removed. This cannot be undone.") },
+            confirmButton = { TextButton(onClick = { toDelete = null; actions.deletePlan(p.id) }) { Text("Delete", color = MaterialTheme.colorScheme.error) } },
+            dismissButton = { TextButton(onClick = { toDelete = null }) { Text("Keep it") } },
+        )
+    }
+}
+
+/** Only what the student has started: every test preparation and every study plan, each with practice and statistics. */
+@Composable
+private fun MyStatsTab(
+    prep: PrepSnapshot?, projectWords: ProjectWords?, catalog: Catalog?, actions: HomeActions, nowMillis: Long, onDelete: (PlanDto) -> Unit,
+) {
+    LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 6.dp, bottom = 24.dp)) {
         when {
-            resume != null -> actions.openChapter(resume.position.subjectId, resume.position.chapterIndex, resume.position.page)
-            firstLesson != null -> actions.openChapter(firstLesson.subject.id, firstLesson.chapterIndex, 0)
-            else -> actions.openSearch()
-        }
-    }
-    LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 24.dp)) {
-        item(key = "header") { HomeHeader(greeting, userName, cls?.name, coins, play, today, actions, onClass = { pickingClass = true }) }
-        if (firstRun && allClasses.isNotEmpty()) item(key = "classpick") { ClassPickerCard(allClasses, onPickClass) }
-        item(key = "mission") { MissionCard(play, today, onQuiz = actions.openQuiz, onLesson = openLesson, onChest = { chestOpen = true }) }
-        item(key = "play") { PlayShortcuts(actions.openQuiz, actions.openReels) }
-        if (resume != null) item(key = "continue") { ContinuePostCard(resume) { actions.openChapter(resume.position.subjectId, resume.position.chapterIndex, resume.position.page) } }
-        if (cls != null) item(key = "shelf") { BookShelf(cls, actions.openSubject) }
-        else item(key = "loading") { Box(Modifier.fillMaxWidth().padding(40.dp), contentAlignment = Alignment.Center) { Text("Loading your books…", style = MaterialTheme.typography.bodyLarge) } }
-        val lessons = feed.filterIsInstance<FeedPost.Chapter>().take(3)
-        if (lessons.isNotEmpty()) item(key = "lessons-title") { Text("Today's lessons", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 2.dp)) }
-        items(lessons, key = { it.id }) { post ->
-            val r = reactions[post.id]
-            ChapterPostCard(
-                post, liked = r?.liked == true, saved = r?.saved == true,
-                onLike = { onLike(post.id) },
-                onSave = { onSave(post.id) },
-                onRead = { actions.openChapter(post.subject.id, post.chapterIndex, 0) },
-                onShare = { onShare("${splitTitle(post.chapter.t).primary} - ${post.subject.name}, ${post.className}") },
-            )
-        }
-        item(key = "badges") { BadgeRow(play) }
-    }
-}
+            prep == null -> item(key = "loading") {
+                Box(Modifier.fillMaxWidth().padding(48.dp), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
+            }
+            else -> {
+                if (prep.isEmpty) item(key = "empty") { EmptyPrep(actions) }
+                else {
+                    item(key = "overview") { Overview(prep) }
 
-@Composable
-private fun ClassPickerCard(classes: List<ClassDto>, onPick: (String) -> Unit) {
-    Surface(shape = MaterialTheme.shapes.large, color = MaterialTheme.colorScheme.primaryContainer, modifier = Modifier.fillMaxWidth().padding(12.dp)) {
-        Column(Modifier.padding(vertical = 16.dp)) {
-            Text("Welcome to SpaceBook! 👋", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 16.dp))
-            Text("Which class are you in?", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp))
-            ClassStrip(classes, selected = "", onPick = onPick, cardWidth = 150.dp)
+                    item(key = "tests-title") { SectionHeader("Test Preps", "＋ Another test", actions.startTestPrep) }
+                    if (prep.tests.tests.isEmpty()) item(key = "tests-none") { NothingYet("📝", "No test started yet", "Pick PST, CT, SST or another test and practise MCQs from your books.", "Start a test prep", actions.startTestPrep) }
+                    items(prep.tests.tests, key = { "t-" + it.id }) { t ->
+                        TestPrepCard(t, nowMillis, onPractice = { actions.openTestPrep(t.id, "practice") }, onStats = { actions.openTestPrep(t.id, "stats") })
+                    }
+
+                    item(key = "plans-title") { SectionHeader("Study Plans", "＋ New plan", actions.newPlan) }
+                    if (prep.plans.isEmpty()) item(key = "plans-none") { NothingYet("📅", "No study plan yet", "Make a plan for a class, some subjects or a few chapters, and SpaceBook tells you what to study each day.", "Make a plan", actions.newPlan) }
+                    items(prep.plans, key = { "p-" + it.id }) { p ->
+                        PlanCard(p, planLabel(p, catalog), onOpen = { actions.openPlan(p.id) }, onDelete = { onDelete(p) })
+                    }
+
+                    if (prep.tests.recent.isNotEmpty()) {
+                        item(key = "recent-title") { SectionHeader("Recent practice", null, {}) }
+                        item(key = "recent") { RecentPractice(prep.tests.recent, nowMillis, onOpen = { actions.openTestPrep(it, "history") }) }
+                    }
+                }
+                item(key = "words") { WordsCard(prep.words, projectWords?.project?.all ?: 0) }
+            }
         }
     }
 }
 
 @Composable
-private fun ChapterPostCard(
-    post: FeedPost.Chapter, liked: Boolean, saved: Boolean,
-    onLike: () -> Unit, onSave: () -> Unit, onRead: () -> Unit, onShare: () -> Unit,
-) {
-    val t = splitTitle(post.chapter.t)
-    PostCard(
-        avatarEmoji = post.subject.emoji, avatarKey = post.subject.id,
-        title = post.subject.name + if (post.subject.ur.isNotBlank()) " · ${post.subject.ur}" else "",
-        subtitle = "${post.className} · Today's lesson",
-        onClick = onRead,
-        banner = { GradientBanner(post.subject.id, t.number.ifBlank { post.subject.emoji }, t.primary, caption = if (t.number.isNotBlank()) "Chapter ${t.number}" else "", height = 170.dp, coverId = post.subject.id, coverEmoji = post.subject.emoji) },
-        chips = buildList {
-            add("Read")
-            if (post.chapter.n > 0) add("${post.chapter.n} questions")
-            if (t.local.isNotBlank()) add(t.local.take(18))
-        },
-        actions = {
-            LikeAction(liked, onLike)
-            PostAction(Icons.AutoMirrored.Rounded.MenuBook, "Read", onRead, tint = MaterialTheme.colorScheme.primary)
-            PostAction(if (saved) Icons.Rounded.Bookmark else Icons.Rounded.BookmarkBorder, if (saved) "Saved" else "Save", onSave, active = saved)
-            PostAction(Icons.Rounded.Share, "Share", onShare)
-        },
-    )
+private fun HomeTitle() {
+    Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 4.dp)) {
+        Text("My preparation", style = MaterialTheme.typography.headlineMedium)
+        Text("Your test preps and study plans, with practice and statistics", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
 }
 
-@Composable
-private fun ContinuePostCard(post: FeedPost.Continue, onOpen: () -> Unit) {
-    val s = post.subject
-    val t = splitTitle(post.position.chapterTitle)
-    PostCard(
-        avatarEmoji = s?.emoji ?: "📘", avatarKey = post.position.subjectId,
-        title = "Continue: ${s?.name ?: "your book"}",
-        subtitle = "${post.className} · page ${post.position.page + 1} of ${post.position.pageCount.coerceAtLeast(1)}",
-        onClick = onOpen,
-        banner = { GradientBanner(post.position.subjectId, "▶", t.primary, caption = "Where you stopped", height = 140.dp, coverId = post.position.subjectId, coverEmoji = s?.emoji ?: "📘") },
-        actions = { PostAction(Icons.Rounded.PlayArrow, "Continue reading", onOpen, tint = MaterialTheme.colorScheme.primary) },
-    )
-}
-
-private fun share(context: android.content.Context, text: String, url: String) {
-    val send = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, "$text\n$url")
-    context.startActivity(Intent.createChooser(send, "Share").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+/** "Class 6 · all subjects" / "Class 6 · Mathematics · 3 chapters" / "Class 9 · 2 subjects", like the website's own label. */
+internal fun planLabel(p: pk.wantuch.spacebook.data.prep.PlanDto, catalog: Catalog?): String {
+    val cls = catalog?.cls(p.classId)
+    val className = cls?.name ?: pk.wantuch.spacebook.data.prettyClass(p.classId)
+    if (p.subjects.isEmpty()) return className
+    val allSubjects = cls != null && p.subjects.size == cls.subjects.size &&
+        p.subjects.all { sc -> cls.subjects.firstOrNull { it.id == sc.id }?.let { it.chapters.size == sc.chapters } == true }
+    return when {
+        allSubjects -> "$className · all subjects"
+        p.subjects.size == 1 -> {
+            val s = cls?.subjects?.firstOrNull { it.id == p.subjects[0].id }
+            val ch = p.subjects[0].chapters
+            "$className · ${s?.name ?: p.subjects[0].id}" + if (s != null && ch == s.chapters.size) "" else " · $ch chapter${if (ch == 1) "" else "s"}"
+        }
+        else -> "$className · ${p.subjects.size} subjects"
+    }
 }

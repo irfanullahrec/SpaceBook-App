@@ -79,7 +79,7 @@ class WebController(
     var missing by mutableStateOf<String?>(null)
         private set
 
-    /** called on the main thread: ("auth" | "end" | "start" | "error", detail) */
+    /** called on the main thread: ("auth" | "end" | "start" | "error" | "done", detail) */
     var onAction: (String, String) -> Unit = { _, _ -> }
 
     private val main = Handler(Looper.getMainLooper())
@@ -177,6 +177,25 @@ class WebController(
     }
 
     fun openPage(name: String) { loading = true; run("SBApp.openPage(${quote(name)})") }
+
+    /** a test (PST, CT ...) on its tab: "practice" | "mock" | "mistakes" | "history" | "stats" */
+    fun openTestPrep(testId: String, tab: String) { loading = true; run("SBApp.openTestPrep(${quote(testId)},${quote(tab)})") }
+
+    fun openPlan(planId: String) { loading = true; run("SBApp.openPlan(${quote(planId)})") }
+
+    /** the website deletes the plan and reports ("done", text) through [onAction] */
+    fun deletePlan(planId: String) { loading = true; run("SBApp.deletePlan(${quote(planId)})") }
+
+    /** "tests-preps" | "study-plan" | ..., optionally "tests-preps:<test>:<tab>", "study-plan:<plan id>" or "study-plan-delete:<plan id>" (what Home links to) */
+    fun openFeature(spec: String) {
+        val p = spec.split(':')
+        when {
+            p[0] == "tests-preps" && p.size >= 2 && p[1].isNotBlank() -> openTestPrep(p[1], p.getOrElse(2) { "practice" })
+            p[0] == "study-plan" && p.size >= 2 && p[1].isNotBlank() -> openPlan(p[1])
+            p[0] == "study-plan-delete" && p.size >= 2 && p[1].isNotBlank() -> deletePlan(p[1])
+            else -> openPage(p[0])
+        }
+    }
     fun go(page: Int) = run("SBApp.go($page)")
     fun next() = run("SBApp.next()")
     fun prev() = run("SBApp.prev()")
