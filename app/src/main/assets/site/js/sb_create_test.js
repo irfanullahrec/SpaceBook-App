@@ -191,6 +191,7 @@
   .sbct-pills{display:flex;flex-wrap:wrap;gap:.4rem}
   .sbct-pill{min-width:2.6rem;padding:.4rem .7rem;border:1px solid #94a3b8;border-radius:999px;background:#fff;color:#0f172a;font:700 .9rem system-ui,sans-serif;cursor:pointer}
   .sbct-pill[aria-pressed="true"]{background:#1d4ed8;border-color:#1d4ed8;color:#fff}
+  .sbct-pill.sbct-none{background:#f1f5f9;color:#475569;border-style:dashed}
   .sbct-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.55rem 1rem;border:none;border-radius:10px;background:#1d4ed8;color:#fff;font:700 .92rem system-ui,sans-serif;cursor:pointer}
   .sbct-btn:hover,.sbct-btn:focus-visible{background:#1e40af;outline:2px solid #93c5fd;outline-offset:2px}
   .sbct-btn.alt{background:#fff;color:#1e3a8a;border:1px solid #1d4ed8}
@@ -269,7 +270,8 @@
 
   function setupHtml() {
     const st = store.read();
-    const pills = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(n => '<button type="button" class="sbct-pill" data-act="cls" data-n="' + n + '" aria-pressed="' + (n === S.cls) + '">' + n + '</button>').join('');
+    // a class the question bank has no file for (Class 11: its books carry no answer keys) says so instead of failing as a "connection" problem
+    const pills = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(n => '<button type="button" class="sbct-pill' + (INDEX && !INDEX.classes[n] ? ' sbct-none' : '') + '" data-act="cls" data-n="' + n + '" aria-pressed="' + (n === S.cls) + '"' + (INDEX && !INDEX.classes[n] ? ' title="No questions for this class yet"' : '') + '>' + n + '</button>').join('');
     let h = '<section class="sbct-hero"><h2>📝 Create Test</h2><p>Make a test from the textbooks: a whole class, some subjects, some chapters, one chapter or one topic. Take it here, or print it as a paper.</p></section>';
     h += '<section class="sbct-card"><h3><b>1</b> Class</h3><div class="sbct-pills" role="group" aria-label="Class">' + pills + '</div></section>';
     if (loading) h += '<div class="sbct-msg" role="status">Loading the questions of class ' + S.cls + '…</div>';
@@ -442,7 +444,7 @@
   }
   function setClass(n) {
     S.cls = n; S.sel = {}; S.chapters = {}; S.topics = {}; S.general = null; S.counts = {}; S.error = '';
-    loading = loadClass(n).then(() => { loading = null; }).catch(e => { loading = null; S.error = 'The questions of class ' + n + ' could not be loaded (' + e.message + '). Check the connection and try again.'; });
+    loading = loadClass(n).then(() => { loading = null; }).catch(e => { loading = null; S.error = INDEX && !INDEX.classes[n] ? 'There are no questions for class ' + n + ' yet: its textbooks carry no answer keys, so a test cannot be marked. Pick another class.' : 'The questions of class ' + n + ' could not be loaded (' + e.message + '). Check the connection and try again.'; });
     paint();
     loading && loading.then(() => { try { if (S.view === 'setup') paint(); } catch (e) { /* page left */ } });
   }
