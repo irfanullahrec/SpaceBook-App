@@ -262,8 +262,8 @@
   },
   {
    "src": "js/math_10_book_data.js",
-   "bytes": 1342329,
-   "sha256": "bf9de0eff4aebb44162675e4e5a31fe7e910f16e997a7c623cc9c5c9fd2c14dc",
+   "bytes": 1362148,
+   "sha256": "b44084d06d375eafb6570d59d478b26e786e3934a9b0cd7116116abada612a37",
    "stubs": [
     {
      "name": "MATH_10_BOOK_DATA",
@@ -918,8 +918,8 @@
   },
   {
    "src": "js/math_1_book.js",
-   "bytes": 2114614,
-   "sha256": "271754fcd57faac8013b3164c16d5d624393c5789259b2c72f973fe663888a6c",
+   "bytes": 2126116,
+   "sha256": "53a07963ccacb232ab93766c0a54602bd16976f19a0c5abb21009648a0c59134",
    "stubs": [
     {
      "name": "MATH_1_BOOK",
@@ -938,8 +938,8 @@
   },
   {
    "src": "js/math_2_data.js",
-   "bytes": 2142728,
-   "sha256": "570b633be488c371c95a360b15bb026cd9d3260cfa586553ae29ab580b1b77c8",
+   "bytes": 2155490,
+   "sha256": "eb90ede5ada24c1830ad3d2d2aaa02a0e108e2d3180597737aec74af349e5499",
    "stubs": [
     {
      "name": "MATH_2_DATA",
@@ -974,8 +974,8 @@
   },
   {
    "src": "js/math_3_data.js",
-   "bytes": 1839242,
-   "sha256": "899137f0d6185e99ec89ec9253c934a32c4ddc5e192a4b7b0a2927959ac82a9e",
+   "bytes": 1840149,
+   "sha256": "7aef67f92303c65482d99b73b54e7f57e19dd2c02bc171069ac2ff70674efee3",
    "stubs": [
     {
      "name": "MATH_3_DATA",
@@ -1067,8 +1067,8 @@
   },
   {
    "src": "js/biology_9_book.js",
-   "bytes": 2381116,
-   "sha256": "fe9b4efdaafdbc31796e26c6a764b990ff1c42f3fe7fdf8bafa6e405702da338",
+   "bytes": 2381117,
+   "sha256": "d4d6f38728d41dab0f8dfcc1686eb1bf58c829adf2b8f2606750aa2966202491",
    "stubs": [
     {
      "name": "BIOLOGY_9_BOOK",
@@ -1107,8 +1107,8 @@
   },
   {
    "src": "js/math_9_book_data.js",
-   "bytes": 1172977,
-   "sha256": "7ab4e2ee3e4275218c9699edf52699339ffb1c70dce81ebe3442a42b0cc39747",
+   "bytes": 1192764,
+   "sha256": "0209791d4824a4201b7f779b6a3a6c6d79fb976ac70f0df9eafbebda67deea46",
    "stubs": [
     {
      "name": "MATH_9_BOOK_DATA",
@@ -1538,7 +1538,7 @@
   {
    "src": "js/nazira_1_book.js",
    "bytes": 1123974,
-   "sha256": "c9c66942e0748536456777a1d97e45eea5fdca0547c87f15bcb247bdd7eef2ee",
+   "sha256": "a1ef900a718308013fca23d2646f4bd28a46df839dacb52a4e4adc59776fb0e4",
    "stubs": [
     {
      "name": "NAZIRA_1_BOOK",
@@ -1615,8 +1615,8 @@
   },
   {
    "src": "js/urdu_2_data.js",
-   "bytes": 840548,
-   "sha256": "7919b4d9b03877544408773fe7818253a5a760fa4a045f0be4ae94ceca7dd42c",
+   "bytes": 840560,
+   "sha256": "646420427400af4bc13cd7c6ac41972276dcd20cadedb027a672170077ae2e31",
    "stubs": [
     {
      "name": "URDU_2_DATA",
@@ -1655,8 +1655,8 @@
   },
   {
    "src": "js/nazira_2_data.js",
-   "bytes": 1003417,
-   "sha256": "2f46c233c4eac97463722dd68d8a43bac18f7169b243c88ee6afb50d7f369a53",
+   "bytes": 1003415,
+   "sha256": "cc0af9821001848fedd3edba6ff26e9f81e9bf2cf755bf399290cf194b5aac7c",
    "stubs": [
     {
      "name": "NAZIRA_2_DATA",
@@ -1695,8 +1695,8 @@
   },
   {
    "src": "js/pashto_2_data.js",
-   "bytes": 704599,
-   "sha256": "5b9ac8c2dbbe85c91bd7c1b3b7189c1f74075b7c3fb858a9eab5df42a4e611ff",
+   "bytes": 704659,
+   "sha256": "c57fc42809dbcb8b21de5a3e196c046d7407655e202d812f03c348372c94b573",
    "stubs": [
     {
      "name": "PASHTO_2_DATA",
@@ -1735,8 +1735,8 @@
   },
   {
    "src": "js/nazira_3_data.js",
-   "bytes": 1614664,
-   "sha256": "d8654a03f08147f1d564a387471f3f7e09491bcf234d230d677c3d9e006be930",
+   "bytes": 1617773,
+   "sha256": "9e8e7071ea67d4d1ce0411876b7c76e1e479d0fcd2945bfe244b1deb9f93137e",
    "stubs": [
     {
      "name": "NAZIRA_3_DATA",
@@ -1755,8 +1755,8 @@
   },
   {
    "src": "js/english_3_data.js",
-   "bytes": 816332,
-   "sha256": "472455ff56e69267b249f283886d247f16cfe24a71a70070c5c3b458b3013d90",
+   "bytes": 816450,
+   "sha256": "4da6e16eb5060a04b4306a09192b81e0eb8c048f1131292e1751aaddf357677f",
    "stubs": [
     {
      "name": "ENGLISH_3_DATA",
@@ -2800,8 +2800,8 @@
   },
   {
    "src": "js/math_12_pagebook_data.js",
-   "bytes": 4467027,
-   "sha256": "c825daf38276c3fe53c329cdc1b7e4af9e3f3b127e8b8ed0e4b9d388fd7d648a",
+   "bytes": 1408790,
+   "sha256": "cd67f69fc74e2279a205f5281c6d2b68ef1f29bf5ba4416c544aa8843b8eda3c",
    "stubs": [
     {
      "name": "MATH_12_PAGEBOOK_DATA",
@@ -2820,8 +2820,8 @@
   },
   {
    "src": "js/statistics_12_book_data.js",
-   "bytes": 1553222,
-   "sha256": "c387e76a7392c482ec168f231d0272642d4bccec4269af59db12d534f53e295b",
+   "bytes": 1554070,
+   "sha256": "73c984a0e0a2b123e5b914bf07cf29360b5d92b49fe14ae3b51ed830e7514b65",
    "stubs": [
     {
      "name": "STATISTICS_12_BOOK_DATA",
@@ -5191,8 +5191,8 @@
   },
   {
    "src": "js/eng_11_data.js",
-   "bytes": 2274235,
-   "sha256": "0c51f32239d009f1f393b17d5be4a7efb650674e97e9a37c1ebd77a993d5a4e7",
+   "bytes": 2274246,
+   "sha256": "9a7c3a1002d52ebc0b6779546b3006c0054f7859771b39f858c38c42ebb7ab3e",
    "stubs": [
     {
      "name": "ENG_11_DATA",
@@ -5301,8 +5301,8 @@
   },
   {
    "src": "js/ikhtiari_11_data.js",
-   "bytes": 2707132,
-   "sha256": "1b9bcf94e606bb323ca77179b84ea42d1cd60260183c73514c45605347e1406f",
+   "bytes": 2707130,
+   "sha256": "a4444fd2cca25aca1b8da273e3a5b69cdce1bd9197bf68580c8628a3a2e198dd",
    "stubs": [
     {
      "name": "IKHTIARI_11_DATA",
@@ -5377,8 +5377,8 @@
   },
   {
    "src": "js/urdu_11_data.js",
-   "bytes": 1512133,
-   "sha256": "45b2a28e9cd6b688d131e1dc72ec417e336ed7b7ea58c554db097cb25a3ded93",
+   "bytes": 1516041,
+   "sha256": "e95563b62e452b41de804fe22a25a6318e3111857f7ae79f4855e9f22c5622db",
    "stubs": [
     {
      "name": "URDU_11_DATA",
@@ -5415,8 +5415,8 @@
   },
   {
    "src": "js/mq_11_data.js",
-   "bytes": 2619726,
-   "sha256": "29ada914f6e97544f052eb3da4570b09dfa3d86e3bd283ee35d0c1caece02cd8",
+   "bytes": 2619761,
+   "sha256": "9525086cdbd9cf2f6e12930b5da6f40ae7859472b4c4eaceed7ab51f845c9c91",
    "stubs": [
     {
      "name": "MQ_11_DATA",
@@ -5453,8 +5453,8 @@
   },
   {
    "src": "js/hpe_11_data.js",
-   "bytes": 993323,
-   "sha256": "d3cd7d8223ec8c6dd8a28b66974894722d10bb3b7b8b0d5c62656bf03eac0e1b",
+   "bytes": 993424,
+   "sha256": "1329813a574ea5b929847089dbd666601e016cb4c8d788db247308b714ebb889",
    "stubs": [
     {
      "name": "HPE_11_DATA",
@@ -5621,8 +5621,8 @@
   },
   {
    "src": "js/english_12_data.js",
-   "bytes": 5821811,
-   "sha256": "df2f33c6c648b57b5dc07e64b9c8695213654ef21cdf9fde730bce16aba84867",
+   "bytes": 5821865,
+   "sha256": "a35966ef820ce353b84e7089a52230ae8595172a0a5babac39ee4f867055392c",
    "stubs": [
     {
      "name": "ENGLISH_12_DATA",
@@ -5645,8 +5645,8 @@
   },
   {
    "src": "js/pakstudy_12_data.js",
-   "bytes": 7383913,
-   "sha256": "ee49b32b317c47a67ef191bf75fe963710ba27b239b5bf85aa129974a1b8a44b",
+   "bytes": 7325029,
+   "sha256": "a54042a974bd8884e55bc5ba9dd1cd630d3c5ce6375e65cec506ef56934ae1b3",
    "stubs": [
     {
      "name": "PAKSTUDY_12_DATA",
@@ -5757,8 +5757,8 @@
   },
   {
    "src": "js/economics_12_data.js",
-   "bytes": 17961321,
-   "sha256": "0371d5c2529ab1087dd61d3d6d02eb90873ea94ffc02693ac407500a96ae78d4",
+   "bytes": 17900352,
+   "sha256": "c91e6bd2342d727e2bd9fd3e75c525d0fee484ef5d158000f7a75cfdd1c165a2",
    "stubs": [
     {
      "name": "ECON_12_DATA",
@@ -5781,8 +5781,8 @@
   },
   {
    "src": "js/hpe_12_data.js",
-   "bytes": 3847293,
-   "sha256": "9019c91812b8ff64759c9beadba2ef68653b6b0d7387aba92e52e5649a704ac1",
+   "bytes": 3847447,
+   "sha256": "f0945553ab7544210cfe54a221f54988976bf4ebe727f66f5c3a7eb9e7b45eca",
    "stubs": [
     {
      "name": "HPE_12_DATA",
@@ -5829,8 +5829,8 @@
   },
   {
    "src": "js/islamic_history_12_data.js",
-   "bytes": 5937017,
-   "sha256": "61e26bce1f23058531c5846b107822b5f07274334ee8476e7bd63b3a5399c607",
+   "bytes": 5936995,
+   "sha256": "0f10989496fe7d44e20a9d5f269728d18a65f1ea2860bd6d978cb66b26cb2eac",
    "stubs": [
     {
      "name": "ISLAMIC_HISTORY_12_DATA",
@@ -5877,8 +5877,8 @@
   },
   {
    "src": "js/math_4_data.js",
-   "bytes": 1952654,
-   "sha256": "4d0991a03bbe5c016c765f680a97d88fd59e212964283a1b56a933e380bd35a2",
+   "bytes": 2021723,
+   "sha256": "b8751d69d81eb4c5d365ee014a783ed371c643d3b1e9f87fb0b6f281ca62bcac",
    "stubs": [
     {
      "name": "MATH_4_DATA",
@@ -5897,8 +5897,8 @@
   },
   {
    "src": "js/english_4_data.js",
-   "bytes": 1699901,
-   "sha256": "c58e672e61fd19ab0db8d4f578a48432148aa271d2553d47336d86df0987abe0",
+   "bytes": 1699931,
+   "sha256": "6661ca39f98d70f773ed3c86c779c298e43a06e9103b0ca7d6689a658e76a744",
    "stubs": [
     {
      "name": "ENGLISH_4_DATA",
@@ -6062,7 +6062,7 @@
   {
    "src": "js/general_science_5_data.js",
    "bytes": 1672719,
-   "sha256": "f3436c4b13a5386519a8989ec6bfa3cc627e0bbe2fe5e2aa277ad07ffd621ba7",
+   "sha256": "66c0e5b3397ad8f92405f144532cb323772b08f2139ba2d6306984ea986a97dc",
    "stubs": [
     {
      "name": "GENERAL_SCIENCE_5_DATA",
@@ -6082,7 +6082,7 @@
   {
    "src": "js/english_5_data.js",
    "bytes": 1384710,
-   "sha256": "3b351f63b63bc49d2a0965b970a85294d2c4d7d448a3a98d3ac08677c35a5b3d",
+   "sha256": "efd11d4275af4e40b0b9fa3d761bb52b3fa0597b2af7e7a528cc67b920ebdbe0",
    "stubs": [
     {
      "name": "ENGLISH_5_DATA",
@@ -6225,8 +6225,8 @@
   },
   {
    "src": "js/math_7_data.js",
-   "bytes": 3578135,
-   "sha256": "3b82edc91b86a7732bac770f13de388843b2b90bcd6e54238f4a6a04c1a16b0c",
+   "bytes": 3603453,
+   "sha256": "f591635d207b5398f5cf961dc838a6a32506f70c3d41003f8cbf174ce3462b95",
    "stubs": [
     {
      "name": "MATH_7_DATA",
@@ -6249,8 +6249,8 @@
   },
   {
    "src": "js/english_7_data.js",
-   "bytes": 1257078,
-   "sha256": "c40495bbda59f092a1f0a7855f351006e0cbda77496353d1d90627017326617b",
+   "bytes": 1271153,
+   "sha256": "9d338135957cdbcf8e9062216144a945ca79a68a4355399f8f27f51d92255f63",
    "stubs": [
     {
      "name": "ENGLISH_7_DATA",
@@ -6269,8 +6269,8 @@
   },
   {
    "src": "js/general_science_7_data.js",
-   "bytes": 1683312,
-   "sha256": "3c44fb0cfa1e295e7dd9b808278146b52d178bdf38db952f876c35ac37be7296",
+   "bytes": 1690605,
+   "sha256": "f6c3eb1eed8e243b0323d72e272ec224f299ba45071d735182cd763564f137eb",
    "stubs": [
     {
      "name": "GENERAL_SCIENCE_7_DATA",
@@ -6489,8 +6489,8 @@
   },
   {
    "src": "js/english_6_data.js",
-   "bytes": 1393077,
-   "sha256": "6cacd871529821d685f663880f35fbabb72f6bcb1714ddd5be0aedbcb44cea58",
+   "bytes": 1397310,
+   "sha256": "93bacc7c3c2d638087e2bbaed419e7c5a6d1cfccafdbfeb7b3fe796ab99d77d9",
    "stubs": [
     {
      "name": "ENGLISH_6_DATA",
@@ -6709,8 +6709,8 @@
   },
   {
    "src": "js/english_8_data.js",
-   "bytes": 1039668,
-   "sha256": "5ad0b073e3c54d33c582b338ebd38fd7a3249ecf1864db9e52679fce89b5f151",
+   "bytes": 1082886,
+   "sha256": "39dcf0b4d7b42064a6d0ff4fc9e4454a4103101e07952419379231b7c9f2deaa",
    "stubs": [
     {
      "name": "ENGLISH_8_DATA",
@@ -6753,8 +6753,8 @@
   },
   {
    "src": "js/general_science_8_data.js",
-   "bytes": 1978794,
-   "sha256": "97c34a65a7e16990a71dbac8355768303e5e219126d0adb363c1fc7f991b4429",
+   "bytes": 2020901,
+   "sha256": "521ca402672bc29de52d46b6f8f11edb8dbaf0299af9f39b82af93ad1a468fce",
    "stubs": [
     {
      "name": "GENERAL_SCIENCE_8_DATA",
@@ -6833,8 +6833,8 @@
   },
   {
    "src": "js/urdu_8_data.js",
-   "bytes": 2151298,
-   "sha256": "fcc759acbc76c7d965f8246e7fdfee1c57f42cda2906cccc8b2ad31dcc2608c5",
+   "bytes": 2161363,
+   "sha256": "a2908369751746cb1c33ef618a1d844873d21fbdd88e88b134f0e07abbdda733",
    "stubs": [
     {
      "name": "URDU_8_DATA",
@@ -6853,8 +6853,8 @@
   },
   {
    "src": "js/islamiat_8_data.js",
-   "bytes": 1785227,
-   "sha256": "13635b6bcc34ee46cb063bf27db6b7c3e7b1b8570ef8915b68e8d29ca5c67a86",
+   "bytes": 1798660,
+   "sha256": "dd74ed045e5771c1f8abc838d272ee907e2c3dce0d174153e48745100f3948fd",
    "stubs": [
     {
      "name": "ISLAMIAT_8_DATA",
@@ -6893,8 +6893,8 @@
   },
   {
    "src": "js/pashto_8_data.js",
-   "bytes": 691651,
-   "sha256": "dcabed6fdcc1b241ca2a5a72e6e909428cfd2e5db0ddf4ed27a2337f65f120d1",
+   "bytes": 835507,
+   "sha256": "a6b8450762c18ea4faa545c14a5d3d992d03de9d13545658f626e7e95dff3edb",
    "stubs": [
     {
      "name": "PASHTO_8_DATA",
@@ -6953,8 +6953,8 @@
   },
   {
    "src": "js/hpe_8_data.js",
-   "bytes": 407162,
-   "sha256": "6b5136179a13fbf98aa8d8ed8c75feb50f4c70085ab189070a136fd8bca4a855",
+   "bytes": 407301,
+   "sha256": "f6befc444f8600daa34e192a14b5b2a5b73e73da0125bf0e9fe8336f00d4be10",
    "stubs": [
     {
      "name": "HPE_8_DATA",

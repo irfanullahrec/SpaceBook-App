@@ -13,6 +13,7 @@ import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 import pk.wantuch.spacebook.data.local.Reaction
 import pk.wantuch.spacebook.data.local.ReadingPosition
+import pk.wantuch.spacebook.data.play.PlayState
 import pk.wantuch.spacebook.data.remote.Catalog
 import pk.wantuch.spacebook.ui.home.FeedPost
 import pk.wantuch.spacebook.ui.home.HomeActions
@@ -36,7 +37,7 @@ class HomeScreenshotTest {
     private val catalog: Catalog = json.decodeFromString(File("src/main/assets/app_catalog.json").readText())
     private val actions = HomeActions({ _, _, _ -> }, {}, {}, {}, {}, {}, {})
 
-    private fun render(name: String, dark: Boolean, signedIn: Boolean, liked: Boolean) {
+    private fun render(name: String, dark: Boolean, signedIn: Boolean, liked: Boolean, play: PlayState) {
         val cls = catalog.cls("cls5")!!
         val reading = listOf(ReadingPosition("cls5-math", "cls5", 1, cls.subjects.first { it.id == "cls5-math" }.chapters[1].t, 4, 9, 1L))
         val feed = buildFeed(catalog, "cls5", reading, daySeed = 20_000)
@@ -46,7 +47,8 @@ class HomeScreenshotTest {
               androidx.compose.material3.Surface(color = androidx.compose.material3.MaterialTheme.colorScheme.background) {
                 HomeContent(
                     coins = 128, userName = if (signedIn) "Ayesha Khan" else null, allClasses = catalog.classes, firstRun = false, cls = cls, feed = feed,
-                    reactions = reactions, actions = actions, onPickClass = {}, onLike = {}, onSave = {}, onShare = {},
+                    reactions = reactions, play = play, today = TODAY, greeting = "Good evening", chestReward = null, actions = actions,
+                    onPickClass = {}, onLike = {}, onSave = {}, onShare = {}, onOpenChest = {}, onCloseChest = {},
                 )
               }
             }
@@ -55,6 +57,11 @@ class HomeScreenshotTest {
         assertTrue(File("build/screenshots/$name.png").length() > 10_000)
     }
 
-    @Test fun homeLight() = render("home-light", dark = false, signedIn = true, liked = true)
-    @Test fun homeDark() = render("home-dark", dark = true, signedIn = false, liked = false)
+    private val TODAY = 20_000
+    /** a student part-way through the day: 4-day streak, 3 of 5 answers, lesson read, chest still closed */
+    private val busy = PlayState(xp = 320, streak = 4, bestStreak = 4, lastActiveDay = TODAY, countDay = TODAY, answeredToday = 3, correctToday = 2, lessonDay = TODAY,
+        totalAnswered = 40, totalCorrect = 30, chests = 2)
+
+    @Test fun homeLight() = render("home-light", dark = false, signedIn = true, liked = true, play = busy)
+    @Test fun homeDark() = render("home-dark", dark = true, signedIn = false, liked = false, play = PlayState())
 }

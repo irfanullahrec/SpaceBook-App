@@ -243,6 +243,15 @@ fun SettingsScreen(app: AppViewModel, onBack: () -> Unit) {
             OutlinedTextField(site, { site = it; siteError = false }, Modifier.fillMaxWidth(), singleLine = true, label = { Text("Site address") }, isError = siteError,
                 supportingText = { if (siteError) Text("Use https://… (or http:// only for 10.0.2.2 / localhost)") })
             Button(onClick = { siteError = !app.setBaseUrl(site.trim()) }) { Text("Use this address") }
+
+            val context = androidx.compose.ui.platform.LocalContext.current
+            val gate = remember { pk.wantuch.spacebook.expiry.ExpiryGate.forApp(context).check() }
+            if (gate is pk.wantuch.spacebook.expiry.LockState.Counting) {
+                val date = java.text.DateFormat.getDateInstance(java.text.DateFormat.LONG).format(java.util.Date(gate.expiresAt))
+                Text("Preview build", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 20.dp))
+                Text("This preview works until $date (${gate.daysLeft} ${if (gate.daysLeft == 1) "day" else "days"} left). After that it needs the unlock code from the SpaceBook team.",
+                    style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
         }
     }
 }

@@ -7,6 +7,9 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
+import android.widget.Toast
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
@@ -31,6 +34,7 @@ import pk.wantuch.spacebook.data.offline.SiteStore
 import pk.wantuch.spacebook.data.remote.DeviceDto
 import pk.wantuch.spacebook.data.remote.Endpoint
 import pk.wantuch.spacebook.data.remote.UserDto
+import pk.wantuch.spacebook.ui.reader.Lang
 
 /** What reader_bridge.js reports about the page on screen. */
 @Serializable
@@ -95,6 +99,11 @@ class WebController(
             main.post { state = s; loading = false }
         }
 
+        /** the page's speechSynthesis.speak (see reader_bridge.js): [lang] is "en" or "ur" */
+        @JavascriptInterface fun speak(id: String, text: String, lang: String, rate: Float) { main.post { speakForPage(id, text, lang, rate) } }
+
+        @JavascriptInterface fun stopSpeech(@Suppress("UNUSED_PARAMETER") unused: String) { main.post { tts?.stop() } }
+
         @JavascriptInterface fun onAction(name: String, detail: String) {
             when (name) {
                 "meaning" -> runCatching { json.decodeFromString<MeaningDto>(detail).toState() }.getOrNull()?.let { m -> main.post { meaning = m } }
@@ -102,6 +111,54 @@ class WebController(
                 "haptic" -> main.post { webView?.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS) }
                 else -> main.post { onAction.invoke(name, detail) }
             }
+        }
+    }
+
+    // ---- speech for the page (the Animate Solution voice): Android's own text-to-speech, nothing is sent anywhere ----
+    private var tts: TextToSpeech? = null
+    private var ttsReady = false
+    private var afterTts: (() -> Unit)? = null
+
+    private fun withTts(then: () -> Unit) {
+        if (ttsReady && tts != null) { then(); return }
+        afterTts = then
+        if (tts != null) return
+        tts = TextToSpeech(appContext) { status ->
+            ttsReady = status == TextToSpeech.SUCCESS
+            main.post { val job = afterTts; afterTts = null; job?.invoke() }
+        }.also { t ->
+            t.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                override fun onStart(utteranceId: String?) {}
+                override fun onDone(utteranceId: String?) = spoken(utteranceId, true)
+                @Deprecated("deprecated in API") override fun onError(utteranceId: String?) = spoken(utteranceId, false)
+                override fun onError(utteranceId: String?, errorCode: Int) = spoken(utteranceId, false)
+            })
+        }
+    }
+
+    private fun spoken(utteranceId: String?, ok: Boolean) {
+        val id = utteranceId?.takeIf { it.startsWith("pg:") }?.removePrefix("pg:") ?: return      // only the last part of a long text reports
+        pageSpeechDone(id, ok)
+    }
+
+    private fun pageSpeechDone(id: String, ok: Boolean) {
+        main.post { webView?.evaluateJavascript("window.SBSpeechDone&&SBSpeechDone(${quote(id)},$ok)", null) }
+    }
+
+    private fun speakForPage(id: String, text: String, lang: String, rate: Float) = withTts {
+        val t = tts
+        val locale = Lang.locale(lang)
+        if (t == null || !ttsReady) return@withTts pageSpeechDone(id, false)
+        if (t.isLanguageAvailable(locale) < TextToSpeech.LANG_AVAILABLE) {
+            Toast.makeText(appContext, "This phone has no ${Lang.name(lang)} voice. Add it in Settings > Text-to-speech.", Toast.LENGTH_LONG).show()
+            return@withTts pageSpeechDone(id, false)
+        }
+        t.language = locale
+        t.setSpeechRate(rate.coerceIn(0.5f, 2f))
+        val parts = text.trim().chunked(3500)
+        if (parts.isEmpty()) return@withTts pageSpeechDone(id, true)
+        parts.forEachIndexed { i, part ->
+            t.speak(part, if (i == 0) TextToSpeech.QUEUE_FLUSH else TextToSpeech.QUEUE_ADD, null, if (i == parts.lastIndex) "pg:$id" else "pg-part:$id:$i")
         }
     }
 
@@ -210,6 +267,7 @@ class WebController(
     }
 
     fun destroy() {
+        tts?.stop(); tts?.shutdown(); tts = null; ttsReady = false
         store.onMissing = {}
         webView?.apply { stopLoading(); removeJavascriptInterface("SBHost"); destroy() }
         webView = null

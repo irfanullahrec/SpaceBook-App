@@ -277,9 +277,9 @@
    "sha256": "677515213c3573b469046b5c0db7819c68c5e57bf35ffa575bcc11ff07433306"
   },
   "content/search/cls2-math.json": {
-   "v": "88e20e6c3caf",
-   "bytes": 73828,
-   "sha256": "88e20e6c3caf5dfffc1b38aa4b09f75dd1f21d35e204b6457a9722f252e93707"
+   "v": "b70970766ffc",
+   "bytes": 73975,
+   "sha256": "b70970766ffc4e66758cf97d69f026bb755c7199b76698d1c52caff1d75bbdf3"
   },
   "content/search/cls2-nazira.json": {
    "v": "6655c3924f03",
@@ -287,14 +287,14 @@
    "sha256": "6655c3924f03137f8ad375c2189d969111185d691545e68dd69d3ca53928ca05"
   },
   "content/search/cls2-pashto.json": {
-   "v": "b2053c9feaaa",
-   "bytes": 154763,
-   "sha256": "b2053c9feaaa65d809f8766ddef8cf1e0d9bcc023b1628bca8edd47bdd0edf10"
+   "v": "e56140b4d533",
+   "bytes": 154728,
+   "sha256": "e56140b4d533f12c8d552c665daa37cf13fdb04cdf07be620c07f0c51acae3df"
   },
   "content/search/cls2-urdu.json": {
-   "v": "05c0013604cc",
-   "bytes": 147349,
-   "sha256": "05c0013604cc1f05f07629bb5f95bd9370f3961de74886c27551ca0b308bc05d"
+   "v": "70ae655c4537",
+   "bytes": 147350,
+   "sha256": "70ae655c453740c634e810c800fda99f244fc652951e3b91b0a79999f46aacfa"
   },
   "content/search/cls3-drawing.json": {
    "v": "ebf61802f15a",
@@ -322,9 +322,9 @@
    "sha256": "9b7ff5f9085932f300e1e2a3e3e27ddf007cf2c1396acf99e3fca031a931b85f"
   },
   "content/search/cls3-nazira.json": {
-   "v": "8816686862e6",
+   "v": "d3fc95828b42",
    "bytes": 214363,
-   "sha256": "8816686862e644ac6009dff307375731726852805342d5da19a11295bf7162c3"
+   "sha256": "d3fc95828b42aec32830b1a5259b171fbf4144a3b77239d62b787cba94282e8c"
   },
   "content/search/cls3-pashto.json": {
    "v": "a7fd347c24d8",
@@ -337,9 +337,9 @@
    "sha256": "cb3b7d9f1c1f80aee5eea1354a11523b3d58c8139a0e9b1daa61aa49ec229fb4"
   },
   "content/search/cls4-eng.json": {
-   "v": "3b00d9d08a72",
-   "bytes": 227403,
-   "sha256": "3b00d9d08a7263c2f20b4d778805ce4a04f379e10f9c42d0c002e2aa27b08fcb"
+   "v": "0bb5cddeb868",
+   "bytes": 227402,
+   "sha256": "0bb5cddeb868ff50ff5756937507c6e35e3b5e75c22f4b61c8364865306bd0b8"
   },
   "content/search/cls4-isl.json": {
    "v": "c61a8fa79916",
@@ -767,9 +767,9 @@
    "sha256": "358708c41683f7b959c40718c974837ae47d1dc6cfc08d4ba46488aad1f86d06"
   },
   "js/biology_9_book.js": {
-   "v": "fe9b4efdaafd",
-   "bytes": 2381116,
-   "sha256": "fe9b4efdaafdbc31796e26c6a764b990ff1c42f3fe7fdf8bafa6e405702da338"
+   "v": "d4d6f38728d4",
+   "bytes": 2381117,
+   "sha256": "d4d6f38728d41dab0f8dfcc1686eb1bf58c829adf2b8f2606750aa2966202491"
   },
   "js/chem12_exercise_banks.js": {
    "v": "c3828493e21a",
@@ -927,9 +927,9 @@
    "sha256": "7e889f6d10eebf847eab2d973bc36b290f7258d99d4000e5fa121c2651ee7b72"
   },
   "js/economics_12_data.js": {
-   "v": "0371d5c2529a",
-   "bytes": 17961321,
-   "sha256": "0371d5c2529ab1087dd61d3d6d02eb90873ea94ffc02693ac407500a96ae78d4"
+   "v": "c91e6bd2342d",
+   "bytes": 17900352,
+   "sha256": "c91e6bd2342d727e2bd9fd3e75c525d0fee484ef5d158000f7a75cfdd1c165a2"
   },
   "js/eng12_exercise_banks.js": {
    "v": "69d850783bcb",
@@ -937,9 +937,9 @@
    "sha256": "69d850783bcb36bd4c8d44897dc821aaca62a93e24e826377f7011fc7513bd5c"
   },
   "js/eng_11_data.js": {
-   "v": "0c51f32239d0",
-   "bytes": 2274235,
-   "sha256": "0c51f32239d009f1f393b17d5be4a7efb650674e97e9a37c1ebd77a993d5a4e7"
+   "v": "9a7c3a1002d5",
+   "bytes": 2274246,
+   "sha256": "9a7c3a1002d52ebc0b6779546b3006c0054f7859771b39f858c38c42ebb7ab3e"
   },
   "js/english_10_data.js": {
    "v": "34448e28bef7",
@@ -952,9 +952,9 @@
    "sha256": "776bf021b92ffa4dd59197fb8b89b79ba3efd3e169dfdb5133c7f7e086accb90"
   },
   "js/english_12_data.js": {
-   "v": "df2f33c6c648",
-   "bytes": 5821811,
-   "sha256": "df2f33c6c648b57b5dc07e64b9c8695213654ef21cdf9fde730bce16aba84867"
+   "v": "a35966ef820c",
+   "bytes": 5821865,
+   "sha256": "a35966ef820ce353b84e7089a52230ae8595172a0a5babac39ee4f867055392c"
   },
   "js/english_1_book.js": {
    "v": "e3103e4b7b04",
@@ -967,34 +967,34 @@
    "sha256": "fd349f907d661831bee3ea1a16662a6e0590c8e8138b8fbbf6600e297d3324f4"
   },
   "js/english_3_data.js": {
-   "v": "472455ff56e6",
-   "bytes": 816332,
-   "sha256": "472455ff56e69267b249f283886d247f16cfe24a71a70070c5c3b458b3013d90"
+   "v": "4da6e16eb506",
+   "bytes": 816450,
+   "sha256": "4da6e16eb5060a04b4306a09192b81e0eb8c048f1131292e1751aaddf357677f"
   },
   "js/english_4_data.js": {
-   "v": "c58e672e61fd",
-   "bytes": 1699901,
-   "sha256": "c58e672e61fd19ab0db8d4f578a48432148aa271d2553d47336d86df0987abe0"
+   "v": "6661ca39f98d",
+   "bytes": 1699931,
+   "sha256": "6661ca39f98d70f773ed3c86c779c298e43a06e9103b0ca7d6689a658e76a744"
   },
   "js/english_5_data.js": {
-   "v": "3b351f63b63b",
+   "v": "efd11d4275af",
    "bytes": 1384710,
-   "sha256": "3b351f63b63bc49d2a0965b970a85294d2c4d7d448a3a98d3ac08677c35a5b3d"
+   "sha256": "efd11d4275af4e40b0b9fa3d761bb52b3fa0597b2af7e7a528cc67b920ebdbe0"
   },
   "js/english_6_data.js": {
-   "v": "6cacd8715298",
-   "bytes": 1393077,
-   "sha256": "6cacd871529821d685f663880f35fbabb72f6bcb1714ddd5be0aedbcb44cea58"
+   "v": "93bacc7c3c2d",
+   "bytes": 1397310,
+   "sha256": "93bacc7c3c2d638087e2bbaed419e7c5a6d1cfccafdbfeb7b3fe796ab99d77d9"
   },
   "js/english_7_data.js": {
-   "v": "c40495bbda59",
-   "bytes": 1257078,
-   "sha256": "c40495bbda59f092a1f0a7855f351006e0cbda77496353d1d90627017326617b"
+   "v": "9d338135957c",
+   "bytes": 1271153,
+   "sha256": "9d338135957cdbcf8e9062216144a945ca79a68a4355399f8f27f51d92255f63"
   },
   "js/english_8_data.js": {
-   "v": "5ad0b073e3c5",
-   "bytes": 1039668,
-   "sha256": "5ad0b073e3c54d33c582b338ebd38fd7a3249ecf1864db9e52679fce89b5f151"
+   "v": "39dcf0b4d7b4",
+   "bytes": 1082886,
+   "sha256": "39dcf0b4d7b42064a6d0ff4fc9e4454a4103101e07952419379231b7c9f2deaa"
   },
   "js/english_9_book.js": {
    "v": "d3558cbb29c0",
@@ -1012,9 +1012,9 @@
    "sha256": "c12d51ab205ef445a2ce3bf2ff0a4de36b3b6988881d294b7a21f62387c9c2b7"
   },
   "js/general_science_5_data.js": {
-   "v": "f3436c4b13a5",
+   "v": "66c0e5b3397a",
    "bytes": 1672719,
-   "sha256": "f3436c4b13a5386519a8989ec6bfa3cc627e0bbe2fe5e2aa277ad07ffd621ba7"
+   "sha256": "66c0e5b3397ad8f92405f144532cb323772b08f2139ba2d6306984ea986a97dc"
   },
   "js/general_science_6_data.js": {
    "v": "d6718f9c926a",
@@ -1022,14 +1022,14 @@
    "sha256": "d6718f9c926ab80522b882cf6d749247b50d1df88a77cb821c6ff213933c0758"
   },
   "js/general_science_7_data.js": {
-   "v": "3c44fb0cfa1e",
-   "bytes": 1683312,
-   "sha256": "3c44fb0cfa1e295e7dd9b808278146b52d178bdf38db952f876c35ac37be7296"
+   "v": "f6c3eb1eed8e",
+   "bytes": 1690605,
+   "sha256": "f6c3eb1eed8e243b0323d72e272ec224f299ba45071d735182cd763564f137eb"
   },
   "js/general_science_8_data.js": {
-   "v": "97c34a65a7e1",
-   "bytes": 1978794,
-   "sha256": "97c34a65a7e16990a71dbac8355768303e5e219126d0adb363c1fc7f991b4429"
+   "v": "521ca402672b",
+   "bytes": 2020901,
+   "sha256": "521ca402672bc29de52d46b6f8f11edb8dbaf0299af9f39b82af93ad1a468fce"
   },
   "js/general_science_9_book.js": {
    "v": "7c610700c623",
@@ -1092,14 +1092,14 @@
    "sha256": "35e8dbcad5cb7e2ca9bcac883f78be9f14981b116e8a7da17c481279dac95b9b"
   },
   "js/hpe_11_data.js": {
-   "v": "d3cd7d8223ec",
-   "bytes": 993323,
-   "sha256": "d3cd7d8223ec8c6dd8a28b66974894722d10bb3b7b8b0d5c62656bf03eac0e1b"
+   "v": "1329813a574e",
+   "bytes": 993424,
+   "sha256": "1329813a574ea5b929847089dbd666601e016cb4c8d788db247308b714ebb889"
   },
   "js/hpe_12_data.js": {
-   "v": "9019c91812b8",
-   "bytes": 3847293,
-   "sha256": "9019c91812b8ff64759c9beadba2ef68653b6b0d7387aba92e52e5649a704ac1"
+   "v": "f0945553ab75",
+   "bytes": 3847447,
+   "sha256": "f0945553ab7544210cfe54a221f54988976bf4ebe727f66f5c3a7eb9e7b45eca"
   },
   "js/hpe_6_data.js": {
    "v": "1626f6e4eb60",
@@ -1112,9 +1112,9 @@
    "sha256": "72aca73e8c4e881a4843f37337ad1adbf9bf2ee8aebeea3aeec7307f5dcded62"
   },
   "js/hpe_8_data.js": {
-   "v": "6b5136179a13",
-   "bytes": 407162,
-   "sha256": "6b5136179a13fbf98aa8d8ed8c75feb50f4c70085ab189070a136fd8bca4a855"
+   "v": "f6befc444f86",
+   "bytes": 407301,
+   "sha256": "f6befc444f8600daa34e192a14b5b2a5b73e73da0125bf0e9fe8336f00d4be10"
   },
   "js/hpe_9_data.js": {
    "v": "025e021e086b",
@@ -1122,9 +1122,9 @@
    "sha256": "025e021e086b55b456e74d9de8e0725a94d3ee2009f40c4ea8f6a75222a8ed77"
   },
   "js/ikhtiari_11_data.js": {
-   "v": "1b9bcf94e606",
-   "bytes": 2707132,
-   "sha256": "1b9bcf94e606bb323ca77179b84ea42d1cd60260183c73514c45605347e1406f"
+   "v": "a4444fd2cca2",
+   "bytes": 2707130,
+   "sha256": "a4444fd2cca25aca1b8da273e3a5b69cdce1bd9197bf68580c8628a3a2e198dd"
   },
   "js/ishist_11_data.js": {
    "v": "f1d494a971c8",
@@ -1157,9 +1157,9 @@
    "sha256": "ccdbca68b823e5034d392ad41303cf28a66dc5ed07b8187b142d0a62e162f929"
   },
   "js/islamiat_8_data.js": {
-   "v": "13635b6bcc34",
-   "bytes": 1785227,
-   "sha256": "13635b6bcc34ee46cb063bf27db6b7c3e7b1b8570ef8915b68e8d29ca5c67a86"
+   "v": "dd74ed045e57",
+   "bytes": 1798660,
+   "sha256": "dd74ed045e5771c1f8abc838d272ee907e2c3dce0d174153e48745100f3948fd"
   },
   "js/islamiat_9_data.js": {
    "v": "542da4e9ef1e",
@@ -1177,9 +1177,9 @@
    "sha256": "dcb1f4146916ff328b34bd08a0651d91214dfb4058258584fdb17ff551d1cb87"
   },
   "js/islamic_history_12_data.js": {
-   "v": "61e26bce1f23",
-   "bytes": 5937017,
-   "sha256": "61e26bce1f23058531c5846b107822b5f07274334ee8476e7bd63b3a5399c607"
+   "v": "0f10989496fe",
+   "bytes": 5936995,
+   "sha256": "0f10989496fe7d44e20a9d5f269728d18a65f1ea2860bd6d978cb66b26cb2eac"
   },
   "js/islamyat_1_book.js": {
    "v": "3c74feb1dc32",
@@ -1321,25 +1321,30 @@
    "bytes": 5829127,
    "sha256": "2c5df428ef75591d613a48bbbc7684d412bb0a88e89a829911073306b2bf3edc"
   },
+  "js/math_12_pagebook_data.js": {
+   "v": "cd67f69fc74e",
+   "bytes": 1408790,
+   "sha256": "cd67f69fc74e2279a205f5281c6d2b68ef1f29bf5ba4416c544aa8843b8eda3c"
+  },
   "js/math_1_book.js": {
-   "v": "271754fcd57f",
-   "bytes": 2114614,
-   "sha256": "271754fcd57faac8013b3164c16d5d624393c5789259b2c72f973fe663888a6c"
+   "v": "53a07963ccac",
+   "bytes": 2126116,
+   "sha256": "53a07963ccacb232ab93766c0a54602bd16976f19a0c5abb21009648a0c59134"
   },
   "js/math_2_data.js": {
-   "v": "570b633be488",
-   "bytes": 2142728,
-   "sha256": "570b633be488c371c95a360b15bb026cd9d3260cfa586553ae29ab580b1b77c8"
+   "v": "eb90ede5ada2",
+   "bytes": 2155490,
+   "sha256": "eb90ede5ada24c1830ad3d2d2aaa02a0e108e2d3180597737aec74af349e5499"
   },
   "js/math_3_data.js": {
-   "v": "899137f0d618",
-   "bytes": 1839242,
-   "sha256": "899137f0d6185e99ec89ec9253c934a32c4ddc5e192a4b7b0a2927959ac82a9e"
+   "v": "7aef67f92303",
+   "bytes": 1840149,
+   "sha256": "7aef67f92303c65482d99b73b54e7f57e19dd2c02bc171069ac2ff70674efee3"
   },
   "js/math_4_data.js": {
-   "v": "4d0991a03bbe",
-   "bytes": 1952654,
-   "sha256": "4d0991a03bbe5c016c765f680a97d88fd59e212964283a1b56a933e380bd35a2"
+   "v": "b8751d69d81e",
+   "bytes": 2021723,
+   "sha256": "b8751d69d81eb4c5d365ee014a783ed371c643d3b1e9f87fb0b6f281ca62bcac"
   },
   "js/math_5_data.js": {
    "v": "29853c311113",
@@ -1352,9 +1357,9 @@
    "sha256": "73c88e0d08f0ab7fbe7357d2bcfc0dd19211e4dc722304b7cf196427da718a21"
   },
   "js/math_7_data.js": {
-   "v": "3b82edc91b86",
-   "bytes": 3578135,
-   "sha256": "3b82edc91b86a7732bac770f13de388843b2b90bcd6e54238f4a6a04c1a16b0c"
+   "v": "f591635d207b",
+   "bytes": 3603453,
+   "sha256": "f591635d207b5398f5cf961dc838a6a32506f70c3d41003f8cbf174ce3462b95"
   },
   "js/math_8_data.js": {
    "v": "92de15065f63",
@@ -1367,9 +1372,9 @@
    "sha256": "6dbcbeb5053bc4477ff305cd9662e1ee267f6cd53f0baabf6df55c4643f81522"
   },
   "js/mq_11_data.js": {
-   "v": "29ada914f6e9",
-   "bytes": 2619726,
-   "sha256": "29ada914f6e97544f052eb3da4570b09dfa3d86e3bd283ee35d0c1caece02cd8"
+   "v": "9525086cdbd9",
+   "bytes": 2619761,
+   "sha256": "9525086cdbd9cf2f6e12930b5da6f40ae7859472b4c4eaceed7ab51f845c9c91"
   },
   "js/mutalia_quran_10_data.js": {
    "v": "5d0e06716e15",
@@ -1397,19 +1402,19 @@
    "sha256": "88edb2fde69ae26406bbc0f067ff8d9013645055706e500de81c933086991fa9"
   },
   "js/nazira_1_book.js": {
-   "v": "c9c66942e074",
+   "v": "a1ef900a7183",
    "bytes": 1123974,
-   "sha256": "c9c66942e0748536456777a1d97e45eea5fdca0547c87f15bcb247bdd7eef2ee"
+   "sha256": "a1ef900a718308013fca23d2646f4bd28a46df839dacb52a4e4adc59776fb0e4"
   },
   "js/nazira_2_data.js": {
-   "v": "2f46c233c4ea",
-   "bytes": 1003417,
-   "sha256": "2f46c233c4eac97463722dd68d8a43bac18f7169b243c88ee6afb50d7f369a53"
+   "v": "cc0af9821001",
+   "bytes": 1003415,
+   "sha256": "cc0af9821001848fedd3edba6ff26e9f81e9bf2cf755bf399290cf194b5aac7c"
   },
   "js/nazira_3_data.js": {
-   "v": "d8654a03f081",
-   "bytes": 1614664,
-   "sha256": "d8654a03f08147f1d564a387471f3f7e09491bcf234d230d677c3d9e006be930"
+   "v": "9e8e7071ea67",
+   "bytes": 1617773,
+   "sha256": "9e8e7071ea67d4d1ce0411876b7c76e1e479d0fcd2945bfe244b1deb9f93137e"
   },
   "js/pakstudy12_exercise_banks.js": {
    "v": "e92f60bb381f",
@@ -1422,9 +1427,9 @@
    "sha256": "b0e97ef1fcbcad9501b37fde31fea0552ccac3b023c0a94a50cc319d9fdb3dbb"
   },
   "js/pakstudy_12_data.js": {
-   "v": "ee49b32b317c",
-   "bytes": 7383913,
-   "sha256": "ee49b32b317c47a67ef191bf75fe963710ba27b239b5bf85aa129974a1b8a44b"
+   "v": "a54042a974bd",
+   "bytes": 7325029,
+   "sha256": "a54042a974bd8884e55bc5ba9dd1cd630d3c5ce6375e65cec506ef56934ae1b3"
   },
   "js/pakstudy_9_book.js": {
    "v": "7cd6a3358a16",
@@ -1437,9 +1442,9 @@
    "sha256": "dadd38534a02d716700bcc4e39493fd49cab5d3d1e0fa81fc5fc060920a3fae4"
   },
   "js/pashto_2_data.js": {
-   "v": "5b9ac8c2dbbe",
-   "bytes": 704599,
-   "sha256": "5b9ac8c2dbbe85c91bd7c1b3b7189c1f74075b7c3fb858a9eab5df42a4e611ff"
+   "v": "c57fc42809db",
+   "bytes": 704659,
+   "sha256": "c57fc42809dbcb8b21de5a3e196c046d7407655e202d812f03c348372c94b573"
   },
   "js/pashto_3_data.js": {
    "v": "1751f0417b8c",
@@ -1462,9 +1467,9 @@
    "sha256": "e9ed5e90fa4c5e0487a53bc626167bb2393075f31fa4c4df2f1705870463c6c8"
   },
   "js/pashto_8_data.js": {
-   "v": "dcabed6fdcc1",
-   "bytes": 691651,
-   "sha256": "dcabed6fdcc1b241ca2a5a72e6e909428cfd2e5db0ddf4ed27a2337f65f120d1"
+   "v": "a6b8450762c1",
+   "bytes": 835507,
+   "sha256": "a6b8450762c18ea4faa545c14a5d3d992d03de9d13545658f626e7e95dff3edb"
   },
   "js/phys12_exercise_banks.js": {
    "v": "455741652fff",
@@ -1622,9 +1627,9 @@
    "sha256": "fcd8e69d26a0ee43fa7efacd4c0292d566673cb65c92343b58cb197d9ee0db28"
   },
   "js/statistics_12_book_data.js": {
-   "v": "c387e76a7392",
-   "bytes": 1553222,
-   "sha256": "c387e76a7392c482ec168f231d0272642d4bccec4269af59db12d534f53e295b"
+   "v": "73c984a0e0a2",
+   "bytes": 1554070,
+   "sha256": "73c984a0e0a2b123e5b914bf07cf29360b5d92b49fe14ae3b51ed830e7514b65"
   },
   "js/urdu12_exercise_banks.js": {
    "v": "ad809c27e529",
@@ -1637,9 +1642,9 @@
    "sha256": "7dce0d13832bb2c6ce1d56bc1344f848846808140292c6f9f1bbb16ad28bb9d1"
   },
   "js/urdu_11_data.js": {
-   "v": "45b2a28e9cd6",
-   "bytes": 1512133,
-   "sha256": "45b2a28e9cd6b688d131e1dc72ec417e336ed7b7ea58c554db097cb25a3ded93"
+   "v": "e95563b62e45",
+   "bytes": 1516041,
+   "sha256": "e95563b62e452b41de804fe22a25a6318e3111857f7ae79f4855e9f22c5622db"
   },
   "js/urdu_12_data.js": {
    "v": "2348c9ee303c",
@@ -1652,9 +1657,9 @@
    "sha256": "242844cb2ad5d3e7352875de452d61cfe9acd10bcc3f38b371a0848cab616b67"
   },
   "js/urdu_2_data.js": {
-   "v": "7919b4d9b038",
-   "bytes": 840548,
-   "sha256": "7919b4d9b03877544408773fe7818253a5a760fa4a045f0be4ae94ceca7dd42c"
+   "v": "646420427400",
+   "bytes": 840560,
+   "sha256": "646420427400af4bc13cd7c6ac41972276dcd20cadedb027a672170077ae2e31"
   },
   "js/urdu_3_book.js": {
    "v": "6ef8fc49391f",
@@ -1682,9 +1687,9 @@
    "sha256": "03115b572e1238c490cab7cd9d5691da90ffc28092463b5b4faf93023022217c"
   },
   "js/urdu_8_data.js": {
-   "v": "fcc759acbc76",
-   "bytes": 2151298,
-   "sha256": "fcc759acbc76c7d965f8246e7fdfee1c57f42cda2906cccc8b2ad31dcc2608c5"
+   "v": "a29083697517",
+   "bytes": 2161363,
+   "sha256": "a2908369751746cb1c33ef618a1d844873d21fbdd88e88b134f0e07abbdda733"
   },
   "js/urdu_data.js": {
    "v": "a26133e5bf53",
@@ -1860,727 +1865,2125 @@
   "cls-pg-eng": {
    "classId": "cls-pg",
    "name": "English Basics",
-   "files": [],
+   "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js"
+   ],
    "assets": [],
-   "bytes": 0
+   "bytes": 9186972
   },
   "cls-pg-urdu": {
    "classId": "cls-pg",
    "name": "Urdu Haroof",
-   "files": [],
+   "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js"
+   ],
    "assets": [],
-   "bytes": 0
+   "bytes": 9186972
   },
   "cls-pg-math": {
    "classId": "cls-pg",
    "name": "Basic Math",
-   "files": [],
+   "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js"
+   ],
    "assets": [],
-   "bytes": 0
+   "bytes": 9186972
   },
   "cls-pg-art": {
    "classId": "cls-pg",
    "name": "Art & Rhymes",
-   "files": [],
+   "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js"
+   ],
    "assets": [],
-   "bytes": 0
+   "bytes": 9186972
   },
   "cls-nur-eng": {
    "classId": "cls-nur",
    "name": "English",
-   "files": [],
+   "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js"
+   ],
    "assets": [],
-   "bytes": 0
+   "bytes": 9186972
   },
   "cls-nur-urdu": {
    "classId": "cls-nur",
    "name": "Urdu",
-   "files": [],
+   "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js"
+   ],
    "assets": [],
-   "bytes": 0
+   "bytes": 9186972
   },
   "cls-nur-math": {
    "classId": "cls-nur",
    "name": "Mathematics",
-   "files": [],
+   "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js"
+   ],
    "assets": [],
-   "bytes": 0
+   "bytes": 9186972
   },
   "cls-nur-gk": {
    "classId": "cls-nur",
    "name": "General Knowledge",
-   "files": [],
+   "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js"
+   ],
    "assets": [],
-   "bytes": 0
+   "bytes": 9186972
   },
   "cls-kg-eng": {
    "classId": "cls-kg",
    "name": "English",
-   "files": [],
+   "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js"
+   ],
    "assets": [],
-   "bytes": 0
+   "bytes": 9186972
   },
   "cls-kg-urdu": {
    "classId": "cls-kg",
    "name": "Urdu",
-   "files": [],
+   "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js"
+   ],
    "assets": [],
-   "bytes": 0
+   "bytes": 9186972
   },
   "cls-kg-math": {
    "classId": "cls-kg",
    "name": "Mathematics",
-   "files": [],
+   "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js"
+   ],
    "assets": [],
-   "bytes": 0
+   "bytes": 9186972
   },
   "cls-kg-gk": {
    "classId": "cls-kg",
    "name": "General Knowledge",
-   "files": [],
+   "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js"
+   ],
    "assets": [],
-   "bytes": 0
+   "bytes": 9186972
   },
   "cls1-eng": {
    "classId": "cls1",
    "name": "English",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/english_1_book.js",
     "content/search/cls1-eng.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1756253
+   "bytes": 10943225
   },
   "cls1-urdu": {
    "classId": "cls1",
    "name": "Urdu",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/urdu_1_book.js",
     "content/search/cls1-urdu.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 240683
+   "bytes": 9427655
   },
   "cls1-math": {
    "classId": "cls1",
    "name": "Mathematics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/math_1_book.js",
     "content/search/cls1-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2420392
+   "bytes": 11618866
   },
   "cls1-gk": {
    "classId": "cls1",
    "name": "General Knowledge",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/gk_1_book.js",
     "content/search/cls1-gk.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 241018
+   "bytes": 9427990
   },
   "cls1-isl": {
    "classId": "cls1",
    "name": "Islamyat",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamyat_1_book.js",
     "content/search/cls1-isl.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 547840
+   "bytes": 9734812
   },
   "cls1-nazira": {
    "classId": "cls1",
    "name": "Nazira Quran",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/nazira_1_book.js",
     "content/search/cls1-nazira.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1402292
+   "bytes": 10589264
   },
   "cls1-pashto": {
    "classId": "cls1",
    "name": "Pashto",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/pashto_1_book.js",
     "content/search/cls1-pashto.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 852441
+   "bytes": 10039413
   },
   "cls1-drawing": {
    "classId": "cls1",
    "name": "Drawing",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/drawing_1_book.js",
     "content/search/cls1-drawing.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 444458
+   "bytes": 9631430
   },
   "cls2-eng": {
    "classId": "cls2",
    "name": "English",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/english_2_data.js",
     "content/search/cls2-eng.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1574569
+   "bytes": 10761541
   },
   "cls2-urdu": {
    "classId": "cls2",
    "name": "Urdu",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/urdu_2_data.js",
     "content/search/cls2-urdu.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1224007
+   "bytes": 10410992
   },
   "cls2-math": {
    "classId": "cls2",
    "name": "Mathematics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/math_2_data.js",
     "content/search/cls2-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2452666
+   "bytes": 11652547
   },
   "cls2-gk": {
    "classId": "cls2",
    "name": "General Knowledge",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/gk_2_data.js",
     "content/search/cls2-gk.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 798767
+   "bytes": 9985739
   },
   "cls2-isl": {
    "classId": "cls2",
    "name": "Islamyat",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamyat_2_data.js",
     "content/search/cls2-isl.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 640136
+   "bytes": 9827108
   },
   "cls2-nazira": {
    "classId": "cls2",
    "name": "Nazira Quran",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/nazira_2_data.js",
     "content/search/cls2-nazira.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1347518
+   "bytes": 10534488
   },
   "cls2-pashto": {
    "classId": "cls2",
    "name": "Pashto",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/pashto_2_data.js",
     "content/search/cls2-pashto.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1095472
+   "bytes": 10282469
   },
   "cls2-drawing": {
    "classId": "cls2",
    "name": "Drawing",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/drawing_2_data.js",
     "content/search/cls2-drawing.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 418655
+   "bytes": 9605627
   },
   "cls3-eng": {
    "classId": "cls3",
    "name": "English",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/english_3_data.js",
     "content/search/cls3-eng.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1205678
+   "bytes": 10392768
   },
   "cls3-urdu": {
    "classId": "cls3",
    "name": "Urdu",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/urdu_3_book.js",
     "content/search/cls3-urdu.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 240687
+   "bytes": 9427659
   },
   "cls3-math": {
    "classId": "cls3",
    "name": "Mathematics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/math_3_data.js",
     "content/search/cls3-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2166444
+   "bytes": 11354323
   },
   "cls3-gk": {
    "classId": "cls3",
    "name": "General Knowledge",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/gk_3_data.js",
     "content/search/cls3-gk.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1104675
+   "bytes": 10291647
   },
   "cls3-isl": {
    "classId": "cls3",
    "name": "Islamyat",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamyat_3_data.js",
     "content/search/cls3-isl.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1155655
+   "bytes": 10342627
   },
   "cls3-nazira": {
    "classId": "cls3",
    "name": "Nazira Quran",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/nazira_3_data.js",
     "content/search/cls3-nazira.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2065137
+   "bytes": 11255218
   },
   "cls3-pashto": {
    "classId": "cls3",
    "name": "Pashto",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/pashto_3_data.js",
     "content/search/cls3-pashto.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1315813
+   "bytes": 10502785
   },
   "cls3-drawing": {
    "classId": "cls3",
    "name": "Drawing",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/drawing_3_data.js",
     "content/search/cls3-drawing.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 368702
+   "bytes": 9555674
   },
   "cls4-math": {
    "classId": "cls4",
    "name": "Mathematics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/math_4_data.js",
     "content/search/cls4-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2305434
+   "bytes": 11561475
   },
   "cls4-eng": {
    "classId": "cls4",
    "name": "English",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/english_4_data.js",
     "content/search/cls4-eng.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2163414
+   "bytes": 11350415
   },
   "cls4-urdu": {
    "classId": "cls4",
    "name": "Urdu",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/urdu_4_data.js",
     "content/search/cls4-urdu.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2449104
+   "bytes": 11636076
   },
   "cls4-sci": {
    "classId": "cls4",
    "name": "General Science",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/general_science_4_data.js",
     "content/search/cls4-sci.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1703925
+   "bytes": 10890897
   },
   "cls4-sst": {
    "classId": "cls4",
    "name": "Social Studies (EM)",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/social_studies_4_data.js",
     "content/search/cls4-sst.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1977489
+   "bytes": 11164461
   },
   "cls4-sstum": {
    "classId": "cls4",
    "name": "Social Studies (UM)",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/social_studies_um_4_data.js",
     "content/search/cls4-sstum.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2174541
+   "bytes": 11361513
   },
   "cls4-isl": {
    "classId": "cls4",
    "name": "Islamyat",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamiat_4_data.js",
     "content/search/cls4-isl.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1643493
+   "bytes": 10830465
   },
   "cls4-pashto": {
    "classId": "cls4",
    "name": "Pashto",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/pashto_4_data.js",
     "content/search/cls4-pashto.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1559363
+   "bytes": 10746335
   },
   "cls5-math": {
    "classId": "cls5",
    "name": "Mathematics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/math_5_data.js",
     "content/search/cls5-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2107720
+   "bytes": 11294692
   },
   "cls5-sci": {
    "classId": "cls5",
    "name": "General Science",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/general_science_5_data.js",
     "content/search/cls5-sci.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2107564
+   "bytes": 11294536
   },
   "cls5-eng": {
    "classId": "cls5",
    "name": "English",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/english_5_data.js",
     "content/search/cls5-eng.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1862289
+   "bytes": 11049261
   },
   "cls5-urdu": {
    "classId": "cls5",
    "name": "Urdu",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/urdu_5_data.js",
     "content/search/cls5-urdu.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2703309
+   "bytes": 11890281
   },
   "cls5-isl": {
    "classId": "cls5",
    "name": "Islamyat",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamiat_5_data.js",
     "content/search/cls5-isl.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1729999
+   "bytes": 10916971
   },
   "cls5-sst": {
    "classId": "cls5",
    "name": "Social Studies (EM)",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/social_studies_5_data.js",
     "content/search/cls5-sst.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1748560
+   "bytes": 10935532
   },
   "cls5-sstum": {
    "classId": "cls5",
    "name": "Social Studies (UM)",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/social_studies_um_5_data.js",
     "content/search/cls5-sstum.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1947572
+   "bytes": 11134544
   },
   "cls5-pashto": {
    "classId": "cls5",
    "name": "Pashto",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/pashto_5_data.js",
     "content/search/cls5-pashto.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1824956
+   "bytes": 11011928
   },
   "cls6-math": {
    "classId": "cls6",
    "name": "Mathematics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/math_6_data.js",
     "content/search/cls6-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3363837
+   "bytes": 12550809
   },
   "cls6-sci": {
    "classId": "cls6",
    "name": "General Science",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/general_science_6_data.js",
     "content/search/cls6-sci.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1921805
+   "bytes": 11108777
   },
   "cls6-eng": {
    "classId": "cls6",
    "name": "English",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/english_6_data.js",
     "content/search/cls6-eng.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1863295
+   "bytes": 11054500
   },
   "cls6-urdu": {
    "classId": "cls6",
    "name": "Urdu",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/urdu_6_data.js",
     "content/search/cls6-urdu.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2795357
+   "bytes": 11982329
   },
   "cls6-isl": {
    "classId": "cls6",
    "name": "Islamyat",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamiat_6_data.js",
     "content/search/cls6-isl.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2787782
+   "bytes": 11974754
   },
   "cls6-comp": {
    "classId": "cls6",
    "name": "Computer Education",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/computer_6_data.js",
     "content/search/cls6-comp.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1123545
+   "bytes": 10310517
   },
   "cls6-geo": {
    "classId": "cls6",
    "name": "Geography",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/geography_6_data.js",
     "content/search/cls6-geo.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1226064
+   "bytes": 10413036
   },
   "cls6-hist": {
    "classId": "cls6",
    "name": "History",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/history_6_data.js",
     "content/search/cls6-hist.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1445516
+   "bytes": 10632488
   },
   "cls6-hpe": {
    "classId": "cls6",
    "name": "Health & Physical Education",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/hpe_6_data.js",
     "content/search/cls6-hpe.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1165645
+   "bytes": 10352617
   },
   "cls6-drawing": {
    "classId": "cls6",
    "name": "Drawing / Art",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/drawing_6_data.js",
     "content/search/cls6-drawing.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 696246
+   "bytes": 9883218
   },
   "cls6-arabic": {
    "classId": "cls6",
    "name": "Arabic",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/arabic_6_data.js",
     "content/search/cls6-arabic.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1631250
+   "bytes": 10818222
   },
   "cls6-quran": {
    "classId": "cls6",
    "name": "Mutalia-e-Quran-e-Hakeem",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/mutalia_quran_6_data.js",
     "content/search/cls6-quran.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2475823
+   "bytes": 11662795
   },
   "cls6-pashto": {
    "classId": "cls6",
    "name": "Pashto",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/pashto_6_data.js",
     "content/search/cls6-pashto.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1639869
+   "bytes": 10826841
   },
   "cls7-eng": {
    "classId": "cls7",
    "name": "English",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/english_7_data.js",
     "js/english_6_data.js",
     "content/search/cls7-eng.json"
@@ -2588,12 +3991,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3121667
+   "bytes": 12326947
   },
   "cls7-urdu": {
    "classId": "cls7",
    "name": "Urdu",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/urdu_7_data.js",
     "js/urdu_6_data.js",
     "content/search/cls7-urdu.json"
@@ -2601,24 +4025,66 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4956505
+   "bytes": 14143477
   },
   "cls7-math": {
    "classId": "cls7",
    "name": "Mathematics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/math_7_data.js",
     "content/search/cls7-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4017754
+   "bytes": 13230044
   },
   "cls7-sci": {
    "classId": "cls7",
    "name": "General Science",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/general_science_7_data.js",
     "js/general_science_6_data.js",
     "content/search/cls7-sci.json"
@@ -2626,12 +4092,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3606892
+   "bytes": 12801157
   },
   "cls7-geo": {
    "classId": "cls7",
    "name": "Geography",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/geography_7_data.js",
     "js/geography_6_data.js",
     "content/search/cls7-geo.json"
@@ -2639,12 +4126,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2136623
+   "bytes": 11323595
   },
   "cls7-hist": {
    "classId": "cls7",
    "name": "History",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/history_7_data.js",
     "js/history_6_data.js",
     "content/search/cls7-hist.json"
@@ -2652,12 +4160,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2745678
+   "bytes": 11932650
   },
   "cls7-comp": {
    "classId": "cls7",
    "name": "Computer Education",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/computer_7_data.js",
     "js/computer_6_data.js",
     "content/search/cls7-comp.json"
@@ -2665,12 +4194,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2017496
+   "bytes": 11204468
   },
   "cls7-isl": {
    "classId": "cls7",
    "name": "Islamyat",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamiat_7_data.js",
     "js/islamiat_6_data.js",
     "content/search/cls7-isl.json"
@@ -2678,12 +4228,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5043066
+   "bytes": 14230038
   },
   "cls7-quran": {
    "classId": "cls7",
    "name": "Mutalia-e-Quran-e-Hakeem",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/mutalia_quran_7_data.js",
     "js/mutalia_quran_6_data.js",
     "content/search/cls7-quran.json"
@@ -2691,12 +4262,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4831043
+   "bytes": 14018015
   },
   "cls7-arabic": {
    "classId": "cls7",
    "name": "Arabic",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/arabic_7_data.js",
     "js/arabic_6_data.js",
     "content/search/cls7-arabic.json"
@@ -2704,12 +4296,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3207552
+   "bytes": 12394524
   },
   "cls7-drawing": {
    "classId": "cls7",
    "name": "Drawing / Art",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/drawing_7_data.js",
     "js/drawing_6_data.js",
     "content/search/cls7-drawing.json"
@@ -2717,12 +4330,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1300144
+   "bytes": 10487116
   },
   "cls7-hpe": {
    "classId": "cls7",
    "name": "Health & Physical Education",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/hpe_7_data.js",
     "js/hpe_6_data.js",
     "content/search/cls7-hpe.json"
@@ -2730,12 +4364,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2318868
+   "bytes": 11505840
   },
   "cls8-eng": {
    "classId": "cls8",
    "name": "English",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/english_8_data.js",
     "js/english_6_data.js",
     "content/search/cls8-eng.json"
@@ -2743,12 +4398,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2888012
+   "bytes": 12122435
   },
   "cls8-urdu": {
    "classId": "cls8",
    "name": "Urdu",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/urdu_8_data.js",
     "js/urdu_6_data.js",
     "content/search/cls8-urdu.json"
@@ -2756,24 +4432,66 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5048256
+   "bytes": 14245293
   },
   "cls8-math": {
    "classId": "cls8",
    "name": "Mathematics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/math_8_data.js",
     "content/search/cls8-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4171067
+   "bytes": 13358039
   },
   "cls8-sci": {
    "classId": "cls8",
    "name": "General Science",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/general_science_8_data.js",
     "js/general_science_6_data.js",
     "content/search/cls8-sci.json"
@@ -2781,12 +4499,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3962491
+   "bytes": 13191570
   },
   "cls8-geo": {
    "classId": "cls8",
    "name": "Geography",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/geography_8_data.js",
     "js/geography_6_data.js",
     "content/search/cls8-geo.json"
@@ -2794,12 +4533,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2036765
+   "bytes": 11223737
   },
   "cls8-hist": {
    "classId": "cls8",
    "name": "History",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/history_8_data.js",
     "js/history_6_data.js",
     "content/search/cls8-hist.json"
@@ -2807,12 +4567,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2639199
+   "bytes": 11826171
   },
   "cls8-comp": {
    "classId": "cls8",
    "name": "Computer Education",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/computer_8_data.js",
     "js/computer_6_data.js",
     "content/search/cls8-comp.json"
@@ -2820,12 +4601,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1849021
+   "bytes": 11035993
   },
   "cls8-isl": {
    "classId": "cls8",
    "name": "Islamyat",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamiat_8_data.js",
     "js/islamiat_6_data.js",
     "content/search/cls8-isl.json"
@@ -2833,12 +4635,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4659142
+   "bytes": 13859547
   },
   "cls8-quran": {
    "classId": "cls8",
    "name": "Mutalia-e-Quran-e-Hakeem",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/mutalia_quran_8_data.js",
     "js/mutalia_quran_6_data.js",
     "content/search/cls8-quran.json"
@@ -2846,12 +4669,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4896388
+   "bytes": 14083360
   },
   "cls8-pashto": {
    "classId": "cls8",
    "name": "Pashto",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/pashto_8_data.js",
     "js/pashto_6_data.js",
     "content/search/cls8-pashto.json"
@@ -2859,12 +4703,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2263426
+   "bytes": 11594254
   },
   "cls8-arabic": {
    "classId": "cls8",
    "name": "Arabic",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/arabic_8_data.js",
     "js/arabic_6_data.js",
     "content/search/cls8-arabic.json"
@@ -2872,12 +4737,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3192873
+   "bytes": 12379845
   },
   "cls8-drawing": {
    "classId": "cls8",
    "name": "Drawing / Art",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/drawing_8_data.js",
     "js/drawing_6_data.js",
     "content/search/cls8-drawing.json"
@@ -2885,12 +4771,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 849667
+   "bytes": 10036639
   },
   "cls8-hpe": {
    "classId": "cls8",
    "name": "Health & Physical Education",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/hpe_8_data.js",
     "js/hpe_6_data.js",
     "content/search/cls8-hpe.json"
@@ -2898,24 +4805,66 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1509014
+   "bytes": 10696125
   },
   "cls9-math": {
    "classId": "cls9",
    "name": "Mathematics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/math_data.js",
     "content/search/cls9-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 984641
+   "bytes": 10171613
   },
   "cls9-phy": {
    "classId": "cls9",
    "name": "Physics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/data_phys.js",
     "js/physics_10_source_data.js",
     "content/search/cls9-phy.json"
@@ -2923,12 +4872,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 8793616
+   "bytes": 17980588
   },
   "cls9-chem": {
    "classId": "cls9",
    "name": "Chemistry",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/data_chem.js",
     "js/chemistry_10_source_data.js",
     "js/chemistry_9_book.js",
@@ -2937,12 +4907,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 13251556
+   "bytes": 22438528
   },
   "cls9-bio": {
    "classId": "cls9",
    "name": "Biology",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/bio_data.js",
     "js/biology_9_book.js",
     "content/search/cls9-bio.json"
@@ -2950,12 +4941,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 6719966
+   "bytes": 15906939
   },
   "cls9-eng": {
    "classId": "cls9",
    "name": "English",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/english_9_book.js",
     "js/english_6_data.js",
     "content/search/cls9-eng.json"
@@ -2963,24 +4975,66 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3121311
+   "bytes": 12312516
   },
   "cls9-urdu": {
    "classId": "cls9",
    "name": "Urdu",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/urdu_data.js",
     "content/search/cls9-urdu.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3059422
+   "bytes": 12246394
   },
   "cls9-isl": {
    "classId": "cls9",
    "name": "Islamyat",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamiat_9_data.js",
     "js/islamiat_6_data.js",
     "content/search/cls9-isl.json"
@@ -2988,12 +5042,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3933411
+   "bytes": 13120383
   },
   "cls9-comp": {
    "classId": "cls9",
    "name": "Computer Science",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/computer_9_data.js",
     "js/computer_6_data.js",
     "content/search/cls9-comp.json"
@@ -3001,24 +5076,66 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2490420
+   "bytes": 11677392
   },
   "cls9-pakstudy": {
    "classId": "cls9",
    "name": "Pakistan Studies",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/pakstudy_9_book.js",
     "content/search/cls9-pakstudy.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1530305
+   "bytes": 10717277
   },
   "cls9-sci": {
    "classId": "cls9",
    "name": "General Science",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/general_science_9_book.js",
     "js/general_science_6_data.js",
     "content/search/cls9-sci.json"
@@ -3026,12 +5143,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3142528
+   "bytes": 12329500
   },
   "cls9-hpe": {
    "classId": "cls9",
    "name": "Health & Physical Education",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/hpe_9_data.js",
     "js/hpe_6_data.js",
     "content/search/cls9-hpe.json"
@@ -3039,12 +5177,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2024112
+   "bytes": 11211084
   },
   "cls9-drawing": {
    "classId": "cls9",
    "name": "Art & Model Drawing",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/drawing_9_data.js",
     "js/drawing_6_data.js",
     "content/search/cls9-drawing.json"
@@ -3052,24 +5211,66 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1485199
+   "bytes": 10672171
   },
   "cls9-islopt": {
    "classId": "cls9",
    "name": "Islamiat Ikhtiari",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamiat_ikhtiari_10_data.js",
     "content/search/cls9-islopt.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2642180
+   "bytes": 11829152
   },
   "cls9-quran": {
    "classId": "cls9",
    "name": "Mutalia-e-Quran",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/mutalia_quran_9_data.js",
     "js/mutalia_quran_6_data.js",
     "content/search/cls9-quran.json"
@@ -3077,24 +5278,66 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4935023
+   "bytes": 14121995
   },
   "cls10-math": {
    "classId": "cls10",
    "name": "Mathematics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/math_10_data.js",
     "content/search/cls10-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 800232
+   "bytes": 9987204
   },
   "cls10-phy": {
    "classId": "cls10",
    "name": "Physics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/data_phys.js",
     "js/physics_10_source_data.js",
     "js/physics_10_book_data.js",
@@ -3103,12 +5346,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 11276774
+   "bytes": 20463746
   },
   "cls10-chem": {
    "classId": "cls10",
    "name": "Chemistry",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/data_chem.js",
     "js/chemistry_10_source_data.js",
     "js/chemistry_10_book_data.js",
@@ -3117,12 +5381,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 12870435
+   "bytes": 22057407
   },
   "cls10-bio": {
    "classId": "cls10",
    "name": "Biology",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/data_bio.js",
     "js/biology_10_front_source.js",
     "js/biology_10_unit10_source.js",
@@ -3141,12 +5426,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5461179
+   "bytes": 14648151
   },
   "cls10-eng": {
    "classId": "cls10",
    "name": "English",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/data_eng.js",
     "js/english_10_data.js",
     "js/english_10_source_review.js",
@@ -3155,24 +5461,66 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3577483
+   "bytes": 12764455
   },
   "cls10-pakstudy": {
    "classId": "cls10",
    "name": "Pakistan Studies",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/pakstudy_10_data.js",
     "content/search/cls10-pakstudy.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1648135
+   "bytes": 10835107
   },
   "cls10-isl": {
    "classId": "cls10",
    "name": "Islamyat",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamiat_9_data.js",
     "js/islamiat_6_data.js",
     "content/search/cls10-isl.json"
@@ -3180,12 +5528,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3933411
+   "bytes": 13120383
   },
   "cls10-urdu": {
    "classId": "cls10",
    "name": "Urdu",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/urdu_10_data.js",
     "js/urdu_6_data.js",
     "content/search/cls10-urdu.json"
@@ -3193,12 +5562,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4212060
+   "bytes": 13399032
   },
   "cls10-comp": {
    "classId": "cls10",
    "name": "Computer Science",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/computer_10_data.js",
     "js/computer_6_data.js",
     "content/search/cls10-comp.json"
@@ -3206,12 +5596,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2819152
+   "bytes": 12006124
   },
   "cls10-sci": {
    "classId": "cls10",
    "name": "General Science",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/general_science_10_data.js",
     "js/general_science_6_data.js",
     "content/search/cls10-sci.json"
@@ -3219,12 +5630,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3512912
+   "bytes": 12699884
   },
   "cls10-hpe": {
    "classId": "cls10",
    "name": "Health & Physical Education",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/hpe_10_data.js",
     "js/hpe_6_data.js",
     "content/search/cls10-hpe.json"
@@ -3232,12 +5664,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2470308
+   "bytes": 11657280
   },
   "cls10-drawing": {
    "classId": "cls10",
    "name": "Art & Model Drawing",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/drawing_10_data.js",
     "js/drawing_6_data.js",
     "content/search/cls10-drawing.json"
@@ -3245,24 +5698,66 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1229399
+   "bytes": 10416371
   },
   "cls10-islopt": {
    "classId": "cls10",
    "name": "Islamiat Ikhtiari",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamiat_ikhtiari_10_data.js",
     "content/search/cls10-islopt.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2642180
+   "bytes": 11829152
   },
   "cls10-quran": {
    "classId": "cls10",
    "name": "Mutalia-e-Quran",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/mutalia_quran_10_data.js",
     "js/mutalia_quran_6_data.js",
     "content/search/cls10-quran.json"
@@ -3270,84 +5765,231 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5631835
+   "bytes": 14818807
   },
   "cls11-math": {
    "classId": "cls11",
    "name": "Mathematics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/math_11_data.js",
     "content/search/cls11-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5900969
+   "bytes": 15087941
   },
   "cls11-phy": {
    "classId": "cls11",
    "name": "Physics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/phys_11_data.js",
     "content/search/cls11-phy.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3017303
+   "bytes": 12204275
   },
   "cls11-chem": {
    "classId": "cls11",
    "name": "Chemistry",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/chem_11_data.js",
     "content/search/cls11-chem.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5231236
+   "bytes": 14418208
   },
   "cls11-bio": {
    "classId": "cls11",
    "name": "Biology",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/bio_11_data.js",
     "content/search/cls11-bio.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4751309
+   "bytes": 13938281
   },
   "cls11-stat": {
    "classId": "cls11",
    "name": "Statistics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/stat_11_data.js",
     "content/search/cls11-stat.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2730119
+   "bytes": 11917091
   },
   "cls11-eng": {
    "classId": "cls11",
    "name": "English",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/eng_11_data.js",
     "content/search/cls11-eng.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2989035
+   "bytes": 12176018
   },
   "cls11-ishist": {
    "classId": "cls11",
    "name": "Islamic History",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/ishist_11_data.js",
     "js/cs_11_data.js",
     "js/ikhtiari_11_data.js",
@@ -3361,12 +6003,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 16783384
+   "bytes": 25974398
   },
   "cls11-cs": {
    "classId": "cls11",
    "name": "Computer Science",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/ishist_11_data.js",
     "js/cs_11_data.js",
     "js/ikhtiari_11_data.js",
@@ -3380,12 +6043,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 16620804
+   "bytes": 25811818
   },
   "cls11-ikhtiari": {
    "classId": "cls11",
    "name": "Islamiat Ikhtiari (Elective)",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/ishist_11_data.js",
     "js/cs_11_data.js",
     "js/ikhtiari_11_data.js",
@@ -3399,12 +6083,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 16765578
+   "bytes": 25956592
   },
   "cls11-civics": {
    "classId": "cls11",
    "name": "Civics (Shehriyat)",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/ishist_11_data.js",
     "js/cs_11_data.js",
     "js/ikhtiari_11_data.js",
@@ -3418,12 +6123,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 16637343
+   "bytes": 25828357
   },
   "cls11-urdu": {
    "classId": "cls11",
    "name": "Urdu (Compulsory)",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/ishist_11_data.js",
     "js/cs_11_data.js",
     "js/ikhtiari_11_data.js",
@@ -3437,12 +6163,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 16598460
+   "bytes": 25789474
   },
   "cls11-mq": {
    "classId": "cls11",
    "name": "Mutalia-e-Quran Hakeem (Compulsory)",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/ishist_11_data.js",
     "js/cs_11_data.js",
     "js/ikhtiari_11_data.js",
@@ -3456,12 +6203,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 16758618
+   "bytes": 25949632
   },
   "cls11-hpe": {
    "classId": "cls11",
    "name": "Health and Physical Education",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/ishist_11_data.js",
     "js/cs_11_data.js",
     "js/ikhtiari_11_data.js",
@@ -3475,12 +6243,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 16505707
+   "bytes": 25696721
   },
   "cls11-isl": {
    "classId": "cls11",
    "name": "Islamiat (Compulsory)",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/ishist_11_data.js",
     "js/cs_11_data.js",
     "js/ikhtiari_11_data.js",
@@ -3494,12 +6283,13 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 16584810
+   "bytes": 25775824
   },
   "cls12-math": {
    "classId": "cls12",
    "name": "Mathematics",
    "files": [
+    "js/math_12_pagebook_data.js",
     "js/math_12_data.js",
     "js/math12_unit6_source_recovery.js",
     "js/math12_translation_completions.js",
@@ -3572,12 +6362,33 @@
     "assets/math12/vector-project-source141.jpg",
     "content/search/index.json"
    ],
-   "bytes": 9585488
+   "bytes": 10994278
   },
   "cls12-phy": {
    "classId": "cls12",
    "name": "Physics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/phys_12_data.js",
     "js/phys12_unit11_study.js",
     "js/phys12_exercise_banks.js",
@@ -3588,12 +6399,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 26960534
+   "bytes": 36147506
   },
   "cls12-chem": {
    "classId": "cls12",
    "name": "Chemistry",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/chem_12_data.js",
     "js/chem12_unit13_study.js",
     "js/chem12_exercise_banks.js",
@@ -3608,12 +6440,33 @@
     "assets/chem12/unit22-industrial-chemistry-cover.jpg",
     "content/search/index.json"
    ],
-   "bytes": 21003293
+   "bytes": 30190265
   },
   "cls12-stat": {
    "classId": "cls12",
    "name": "Statistics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/stat_12_data.js",
     "js/stat12_exercise_banks.js",
     "js/statistics_12_book_data.js",
@@ -3622,12 +6475,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 10969121
+   "bytes": 20156941
   },
   "cls12-eng": {
    "classId": "cls12",
    "name": "English",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/english_12_data.js",
     "js/eng12_exercise_banks.js",
     "content/search/cls12-eng.json"
@@ -3635,12 +6509,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 6618483
+   "bytes": 15805509
   },
   "cls12-urdu": {
    "classId": "cls12",
    "name": "Urdu",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/urdu_12_data.js",
     "js/urdu12_exercise_banks.js",
     "content/search/cls12-urdu.json"
@@ -3648,24 +6543,66 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 8251385
+   "bytes": 17438357
   },
   "cls12-bio": {
    "classId": "cls12",
    "name": "Biology",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/biology_12_data.js",
     "content/search/cls12-bio.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 11401735
+   "bytes": 20588707
   },
   "cls12-pak": {
    "classId": "cls12",
    "name": "Pakistan Studies",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/pakstudy_12_data.js",
     "js/pakstudy12_exercise_banks.js",
     "content/search/cls12-pak.json"
@@ -3673,12 +6610,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 8098818
+   "bytes": 17226906
   },
   "cls12-comp": {
    "classId": "cls12",
    "name": "Computer Science",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/computer_12_data.js",
     "js/comp12_exercise_banks.js",
     "content/search/cls12-comp.json"
@@ -3686,12 +6644,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 6187748
+   "bytes": 15374720
   },
   "cls12-civics": {
    "classId": "cls12",
    "name": "Civics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/civics_12_data.js",
     "js/civics12_exercise_banks.js",
     "content/search/cls12-civics.json"
@@ -3699,12 +6678,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 7904126
+   "bytes": 17091098
   },
   "cls12-econ": {
    "classId": "cls12",
    "name": "Economics",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/economics_12_data.js",
     "js/econ12_exercise_banks.js",
     "content/search/cls12-econ.json"
@@ -3712,12 +6712,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 18775125
+   "bytes": 27901128
   },
   "cls12-hpe": {
    "classId": "cls12",
    "name": "Health & Physical Education",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/hpe_12_data.js",
     "js/hpe12_exercise_banks.js",
     "content/search/cls12-hpe.json"
@@ -3725,12 +6746,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4322530
+   "bytes": 13509656
   },
   "cls12-islopt": {
    "classId": "cls12",
    "name": "Islamiat Ikhtiari",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamiat_ikhtiari_12_data.js",
     "js/islopt12_exercise_banks.js",
     "content/search/cls12-islopt.json"
@@ -3738,12 +6780,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 9575689
+   "bytes": 18762661
   },
   "cls12-islhist": {
    "classId": "cls12",
    "name": "Islamic History",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/islamic_history_12_data.js",
     "js/islhist12_exercise_banks.js",
     "content/search/cls12-islhist.json"
@@ -3751,12 +6814,33 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 6771845
+   "bytes": 15958795
   },
   "cls12-quran": {
    "classId": "cls12",
    "name": "Mutalia-e-Quran",
    "files": [
+    "js/math_12_pagebook_data.js",
+    "js/math_12_data.js",
+    "js/math12_unit6_source_recovery.js",
+    "js/math12_translation_completions.js",
+    "js/math12_unit2_translations.js",
+    "js/math12_unit5_translations.js",
+    "js/math12_unit3_translations.js",
+    "js/math12_unit7_translations.js",
+    "js/math12_unit11_translations.js",
+    "js/math12_unit4_translations.js",
+    "js/math12_unit10_translations.js",
+    "js/math12_unit8_translations.js",
+    "js/math12_unit12_translations.js",
+    "js/math12_unit6_translations.js",
+    "js/math12_unit9_translations.js",
+    "js/math12_remaining_translations.js",
+    "js/math12_answer_repairs.js",
+    "js/math12_legibility_recovery.js",
+    "js/math12_unit9_practice.js",
+    "js/math12_unit6_exercise61_recovery.js",
+    "js/math12_study_bank_warm.js",
     "js/quran_12_data.js",
     "js/quran12_exercise_banks.js",
     "content/search/cls12-quran.json"
@@ -3764,7 +6848,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 13807689
+   "bytes": 22994661
   },
   "meanings": {
    "classId": "meanings",

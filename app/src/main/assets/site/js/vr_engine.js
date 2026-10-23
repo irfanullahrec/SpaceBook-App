@@ -8,7 +8,8 @@
 (function (root) {
   'use strict';
   const CANCEL = { cancelled: true };
-  const SPEEDS = { slow: 2500, normal: 1500, fast: 700 };
+  const SPEEDS = { slow: 2500, normal: 1500, fast: 700, turbo: 350 };
+  const SPEED_LABELS = { slow: '0.5×', normal: '1×', fast: '2×', turbo: '4×' };
   const COLORS = { blue: '#2563eb', orange: '#ea580c', purple: '#7c3aed', green: '#16a34a' };
   const reduced = () => !!(root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches);
   const tex = s => root.katex.renderToString(s, { trust: true, throwOnError: false, output: 'html', strict: 'ignore' });
@@ -185,10 +186,10 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
         <div class="sbt-area"><svg class="sbt-svg"><defs></defs></svg><div class="sbt-lines"></div></div>
         <div class="sbt-practice" hidden><span class="sbt-pq"></span><input type="text" class="sbt-pin" autocomplete="off" spellcheck="false" aria-label="Your next line"><button type="button" data-act="pcheck">Check</button><button type="button" data-act="phint">Hint</button><button type="button" data-act="pshow">Show me</button><span class="sbt-pmsg" role="status"></span></div>
         <div class="sbt-explain" aria-live="polite"><h5></h5><p></p></div>
-        <div class="sbt-nav"><button type="button" data-act="prev">◀ Previous</button><button type="button" data-act="replay">↻ Replay Animation</button>
-        <button type="button" class="primary" data-act="next">Next Step ▶</button><button type="button" data-act="full" aria-pressed="false">☰ All steps</button><span class="sp"></span>
+        <div class="sbt-nav"><button type="button" class="primary" data-act="play" aria-pressed="false" title="Play all steps automatically">▶ Play</button><button type="button" data-act="prev">◀ Previous</button><button type="button" data-act="replay">↻ Replay Animation</button>
+        <button type="button" class="primary" data-act="next">Next Step ▶</button><button type="button" data-act="full" aria-pressed="false">☰ All steps</button><button type="button" data-act="voice" aria-pressed="false" title="Start / stop the voice that explains each step">🔊 Voice</button><select data-act="vlang" aria-label="Voice language" title="Voice language"><option value="en">English</option><option value="ur">اردو</option></select><span class="sbt-vnote" hidden style="flex:1 1 100%;font-size:.8rem;color:#b45309">No Urdu voice is installed on this device, so Urdu text may be read in English. On Windows add one in Settings → Time &amp; language → Speech → Add voices → Urdu; on Android install Urdu in Google text-to-speech.</span><span class="sp"></span>
         <label>Mode <select data-act="mode"><option value="guided">Guided</option><option value="quick">Quick</option><option value="practice">Practice</option></select></label>
-        <label>Speed <select data-act="speed"><option value="slow">Slow</option><option value="normal" selected>Normal</option><option value="fast">Fast</option></select></label></div></div>`;
+        <button type="button" data-act="spd" title="Speed: click to make the animation faster or slower" aria-label="Animation speed">⏩ <span class="sbt-spv">1×</span></button></div></div>`;
       this.el = this.host.firstElementChild;
       this.area = this.el.querySelector('.sbt-area'); this.svg = this.el.querySelector('.sbt-svg'); this.box = this.el.querySelector('.sbt-lines');
       if (this.spec.acc) this.box.classList.add('acc');   // accumulating board: every line stays, groups wrap into columns (see planAcc)
@@ -198,17 +199,114 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
         const a = b.dataset.act;
         if (a === 'pcheck' || a === 'phint' || a === 'pshow') return this.practiceAct(a);
         if (a === 'fs') return this.toggleFs();
+        if (a === 'play') return this.togglePlay();
+        if (a === 'voice') return this.toggleVoice();
         if (a === 'prev') this.go(this.i - 1);
         else if (a === 'next') this.go(this.i === this.spec.steps.length - 1 ? 0 : this.i + 1);
         else if (a === 'replay') this.go(this.i);
         else if (a === 'full') { const f = this.host.parentElement.querySelector('[data-sbt-full]'); if (f) { const on = f.style.display === 'none'; f.style.display = on ? (f.dataset.disp || 'block') : 'none'; if (on) this.host.dispatchEvent(new CustomEvent('sbvr-last', { bubbles: true })); b.setAttribute('aria-pressed', String(on)); } }
       });
       this.base = 'normal'; this.mode = 'guided';
-      this.el.querySelector('[data-act="speed"]').addEventListener('change', e => { this.base = e.target.value; if (this.mode !== 'quick') this.speed = this.base; this.go(this.i); });
+      this.el.querySelector('[data-act="spd"]').addEventListener('click', e => {
+        const order = Object.keys(SPEED_LABELS); this.base = order[(order.indexOf(this.base) + 1) % order.length];
+        if (this.mode !== 'quick') this.speed = this.base;
+        e.currentTarget.querySelector('.sbt-spv').textContent = SPEED_LABELS[this.base]; this.go(this.i);
+      });
       this.el.querySelector('[data-act="mode"]').addEventListener('change', e => { this.mode = e.target.value; this.speed = this.mode === 'quick' ? 'quick' : this.base; this.go(this.i); });
+      this.el.querySelector('[data-act="vlang"]').addEventListener('change', e => { this.vlang = e.target.value; this.voiceNote(); if (this.voice) this.narrate(this.spec.steps[this.i]); });
       this.el.querySelector('.sbt-pin').addEventListener('keydown', e => { if (e.key === 'Enter') this.practiceAct('pcheck'); });
     }
-    close() { this.run++; this.host.innerHTML = ''; this.host.hidden = true; if (this.btn) this.btn.setAttribute('aria-expanded', 'false'); }
+    togglePlay(force) {
+      const on = force != null ? force : !this.playing, b = this.el.querySelector('[data-act="play"]');
+      this.playing = on; clearInterval(this.pt);
+      if (b) { b.textContent = on ? '⏸ Pause' : '▶ Play'; b.setAttribute('aria-pressed', String(on)); }
+      if (!on) return;
+      const last = this.spec.steps.length - 1;
+      if (this.i >= last) this.go(0);
+      this.idle = 0;
+      this.pt = setInterval(() => {
+        if (!this.playing || !this.el.isConnected) { clearInterval(this.pt); return; }
+        if (this.busy || this.speaking) { this.idle = 0; return; }
+        this.idle += 200;
+        if (this.idle < Math.max(500, (SPEEDS[this.speed] || 700) * 0.8)) return;
+        this.idle = 0;
+        if (this.i >= last) return this.togglePlay(false);
+        this.go(this.i + 1);
+      }, 200);
+    }
+    /* voice: explains each step while it is being solved, in English or Urdu (device voices only; Urdu text from the offline translator) */
+    toggleVoice() {
+      this.voice = !this.voice; this.vlang = this.vlang || 'en'; this.voiceNote();
+      const b = this.el.querySelector('[data-act="voice"]'); b.setAttribute('aria-pressed', String(this.voice)); b.textContent = this.voice ? '🔇 Stop voice' : '🔊 Voice';
+      if (this.voice) this.narrate(this.spec.steps[this.i]); else this.hush();
+    }
+    hush() { this.speaking = false; this.say = (this.say || 0) + 1; try { root.speechSynthesis && root.speechSynthesis.cancel(); } catch (e) { /* no speech on this device */ } }
+    speakable(st) {
+      const plain = x => String(x || '').replace(/<[^>]+>/g, ' ').replace(/\\htmlClass\{[^}]*\}/g, '').replace(/\\(?:times|cdot)/g, ' times ').replace(/\\div/g, ' divided by ').replace(/\\(?:left|right)/g, '').replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, ' $1 over $2 ').replace(/\\sqrt\{([^}]*)\}/g, ' square root of $1 ').replace(/[$\\{}]/g, ' ').replace(/×/g, ' times ').replace(/÷/g, ' divided by ').replace(/[−–]/g, ' minus ').replace(/=/g, ' equals ').replace(/\+/g, ' plus ').replace(/\s+/g, ' ').trim();
+      return [plain(st.title), plain(st.html)].filter(Boolean).join('. ').replace(/Textbook:.*$/i, '').trim();
+    }
+    /* Urdu for the sentences the board itself generates (see tools/qa/vr_phrases.js for how often each is spoken); maths words in Urdu */
+    urWords(s) {
+      return String(s).replace(/ times /g, ' ضرب ').replace(/ divided by /g, ' تقسیم ').replace(/ minus /g, ' منفی ').replace(/ plus /g, ' جمع ').replace(/ equals /g, ' برابر ').replace(/ over /g, ' بٹا ').replace(/square root of/g, 'جذر').replace(/\s+/g, ' ').trim();
+    }
+    urPhrase(sent) {
+      const s = sent.replace(/[.:]+$/, '').trim(), w = x => this.urWords(x);
+      const fixed = {
+        'Look at the line above': 'اوپر والی لائن دیکھیں', 'the next line comes from it': 'اگلی لائن اسی سے بنتی ہے',
+        'Look at the line above: the next line comes from it': 'اوپر والی لائن دیکھیں: اگلی لائن اسی سے بنتی ہے',
+        'Write the next line': 'اگلی لائن لکھیں', 'The next equation': 'اگلی مساوات', 'Look at the part that changes': 'وہ حصہ دیکھیں جو بدلتا ہے',
+        'Calculate': 'حساب لگائیں', 'Differentiate': 'تفرق نکالیں', 'Differentiate again': 'دوبارہ تفرق نکالیں', 'Integrate': 'تکمل نکالیں',
+        'Integrate term by term': 'ہر رکن کا تکمل نکالیں', 'Substitute': 'قیمت رکھیں', 'Expand': 'پھیلائیں', 'Multiply': 'ضرب دیں', 'Add': 'جمع کریں',
+        'Check': 'جانچ کریں', 'Check directly': 'براہِ راست جانچ کریں', 'Result': 'نتیجہ', 'Sum': 'مجموعہ', 'Difference': 'فرق', 'Factor': 'جزو نکالیں',
+        'Collect': 'اکٹھا کریں', 'Combine': 'ملائیں', 'Rearrange': 'ترتیب بدلیں', 'Domain': 'ڈومین', 'Complete the square': 'مربع مکمل کریں',
+        'Complete squares': 'مربع مکمل کریں', 'Set it to zero': 'اسے صفر کے برابر رکھیں', 'First derivative': 'پہلا تفرق', 'Solution': 'حل', 'Answer': 'جواب'
+      };
+      if (fixed[s]) return fixed[s];
+      let m;
+      if ((m = /^Step (\d+) of (\d+)$/i.exec(s))) return 'مرحلہ ' + m[1] + ' از ' + m[2];
+      if ((m = /^Replace (.+?) with (.+?) and write the new line$/i.exec(s))) return w(m[1]) + ' کو ' + w(m[2]) + ' سے بدل کر نئی لائن لکھیں';
+      if ((m = /^Write the result (.+?) back where the operation was$/i.exec(s))) return 'نتیجہ ' + w(m[1]) + ' وہیں لکھیں جہاں عمل تھا';
+      if ((m = /^(Multiply|Divide) by (.+)$/i.exec(s))) return w(m[2]) + (m[1][0] === 'M' ? ' سے ضرب دیں' : ' سے تقسیم کریں');
+      if ((m = /^Check (.+)$/i.exec(s))) return w(m[1]) + ' کی جانچ کریں';
+      if ((m = /^Substitute (.+)$/i.exec(s))) return w(m[1]) + ' رکھیں';
+      if (/^[#\d\s.,()+\-−×÷=/^√a-z²³]+$/i.test(s) && /\d/.test(s)) return w(s);   // a bare calculation: read it with Urdu maths words
+      return null;
+    }
+    hasUrduVoice() { try { return root.speechSynthesis.getVoices().some(x => x.lang && /^ur/i.test(x.lang)); } catch (e) { return false; } }
+    voiceNote() {
+      const n = this.el.querySelector('.sbt-vnote'); if (!n) return;
+      const miss = this.voice && (this.vlang || 'en') === 'ur' && !this.hasUrduVoice();
+      n.hidden = !miss;
+    }
+    async narrate(st) {
+      if (!st || !root.speechSynthesis) return;
+      this.hush(); const my = this.say;
+      const text = this.speakable(st), ur = (this.vlang || 'en') === 'ur';
+      if (!text) return;
+      this.speaking = true;
+      // one segment per sentence; in Urdu a sentence is spoken in Urdu when the offline translator has a real translation
+      // (curated, machine or dictionary), otherwise it stays English (a word-by-word gloss is not worth reading aloud)
+      const segs = [];
+      for (const sent of text.split(/(?<=[.!?])\s+/).filter(Boolean)) {
+        const own = ur && this.urPhrase(sent);
+        if (own) { segs.push({ t: own, l: 'ur' }); continue; }
+        if (ur && root.SBTranslate) {
+          try { const r = await root.SBTranslate.translate(sent, 'en', 'ur'); if (my !== this.say) return; if (r && r.text && r.source !== 'gloss' && r.source !== 'none') { segs.push({ t: r.text, l: 'ur' }); continue; } } catch (e) { /* English */ }
+        }
+        segs.push({ t: sent, l: 'en' });
+      }
+      const voices = root.speechSynthesis.getVoices();
+      const next = k => {
+        if (my !== this.say) return;
+        if (k >= segs.length) { this.speaking = false; return; }
+        const g = segs[k], v = voices.find(x => x.lang && x.lang.toLowerCase().startsWith(g.l));
+        const u = new SpeechSynthesisUtterance(g.t); u.lang = g.l === 'ur' ? 'ur-PK' : 'en-US'; if (v) { u.voice = v; u.lang = v.lang; } u.rate = 0.92;
+        u.onend = () => next(k + 1); u.onerror = () => next(k + 1);
+        root.speechSynthesis.speak(u);
+      };
+      next(0);
+    }
+    close() { this.hush(); this.playing = false; clearInterval(this.pt); this.run++; this.host.innerHTML = ''; this.host.hidden = true; if (this.btn) this.btn.setAttribute('aria-expanded', 'false'); }
     go(i) {
       this.t0 = performance.now();
       const STEPS = this.spec.steps; this.i = Math.max(0, Math.min(i, STEPS.length - 1));
@@ -231,6 +329,7 @@ html.sbt-lock,html.sbt-lock body{overflow:hidden!important}
       const w = Object.create(this); w.my = my;
       w.paths = {};
       this.busy = true; this.paused = false; this.hidePractice();
+      if (this.voice) this.narrate(st);
       if (this.i === STEPS.length - 1) this.host.dispatchEvent(new CustomEvent('sbvr-last', { bubbles: true }));
       const t0 = performance.now(); (NS.perf = NS.perf || { go: [] }).go.push(Math.round(performance.now() - this.t0 || 0)); if (NS.perf.go.length > 200) NS.perf.go.shift();
       (async () => { try { await w.runOps(st.ops, st); } catch (e) { if (e !== CANCEL) console.error('sbt', e); } if (this.run === my) this.busy = false; })();

@@ -17,6 +17,7 @@ import pk.wantuch.spacebook.data.local.ReadingDao
 import pk.wantuch.spacebook.data.local.ReadingPosition
 import pk.wantuch.spacebook.data.offline.OfflineRepository
 import pk.wantuch.spacebook.data.offline.SiteStore
+import pk.wantuch.spacebook.data.play.PlayStore
 import pk.wantuch.spacebook.data.remote.Endpoint
 import pk.wantuch.spacebook.data.repo.SyncRepository
 import pk.wantuch.spacebook.ui.games.GameKeys
@@ -36,7 +37,11 @@ class ReaderViewModel @Inject constructor(
     private val sync: SyncRepository,
     private val store: SiteStore,
     val offline: OfflineRepository,
+    private val play: PlayStore,
 ) : ViewModel() {
+
+    // opening a book counts for today's mission on Home
+    init { viewModelScope.launch { play.openLesson() } }
 
     fun newController() = WebController(context, endpoint, json, store)
 

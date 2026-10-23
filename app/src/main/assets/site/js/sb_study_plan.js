@@ -453,6 +453,15 @@
     };
   }
 
+  // reset the statistics of a plan: every task goes back to "not done"; the days, subjects and work stay as planned
+  function resetPlan(p) {
+    if (!p || !confirm('Reset the statistics of "' + p.name + '"? Every ticked or partly done task goes back to not done (0%). The plan itself stays.')) return false;
+    p.sessions.forEach(s => s.tasks.forEach(k => { k.done = 0; }));
+    try { const n = loadNotified(); Object.keys(n).forEach(key => { if (key.indexOf(p.id) >= 0) delete n[key]; }); localStorage.setItem(LS_NOTIFIED, JSON.stringify(n)); } catch (e) { /* fine */ }
+    persist(p);
+    return true;
+  }
+
   // ---------- progress + coins ----------
   function setDone(p, k, n, x, y) {
     const before = k.done;
@@ -624,7 +633,7 @@
         <div class="spx-bar"><i style="width:${st.pct}%"></i></div>
         <div class="spx-chips">${Object.entries(st.byCat).map(([c, v]) => `<span title="${esc(CAT[c].en)}">${CAT[c].ic} ${v.done}/${v.n}</span>`).join('')}</div>
         ${pe ? `<p class="spx-warn">⚠️ ${pe} unfinished from earlier</p>` : ''}
-        <div class="spx-card-act"><button type="button" class="spx-btn spx-pri" data-act="open">Open</button><button type="button" class="spx-btn" data-act="print">🖨 Print</button><button type="button" class="spx-btn spx-del" data-act="del">Delete</button></div>
+        <div class="spx-card-act"><button type="button" class="spx-btn spx-pri" data-act="open">Open</button><button type="button" class="spx-btn" data-act="print">🖨 Print</button><button type="button" class="spx-btn" data-act="reset" title="Set the statistics of this plan back to 0%">↺ Reset</button><button type="button" class="spx-btn spx-del" data-act="del">Delete</button></div>
       </article>`;
     };
     root.innerHTML = `<div class="spx">
@@ -647,6 +656,7 @@
         case 'new': view = {mode: 'new'}; render(); break;
         case 'open': openPlan(id); break;
         case 'print': printPlan(p); break;
+        case 'reset': if (resetPlan(p)) render(); break;
         case 'del': if (p && confirm('Delete the plan "' + p.name + '"? Its progress will be lost.')) { removePlan(p); render(); } break;
         case 'notify':
           if (!('Notification' in window) || Notification.permission !== 'granted') askPermission();
@@ -678,7 +688,7 @@
     root.innerHTML = `<div class="spx">
       <div class="spx-head"><div><button type="button" class="spx-btn spx-sm" data-act="back">← All plans</button><h2>${esc(p.name)}</h2>
         <p class="spx-muted">${esc(scopeLabel(p))} · ${esc(fmtDate(p.start))} – ${esc(fmtDate(p.end))} · ${p.slots.map(s => hm(s.from) + '–' + hm(s.to)).join(', ')} · ${esc(ruleLabel(planRule(p)))}</p></div>
-        <div class="spx-head-act"><button type="button" class="spx-btn" data-act="today">Jump to today</button><button type="button" class="spx-btn" data-act="days" title="Choose study days, skip dates or add extra days">📅 Days &amp; dates</button><button type="button" class="spx-btn" data-act="replan" title="Spread everything not done yet over the remaining days">↻ Re-plan the rest</button><button type="button" class="spx-btn" data-act="print">🖨 Print</button></div></div>
+        <div class="spx-head-act"><button type="button" class="spx-btn" data-act="today">Jump to today</button><button type="button" class="spx-btn" data-act="days" title="Choose study days, skip dates or add extra days">📅 Days &amp; dates</button><button type="button" class="spx-btn" data-act="replan" title="Spread everything not done yet over the remaining days">↻ Re-plan the rest</button><button type="button" class="spx-btn" data-act="reset" title="Set the statistics of this plan back to 0%">↺ Reset statistics</button><button type="button" class="spx-btn" data-act="print">🖨 Print</button></div></div>
       <div class="spx-stats">
         <div class="spx-stat"><b>${st.pct}%</b><span>done</span><div class="spx-bar"><i style="width:${st.pct}%"></i></div></div>
         <div class="spx-stat"><b>${dur(Math.round(st.done))}</b><span>of ${dur(Math.round(st.all))} studied</span></div>
@@ -696,6 +706,7 @@
       const a = e.target.closest('[data-act]'); if (!a || a.closest('.spx-task')) return;
       if (a.dataset.act === 'back') { view = {mode: 'list'}; render(); }
       else if (a.dataset.act === 'print') printPlan(p);
+      else if (a.dataset.act === 'reset') { if (resetPlan(p)) render(); }
       else if (a.dataset.act === 'replan') { if (confirm('Spread everything not done yet over the days left in this plan?')) { replan(p); render(); } }
       else if (a.dataset.act === 'today') jumpToday();
       else if (a.dataset.act === 'skipday') {

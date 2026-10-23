@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -5,6 +7,14 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
+
+// The offline expiry lock (see docs/EXPIRY.md): a release build stops working this many days after it was built, on every phone,
+// until the unlock code is entered. -Pspacebook.expireDays=0 builds a copy that never expires; debug builds never expire
+// unless -Pspacebook.debugExpireDays=N is given (to try the lock on a phone).
+val unlockProps = Properties().apply { file("unlock.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) } }
+fun expiryMillis(days: Int): String = if (days > 0) "${System.currentTimeMillis() + days * 86_400_000L}L" else "0L"
+val releaseExpireDays = (providers.gradleProperty("spacebook.expireDays").orNull ?: "30").toInt()
+val debugExpireDays = (providers.gradleProperty("spacebook.debugExpireDays").orNull ?: "0").toInt()
 
 android {
     namespace = "pk.wantuch.spacebook"
@@ -17,6 +27,10 @@ android {
         versionCode = 1
         versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // only a salted hash of the unlock code is in the app (tools/make_unlock.js writes unlock.properties)
+        buildConfigField("String", "UNLOCK_SALT", "\"${unlockProps.getProperty("salt", "00")}\"")
+        buildConfigField("String", "UNLOCK_HASH", "\"${unlockProps.getProperty("hash", "00")}\"")
+        buildConfigField("int", "UNLOCK_ITERATIONS", unlockProps.getProperty("iterations", "1"))
     }
 
     // SITE_URL is the web app (pages, books, API). No database host, user or password is ever put in the APK: the app only
@@ -27,9 +41,11 @@ android {
             //   adb reverse tcp:8790 tcp:8790
             // so that "localhost" on the phone is the PC (plain http to localhost is the only http the app allows).
             buildConfigField("String", "SITE_URL", "\"http://localhost:8790/\"")
+            buildConfigField("long", "EXPIRES_AT_MILLIS", expiryMillis(debugExpireDays))
         }
         release {
             buildConfigField("String", "SITE_URL", "\"https://wantuch.pk/spacebook/\"")
+            buildConfigField("long", "EXPIRES_AT_MILLIS", expiryMillis(releaseExpireDays))
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

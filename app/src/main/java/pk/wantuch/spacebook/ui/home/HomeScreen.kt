@@ -59,6 +59,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.rememberCoroutineScope
+import pk.wantuch.spacebook.data.play.PlayState
+import pk.wantuch.spacebook.data.play.todayNumber
 import pk.wantuch.spacebook.data.remote.ClassDto
 import pk.wantuch.spacebook.data.splitTitle
 import pk.wantuch.spacebook.ui.AppViewModel
@@ -72,7 +74,7 @@ import pk.wantuch.spacebook.ui.components.PostCard
 import pk.wantuch.spacebook.ui.components.SubjectAvatar
 import pk.wantuch.spacebook.ui.theme.Sb
 
-/** Where a Home post can send the student. */
+/** Where Home can send the student. */
 data class HomeActions(
     val openChapter: (subjectId: String, chapter: Int, page: Int) -> Unit,
     val openSubject: (subjectId: String) -> Unit,
@@ -81,6 +83,8 @@ data class HomeActions(
     val openGames: () -> Unit,
     val openSearch: () -> Unit,
     val openProfile: () -> Unit,
+    val openQuiz: () -> Unit = {},
+    val openReels: () -> Unit = {},
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,6 +94,8 @@ fun HomeScreen(app: AppViewModel, actions: HomeActions, vm: HomeViewModel = hilt
     val catalog by app.catalog.collectAsStateWithLifecycle()
     val feed by vm.feed.collectAsStateWithLifecycle()
     val reactions by vm.reactions.collectAsStateWithLifecycle()
+    val play by vm.play.collectAsStateWithLifecycle()
+    val chestReward by vm.chestReward.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var refreshing by remember { mutableStateOf(false) }
@@ -108,11 +114,17 @@ fun HomeScreen(app: AppViewModel, actions: HomeActions, vm: HomeViewModel = hilt
             cls = cls,
             feed = feed,
             reactions = reactions,
+            play = play,
+            today = remember { todayNumber() },
+            greeting = remember { greetingFor(java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY)) },
+            chestReward = chestReward,
             actions = actions,
             onPickClass = { app.setClass(it) },
             onLike = vm::toggleLike,
             onSave = vm::toggleSave,
             onShare = { text -> share(context, text, app.siteUrl("")) },
+            onOpenChest = vm::openChest,
+            onCloseChest = vm::closeChest,
         )
     }
 }
@@ -128,87 +140,52 @@ internal fun HomeContent(
     cls: ClassDto?,
     feed: List<FeedPost>,
     reactions: Map<String, pk.wantuch.spacebook.data.local.Reaction>,
+    play: PlayState,
+    today: Int,
+    greeting: String,
+    chestReward: Int?,
     actions: HomeActions,
     onPickClass: (String) -> Unit,
     onLike: (String) -> Unit,
     onSave: (String) -> Unit,
     onShare: (String) -> Unit,
+    onOpenChest: () -> Unit,
+    onCloseChest: () -> Unit,
 ) {
     var pickingClass by remember { mutableStateOf(false) }
+    var chestOpen by remember { mutableStateOf(false) }
     if (pickingClass) ClassPickerDialog(allClasses, cls?.id.orEmpty(), onPick = onPickClass, onDismiss = { pickingClass = false })
+    if (chestOpen) ChestDialog(chestReward, onOpen = onOpenChest, onClose = { chestOpen = false; onCloseChest() })
+    val resume = feed.firstOrNull { it is FeedPost.Continue } as? FeedPost.Continue
+    val firstLesson = feed.firstOrNull { it is FeedPost.Chapter } as? FeedPost.Chapter
+    val openLesson = {
+        when {
+            resume != null -> actions.openChapter(resume.position.subjectId, resume.position.chapterIndex, resume.position.page)
+            firstLesson != null -> actions.openChapter(firstLesson.subject.id, firstLesson.chapterIndex, 0)
+            else -> actions.openSearch()
+        }
+    }
     LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 24.dp)) {
-        item(key = "top") { TopBar(coins, userName, cls?.name, actions, onClass = { pickingClass = true }) }
-        item(key = "composer") { ComposerBar(actions.openSearch) }
+        item(key = "header") { HomeHeader(greeting, userName, cls?.name, coins, play, today, actions, onClass = { pickingClass = true }) }
         if (firstRun && allClasses.isNotEmpty()) item(key = "classpick") { ClassPickerCard(allClasses, onPickClass) }
-        if (cls != null) {
-            item(key = "stories") {
-                StoryRow(cls, hasContinue = feed.any { it is FeedPost.Continue }, actions = actions,
-                    onContinue = { (feed.firstOrNull { it is FeedPost.Continue } as? FeedPost.Continue)?.let { c -> actions.openChapter(c.position.subjectId, c.position.chapterIndex, c.position.page) } })
-            }
-        } else {
-            item(key = "loading") { Box(Modifier.fillMaxWidth().padding(40.dp), contentAlignment = Alignment.Center) { Text("Loading your books…", style = MaterialTheme.typography.bodyLarge) } }
-        }
-        items(feed, key = { it.id }) { post ->
+        item(key = "mission") { MissionCard(play, today, onQuiz = actions.openQuiz, onLesson = openLesson, onChest = { chestOpen = true }) }
+        item(key = "play") { PlayShortcuts(actions.openQuiz, actions.openReels) }
+        if (resume != null) item(key = "continue") { ContinuePostCard(resume) { actions.openChapter(resume.position.subjectId, resume.position.chapterIndex, resume.position.page) } }
+        if (cls != null) item(key = "shelf") { BookShelf(cls, actions.openSubject) }
+        else item(key = "loading") { Box(Modifier.fillMaxWidth().padding(40.dp), contentAlignment = Alignment.Center) { Text("Loading your books…", style = MaterialTheme.typography.bodyLarge) } }
+        val lessons = feed.filterIsInstance<FeedPost.Chapter>().take(3)
+        if (lessons.isNotEmpty()) item(key = "lessons-title") { Text("Today's lessons", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 2.dp)) }
+        items(lessons, key = { it.id }) { post ->
             val r = reactions[post.id]
-            when (post) {
-                is FeedPost.Chapter -> ChapterPostCard(
-                    post, liked = r?.liked == true, saved = r?.saved == true,
-                    onLike = { onLike(post.id) },
-                    onSave = { onSave(post.id) },
-                    onRead = { actions.openChapter(post.subject.id, post.chapterIndex, 0) },
-                    onShare = { onShare("${splitTitle(post.chapter.t).primary} - ${post.subject.name}, ${post.className}") },
-                )
-                is FeedPost.Continue -> ContinuePostCard(post) { actions.openChapter(post.position.subjectId, post.position.chapterIndex, post.position.page) }
-                is FeedPost.Practice -> PromoPost("📝", "practice", "Test yourself", "Tests Preps, papers and board practice for your class", "Practise now", Icons.Rounded.Quiz, actions.openPractice)
-                is FeedPost.Plan -> PromoPost("📅", "plan", "Make a study plan", "Pick your exam day and SpaceBook plans every lesson for you", "Plan my days", Icons.Rounded.CalendarMonth, actions.openPlan)
-                is FeedPost.Games -> PromoPost("🎮", "games", "Play and earn coins", "Little games made from the page you are reading", "Let's play", Icons.Rounded.SportsEsports, actions.openGames)
-            }
+            ChapterPostCard(
+                post, liked = r?.liked == true, saved = r?.saved == true,
+                onLike = { onLike(post.id) },
+                onSave = { onSave(post.id) },
+                onRead = { actions.openChapter(post.subject.id, post.chapterIndex, 0) },
+                onShare = { onShare("${splitTitle(post.chapter.t).primary} - ${post.subject.name}, ${post.className}") },
+            )
         }
-    }
-}
-
-@Composable
-private fun TopBar(coins: Int, name: String?, className: String?, actions: HomeActions, onClass: () -> Unit) {
-    Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp, top = 12.dp, bottom = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            "SpaceBook",
-            style = MaterialTheme.typography.headlineMedium.copy(brush = Sb.Brand),
-            modifier = Modifier.weight(1f),
-        )
-        if (className != null) {
-            Surface(
-                shape = RoundedCornerShape(50), color = MaterialTheme.colorScheme.primaryContainer,
-                modifier = Modifier.padding(end = 6.dp).clickable(onClickLabel = "Change class", onClick = onClass),
-            ) {
-                Row(Modifier.padding(start = 12.dp, end = 6.dp, top = 6.dp, bottom = 6.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Text(className, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onPrimaryContainer)
-                    Icon(Icons.Rounded.ArrowDropDown, "Change class", tint = MaterialTheme.colorScheme.onPrimaryContainer)
-                }
-            }
-        }
-        CoinChip(coins)
-        IconButton(onClick = actions.openSearch) { Icon(Icons.Rounded.Search, "Search books") }
-        IconButton(onClick = actions.openProfile) {
-            if (name.isNullOrBlank()) Icon(Icons.Rounded.Person, "Sign in")
-            else Box(Modifier.size(34.dp).clip(CircleShape).background(Sb.Brand), contentAlignment = Alignment.Center) {
-                Text(name.trim().first().uppercase(), color = Color.White, fontWeight = FontWeight.Bold)
-            }
-        }
-    }
-}
-
-/** Like Facebook's "What's on your mind?" bar, but for studying. */
-@Composable
-private fun ComposerBar(onClick: () -> Unit) {
-    Surface(
-        shape = RoundedCornerShape(50), color = MaterialTheme.colorScheme.surface, shadowElevation = 2.dp,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp).clickable(onClick = onClick),
-    ) {
-        Row(Modifier.padding(horizontal = 18.dp, vertical = 14.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(Icons.Rounded.Search, null, tint = MaterialTheme.colorScheme.primary)
-            Spacer(Modifier.width(10.dp))
-            Text("What do you want to study today?", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodyLarge)
-        }
+        item(key = "badges") { BadgeRow(play) }
     }
 }
 
@@ -219,25 +196,6 @@ private fun ClassPickerCard(classes: List<ClassDto>, onPick: (String) -> Unit) {
             Text("Welcome to SpaceBook! 👋", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(horizontal = 16.dp))
             Text("Which class are you in?", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp))
             ClassStrip(classes, selected = "", onPick = onPick, cardWidth = 150.dp)
-        }
-    }
-}
-
-/** Story circles: your class's books, and "Continue" first when you were in the middle of one. */
-@Composable
-private fun StoryRow(cls: ClassDto, hasContinue: Boolean, actions: HomeActions, onContinue: () -> Unit) {
-    LazyRow(contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-        if (hasContinue) item(key = "continue") {
-            Column(Modifier.width(80.dp).clickable(onClick = onContinue), horizontalAlignment = Alignment.CenterHorizontally) {
-                SubjectAvatar("▶", "continue", size = 58.dp, ring = true)
-                Text("Continue", style = MaterialTheme.typography.labelMedium, maxLines = 1)
-            }
-        }
-        items(cls.subjects, key = { it.id }) { s ->
-            Column(Modifier.width(80.dp).clickable { actions.openSubject(s.id) }, horizontalAlignment = Alignment.CenterHorizontally) {
-                SubjectAvatar(s.emoji, s.id, size = 58.dp, ring = true)
-                Text(s.name, style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp), maxLines = 2, textAlign = TextAlign.Center, overflow = TextOverflow.Ellipsis)
-            }
         }
     }
 }
@@ -279,28 +237,6 @@ private fun ContinuePostCard(post: FeedPost.Continue, onOpen: () -> Unit) {
         onClick = onOpen,
         banner = { GradientBanner(post.position.subjectId, "▶", t.primary, caption = "Where you stopped", height = 140.dp, coverId = post.position.subjectId, coverEmoji = s?.emoji ?: "📘") },
         actions = { PostAction(Icons.Rounded.PlayArrow, "Continue reading", onOpen, tint = MaterialTheme.colorScheme.primary) },
-    )
-}
-
-@Composable
-private fun PromoPost(emoji: String, key: String, title: String, text: String, cta: String, icon: androidx.compose.ui.graphics.vector.ImageVector, onClick: () -> Unit) {
-    PostCard(
-        avatarEmoji = emoji, avatarKey = key, title = title, subtitle = "SpaceBook", onClick = onClick,
-        banner = {
-            Box(Modifier.fillMaxWidth().background(Sb.brushFor(key)).padding(20.dp)) {
-                Column {
-                    Text(text, color = Color.White, style = MaterialTheme.typography.titleMedium)
-                    Spacer(Modifier.height(12.dp))
-                    Surface(shape = RoundedCornerShape(50), color = Color.White) {
-                        Row(Modifier.padding(horizontal = 18.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Icon(icon, null, tint = Sb.Violet)
-                            Spacer(Modifier.width(8.dp))
-                            Text(cta, color = Sb.VioletDeep, style = MaterialTheme.typography.labelLarge)
-                        }
-                    }
-                }
-            }
-        },
     )
 }
 

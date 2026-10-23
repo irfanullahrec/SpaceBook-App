@@ -140,7 +140,7 @@ const dashHeaderSub   = () => $("dash-sub");
 document.addEventListener("DOMContentLoaded", () => {
   updateHeaderStats();
   const hash = (window.location.hash || "").replace("#", "");
-  const startPage = (hash && ["home", "subjects", "tests-preps", "papers", "study-plan"].includes(hash)) ? hash : "subjects";
+  const startPage = (hash && ["home", "subjects", "tests-preps", "papers", "study-plan", "games"].includes(hash)) ? hash : "subjects";
   setActiveNav(startPage);
   renderPage(startPage);
   setupNavListeners();
@@ -203,6 +203,7 @@ function renderPage(page) {
   else if (page === "tests-preps" || page === "test-preps") renderTestsPreps();
   else if (page === "papers")                               renderPapersView();
   else if (page === "study-plan")                           renderStudyPlan();
+  else if (page === "games" && typeof renderGames === "function") renderGames();
   else if (page === "books")                                renderBooksView();
   else if (page === "roadmap")                              renderFullRoadmap();
 }

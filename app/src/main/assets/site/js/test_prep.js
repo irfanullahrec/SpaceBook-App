@@ -143,7 +143,8 @@
     let d = null;
     try { d = JSON.parse(localStorage.getItem(key) || 'null'); } catch (e) { d = null; }
     store = { key, q: (d && d.q) || {}, sessions: (d && d.sessions) || [], days: (d && d.days) || {},
-      run: (d && d.run) || null, runClearedAt: (d && d.runClearedAt) || 0, updatedAt: (d && d.updatedAt) || 0, pushed: (d && d.pushed) || [] };
+      run: (d && d.run) || null, runClearedAt: (d && d.runClearedAt) || 0, updatedAt: (d && d.updatedAt) || 0, pushed: (d && d.pushed) || [],
+      resets: (d && d.resets) || {}, rid: (d && d.rid) || {} };
     return store;
   }
   function save(quiet) {
@@ -152,7 +153,7 @@
     if (!quiet) d.updatedAt = Date.now();
     try {
       localStorage.setItem(d.key, JSON.stringify({ v: 1, q: d.q, sessions: d.sessions, days: d.days, run: d.run,
-        runClearedAt: d.runClearedAt, updatedAt: d.updatedAt, pushed: d.pushed.slice(-400) }));
+        runClearedAt: d.runClearedAt, updatedAt: d.updatedAt, pushed: d.pushed.slice(-400), resets: d.resets, rid: d.rid }));
     } catch (e) { /* storage full or blocked */ }
     if (!quiet) schedulePush();
   }
@@ -199,6 +200,21 @@
       });
     });
   }
+  // "Reset statistics": answers, days and sessions of a track older than its reset time are dropped, also when another device (or the
+  // account copy) still holds them. resets = {track: ms}; rid = {mcqId: ms} for the MCQs that were cleared.
+  function applyResets(d) {
+    const rs = d.resets || {}, rid = d.rid || {};
+    Object.keys(rid).forEach(id => { const r = d.q[id]; if (r && r[2] <= rid[id]) delete d.q[id]; });
+    Object.keys(rs).forEach(t => {
+      const cut = dayKey(rs[t]);
+      if (d.days[t]) Object.keys(d.days[t]).forEach(k => { if (k <= cut) delete d.days[t][k]; });
+    });
+    d.sessions = d.sessions.filter(x => !(rs[x.track] && (x.ts || 0) <= rs[x.track]));
+  }
+  function mergeResets(d, rec) {
+    Object.keys((rec && rec.resets) || {}).forEach(t => { d.resets[t] = Math.max(d.resets[t] || 0, rec.resets[t]); });
+    Object.keys((rec && rec.rid) || {}).forEach(i => { d.rid[i] = Math.max(d.rid[i] || 0, rec.rid[i]); });
+  }
   async function derive() {
     const d = db();
     const snap = await window.SBSync.snapshot(), pend = await window.SBSync.pendingEvents();
@@ -223,6 +239,7 @@
     }
     d.q = q; d.days = days;
     d.sessions = Object.keys(sess).map(k => sess[k]).sort((a, b) => (a.ts || 0) - (b.ts || 0));
+    applyResets(d);
     d.run = run && run.savedAt > cleared ? run : null;
     d.runClearedAt = cleared;
     d.pushed = [];
@@ -282,7 +299,7 @@
   async function push() {
     if (!signedIn()) return;
     const d = db();
-    const r = await api('save', { record: { v: 1, q: d.q, days: d.days, run: d.run, runClearedAt: d.runClearedAt, updatedAt: d.updatedAt } });
+    const r = await api('save', { record: { v: 1, q: d.q, days: d.days, run: d.run, runClearedAt: d.runClearedAt, updatedAt: d.updatedAt, resets: d.resets, rid: d.rid } });
     if (!r.ok) return;
     const sent = new Set(d.pushed);
     for (const sess of d.sessions) {
@@ -315,6 +332,7 @@
     (r.sessions || []).forEach(x => { if (x && x.id && !byId.has(x.id)) byId.set(x.id, x); });
     d.sessions = [...byId.values()].sort((a, b) => a.ts - b.ts);
     (r.sessions || []).forEach(x => { if (x && x.id && !d.pushed.includes(x.id)) d.pushed.push(x.id); });
+    mergeResets(d, rec); applyResets(d);
     // the unfinished session: whichever device touched it last decides
     const cleared = Math.max(d.runClearedAt || 0, rec.runClearedAt || 0);
     const runs = [d.run, rec.run].filter(Boolean).sort((a, b) => (b.savedAt || 0) - (a.savedAt || 0));
@@ -1094,6 +1112,22 @@
       ${breakdownHtml(s)}${reviewListHtml(s.items || [])}`;
   }
 
+  // ── reset the statistics of this test plan (track) ─────────────────────────
+  function resetStats() {
+    const d = db(), t = S.track, now = Date.now();
+    if (!confirm(`Reset all statistics of "${S.info.title}"? Your answers, history, mistakes and daily study time for this test will be cleared. This cannot be undone.`)) return;
+    const ids = []; (S.pools || []).forEach(p => p.forEach(m => ids.push(m.i)));
+    ids.forEach(id => { if (d.q[id]) { d.rid[id] = now; delete d.q[id]; } });
+    const tdays = d.days[t] || {};
+    if (d.days.all) Object.keys(tdays).forEach(k => { const a = d.days.all[k]; if (!a) return; const v = tdays[k]; a[0] = Math.max(0, a[0] - v[0]); a[1] = Math.max(0, a[1] - v[1]); a[2] = Math.max(0, a[2] - v[2]); });
+    d.days[t] = {};
+    d.sessions = d.sessions.filter(x => x.track !== t);
+    d.resets[t] = now;
+    if (d.run && d.run.track === t) { d.run = null; d.runClearedAt = now; }
+    S.reviewSession = null; S.tab = 'stats';
+    save(); render();
+  }
+
   // ── stats ───────────────────────────────────────────────────────────────
   function statsHtml() {
     const d = db();
@@ -1133,6 +1167,7 @@
     const last = d.sessions.filter(s => s.track === S.track).slice(-10);
     const spark = last.length > 1 ? sparkline(last.map(s => pct(s.c, s.n))) : '';
     return `
+      <div class="tp-row-between tp-mb"><span class="tp-note">Statistics of ${esc(S.info.title)}</span><button type="button" class="tp-nav" onclick="SBTestPrep.resetStats()" title="Clear answers, history, mistakes and daily time of this test">🗑️ Reset statistics</button></div>
       <div class="tp-trends">
         <div class="tp-trend-card"><div class="tp-kpi-l">Study time this week</div><div class="tp-kpi-v">${Math.round(thisW[0] / 60000)} min</div>${trend(thisW[0] / 60000, lastW[0] / 60000, ' min', 'up', v => Math.round(v))}</div>
         <div class="tp-trend-card"><div class="tp-kpi-l">MCQs this week</div><div class="tp-kpi-v">${fmt(thisW[1])}</div>${trend(thisW[1], lastW[1], '', 'up', v => fmt(v))}</div>
@@ -1196,6 +1231,7 @@
       const wrong = r.qs.filter((m, i) => (r.mode === 'mock' || r.answers[i] != null) && r.answers[i] !== m.a);
       if (wrong.length) startRun('practice', wrong, {});
     },
+    resetStats,
     done() { S.run = null; S.tab = 'stats'; render(); },
     review(id) { S.run = null; S.tab = 'history'; S.reviewSession = id; render(); window.scrollTo(0, 0); }
   };

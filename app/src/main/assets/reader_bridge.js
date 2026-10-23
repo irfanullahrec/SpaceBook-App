@@ -54,6 +54,44 @@
     return nativeIntoView.apply(this, arguments);
   };
 
+  // ---------- speech: the page's speechSynthesis, spoken by the phone's own Android voices ----------
+  // The website reads things aloud (the Animate Solution voice explaining each step, English or Urdu) with window.speechSynthesis.
+  // A WebView often has no usable voices for that, so here it is replaced by a small stand-in that hands the text to Android's
+  // text-to-speech (SBHost.speak) and reports the end back (window.SBSpeechDone), so the page's own code keeps working unchanged.
+  (function speechShim() {
+    if (!window.SBHost || typeof window.SBHost.speak !== 'function' || window.speechSynthesis && window.speechSynthesis.__sb) return;
+    var seq = 0, live = {};
+    var voices = [
+      { name: 'English', lang: 'en-US', localService: true, default: true, voiceURI: 'sb-en' },
+      { name: 'Urdu', lang: 'ur-PK', localService: true, default: false, voiceURI: 'sb-ur' },
+    ];
+    function size() { return Object.keys(live).length; }
+    var synth = {
+      __sb: true, paused: false, onvoiceschanged: null,
+      get speaking() { return size() > 0; }, get pending() { return false; },
+      getVoices: function () { return voices.slice(); },
+      speak: function (u) {
+        var id = String(++seq);
+        live[id] = u;
+        var lang = String((u.voice && u.voice.lang) || u.lang || 'en').slice(0, 2).toLowerCase();
+        try { window.SBHost.speak(id, String(u.text || ''), lang, +u.rate || 1); } catch (e) { window.SBSpeechDone(id, false); }
+      },
+      cancel: function () { live = {}; try { window.SBHost.stopSpeech(''); } catch (e) { /* nothing is speaking */ } },
+      pause: function () { }, resume: function () { },
+      addEventListener: function () { }, removeEventListener: function () { },
+    };
+    window.SBSpeechDone = function (id, ok) {
+      var u = live[id]; delete live[id];
+      if (!u) return;
+      var ev = { type: ok ? 'end' : 'error', utterance: u, charIndex: 0, elapsedTime: 0 };
+      try { if (ok) { if (u.onend) u.onend(ev); } else if (u.onerror) u.onerror(ev); } catch (e) { /* a page handler failed; speech goes on */ }
+    };
+    // the page sets utterance.voice to one of the voices above, which the browser's own utterance would refuse: use a plain one
+    function Utterance(text) { this.text = text == null ? '' : String(text); this.lang = ''; this.voice = null; this.rate = 1; this.pitch = 1; this.volume = 1; this.onend = null; this.onerror = null; this.onstart = null; }
+    try { Object.defineProperty(window, 'SpeechSynthesisUtterance', { value: Utterance, configurable: true, writable: true }); } catch (e) { window.SpeechSynthesisUtterance = Utterance; }
+    try { Object.defineProperty(window, 'speechSynthesis', { value: synth, configurable: true, writable: true }); } catch (e) { window.speechSynthesis = synth; }
+  })();
+
   // ---------- where the readable content is ----------
   function root() {
     var cands = ['#subjTabContent', '#mathTabContent', '#page-content'].map(function (q) { return $(q); }).filter(Boolean);

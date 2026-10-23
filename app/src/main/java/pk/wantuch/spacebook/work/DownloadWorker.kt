@@ -58,6 +58,7 @@ class DownloadWorker @AssistedInject constructor(
     }
 
     override suspend fun doWork(): Result {
+        if (pk.wantuch.spacebook.expiry.ExpiryGate.forApp(applicationContext).check() is pk.wantuch.spacebook.expiry.LockState.Locked) return Result.success()
         val label = inputData.getString(KEY_LABEL) ?: "books"
         val ids = inputData.getString(KEY_SUBJECTS).orEmpty().split(',').filter { it.isNotEmpty() }
         runCatching { setForeground(info("Preparing $label…", 0, 0)) }

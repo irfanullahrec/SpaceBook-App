@@ -526,17 +526,28 @@
     const r = { spec };
     NS.specs = NS.specs || {}; NS.specs[r.spec.id] = r.spec;
     const top = panel.querySelector('.sbs-top'); if (!top) return;
-    const b = document.createElement('button');
-    b.type = 'button'; b.className = 'sbs-animate'; b.textContent = '▶ Animate'; b.setAttribute('aria-expanded', 'false');
-    b.style.cssText = 'margin-inline-start:.4rem;border:1px solid #0369a1;background:#fff;color:#0369a1;border-radius:999px;padding:.15rem .7rem;font-size:.85rem;cursor:pointer;';
-    b.onclick = () => {
-      const old = panel.querySelector('[data-sbt-host]');
-      if (old) { old.remove(); b.setAttribute('aria-expanded', 'false'); return; }
-      const h = document.createElement('div'); h.setAttribute('data-sbt-host', ''); h.dataset.vr = r.spec.id; h.dir = 'ltr'; h.style.cssText = 'margin:.4rem .6rem;white-space:normal;';
-      const body = panel.querySelector('.sbs-body'); body.parentNode.insertBefore(h, body);
-      b.setAttribute('aria-expanded', 'true'); b.dispatchEvent(new Event('scroll', { bubbles: true }));
+    const body = panel.querySelector('.sbs-body'); if (!body) return;
+    // two tabs side by side: the written solution and the animated board (the board is built the first time its tab opens)
+    const bar = document.createElement('div'); bar.className = 'sbs-tabs'; bar.setAttribute('role', 'tablist');
+    bar.style.cssText = 'display:flex;gap:.4rem;margin:.4rem .6rem;border-bottom:2px solid #e2e8f0;';
+    const mk = (id, label) => { const t = document.createElement('button'); t.type = 'button'; t.setAttribute('role', 'tab'); t.dataset.tab = id; t.textContent = label;
+      t.style.cssText = 'border:0;border-bottom:3px solid transparent;margin-bottom:-2px;background:transparent;color:#475569;font:inherit;font-weight:700;padding:.4rem .9rem;cursor:pointer;'; return t; };
+    const tSol = mk('solution', '📝 Solution'), tAni = mk('animated', '🎬 Animated');
+    bar.append(tSol, tAni);
+    top.after(bar);
+    const show = which => {
+      const ani = which === 'animated';
+      let host = panel.querySelector('[data-sbt-host]');
+      if (ani && !host) {
+        host = document.createElement('div'); host.setAttribute('data-sbt-host', ''); host.dataset.vr = r.spec.id; host.dir = 'ltr'; host.style.cssText = 'margin:.4rem .6rem;white-space:normal;';
+        bar.after(host); host.dispatchEvent(new Event('scroll', { bubbles: true })); window.dispatchEvent(new Event('scroll'));
+      }
+      if (host) host.hidden = !ani;
+      body.hidden = ani;
+      [[tSol, !ani], [tAni, ani]].forEach(([t, on]) => { t.setAttribute('aria-selected', String(on)); t.style.color = on ? '#0369a1' : '#475569'; t.style.borderBottomColor = on ? '#0369a1' : 'transparent'; });
     };
-    top.appendChild(b);
+    tSol.onclick = () => show('solution'); tAni.onclick = () => show('animated');
+    show('solution');
   }
 
   const NS = root.SBVR = root.SBVR || {};

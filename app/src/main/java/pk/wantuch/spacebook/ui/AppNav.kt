@@ -39,6 +39,8 @@ import pk.wantuch.spacebook.ui.me.MeScreen
 import pk.wantuch.spacebook.ui.me.SavedScreen
 import pk.wantuch.spacebook.ui.me.SettingsScreen
 import pk.wantuch.spacebook.ui.offline.OfflineScreen
+import pk.wantuch.spacebook.ui.play.QuizScreen
+import pk.wantuch.spacebook.ui.play.ReelsScreen
 import pk.wantuch.spacebook.ui.practice.PracticeScreen
 import pk.wantuch.spacebook.ui.reader.ReaderScreen
 import pk.wantuch.spacebook.ui.web.FeatureScreen
@@ -53,6 +55,8 @@ object Routes {
     const val SEARCH = "search"
     const val SAVED = "saved"
     const val SETTINGS = "settings"
+    const val QUIZ = "quiz"
+    const val REELS = "reels"
     const val OFFLINE = "offline"
     const val SUBJECT = "subject/{id}"
     const val READER = "reader/{id}/{chapter}/{page}"
@@ -88,6 +92,8 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController()) 
         openGames = { switchTab(nav, Routes.LIBRARY) },
         openSearch = { go(Routes.SEARCH) },
         openProfile = { switchTab(nav, Routes.ME) },
+        openQuiz = { go(Routes.QUIZ) },
+        openReels = { go(Routes.REELS) },
     )
 
     Scaffold(
@@ -120,6 +126,8 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController()) 
                 }
                 composable(Routes.SAVED) { SavedScreen(app, onBack = { nav.popBackStack() }, onOpen = { s, c, p -> go(Routes.reader(s, c, p)) }) }
                 composable(Routes.SETTINGS) { SettingsScreen(app, onBack = { nav.popBackStack() }) }
+                composable(Routes.QUIZ) { QuizScreen(onBack = { nav.popBackStack() }, onReels = { nav.popBackStack(); go(Routes.REELS) }) }
+                composable(Routes.REELS) { ReelsScreen(onBack = { nav.popBackStack() }) }
                 composable(Routes.OFFLINE) { OfflineScreen(onBack = { nav.popBackStack() }) }
                 composable(Routes.SUBJECT, listOf(navArgument("id") { type = NavType.StringType })) { e ->
                     val id = e.arguments?.getString("id").orEmpty()

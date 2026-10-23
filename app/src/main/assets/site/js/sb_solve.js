@@ -261,7 +261,7 @@
     const inl = panel._inline;
     panel.innerHTML = `<div class="sbs-top"><span class="sbs-title">🧑‍🏫 ${hasSteps ? LANG[med.label].explain : LANG[med.label].label}</span>
       <span class="sbs-langs" role="group" aria-label="Language">${Object.keys(LANG).map(k => `<button type="button" data-l="${k}" lang="${k}" aria-pressed="${k === med.text}">${LANG[k].name}</button>`).join('')}</span></div>
-      ${hasSteps ? `<div class="sbs-ctl"><button type="button" data-a="play" title="Pause / play">⏸ Pause</button><button type="button" data-a="next" title="Next step">⏭ Next</button><button type="button" data-a="all" title="Show all steps">⏬ All</button><button type="button" data-a="restart" title="Restart">↺</button><button type="button" data-a="voice" aria-pressed="false" title="Read aloud">🔊</button></div>` : ''}
+      ${hasSteps ? `<div class="sbs-ctl"><button type="button" data-a="voice" aria-pressed="false" title="Read aloud">🔊</button></div>` : ''}
       <div class="sbs-body" dir="${LANG[med.text].dir}">
       ${hasSteps ? `<ol class="sbs-steps">${panel._steps.map(s => `<li class="sbs-step${s.m ? ' sbs-hasm' : ''}" hidden><span class="sbs-teacher" aria-hidden="true">🧑‍🏫</span><div class="sbs-say" aria-live="polite"></div>${s.m ? `<div class="sbs-show" hidden>${inl('$$' + s.m + '$$', false)}</div>` : ''}${s.svg ? `<div class="sbs-show" hidden>${s.svg}</div>` : ''}</li>`).join('')}</ol>` : ''}
       <p class="sbs-src"></p>
@@ -292,10 +292,16 @@
       if (a === 'next') { pause(); finish(panel); advance(panel); }
       if (a === 'all') { stop(panel); pause(); finish(panel); while (panel._i < n - 1) reveal(panel, ++panel._i, true); advance(panel); }
       if (a === 'restart') { stop(panel); panel.querySelectorAll('.sbs-step').forEach(x => { x.hidden = true; x.classList.remove('cur'); }); panel.querySelector('.sbs-final').hidden = true; panel._i = -1; panel._playing = true; playBtn.textContent = '⏸ Pause'; advance(panel); }
-      if (a === 'voice') { panel._voice = !panel._voice; b.setAttribute('aria-pressed', String(panel._voice)); if (!panel._voice && window.speechSynthesis) speechSynthesis.cancel(); }
+      if (a === 'voice') { panel._voice = !panel._voice; b.setAttribute('aria-pressed', String(panel._voice)); if (!panel._voice && window.speechSynthesis) speechSynthesis.cancel(); else if (panel._voice && window.speechSynthesis) { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(panel._steps.map((_, k) => panel._plain(stepText(panel, k))).join('. ')); const v = speechSynthesis.getVoices().find(x => x.lang.toLowerCase().startsWith(LANG[panel._lang].voice)); if (v) { u.voice = v; u.lang = v.lang; } u.rate = .9; speechSynthesis.speak(u); } }
     };
     showNote(panel);
-    if (hasSteps) advance(panel);
+    // the whole written solution shows at once (no word-by-word typing); the animated board is a separate tab
+    if (hasSteps) {
+      panel._playing = false;
+      panel._steps.forEach((_, k) => { panel._i = k; reveal(panel, k, true); });
+      panel.querySelectorAll('.sbs-step').forEach(x => x.classList.remove('cur'));
+      panel.querySelector('.sbs-final').hidden = false;
+    }
   }
   // Urdu/Pashto text reads right to left; English and bare numbers follow the selected tab
   const dirOf = (text, panel) => { const k = kind(text); return isRtl(k) ? 'rtl' : k === 'en' ? 'ltr' : LANG[panel._lang].dir; };

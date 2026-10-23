@@ -3,6 +3,7 @@ package pk.wantuch.spacebook.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -14,6 +15,8 @@ import pk.wantuch.spacebook.data.Prefs
 import pk.wantuch.spacebook.data.local.Reaction
 import pk.wantuch.spacebook.data.local.ReactionDao
 import pk.wantuch.spacebook.data.local.ReadingDao
+import pk.wantuch.spacebook.data.play.PlayState
+import pk.wantuch.spacebook.data.play.PlayStore
 import pk.wantuch.spacebook.data.remote.Catalog
 import pk.wantuch.spacebook.data.repo.CatalogRepository
 import javax.inject.Inject
@@ -24,6 +27,7 @@ class HomeViewModel @Inject constructor(
     prefs: Prefs,
     readingDao: ReadingDao,
     private val reactionDao: ReactionDao,
+    private val playStore: PlayStore,
 ) : ViewModel() {
 
     private val classId = prefs.state.map { it.classId }.distinctUntilChanged()
@@ -35,6 +39,16 @@ class HomeViewModel @Inject constructor(
     val reactions: StateFlow<Map<String, Reaction>> = reactionDao.all()
         .map { list -> list.associateBy { it.cardId } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyMap())
+
+    /** XP, streak and today's mission (kept on this phone) */
+    val play: StateFlow<PlayState> = playStore.state.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PlayState())
+
+    /** the XP in the daily chest once it has been opened, null while the chest is still closed */
+    private val _chestReward = MutableStateFlow<Int?>(null)
+    val chestReward: StateFlow<Int?> = _chestReward
+
+    fun openChest() { viewModelScope.launch { _chestReward.value = playStore.openChest() } }
+    fun closeChest() { _chestReward.value = null }
 
     /** Until the student picks a class, the feed shows the first one so Home is never empty. */
     fun effectiveClass(chosen: String, catalog: Catalog?): String =
