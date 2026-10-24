@@ -130,6 +130,9 @@
     // the "Textbook Lesson & Translations" heading and its description above the cards of a lesson (Classes 9-12) are the website's own chrome
     if (units.length) $$('h3[data-sbg]', root()).filter(function (h) { return !units.some(function (u) { return u.contains(h); }); }).forEach(function (h) {
       var e = h; while (e.parentElement && !e.parentElement.contains(units[0])) e = e.parentElement;
+      // Statistics (Classes 11-12): the heading is the title of the question bank, whose cards are the later pages of the tab; hiding
+      // the box would blank every page after the first, so only the heading goes
+      if (!e.contains(units[0]) && units.some(function (u) { return e.contains(u); })) e = h;
       if (e !== units[0] && !e.contains(units[0]) && e.parentElement && !e.querySelector('input, select, textarea')) e.classList.add('sbapp-hint');
     });
     // the tab strip's sticky offset depends on whether a second strip (Lesson text / Videos ...) is under it
@@ -249,7 +252,9 @@
     selectedText: function () { return String(window.getSelection ? window.getSelection() : '').trim(); },
     setTextZoom: function (pct) { html.style.fontSize = pct + '%'; },
     clickTab: function (label) {
-      var b = $$('.math-nav-tabs button, .topic-sub-tabs-bar button').find(function (x) { return (x.textContent || '').indexOf(label) >= 0; });
+      // the same whitespace as tabs() reports, so a label read from tabs() always finds its button
+      var want = String(label).replace(/\s+/g, ' ').trim();
+      var b = $$('.math-nav-tabs button, .topic-sub-tabs-bar button').find(function (x) { return (x.textContent || '').replace(/\s+/g, ' ').indexOf(want) >= 0; });
       if (b) b.click();
       return !!b;
     },
@@ -567,6 +572,10 @@
   var swallowUntil = 0;
   window.addEventListener('click', function (e) {
     var t = e.target; if (!t || !t.closest) return;
+    // Only a finger is a tap on a sentence. A click made by code (this bridge opening a collapsed page's heading, the page's own scripts)
+    // arrives at (0, 0): whenever some text sat in that corner it was taken for a tap there, swallowed, and the page stayed collapsed
+    // with a meaning pop-up nobody asked for.
+    if (!e.isTrusted) return;
     if (Date.now() < swallowUntil) { e.preventDefault(); e.stopImmediatePropagation(); return; }     // the release of a long-press
     if (!cfg.paginate) return;                                                                        // only on book pages
     var sel = window.getSelection && window.getSelection(); if (sel && !sel.isCollapsed) return;
