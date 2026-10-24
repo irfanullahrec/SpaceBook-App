@@ -242,8 +242,8 @@
   },
   {
    "src": "js/biology_10_book_data.js",
-   "bytes": 2523499,
-   "sha256": "86c8fa3ab88c3e4f57c13802e07ec04e7d3d24e23d553f95295a61c38f287144",
+   "bytes": 2523902,
+   "sha256": "ec860519ba4bfc94427e1a10d2324632a8b75b80b22dda909b25ae1192f7cb47",
    "stubs": [
     {
      "name": "BIOLOGY_10_BOOK_DATA",
@@ -717,8 +717,8 @@
   },
   {
    "src": "js/urdu_10_data.js",
-   "bytes": 1397198,
-   "sha256": "7dce0d13832bb2c6ce1d56bc1344f848846808140292c6f9f1bbb16ad28bb9d1",
+   "bytes": 1489049,
+   "sha256": "02b78ae567793f805431b7109dc74956d57d02ea608254ab1c1647e854a59121",
    "stubs": [
     {
      "name": "URDU_10_DATA",
@@ -1127,8 +1127,8 @@
   },
   {
    "src": "js/english_9_book.js",
-   "bytes": 1242026,
-   "sha256": "d3558cbb29c0ae068e523e39a32e1c1b703c18fb89daa11321d4bd0e5e97d405",
+   "bytes": 1251129,
+   "sha256": "8cfd4696b3e2394c9138fde2f36e68f76547addb43c86f4a3c64801927347f50",
    "stubs": [
     {
      "name": "ENGLISH_9_BOOK",
@@ -1595,8 +1595,8 @@
   },
   {
    "src": "js/english_2_data.js",
-   "bytes": 1191040,
-   "sha256": "fd349f907d661831bee3ea1a16662a6e0590c8e8138b8fbbf6600e297d3324f4",
+   "bytes": 1192829,
+   "sha256": "d343332a7bfb40918eeab462fcb1386787e69a8e1eb5c303be65c94d85fdd845",
    "stubs": [
     {
      "name": "ENGLISH_2_DATA",
@@ -1615,8 +1615,8 @@
   },
   {
    "src": "js/urdu_2_data.js",
-   "bytes": 840560,
-   "sha256": "646420427400af4bc13cd7c6ac41972276dcd20cadedb027a672170077ae2e31",
+   "bytes": 843615,
+   "sha256": "76898a2fd98b0d1df4746b3bccdfcb7700aaa6ef59434174eb0270cdaab780e4",
    "stubs": [
     {
      "name": "URDU_2_DATA",
@@ -1755,8 +1755,8 @@
   },
   {
    "src": "js/english_3_data.js",
-   "bytes": 816450,
-   "sha256": "4da6e16eb5060a04b4306a09192b81e0eb8c048f1131292e1751aaddf357677f",
+   "bytes": 829687,
+   "sha256": "56ff6561174c1255196ebadf57e48a4a381a07297cdc7f5ba04f74b04368df3f",
    "stubs": [
     {
      "name": "ENGLISH_3_DATA",
@@ -1795,8 +1795,8 @@
   },
   {
    "src": "js/pashto_3_data.js",
-   "bytes": 905196,
-   "sha256": "1751f0417b8ce9961b73cca450aec31a773994ec77d89eca422593cc0c04c2a4",
+   "bytes": 907642,
+   "sha256": "5aab4e602b86333644aa50ee1f96847152071bdd195333fb4461db81410854b2",
    "stubs": [
     {
      "name": "PASHTO_3_DATA",
@@ -5903,8 +5903,8 @@
   },
   {
    "src": "js/english_4_data.js",
-   "bytes": 1699931,
-   "sha256": "6661ca39f98d70f773ed3c86c779c298e43a06e9103b0ca7d6689a658e76a744",
+   "bytes": 1750682,
+   "sha256": "7b19cb8e56073da575e36fc8e4f0217d35d1bf4a1edc78bf2b49536ec89f9b33",
    "stubs": [
     {
      "name": "ENGLISH_4_DATA",
@@ -5923,8 +5923,8 @@
   },
   {
    "src": "js/urdu_4_data.js",
-   "bytes": 1916147,
-   "sha256": "1be12d1dcb1292579d7d4c7ecf7b8d1d2ce5cd9b583dcdb6f54f67f617b514f0",
+   "bytes": 1954226,
+   "sha256": "46aeffcc57cb2d910c92fe4fa2206932364ca12448241455a01484463ac0b7b4",
    "stubs": [
     {
      "name": "URDU_4_DATA",
@@ -5943,8 +5943,8 @@
   },
   {
    "src": "js/general_science_4_data.js",
-   "bytes": 1280608,
-   "sha256": "c12d51ab205ef445a2ce3bf2ff0a4de36b3b6988881d294b7a21f62387c9c2b7",
+   "bytes": 1285709,
+   "sha256": "897ee6e202671d59d0cb0955195e7fcbd2223e67dd3bee35b3ba286b187fe8df",
    "stubs": [
     {
      "name": "GENERAL_SCIENCE_4_DATA",
@@ -5963,8 +5963,8 @@
   },
   {
    "src": "js/social_studies_4_data.js",
-   "bytes": 1529527,
-   "sha256": "d69f09081c294bc18f447359f24bcd58b1726dc2b6a2034cb5c6e33a027ea1b3",
+   "bytes": 1530324,
+   "sha256": "56a3c64e90114aa0fb93ca16284fffcff57c83451f4b9e84dd0773af04046750",
    "stubs": [
     {
      "name": "SOCIAL_STUDIES_4_DATA",
@@ -5983,8 +5983,8 @@
   },
   {
    "src": "js/social_studies_um_4_data.js",
-   "bytes": 1718225,
-   "sha256": "115142b427289584b5889eec05186f9436b4ae9e27cb8e6929e5f453c3f71af2",
+   "bytes": 1719363,
+   "sha256": "7c2b9bf6ebab2b3796f63729403e4d36f10b14b644420f8cb5daf338f94506a9",
    "stubs": [
     {
      "name": "SOCIAL_STUDIES_UM_4_DATA",
@@ -6067,8 +6067,8 @@
   },
   {
    "src": "js/general_science_5_data.js",
-   "bytes": 1672719,
-   "sha256": "66c0e5b3397ad8f92405f144532cb323772b08f2139ba2d6306984ea986a97dc",
+   "bytes": 1673662,
+   "sha256": "e5bacf7c99dfaf01bc84dc43cbad311561320f1803ba30e1ad4731167e970c33",
    "stubs": [
     {
      "name": "GENERAL_SCIENCE_5_DATA",
@@ -6087,8 +6087,8 @@
   },
   {
    "src": "js/english_5_data.js",
-   "bytes": 1384710,
-   "sha256": "efd11d4275af4e40b0b9fa3d761bb52b3fa0597b2af7e7a528cc67b920ebdbe0",
+   "bytes": 1411359,
+   "sha256": "71f5df96fc40eebde60009db62dee8f5aa09bdf025bb79659327a0f03a1536e3",
    "stubs": [
     {
      "name": "ENGLISH_5_DATA",
@@ -6107,8 +6107,8 @@
   },
   {
    "src": "js/urdu_5_data.js",
-   "bytes": 2163567,
-   "sha256": "b31d41c51bb31de6a42be144cb54c439c84f41a771936593b7183473c52a79d2",
+   "bytes": 2177142,
+   "sha256": "1467021f0ee57d997f0b84e96bbfa195613333c6dfc9769f0a8a9b349edbab03",
    "stubs": [
     {
      "name": "URDU_5_DATA",
@@ -6147,8 +6147,8 @@
   },
   {
    "src": "js/social_studies_5_data.js",
-   "bytes": 1322355,
-   "sha256": "5a0caa50f5382c2766ae62e826b62dcf28f8b7b5fd51e176f1f3deb55259e707",
+   "bytes": 1322730,
+   "sha256": "43c92c1d96a768302e3996d8235a16e3b4ac32fe5c97108180168e38c54c4931",
    "stubs": [
     {
      "name": "SOCIAL_STUDIES_5_DATA",
@@ -6167,8 +6167,8 @@
   },
   {
    "src": "js/social_studies_um_5_data.js",
-   "bytes": 1510313,
-   "sha256": "47ed8c3bae55b7bae36d0a61d1ffa9f8785ae65aa689ad70ab7807b6bb2e6d2d",
+   "bytes": 1510839,
+   "sha256": "5e7fb7aab3a607388e146a04a325f9da00d0503cf754c609bf8062c0a163cf26",
    "stubs": [
     {
      "name": "SOCIAL_STUDIES_UM_5_DATA",
@@ -6187,8 +6187,8 @@
   },
   {
    "src": "js/pashto_5_data.js",
-   "bytes": 1338419,
-   "sha256": "8de27891557fd5f9914ffc7d26e0adff5988acc15d4cfec999a6073b7647945f",
+   "bytes": 1338793,
+   "sha256": "02a34e389ed1dc6365d4706e4a96721d864086f8604b98468f36adfc731674aa",
    "stubs": [
     {
      "name": "PASHTO_5_DATA",
@@ -6255,8 +6255,8 @@
   },
   {
    "src": "js/english_7_data.js",
-   "bytes": 1271153,
-   "sha256": "9d338135957cdbcf8e9062216144a945ca79a68a4355399f8f27f51d92255f63",
+   "bytes": 1292332,
+   "sha256": "81ba09fc59f253ae82cc91885ef1d35696b3aba854741b45e946893dd4bf3d19",
    "stubs": [
     {
      "name": "ENGLISH_7_DATA",
@@ -6275,8 +6275,8 @@
   },
   {
    "src": "js/general_science_7_data.js",
-   "bytes": 1690605,
-   "sha256": "f6c3eb1eed8e243b0323d72e272ec224f299ba45071d735182cd763564f137eb",
+   "bytes": 1693090,
+   "sha256": "ee4441868156a2c0ba6d52b6bcf1f223a699e4bb0c8ae3797030cc1fd832a84f",
    "stubs": [
     {
      "name": "GENERAL_SCIENCE_7_DATA",
@@ -6355,8 +6355,8 @@
   },
   {
    "src": "js/urdu_7_data.js",
-   "bytes": 2127308,
-   "sha256": "03115b572e1238c490cab7cd9d5691da90ffc28092463b5b4faf93023022217c",
+   "bytes": 2129913,
+   "sha256": "8131cf154a9dc3007607cde1aa2138c21df252191e2461bab3821d5d33b4b03e",
    "stubs": [
     {
      "name": "URDU_7_DATA",
@@ -6455,8 +6455,8 @@
   },
   {
    "src": "js/hpe_7_data.js",
-   "bytes": 1112555,
-   "sha256": "72aca73e8c4e881a4843f37337ad1adbf9bf2ee8aebeea3aeec7307f5dcded62",
+   "bytes": 1113513,
+   "sha256": "30e59543bcae2cfd4bc3fdf14d79964c769ff3531b52bf23005ea4b3dedbc6fe",
    "stubs": [
     {
      "name": "HPE_7_DATA",
@@ -6495,8 +6495,8 @@
   },
   {
    "src": "js/english_6_data.js",
-   "bytes": 1397310,
-   "sha256": "93bacc7c3c2d638087e2bbaed419e7c5a6d1cfccafdbfeb7b3fe796ab99d77d9",
+   "bytes": 1407217,
+   "sha256": "60c739eced6a904f4cbab98832c66571dccc4e76645bf6ec4f507828a50c40b2",
    "stubs": [
     {
      "name": "ENGLISH_6_DATA",
@@ -6715,8 +6715,8 @@
   },
   {
    "src": "js/english_8_data.js",
-   "bytes": 1082886,
-   "sha256": "39dcf0b4d7b42064a6d0ff4fc9e4454a4103101e07952419379231b7c9f2deaa",
+   "bytes": 1131289,
+   "sha256": "d673cf8252259480e4c0d9731ff4b6f606c6ef8aba9c7fa185c3ff8abea1be54",
    "stubs": [
     {
      "name": "ENGLISH_8_DATA",
@@ -6759,8 +6759,8 @@
   },
   {
    "src": "js/general_science_8_data.js",
-   "bytes": 2020901,
-   "sha256": "521ca402672bc29de52d46b6f8f11edb8dbaf0299af9f39b82af93ad1a468fce",
+   "bytes": 2069751,
+   "sha256": "ef386f662508766489940954aeb765f4b6fee34829e7663614709fbd000d7c3c",
    "stubs": [
     {
      "name": "GENERAL_SCIENCE_8_DATA",
@@ -6779,8 +6779,8 @@
   },
   {
    "src": "js/computer_8_data.js",
-   "bytes": 721420,
-   "sha256": "e0516f95b1a65590a345a265872bc56dfccf3772b2db1dfc24817623ca2aeef0",
+   "bytes": 737384,
+   "sha256": "e23465c75b48a2da762e1cee02c566a1e52840e77bcea917befa091b385eba3c",
    "stubs": [
     {
      "name": "COMPUTER_8_DATA",
@@ -6799,8 +6799,8 @@
   },
   {
    "src": "js/geography_8_data.js",
-   "bytes": 801895,
-   "sha256": "3f6d6ccb67ba05a6f1e8c076241800394aa9db47629049b95b0a090dc4185e48",
+   "bytes": 822615,
+   "sha256": "42841d84844fa7cb3c194e8c80b4a44255b5bca16488c54047d7468f75af4cef",
    "stubs": [
     {
      "name": "GEOGRAPHY_8_DATA",
@@ -6819,8 +6819,8 @@
   },
   {
    "src": "js/history_8_data.js",
-   "bytes": 1165766,
-   "sha256": "f3f7ae4ae91d714eca0ca93e18f27f47527e57f2f4bf5119ffcf239a67d7b84e",
+   "bytes": 1202181,
+   "sha256": "4c8028179438b3af7d99b1a242e195e11a9e1fa1df6cf65b2feee506f92f24af",
    "stubs": [
     {
      "name": "HISTORY_8_DATA",
@@ -6839,8 +6839,8 @@
   },
   {
    "src": "js/urdu_8_data.js",
-   "bytes": 2161363,
-   "sha256": "a2908369751746cb1c33ef618a1d844873d21fbdd88e88b134f0e07abbdda733",
+   "bytes": 2167220,
+   "sha256": "739db71bc6e80662781a083aed04901a8451740103176211d285b656445aa4c9",
    "stubs": [
     {
      "name": "URDU_8_DATA",
@@ -6859,8 +6859,8 @@
   },
   {
    "src": "js/islamiat_8_data.js",
-   "bytes": 1798660,
-   "sha256": "dd74ed045e5771c1f8abc838d272ee907e2c3dce0d174153e48745100f3948fd",
+   "bytes": 1940909,
+   "sha256": "95477d973aa3cb275c67f998ca3e9dc1985841a7739a3c386998913394855f8c",
    "stubs": [
     {
      "name": "ISLAMIAT_8_DATA",
@@ -6879,8 +6879,8 @@
   },
   {
    "src": "js/mutalia_quran_8_data.js",
-   "bytes": 2295826,
-   "sha256": "aac27117a3ab14267deb0a8de5ea9b6bd27cbc6fc3d925eb65497db33e567b9e",
+   "bytes": 2463520,
+   "sha256": "c4c3358e660ff57ba97c395e54e4dd6ec58d7db3261dceb956d370dca26ea8f9",
    "stubs": [
     {
      "name": "MUTALIA_QURAN_8_DATA",
@@ -6899,8 +6899,8 @@
   },
   {
    "src": "js/pashto_8_data.js",
-   "bytes": 835507,
-   "sha256": "a6b8450762c18ea4faa545c14a5d3d992d03de9d13545658f626e7e95dff3edb",
+   "bytes": 938818,
+   "sha256": "dfd40f4209ac37e02035417fd9cf4df2b55c05a8736729814a6e438caf902324",
    "stubs": [
     {
      "name": "PASHTO_8_DATA",
@@ -6939,8 +6939,8 @@
   },
   {
    "src": "js/drawing_8_data.js",
-   "bytes": 189579,
-   "sha256": "2bae8eefe943e691a55afd9ed25972716dc372bc7748afeec6d014b298a9fc97",
+   "bytes": 201988,
+   "sha256": "115672cb2545976c240baaa52b26cf765a37cda55134bbc29d1d3d5661345511",
    "stubs": [
     {
      "name": "DRAWING_8_DATA",
@@ -6959,8 +6959,8 @@
   },
   {
    "src": "js/hpe_8_data.js",
-   "bytes": 407301,
-   "sha256": "f6befc444f8600daa34e192a14b5b2a5b73e73da0125bf0e9fe8336f00d4be10",
+   "bytes": 461888,
+   "sha256": "e1d5e79d24ba90ef264b9780d30f883df51a43d12484f9374963c9d59f637446",
    "stubs": [
     {
      "name": "HPE_8_DATA",
@@ -6996,7 +6996,7 @@
   {
    "src": "js/fills_data.js",
    "bytes": 116780,
-   "sha256": "f9978291712a6f0d58a5d77f911d650d3a4f8584e22894553cb4a412b5e47f9c",
+   "sha256": "0624723fb3a16dc7699296db379ec948a1d28e282d4a29fad8cd83e5648c219b",
    "stubs": [
     {
      "name": "SB_FILLS",
@@ -7308,7 +7308,7 @@
   {
    "src": "js/study_plan_index.js",
    "bytes": 224601,
-   "sha256": "d598483aea978b6316c936adaee94a3be4bcea97094266beeab349d40a83f4f9",
+   "sha256": "a8883bee283f00e965aa791e61b787644c7b0594998ba644a740b40c47cd8ba1",
    "stubs": [
     {
      "name": "SB_STUDY_INDEX",
