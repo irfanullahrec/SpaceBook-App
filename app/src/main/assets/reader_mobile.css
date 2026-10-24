@@ -135,3 +135,20 @@ html.sbapp .prep-jewel-card .pjc-name-wrap { display: flex; align-items: center;
 html.sbapp .prep-jewel-card .pjc-name { font-size: 1rem !important; font-weight: 900 !important; }
 html.sbapp .prep-jewel-card .pjc-fullname { font-size: .78rem !important; line-height: 1.3; color: #334155; white-space: normal !important; }
 html.sbapp .prep-jewel-card .pjc-focus { font-size: .68rem !important; color: #64748b; white-space: normal !important; line-height: 1.35; }
+
+/* Statistics (Classes 11-12): every question of the question bank is a page. The website styles those cards only inside a Class 12 wrapper
+   its scripts never set, so here each one sat bare at the screen edge (text from x = 0) under an empty box. Same thin coloured frame and
+   padding as the other pages, in the blue of the Statistics tab. */
+html.sbapp section.sb-moved { margin: 0 !important; padding: 0 !important; border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; }
+html.sbapp .class12-question { box-sizing: border-box; margin: 8px 6px 14px !important; padding: 12px 12px 14px !important; border: 3px solid #1d8cc7 !important; border-radius: 18px !important; background: #fff !important; overflow-wrap: anywhere; }
+html.sbapp .class12-question > .math-badge { display: inline-block; margin: 0 0 8px; padding: 4px 14px !important; border-radius: 999px !important; background: #1d8cc7 !important; color: #fff !important; font-weight: 800; font-size: .88rem; }
+html.sbapp .class12-question-text { font-weight: 650; line-height: 1.75; margin: 4px 0 10px; white-space: pre-line; }
+html.sbapp .class12-language { margin: 8px 0; }
+html.sbapp .class12-language > summary, html.sbapp .class12-answer > summary { font-weight: 650; padding: 6px 0; cursor: pointer; }
+html.sbapp .class12-language p { line-height: 2; margin: 6px 0; }
+html.sbapp .class12-choices { display: grid; gap: 8px; margin: 10px 0; }
+html.sbapp .class12-choices > div, html.sbapp .class12-choices > button { text-align: start; font: inherit; padding: 10px 12px; border: 1.5px solid #cbd5e1; border-radius: 12px; background: #f8fafc; color: #0f172a; white-space: pre-line; }
+html.sbapp .class12-choices .class12-correct { background: #dcfce7; border-color: #15803d; }
+html.sbapp .class12-choices .class12-incorrect { background: #fee2e2; border-color: #b91c1c; }
+html.sbapp .class12-answer { border-top: 1px solid #e2e8f0; margin-top: 10px; padding-top: 6px; line-height: 1.85; }
+html.sbapp .class12-study-note { padding: 10px 12px; background: #f1f5f9; border-radius: 10px; line-height: 1.7; color: #334155; }
