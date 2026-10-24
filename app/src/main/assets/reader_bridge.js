@@ -275,6 +275,19 @@
         if (btn) btn.click();
         else if (/^[A-Za-z_]+\([\w\s,'"\-.]*\)$/.test(call)) { try { (new Function(call))(); } catch (e) { /* the subject opens on its first chapter */ } }
       }
+      // The website's loading overlay (sb_loading.js) holds a click on a chapter for a moment and replays it later, so the chapter is not
+      // open yet when the click returns: the old chapter's pages are still on screen. A tab clicked then belongs to the old chapter's tab
+      // strip (its buttons carry the chapter number), and the website replays that click later on a button that is gone, which drew the old
+      // chapter's exercises under the new chapter's title. So wait until the tab strip is the requested chapter's.
+      var want = /selectSubjectChapter\(\s*'[^']*'\s*,\s*(\d+)/.exec(call || '') || /selectMathChapter\(\s*(\d+)/.exec(call || '');
+      if (want) {
+        var stripChapter = function () {
+          var b = $('.math-nav-tabs button'), m = b && /switchSubjectTab\([^,]*,[^,]*,\s*(\d+)/.exec(b.getAttribute('onclick') || '');
+          return m ? +m[1] : -1;                                  // -1: a tab strip that does not carry the chapter, nothing to wait for
+        };
+        await until(function () { var c = stripChapter(); return c < 0 || c === +want[1]; }, 8000, 100);
+        if (token !== opening) return false;
+      }
       await until(function () { var c = collect(); return c.units.length || (root() && root().children.length); }, 12000, 120);
       observe(); refresh();
       // a saved place also names the tab (Lessons, Exercises ...): the same words the website stores, without the emoji
