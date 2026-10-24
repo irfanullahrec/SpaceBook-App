@@ -1,6 +1,9 @@
 package pk.wantuch.spacebook
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasScrollToIndexAction
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
@@ -61,6 +64,30 @@ class HomeInteractionTest {
         rule.onNodeWithText("Delete").performClick()
         assertEquals(listOf("p1"), deleted)
         rule.onNodeWithText("Delete this plan?").assertDoesNotExist()
+    }
+
+    @Test fun resettingTheVocabularyAsksFirstAndThenResetsOnce() {
+        var reset = 0
+        assertTrue("the sample has marked words", sample.words.total > 0)
+        show(HomeActions(resetWords = { reset++ }))
+        rule.onNode(hasScrollToIndexAction()).performScrollToNode(hasText("↺ Reset"))        // the vocabulary card is the last item of the list
+        rule.onNodeWithText("↺ Reset").performClick()
+        rule.onNodeWithText("Reset your vocabulary?").assertIsDisplayed()
+        assertEquals("nothing is cleared before the student says yes", 0, reset)
+
+        rule.onNodeWithText("Keep them").performClick()
+        rule.onNodeWithText("Reset your vocabulary?").assertDoesNotExist()
+        assertEquals(0, reset)
+
+        rule.onNodeWithText("↺ Reset").performClick()
+        rule.onNodeWithText("Reset").performClick()
+        assertEquals(1, reset)
+        rule.onNodeWithText("Reset your vocabulary?").assertDoesNotExist()
+    }
+
+    @Test fun noMarkedWordsMeansNothingToReset() {
+        show(HomeActions(), prep = sample.copy(words = pk.wantuch.spacebook.data.prep.WordsDto()))
+        assertTrue(rule.onAllNodesWithText("↺ Reset").fetchSemanticsNodes().isEmpty())
     }
 
     @Test fun everyPlanCardHasADeleteButton() {

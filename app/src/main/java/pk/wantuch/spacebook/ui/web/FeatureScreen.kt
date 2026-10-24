@@ -51,7 +51,7 @@ fun FeatureScreen(app: AppViewModel, page: String, title: String, onBack: (() ->
             "signedOut" -> if (page == "account") { app.logout(); android.widget.Toast.makeText(context, "You are signed out.", android.widget.Toast.LENGTH_SHORT).show(); onBack?.invoke() }
             // a job Home asked for (deleting a plan) is finished: say so and go back to Home
             "done" -> { android.widget.Toast.makeText(context, detail, android.widget.Toast.LENGTH_SHORT).show(); onBack?.invoke() }
-            "error" -> if (page.startsWith("study-plan-delete")) { android.widget.Toast.makeText(context, detail, android.widget.Toast.LENGTH_LONG).show(); onBack?.invoke() }
+            "error" -> if (page.startsWith("study-plan-delete") || page == "words-reset") { android.widget.Toast.makeText(context, detail, android.widget.Toast.LENGTH_LONG).show(); onBack?.invoke() }
         }
     }
 
@@ -90,7 +90,7 @@ fun FeatureScreen(app: AppViewModel, page: String, title: String, onBack: (() ->
                 Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background), contentAlignment = Alignment.Center) {
                     if (controller.error == null && controller.missing == null) {
                         val pct by rememberLoadPercent(true, controller.pageProgress, controller.ready)
-                        LoadingPanel(if (page.startsWith("study-plan-delete")) "Deleting the plan…" else "Opening $title…", pct, emoji = if (page.startsWith("study-plan")) "📅" else "📝")
+                        LoadingPanel(if (page.startsWith("study-plan-delete")) "Deleting the plan…" else if (page == "words-reset") "Resetting your vocabulary…" else "Opening $title…", pct, emoji = if (page.startsWith("study-plan")) "📅" else if (page == "words-reset") "🧠" else "📝")
                     }
                 }
             }

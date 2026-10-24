@@ -50,6 +50,8 @@ data class HomeActions(
     val openPlan: (planId: String) -> Unit = {},
     /** delete a plan (Home has already asked the student to confirm) */
     val deletePlan: (planId: String) -> Unit = {},
+    /** set the student's word marks (My Vocabulary) back to zero (Home has already asked the student to confirm) */
+    val resetWords: () -> Unit = {},
     /** the list of tests to start preparing for another one */
     val startTestPrep: () -> Unit = {},
     val newPlan: () -> Unit = {},
@@ -103,14 +105,25 @@ internal fun HomeContent(
     grammar: GrammarSummary? = null,
 ) {
     var toDelete by remember { mutableStateOf<PlanDto?>(null) }
+    var toResetWords by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxSize()) {
         HomeTitle()
         HomeTabRow(tab, onTab)
         when (tab) {
             TAB_PROJECT -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = 6.dp, bottom = 24.dp)) { ProjectStatsTab(projectWords, catalog, grammar, actions.openGrammar) }
             TAB_ACCOUNT -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = 6.dp, bottom = 24.dp)) { AccountTab(account, prep, actions) }
-            else -> MyStatsTab(prep, projectWords, catalog, actions, nowMillis, onDelete = { toDelete = it })
+            else -> MyStatsTab(prep, projectWords, catalog, actions, nowMillis, onDelete = { toDelete = it }, onResetWords = { toResetWords = true })
         }
+    }
+    if (toResetWords) {
+        val marked = prep?.words?.total ?: 0
+        AlertDialog(
+            onDismissRequest = { toResetWords = false },
+            title = { Text("Reset your vocabulary?") },
+            text = { Text("The $marked words you marked Learnt or Knew it will be cleared, and the counts for today, the last 7 days and each language go back to zero. The books and their word lists stay. This cannot be undone.") },
+            confirmButton = { TextButton(onClick = { toResetWords = false; actions.resetWords() }) { Text("Reset", color = MaterialTheme.colorScheme.error) } },
+            dismissButton = { TextButton(onClick = { toResetWords = false }) { Text("Keep them") } },
+        )
     }
     toDelete?.let { p ->
         AlertDialog(
@@ -127,6 +140,7 @@ internal fun HomeContent(
 @Composable
 private fun MyStatsTab(
     prep: PrepSnapshot?, projectWords: ProjectWords?, catalog: Catalog?, actions: HomeActions, nowMillis: Long, onDelete: (PlanDto) -> Unit,
+    onResetWords: () -> Unit = {},
 ) {
     LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(top = 6.dp, bottom = 24.dp)) {
         when {
@@ -158,7 +172,7 @@ private fun MyStatsTab(
                         item(key = "recent") { RecentPractice(prep.tests.recent, nowMillis, onOpen = { actions.openTestPrep(it, "history") }) }
                     }
                 }
-                item(key = "words") { WordsCard(prep.words, projectWords?.project?.all ?: 0) }
+                item(key = "words") { WordsCard(prep.words, projectWords?.project?.all ?: 0, onReset = onResetWords) }
             }
         }
     }

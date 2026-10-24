@@ -340,6 +340,24 @@
       return true;
     },
 
+    // Home's My Vocabulary sets the student's word marks back to zero (Home asked the student first). The website's own SBWordStats.resetWords
+    // clears the stored record and the synced "word" items, so a signed-in student's marks do not come back with the next sync.
+    // Reports ("done", text) when finished.
+    resetWords: async function () {
+      var w = await until(function () { return window.SBWordStats && typeof window.SBWordStats.resetWords === 'function'; }, 20000, 100);
+      if (!w) { host('onAction', ['error', 'The vocabulary did not load.']); return false; }
+      // the marks are kept under the student's own id: let the page learn who is signed in (the session cookie the app shares with it) before clearing
+      await until(function () { return window.SpaceBookAuth && window.SpaceBookAuth.user; }, 2500, 100);
+      var syncs = false;
+      try { syncs = !!(window.SBSync && window.SBSync.isEnabled && window.SBSync.isEnabled()); } catch (e) { /* sync not loaded */ }
+      if (syncs) await wait(1500);                       // the sign-in reaches the page a moment after it loads; clearing before that would stay on this phone only
+      var n = 0;
+      try { n = await window.SBWordStats.resetWords({ ask: false }); } catch (e) { host('onAction', ['error', String(e && e.message || e)]); return false; }
+      if (syncs) await wait(1500);                       // time for the deletions to be written to the sync outbox
+      host('onAction', ['done', n ? 'Vocabulary reset' : 'There was nothing to reset']);
+      return true;
+    },
+
     // Home's Project Stats sends the student to the website's Grammar Stats page on one language (en | ur | ps | ar)
     openGrammar: async function (lang) {
       if (!(await api.openPage('grammar-stats'))) return false;

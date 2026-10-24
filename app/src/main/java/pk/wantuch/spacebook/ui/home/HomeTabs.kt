@@ -100,7 +100,7 @@ private fun Card(modifier: Modifier = Modifier, content: @Composable () -> Unit)
 
 /** "Words from Subjects & Units": what the student marked learnt or already known in the Word Stats of the subjects. */
 @Composable
-internal fun WordsCard(words: WordsDto, projectTotal: Int) {
+internal fun WordsCard(words: WordsDto, projectTotal: Int, onReset: () -> Unit = {}) {
     val pct = if (projectTotal > 0) minOf(100.0, words.total * 100.0 / projectTotal) else 0.0
     Card {
         Text("🧠 My Vocabulary", style = MaterialTheme.typography.titleMedium)
@@ -129,6 +129,10 @@ internal fun WordsCard(words: WordsDto, projectTotal: Int) {
             else "${fmt(words.total)} words marked. Tap ✅ Learnt or ⭐ Knew it next to a word in the Word Stats tab of any subject.",
             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 6.dp),
         )
+        // like the Reset of a test or a plan on the website: every mark goes back to zero (Home asks the student first)
+        if (words.total > 0) Row(Modifier.fillMaxWidth().padding(top = 6.dp), horizontalArrangement = Arrangement.End) {
+            OutlinedButton(onClick = onReset, shape = RoundedCornerShape(16.dp)) { Text("↺ Reset") }
+        }
     }
 }
 

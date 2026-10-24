@@ -67,6 +67,11 @@ html.sbapp table { display: block; max-width: 100%; overflow-x: auto; }
 
 /* one page at a time */
 html.sbapp .sbapp-hide { display: none !important; }
+/* The website's Exercises tab (js/sb_exercise_tabs.js) shows one exercise at a time under a bar of Ex 3.1 · Ex 3.2 ... tabs and hides the other cards.
+   The app turns the page itself, so the exercise on screen is shown whichever tab the website had chosen, and the website's bar is not needed. */
+html.sbapp .sb-extabs > .math-accordion-card.sb-extab-card.sbapp-page-on { display: block !important; }
+html.sbapp .sb-extabs > .sb-extab-card > .math-accordion-body { display: block !important; }
+html.sbapp .sb-fx-bar { display: none !important; }
 html.sbapp .sbapp-page-on { animation: sbappIn .22s ease-out; }
 @keyframes sbappIn { from { opacity: .4; transform: translateX(var(--sbapp-from, 24px)); } to { opacity: 1; transform: none; } }
 html.sbapp .bk-spread { grid-template-columns: 1fr !important; }
