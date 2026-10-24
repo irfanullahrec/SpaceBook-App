@@ -309,6 +309,27 @@
       refreshMyWords();
     });
   }
+  // ↺ Reset on the My Vocabulary card: every word this student marked Learnt / Knew it goes back to unmarked. The books and word lists stay.
+  // The marks are items of the account too (kind "word"), so each one gets a tombstone and does not come back with the next sync.
+  // opts.ask === false skips the question (the app asks in its own dialog). Returns how many marks were cleared, or false when the student said no.
+  async function resetWords(opts) {
+    const P = loadProgress(), I = window.SBItems;
+    const keys = new Set(Object.keys(P.words));
+    try { if (I) I.list('word').forEach(x => keys.add(x.key)); } catch (e) { /* items not loaded */ }
+    if (!keys.size) return 0;
+    if (!(opts && opts.ask === false) && !confirm(`Reset your vocabulary statistics? The ${fmt(keys.size)} words you marked ✅ Learnt or ⭐ Knew it will be cleared, and so will the counts for today, the last 7 days and each language. The books and their word lists stay. This cannot be undone.`)) return false;
+    if (I) {
+      let n = 0;
+      for (const k of keys) {
+        try { await I.del('word', k); } catch (e) { /* the mark is cleared on this device anyway */ }
+        if (++n % 200 === 0) await new Promise(r => setTimeout(r, 0));     // thousands of marks: let the page breathe
+      }
+    }
+    P.words = {};
+    saveProgress();
+    refreshMyWords();
+    return keys.size;
+  }
   function progressSummary() {
     const P = loadProgress();
     const out = { learnt: 0, knew: 0, today: 0, week: 0, byLang: {} };
@@ -343,6 +364,7 @@
           <div class="ws-my-actions">
             <button type="button" class="ws-my-btn ws-my-primary" onclick="SBWordStats.openExplorer('project','all','new')">🆕 Learn new words</button>
             <button type="button" class="ws-my-btn" onclick="SBWordStats.openExplorer('project','all','l')" ${p.learnt ? '' : 'disabled'}>✅ Review learnt words</button>
+            <button type="button" class="ws-my-btn" onclick="SBWordStats.resetWords()" title="Set the word statistics back to zero" ${p.total ? '' : 'disabled'}>↺ Reset</button>
           </div>
         </div>
         <div class="ws-my-grid">
@@ -722,7 +744,7 @@
     if (proj && !proj.hidden && !proj.firstChild) renderPanel(proj, 'project');
   }
 
-  window.SBWordStats = { renderPanel, renderMyWords, progressSummary, openExplorer, closeExplorer, setLang, setStatus, go, scopeCounts, loadWords };
+  window.SBWordStats = { renderPanel, renderMyWords, progressSummary, resetWords, openExplorer, closeExplorer, setLang, setStatus, go, scopeCounts, loadWords };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();

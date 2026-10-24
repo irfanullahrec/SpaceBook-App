@@ -195,7 +195,9 @@
     return `<div role="heading" aria-level="${b.l}" class="${cls}"${primaryAttrs()}>${inline(b.en, true)}${sub}</div>`;
   }
   function answersFor(exId) {
-    const list = (BOOK.answers || {})[exId] || [];
+    const A = BOOK.answers || {};
+    // Class 10 Mathematics prints the key of its review exercises as "R1" … "R13"; the exercises are called "Review 1" …
+    const list = A[exId] || A[String(exId).replace(/^Review\s+(\d+)$/i, 'R$1')] || [];
     const map = {};
     // a long printed answer is stored as several lines of the same question: join them, do not keep only the last
     list.forEach(a => { const p = map[a.q]; map[a.q] = p ? Object.assign({}, p, {a: String(p.a || '').trim() + ' ' + String(a.a || '').trim()}) : a; });

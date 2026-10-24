@@ -102,10 +102,10 @@
   .bk-wrap{margin:0 0 .6rem}
   .bk-head{margin-bottom:.25rem}
   .bk-modal{position:fixed;inset:0;z-index:9300;background:rgba(15,23,42,.62);display:flex;align-items:center;justify-content:center;padding:2.5vh 3vw}
-  .bk-modal-card{position:relative;width:min(1280px,100%);height:100%;background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden}
+  .bk-modal-card{position:relative;width:fit-content;min-width:min(440px,100%);max-width:min(1280px,100%);height:auto;max-height:100%;background:#fff;border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden}
   .bk-modal-bar{display:flex;justify-content:space-between;align-items:center;padding:.5rem .9rem;background:#0f172a;color:#fff;font:700 .95rem system-ui,sans-serif}
   .bk-modal-x{border:0;border-radius:999px;background:#ef4444;color:#fff;font:700 .9rem system-ui,sans-serif;padding:.35rem 1rem;cursor:pointer}
-  .bk-modal-body{flex:1;overflow:auto;padding:1rem 1.4rem 1.6rem}
+  .bk-modal-body{flex:1 1 auto;min-height:0;overflow:auto;padding:1rem 1.4rem 1.6rem}
   .bk-modal-body .sb-solve{display:block!important;max-width:none;margin:0}
   @media (max-width:900px){.bk-spread{grid-template-columns:1fr}.bk-spread::before{display:none}.bk-page{min-height:0}}
   `;

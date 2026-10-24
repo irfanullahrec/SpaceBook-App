@@ -918,8 +918,8 @@
   },
   {
    "src": "js/math_1_book.js",
-   "bytes": 2126116,
-   "sha256": "53a07963ccacb232ab93766c0a54602bd16976f19a0c5abb21009648a0c59134",
+   "bytes": 2126375,
+   "sha256": "a88e7ea943ee2a52138c578bdb90312825e23de6301c0fe284ff831bbe7d4059",
    "stubs": [
     {
      "name": "MATH_1_BOOK",
@@ -938,8 +938,8 @@
   },
   {
    "src": "js/math_2_data.js",
-   "bytes": 2155490,
-   "sha256": "eb90ede5ada24c1830ad3d2d2aaa02a0e108e2d3180597737aec74af349e5499",
+   "bytes": 2158839,
+   "sha256": "efe025f74e59d004afabc40c107b426d46c2052439c997dcc4accd7783c2325f",
    "stubs": [
     {
      "name": "MATH_2_DATA",
@@ -974,8 +974,8 @@
   },
   {
    "src": "js/math_3_data.js",
-   "bytes": 1840149,
-   "sha256": "7aef67f92303c65482d99b73b54e7f57e19dd2c02bc171069ac2ff70674efee3",
+   "bytes": 1843074,
+   "sha256": "53d63eb0702d8debf92cfc31bce329ab365c5524fcac5b8889fa87e2fea9c114",
    "stubs": [
     {
      "name": "MATH_3_DATA",
@@ -5883,8 +5883,8 @@
   },
   {
    "src": "js/math_4_data.js",
-   "bytes": 2021723,
-   "sha256": "b8751d69d81eb4c5d365ee014a783ed371c643d3b1e9f87fb0b6f281ca62bcac",
+   "bytes": 2036965,
+   "sha256": "a352606ec643d0332b0f6cfefbb0194cb66807db1439fc2f713489f8d3889efc",
    "stubs": [
     {
      "name": "MATH_4_DATA",
@@ -6979,8 +6979,8 @@
   },
   {
    "src": "js/answers_extra.js",
-   "bytes": 29060,
-   "sha256": "0ce540825b561fd4b1877b4e8ad3329bc1887fd3729126219376016819ec8e2b",
+   "bytes": 98418,
+   "sha256": "1a1e65e57ff9c5ba642804a6cb200ddfc1b66d35942fa0ac9bfb8752f10a1650",
    "stubs": [
     {
      "name": "SB_EXTRA_ANSWERS",
