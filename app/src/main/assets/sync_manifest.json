@@ -3,7 +3,7 @@
  "serviceWorker": "cbca7bdb2ec8",
  "site": {
   "files": 234,
-  "sha256": "69a24748ba72be5c1ac5571e3b3b02eaaee1c95897d196c205effc508d7ea173"
+  "sha256": "4e4f061592d0891377265d720f063f8cc1ff740dbf6c49488fbfcd15aafa5983"
  },
  "generated": {
   "app_catalog.json": "509e2104bfd9505505ccc0383c446c8bbed848bd192a6ea287f610e17088eef1",
