@@ -61,7 +61,7 @@ const plan = {
   id: 'p1', name: 'Class 6 term 1', classId: 'cls6', start: day(10), end: ymd(NOW + 5 * DAY), updatedAt: 5,
   scope: [{ subj: 'cls6-math', ch: [0, 1, 2] }, { subj: 'cls6-eng', ch: [0] }],
   sessions: [
-    { id: 's1', date: day(2), from: '16:00', to: '17:00', tasks: [{ cat: 'read', n: 2, done: 2 }, { cat: 'mcq', n: 20, done: 20 }] },          // finished
+    { id: 's1', date: day(2), from: '16:00', to: '17:00', tasks: [{ cat: 'read', n: 2, done: 2, learn: { at: NOW - 2 * DAY, mode: 'check', rounds: 2, asked: 6, fixed: 1 } }, { cat: 'mcq', n: 20, done: 20, learn: { at: NOW - 2 * DAY, mode: 'self' } }] },          // finished: one passed the check, one ticked by hand
     { id: 's2', date: day(1), from: '16:00', to: '17:00', tasks: [{ cat: 'read', n: 2, done: 1 }, { cat: 'sq', n: 4, done: 0 }] },            // missed work
     { id: 's3', date: day(0), from: '09:00', to: '10:00', tasks: [{ cat: 'read', n: 1, done: 0 }] },                                           // today, already ended (it is 11:00)
     { id: 's4', date: day(0), from: '17:00', to: '18:00', tasks: [{ cat: 'mcq', n: 10, done: 4 }, { cat: 'tf', n: 6, done: 0 }] },            // today, still to come
@@ -81,6 +81,11 @@ assert.deepStrictEqual([q.nextDate, q.nextFrom, q.nextTo, q.daysLeft], [day(0), 
 assert.deepStrictEqual([q.sessions, q.sessionsDone], [5, 1]);
 assert.deepStrictEqual(q.subjects, [{ id: 'cls6-math', chapters: 3 }, { id: 'cls6-eng', chapters: 1 }]);
 assert.deepStrictEqual(q.byCat.read, { n: 5, done: 3 });
+assert.deepStrictEqual([q.tasks, q.checked, q.selfMarked], [8, 1, 1], 'tasks learnt by passing the check, and the one the student ticked by hand');
+assert.deepStrictEqual([r.plans.find(x => x.id === 'p2').tasks, r.plans.find(x => x.id === 'p2').checked], [1, 0]);
+// a task counts only while it is done: a record left on an undone task (the student un-ticked it) is not a learnt task
+const undone = JSON.parse(JSON.stringify(plan)); undone.sessions[0].tasks[0].done = 1;
+assert.strictEqual(run({ sb_study_plans_v1: JSON.stringify([undone]) }).plans[0].checked, 0);
 // a record that cannot be read is ignored, not fatal
 assert.deepStrictEqual(run({ sb_study_plans_v1: '{broken', 'sbTP:v1:guest': 'x' }).plans, []);
 

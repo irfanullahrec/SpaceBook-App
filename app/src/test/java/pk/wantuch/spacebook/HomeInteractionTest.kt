@@ -95,6 +95,12 @@ class HomeInteractionTest {
         assertEquals(sample.plans.size, rule.onAllNodesWithText("Delete plan").fetchSemanticsNodes().size)
     }
 
+    @Test fun everyPlanCardSaysHowManyTasksWereLearntAndChecked() {
+        show(HomeActions())
+        rule.onNodeWithText("🧠 1 of 8 tasks learnt and checked · 1 marked by you", useUnmergedTree = true).assertExists()     // Class 6 term 1: one passed the check, one was ticked by hand
+        rule.onNodeWithText("🧠 0 of 1 task learnt and checked", useUnmergedTree = true).assertExists()                          // Weekend revision: nothing yet
+    }
+
     @Test fun noPlansMeansNoDeleteButtonAndNoQuestion() {
         show(HomeActions(), prep = sample.copy(plans = emptyList()))
         assertTrue(rule.onAllNodesWithText("Delete plan").fetchSemanticsNodes().isEmpty())

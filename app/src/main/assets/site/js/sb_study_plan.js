@@ -369,14 +369,15 @@
   // ---------- plan queries ----------
   const taskMin = k => (k.cat === 'rev' ? 0 : CAT[k.cat].m * k.n);
   function planStats(p) {
-    let all = 0, done = 0;
+    let all = 0, done = 0, tasks = 0, checked = 0, selfMarked = 0;     // checked = tasks learnt by passing the check, selfMarked = ticked by the student
     const byCat = {};
     p.sessions.forEach(s => s.tasks.forEach(k => {
       if (k.cat === 'rev') return;
+      tasks++; if (k.done >= k.n && k.learn) { if (k.learn.mode === 'check') checked++; else selfMarked++; }
       all += taskMin(k); done += CAT[k.cat].m * Math.min(k.done, k.n);
       byCat[k.cat] = byCat[k.cat] || {n: 0, done: 0}; byCat[k.cat].n += k.n; byCat[k.cat].done += Math.min(k.done, k.n);
     }));
-    return {all, done, pct: all ? Math.round(done * 100 / all) : 0, byCat};
+    return {all, done, pct: all ? Math.round(done * 100 / all) : 0, byCat, tasks, checked, selfMarked};
   }
   const sessionEnded = s => s.date < today() || (s.date === today() && mins(s.to) <= nowMin());
   function pendingFromEarlier(p) {
@@ -446,10 +447,10 @@
     if (!bar) { bar = document.createElement('div'); bar.id = 'spx-studybar'; document.body.appendChild(bar); }
     const t = taskText(p, k);
     bar.innerHTML = `<span class="spx-sb-lab">📅 Study plan</span><span class="spx-sb-txt"><b>${esc(t.subj)}</b> · ${esc(t.chNo)} ${esc(t.ch)} — ${esc(t.work)}</span>
-      <button type="button" class="spx-btn spx-sm spx-ok" data-act="done">✔ Done</button><button type="button" class="spx-btn spx-sm" data-act="plan">Open plan</button><button type="button" class="spx-x" data-act="x" aria-label="Close">×</button>`;
+      <button type="button" class="spx-btn spx-sm spx-ok" data-act="check" data-no-translate title="Answer questions from the book to show you have learnt this">🧠 I've finished — test me</button><button type="button" class="spx-btn spx-sm" data-act="plan">Open plan</button><button type="button" class="spx-x" data-act="x" aria-label="Close">×</button>`;
     bar.onclick = e => {
       const a = e.target.closest('[data-act]'); if (!a) return;
-      if (a.dataset.act === 'done') { setDone(p, k, k.n, e.clientX, e.clientY); bar.remove(); }
+      if (a.dataset.act === 'check') gate(p, k, e.clientX, e.clientY);
       else if (a.dataset.act === 'plan') { bar.remove(); openPlan(p.id); }
       else bar.remove();
     };
@@ -458,7 +459,7 @@
   // reset the statistics of a plan: every task goes back to "not done"; the days, subjects and work stay as planned
   function resetPlan(p) {
     if (!p || !confirm('Reset the statistics of "' + p.name + '"? Every ticked or partly done task goes back to not done (0%). The plan itself stays.')) return false;
-    p.sessions.forEach(s => s.tasks.forEach(k => { k.done = 0; }));
+    p.sessions.forEach(s => s.tasks.forEach(k => { k.done = 0; delete k.learn; }));
     try { const n = loadNotified(); Object.keys(n).forEach(key => { if (key.indexOf(p.id) >= 0) delete n[key]; }); localStorage.setItem(LS_NOTIFIED, JSON.stringify(n)); } catch (e) { /* fine */ }
     persist(p);
     return true;
@@ -474,6 +475,48 @@
       if (s) SBRewards.step(('plan|' + p.id + '|' + s.id).slice(0, 190), p.name + ' · ' + fmtDate(s.date), s.tasks.length, s.tasks.indexOf(k), x, y);
     }
     if (onPage()) render();
+  }
+
+  // ---------- learn it, then prove it (js/sb_mastery.js) ----------
+  // A task is not marked done on the student's word: ticking it, or "I've finished — test me" on the study bar, opens a check of questions from the
+  // book about that very part. What is missed comes back, and only that, until every answer is right. Passing marks the task done and keeps the
+  // record on the task (k.learn: when, rounds, questions, mistakes put right). Where the books hold no question to ask the student marks the task
+  // themselves and the record says so ({mode: 'self'}). Revision days need no check.
+  function markLearnt(p, k, rec, x, y) {
+    k.learn = rec;
+    const bar = document.getElementById('spx-studybar'); if (bar) bar.remove();
+    setDone(p, k, k.n, x, y);
+  }
+  function gate(p, k, x, y) {
+    if (!k) return Promise.resolve(null);
+    if (k.cat === 'rev') { setDone(p, k, k.n, x, y); return Promise.resolve(null); }
+    if (!window.SBMastery || !window.SBMastery.checkTask) { markLearnt(p, k, {at: Date.now(), mode: 'self'}, x, y); return Promise.resolve(null); }
+    const t = taskText(p, k), S = subjOf(p.classId, k.s) || {chapters: []}, chap = S.chapters[k.ch] || {};
+    return window.SBMastery.checkTask({
+      classNum: parseInt(String(p.classId).replace(/\D/g, ''), 10) || 0, task: k, counts: chap.c || {},
+      title: t.subj + (t.chNo ? ' · ' + t.chNo : ''), sub: (t.ch ? t.ch + ' — ' : '') + t.work,
+      planLabel: onPage() ? '' : 'Open my plan',
+      onPass: rec => markLearnt(p, k, rec, x, y),
+      onSelf: () => markLearnt(p, k, {at: Date.now(), mode: 'self'}, x, y)
+    }).then(r => { if (r && r.goPlan) openPlan(p.id); return r; });
+  }
+  function learntBadge(k) {
+    const L = k.done >= k.n ? k.learn : null; if (!L) return '';
+    if (L.mode === 'check') return `<span class="spx-learnt" title="Passed the check: ${L.asked} question${L.asked === 1 ? '' : 's'}, ${L.rounds} round${L.rounds === 1 ? '' : 's'}, ${L.fixed} mistake${L.fixed === 1 ? '' : 's'} put right">🧠 learnt${L.rounds > 1 ? ' · ' + L.rounds + ' rounds' : ''}</span>`;
+    return '<span class="spx-learnt spx-self" title="Marked as learnt by you, without a check">✋ marked by you</span>';
+  }
+  // what the student has proved, task by task
+  function recordHtml(p) {
+    const rows = [];
+    p.sessions.forEach(s => s.tasks.forEach(k => { if (k.cat !== 'rev' && k.learn && k.done >= k.n) rows.push(k); }));
+    if (!rows.length) return '';
+    rows.sort((a, b) => (b.learn.at || 0) - (a.learn.at || 0));
+    return `<details class="spx-record"><summary>🧠 Learning record (${rows.length})</summary>${rows.map(k => {
+      const L = k.learn, t = taskText(p, k);
+      return `<div class="spx-rec"><div><b>${esc(t.subj)}</b> · ${esc(t.chNo)} ${esc(t.ch)}<br><span class="spx-muted">${esc(t.work)}</span></div><div class="spx-rec-r">${L.mode === 'check'
+        ? `<span class="spx-learnt">🧠 checked</span><span>${L.asked} question${L.asked === 1 ? '' : 's'} · ${L.rounds} round${L.rounds === 1 ? '' : 's'} · ${L.fixed} mistake${L.fixed === 1 ? '' : 's'} put right</span>`
+        : '<span class="spx-learnt spx-self">✋ marked by you</span>'}<span class="spx-muted">${esc(L.at ? new Date(L.at).toLocaleDateString(undefined, {day: 'numeric', month: 'short'}) : '')}</span></div></div>`;
+    }).join('')}</details>`;
   }
 
   // ---------- reminders ----------
@@ -606,9 +649,10 @@
       <label class="spx-chk"><input type="checkbox" ${full ? 'checked' : ''} data-act="tick" aria-label="Mark done"><span></span></label>
       <div class="spx-tk-main">
         <div class="spx-tk-top">${showDate ? `<span class="spx-when">${esc(fmtDate(s.date))} · ${hm(s.from)}</span>` : ''}<span class="spx-subj">${esc(t.emoji || '📘')} ${esc(t.subj)}</span>${t.chNo ? `<span class="spx-chno">${esc(t.chNo)}</span>` : ''}<span class="spx-chname">${esc(t.ch)}</span></div>
-        <div class="spx-work">${k.cat === 'rev' ? '🔁' : CAT[k.cat].ic} ${esc(t.work)}${k.cat !== 'rev' ? ` <span class="spx-min">~${dur(Math.round(taskMin(k)))}</span>` : ''}</div>
+        <div class="spx-work">${k.cat === 'rev' ? '🔁' : CAT[k.cat].ic} ${esc(t.work)}${k.cat !== 'rev' ? ` <span class="spx-min">~${dur(Math.round(taskMin(k)))}</span>` : ''}${learntBadge(k)}</div>
       </div>
       ${partial ? `<label class="spx-part" title="How many done">done <input type="number" min="0" max="${k.n}" value="${k.done}" data-act="part"> / ${k.n}</label>` : ''}
+      ${k.cat !== 'rev' && !full ? '<button type="button" class="spx-btn spx-sm spx-test" data-act="check" data-no-translate title="Answer questions from the book to show you have learnt this">🧠 Test me</button>' : ''}
       <button type="button" class="spx-btn spx-sm spx-go" data-act="go">${k.cat === 'rev' ? 'Open' : 'Go ▶'}</button>
     </div>`;
   }
@@ -617,13 +661,20 @@
       const a = e.target.closest('[data-act]'); const row = e.target.closest('.spx-task'); if (!a || !row) return;
       const p = plans.find(x => x.id === row.dataset.plan); if (!p) return;
       const s = p.sessions.find(x => x.id === row.dataset.sess); const k = s && s.tasks.find(x => x.id === row.dataset.task); if (!k) return;
-      if (a.dataset.act === 'tick') setDone(p, k, a.checked ? k.n : 0, e.clientX, e.clientY);
+      if (a.dataset.act === 'tick') {
+        if (a.checked) { a.checked = false; gate(p, k, e.clientX, e.clientY); }         // done only after the check (or the student's own word where no question exists)
+        else { delete k.learn; setDone(p, k, 0, e.clientX, e.clientY); }
+      }
+      else if (a.dataset.act === 'check') gate(p, k, e.clientX, e.clientY);
       else if (a.dataset.act === 'go') go(p, k);
     });
     root.addEventListener('change', e => {
       const a = e.target.closest('[data-act="part"]'); const row = e.target.closest('.spx-task'); if (!a || !row) return;
       const p = plans.find(x => x.id === row.dataset.plan); const s = p && p.sessions.find(x => x.id === row.dataset.sess); const k = s && s.tasks.find(x => x.id === row.dataset.task);
-      if (k) setDone(p, k, Number(a.value) || 0);
+      if (!k) return;
+      const n = Number(a.value) || 0;
+      if (n >= k.n) { a.value = k.done; gate(p, k); }                                     // all of it: the check decides; part of it is the student's own count
+      else { if (k.done >= k.n) delete k.learn; setDone(p, k, n); }
     });
   }
 
@@ -655,7 +706,7 @@
         <p class="spx-muted">${esc(scopeLabel(p))}</p>
         <p class="spx-meta">🗓 ${esc(fmtDate(p.start))} – ${esc(fmtDate(p.end))}<br>⏰ ${p.slots.map(s => hm(s.from) + '–' + hm(s.to)).join(', ')}</p>
         <div class="spx-bar"><i style="width:${st.pct}%"></i></div>
-        <div class="spx-chips">${Object.entries(st.byCat).map(([c, v]) => `<span title="${esc(CAT[c].en)}">${CAT[c].ic} ${v.done}/${v.n}</span>`).join('')}</div>
+        <div class="spx-chips">${Object.entries(st.byCat).map(([c, v]) => `<span title="${esc(CAT[c].en)}">${CAT[c].ic} ${v.done}/${v.n}</span>`).join('')}${st.checked ? `<span title="Tasks learnt by passing the check">🧠 ${st.checked}</span>` : ''}</div>
         ${pe ? `<p class="spx-warn">⚠️ ${pe} unfinished from earlier</p>` : ''}
         <div class="spx-card-act"><button type="button" class="spx-btn spx-pri" data-act="open">Open</button><button type="button" class="spx-btn" data-act="print">🖨 Print</button><button type="button" class="spx-btn" data-act="reset" title="Set the statistics of this plan back to 0%">↺ Reset</button><button type="button" class="spx-btn spx-del" data-act="del">Delete</button></div>
       </article>`;
@@ -719,7 +770,8 @@
         <div class="spx-stat"><b>${p.sessions.length}</b><span>study sessions</span></div>
         <div class="spx-stat"><b class="${pend.length ? 'spx-red' : ''}">${pend.length}</b><span>unfinished from earlier</span></div>
       </div>
-      <div class="spx-chips spx-chips-lg">${Object.entries(st.byCat).map(([c, v]) => `<span>${CAT[c].ic} ${esc(CAT[c].en)} <b>${v.done}/${v.n}</b></span>`).join('')}</div>
+      <div class="spx-chips spx-chips-lg">${Object.entries(st.byCat).map(([c, v]) => `<span>${CAT[c].ic} ${esc(CAT[c].en)} <b>${v.done}/${v.n}</b></span>`).join('')}${st.tasks ? `<span title="Tasks learnt by passing the check of questions from the book">🧠 Learnt and checked <b>${st.checked}/${st.tasks}</b> tasks</span>` : ''}</div>
+      ${recordHtml(p)}
       <section class="spx-dayedit" data-el="dayedit" hidden></section>
       ${pend.length ? `<section class="spx-pend"><div class="spx-sec-h"><h3>⚠️ From earlier — still to learn</h3><span class="spx-muted">These were planned for days that have passed.</span></div><div class="spx-tasks">${pend.map(x => taskRow(p, x.s, x.k, true)).join('')}</div></section>` : ''}
       <div class="spx-days">${days || '<p class="spx-muted">No sessions in this plan.</p>'}</div>
@@ -1036,7 +1088,11 @@
     .spx-task{flex-wrap:wrap}.spx-tk-main{flex-basis:calc(100% - 40px)}.spx-part{margin-left:32px}.spx-go{margin-left:auto}
     #spx-banner{left:12px;right:12px;max-width:none}#spx-studybar{flex-wrap:wrap}#spx-studybar .spx-sb-txt{white-space:normal;flex-basis:100%}}
   .spx-toast{position:fixed;left:50%;top:84px;transform:translateX(-50%);z-index:10060;max-width:min(560px,calc(100vw - 32px));background:#0f172a;color:#fff;border-radius:12px;padding:.7rem 1rem;font-size:.9rem;box-shadow:0 10px 26px rgba(0,0,0,.25)}
-  @media print{#spx-banner,#spx-studybar,.spx-toast{display:none}}
+  .spx-learnt{display:inline-block;margin-left:.45rem;padding:.05rem .55rem;border-radius:99px;background:#dcfce7;color:#14532d;font-size:.74rem;font-weight:700;white-space:nowrap;vertical-align:middle}.spx-learnt.spx-self{background:#fef3c7;color:#78350f}
+  .spx-test{border-color:#059669;color:#065f46;font-weight:700}.spx-test:hover{background:#ecfdf5}
+  .spx-record{margin:.7rem 0;border:1px solid #e2e8f0;border-radius:14px;padding:.3rem .9rem;background:#fff}.spx-record summary{cursor:pointer;font-weight:700;padding:.5rem 0}
+  .spx-rec{display:flex;justify-content:space-between;gap:.8rem;padding:.55rem 0;border-top:1px solid #f1f5f9;font-size:.88rem}.spx-rec-r{display:flex;flex-direction:column;align-items:flex-end;gap:.2rem;text-align:right}
+  @media print{#spx-banner,#spx-studybar,.spx-toast,.spx-test{display:none}}
   `;
   function addCss() { if (document.getElementById('spx-css')) return; const s = document.createElement('style'); s.id = 'spx-css'; s.textContent = CSS; document.head.appendChild(s); }
 

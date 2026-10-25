@@ -180,6 +180,12 @@ empty page of that address in a WebView nobody sees, runs `assets/prep_summary.j
 every return to it and on pull-to-refresh. A student who has an account sees the record of that account, otherwise the guest
 record, never somebody else's.
 
+**Learnt and checked** (2026-10-25): in a Study Plan a task is ticked done only after the student passes a check of questions from the
+book (`site/js/sb_mastery.js`, the questions are `site/content/testbank`; mistakes come back until every answer is right), and the task
+keeps a record (`learn` on the task in `sb_study_plans_v1`). The plan screen is the website's own page, so the check is the same code on
+both platforms. Home counts them for each plan: `prep_summary.js` gives `tasks`, `checked` (passed the check) and `selfMarked` (ticked
+by hand, where the book holds no question for the task), `PlanDto` reads them and `checkedLine()` prints "🧠 3 of 12 tasks learnt and checked".
+
 **Deleting a plan** asks first (a native dialog), then opens the Study Plan screen with `study-plan-delete:<id>`; the bridge's
 `SBApp.deletePlan` calls the website's own `SBStudyPlan.removePlan`, so a signed-in student's deletion also reaches the account and
 the plan does not come back with the next sync, then reports `done` and the screen closes. Not seen yet with a real signed-in

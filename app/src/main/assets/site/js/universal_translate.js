@@ -23,7 +23,7 @@
   };
   const ORDER = ['en', 'ur', 'ps', 'ar'];
   const MAX_CHARS = 1500;
-  const IGNORE_SEL = 'input, textarea, select, [contenteditable=""], [contenteditable="true"], .ut-root, #eng-word-popover, .katex, script, style, .sb-ans';   // the Ans / جواب button is a button, not a word to look up
+  const IGNORE_SEL = 'input, textarea, select, [contenteditable=""], [contenteditable="true"], .ut-root, #eng-word-popover, .katex, script, style, .sb-ans, [data-no-translate]';   // the Ans / جواب button is a button, not a word to look up
 
   // ── storage (per-viewer convenience only; always optional) ──────────────
   const store = {

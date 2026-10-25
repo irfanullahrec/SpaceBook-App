@@ -38,6 +38,9 @@ class PrepModelsTest {
         val p = snap.plans.first { it.id == "p1" }
         assertEquals(48, p.pct); assertEquals(3, p.pending); assertEquals(13, p.todayItemsLeft)
         assertEquals("17:00", p.nextFrom)
+        assertEquals(listOf(8, 1, 1), listOf(p.tasks, p.checked, p.selfMarked))
+        assertEquals("🧠 1 of 8 tasks learnt and checked · 1 marked by you", pk.wantuch.spacebook.ui.home.checkedLine(p))
+        assertEquals("🧠 0 of 1 task learnt and checked", pk.wantuch.spacebook.ui.home.checkedLine(snap.plans.first { it.id == "p2" }))
         assertFalse(snap.isEmpty)
         assertTrue(PrepSnapshot().isEmpty)
     }

@@ -118,6 +118,10 @@ data class PlanDto(
     val sessions: Int = 0,
     val sessionsDone: Int = 0,
     val byCat: Map<String, CatDto> = emptyMap(),
+    /** tasks of the plan (not counting revision), those learnt by passing the check of questions, those the student ticked without it */
+    val tasks: Int = 0,
+    val checked: Int = 0,
+    val selfMarked: Int = 0,
     val updatedAt: Long = 0,
 )
 

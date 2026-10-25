@@ -199,6 +199,10 @@ internal fun PlanCard(p: PlanDto, label: String, onOpen: () -> Unit, onDelete: (
                 }
                 Spacer(Modifier.height(10.dp))
                 Text(todayLine(p), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
+                if (p.tasks > 0) {
+                    Spacer(Modifier.height(4.dp))
+                    Text(checkedLine(p), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
                 Spacer(Modifier.height(10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     Button(onClick = onOpen, modifier = Modifier.weight(1f), shape = RoundedCornerShape(16.dp)) { Text(if (p.todayTasks > 0) "Practise" else "Open plan") }
@@ -212,6 +216,10 @@ internal fun PlanCard(p: PlanDto, label: String, onOpen: () -> Unit, onDelete: (
         }
     }
 }
+
+/** "🧠 3 of 12 tasks learnt and checked" - a task counts after the student passed the questions of the book on it; ticked-by-hand ones are named apart */
+internal fun checkedLine(p: PlanDto): String =
+    "🧠 ${p.checked} of ${p.tasks} task${if (p.tasks == 1) "" else "s"} learnt and checked" + if (p.selfMarked > 0) " · ${p.selfMarked} marked by you" else ""
 
 private fun todayLine(p: PlanDto): String = when {
     p.todayTasks > 0 && p.todayItemsLeft > 0 -> "Today: ${p.todayItemsLeft} item${if (p.todayItemsLeft == 1) "" else "s"} left · about ${p.todayMinutes} min"

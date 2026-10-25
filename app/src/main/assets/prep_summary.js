@@ -112,10 +112,13 @@
     var ended = function (s) { return s.date < t || (s.date === t && mins(s.to) <= nowMin); };
     return plans.filter(function (p) { return p && Array.isArray(p.sessions); }).map(function (p) {
       var all = 0, done = 0, items = 0, itemsDone = 0, todayTasks = 0, todayMin = 0, todayItemsLeft = 0, pending = 0, byCat = {}, next = null, sessionsDone = 0;
+      var tasks = 0, checked = 0, selfMarked = 0;       // checked = learnt by passing the check of questions (k.learn.mode 'check'), selfMarked = ticked by the student (js/sb_mastery.js)
       p.sessions.forEach(function (s) {
         var finished = true;
         (s.tasks || []).forEach(function (k) {
           if (k.cat === 'rev') { if (k.done < k.n) finished = false; return; }
+          tasks++;
+          if (k.done >= k.n && k.learn) { if (k.learn.mode === 'check') checked++; else selfMarked++; }
           var m = CAT_MIN[k.cat] || 1, d = Math.min(k.done || 0, k.n);
           all += m * k.n; done += m * d; items += k.n; itemsDone += d;
           var c = byCat[k.cat] || (byCat[k.cat] = { n: 0, done: 0 }); c.n += k.n; c.done += d;
@@ -134,7 +137,7 @@
         todayTasks: todayTasks, todayMinutes: Math.round(todayMin), todayItemsLeft: todayItemsLeft, pending: pending,
         nextDate: next ? next.date : '', nextFrom: next ? next.from : '', nextTo: next ? next.to : '',
         daysLeft: end ? Math.max(0, Math.round((end.getTime() - parseYmd(t).getTime()) / DAY)) : 0,
-        sessions: p.sessions.length, sessionsDone: sessionsDone, byCat: byCat, updatedAt: p.updatedAt || 0,
+        sessions: p.sessions.length, sessionsDone: sessionsDone, byCat: byCat, tasks: tasks, checked: checked, selfMarked: selfMarked, updatedAt: p.updatedAt || 0,
       };
     }).sort(function (a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); });
   }

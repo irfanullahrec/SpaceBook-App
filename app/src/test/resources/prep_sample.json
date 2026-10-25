@@ -183,6 +183,9 @@
      "done": 0
     }
    },
+   "tasks": 1,
+   "checked": 0,
+   "selfMarked": 0,
    "updatedAt": 9
   },
   {
@@ -236,6 +239,9 @@
      "done": 0
     }
    },
+   "tasks": 8,
+   "checked": 1,
+   "selfMarked": 1,
    "updatedAt": 5
   }
  ],
@@ -266,7 +272,7 @@
  },
  "usage": {
   "studiedQuestions": 42,
-  "bytes": 4002,
+  "bytes": 4238,
   "keys": 4
  }
 }
