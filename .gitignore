@@ -10,6 +10,9 @@ build/
 *.apk
 replay_pid*.log
 
+# the books that ship inside the APK (about 420 MB, made by SpaceBook Web/tools/app/pack_books.js on the machine that builds the app)
+app/src/main/assets/books/
+
 # demo-video work files (raw phone clips, audio, rendered videos stay on disk, not in git)
 artwork/**/*.mp4
 artwork/**/*.wav

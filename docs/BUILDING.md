@@ -7,6 +7,20 @@ Needs JDK 17 and the Android SDK (platform 36, build-tools 36). `local.propertie
 .\gradlew.bat :app:testDebugUnitTest    # unit tests (titles, feed, reward keys, network layer)
 ```
 
+## Before the build: the books go INSIDE the APK (so reading works offline from the first start)
+
+From a clean checkout of the website commit that is being released (`SpaceBook Web`, next to this folder), after `node tools/build/all.js`:
+
+```
+node tools/app/sync_app.js            # the shell, catalog, question bank (committed in this repo)
+node tools/app/pack_books.js          # every book file into app/src/main/assets/books/ (about 420 MB, NOT committed: it is in .gitignore)
+node tools/app/pack_books.js --check  # the app carries exactly the books of that website commit
+```
+
+Without `pack_books.js` the app still works: it downloads the books it needs from the website (read-through cache, "Books on this phone").
+With it, every class opens with no internet and the books are the ones of that commit even if the website has not been deployed yet. The APK
+is about 100 MB larger (the build deflates the books).
+
 ## Two quirks of this PC
 
 1. **"Unable to establish loopback connection"** (JDK 17.0.18 on Windows cannot open a Selector when its Unix-domain-socket

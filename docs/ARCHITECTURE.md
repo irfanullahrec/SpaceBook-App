@@ -64,8 +64,16 @@ The app works with no internet once a book is on the phone. The website's pages 
 pictures), so the app keeps its own copy and answers the WebView from it:
 
 * **`SiteStore.intercept()`** answers every WebView request for the site: (1) files already on the phone
-  (`filesDir/site/<hash>/<path>`), (2) the **shell shipped inside the app** (`assets/site/`, 153 files, 5.2 MB: `lazy.html`, scripts,
-  styles, KaTeX fonts; made by `tools/app/pack_shell.js`), (3) the website, whose answer is kept for next time (read-through cache).
+  (`filesDir/site/<hash>/<path>`), (2) the **shell shipped inside the app** (`assets/site/`, about 236 files, 72 MB: `lazy.html`, scripts,
+  styles, KaTeX fonts; made by `tools/app/sync_app.js`) **and the books shipped inside the app** (`assets/books/`, about 350 files, 420 MB,
+  about 100 MB inside the APK: every book data file, search file and chapter picture of `content/offline_map.json`; made by
+  `tools/app/pack_books.js` on the machine that builds the APK and NOT committed to git), (3) the website, whose answer is kept for next
+  time (read-through cache). So a fresh install reads every book with no internet at all.
+* **The app's copy against the website.** `books/books-index.json` carries `builtAt` (when the books were packed). The entry page and the list
+  files (`lazy.html`, `content/*.json`, no `?v=`) are asked of the website first, but only when the website's `lazy.html` has a `Last-Modified`
+  NEWER than `builtAt` (`SiteStore.siteIsNewer()`, cached five minutes): a website that was deployed before the app was built (or cannot be
+  reached) never takes the app back to older books, while a later deployment reaches the app by itself (new files are downloaded and kept).
+  A list file kept from an older visit and older than `builtAt` is ignored in favour of the copy inside the app.
   `api/...` calls are never answered here: they go to the real server. The website's own service worker is refused (`sw.js` gets 404):
   the app is its own offline layer.
 * Files are immutable per `?v=<hash>` (the site names them by content hash), so a copy is never stale. `lazy.html` and `content/*.json`

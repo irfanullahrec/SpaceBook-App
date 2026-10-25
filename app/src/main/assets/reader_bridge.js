@@ -101,6 +101,19 @@
     return cands.find(function (c) { return c.querySelector('.bk-page'); }) || cands[0] || null;
   }
 
+  // a page card that carries nothing but its page label, its page number and perhaps a heading: its questions are read on the Exercises tab,
+  // so it is not a page to turn to (Classes 1-11 worksheet pages)
+  function blankPage(c) {
+    if (!c.classList.contains('sb-pgcard')) return false;
+    var body = c.querySelector(':scope > .math-accordion-body');
+    if (!body) return false;
+    var k = body.cloneNode(true);
+    $$('.sb-pt, [class$="-tools"], [class*="-tools "], [class$="-help"], [class*="-help "], [aria-label="Source page"], .c1-pno, .bk-no, script, style', k).forEach(function (e) { e.remove(); });
+    if (k.querySelector('img, svg, canvas, table, video, audio, iframe, input, textarea, select, .katex')) return false;
+    $$('[role="heading"], h1, h2, h3, h4, h5, h6', k).forEach(function (e) { e.remove(); });
+    return !(k.textContent || '').replace(/\s+/g, '').length;
+  }
+
   // The units shown one at a time. A printed-page view (.bk-page, the web's open-book exercise pages) wins;
   // otherwise each topic / page card of the tab (one topic / exercise / section) is a page, however deep the tab nests them.
   var CARD_SEL = '.math-topic-card, .para-card, .sb-pgcard';
@@ -113,6 +126,9 @@
       var up = c.parentElement && c.parentElement.closest(CARD_SEL);
       return !up && !c.closest('.bk-modal, .sb-tp, .sb-pt, dialog') && (c.textContent || '').trim().length > 0;
     });
+    // a page of the Lessons tab that holds only its page number (its exercise questions are read on the Exercises tab) is not a page to turn to
+    var full = nested.filter(function (c) { return !blankPage(c); });
+    if (full.length && full.length < nested.length) return { mode: 'cards', units: full };
     if (nested.length > 1) return { mode: 'cards', units: nested };
     var cards = Array.prototype.filter.call(r.children, function (c) {
       return c.nodeType === 1 && c.offsetParent !== null || (c.nodeType === 1 && c.classList.contains('sbapp-hide'));
@@ -143,7 +159,7 @@
     if (u) [u].concat($$('.sb-topic-closed', u)).forEach(function (c) { if (!c.classList.contains('sb-topic-closed')) return; var h = c.querySelector(':scope > .sb-topic-head'); if (h) h.click(); });
     // a tab that is one collapsed card (a short chapter, a lone exercise) is read open, not as a bare heading
     if (!units.length) {
-      var lone = root() ? $$('.math-accordion-card', root()).filter(function (c) { return !c.closest('.bk-modal, .sb-tp, .sb-pt, dialog'); }) : [];
+      var lone = root() ? $$('.math-accordion-card', root()).filter(function (c) { return !c.closest('.bk-modal, .sb-tp, .sb-pt, dialog') && !(c.parentElement && c.parentElement.closest('.math-accordion-card')); }) : [];
       if (lone.length === 1) openCard(lone[0]);
     }
   }

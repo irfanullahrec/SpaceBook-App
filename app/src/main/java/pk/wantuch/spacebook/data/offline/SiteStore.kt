@@ -25,13 +25,29 @@ import pk.wantuch.spacebook.data.remote.Endpoint
 @Serializable
 private data class ShellIndex(val files: Map<String, String> = emptyMap())
 
+/** assets/books/books-index.json (made by tools/app/pack_books.js on the machine that builds the APK): every book file the app carries, with the ?v= hash it belongs to. */
+@Serializable
+private data class BooksIndex(
+    val schema: String = "",
+    val builtAt: Long = 0,
+    val source: String = "",
+    val files: Map<String, String> = emptyMap(),
+    val assets: List<String> = emptyList(),
+)
+
 /**
  * The phone's copy of the website. The page (lazy.html and its scripts) and the books are plain files; the WebView asks for them
  * by address and [intercept] answers from here, so reading never needs the internet once a file is on the phone:
  *
  *   1. downloaded or already-read files in `filesDir/site/<version>/<path>`
- *   2. the shell that ships inside the app (`assets/site/`, built by tools/app/pack_shell.js)
+ *   2. the shell that ships inside the app (`assets/site/`, built by tools/app/pack_shell.js) and the books that ship inside it
+ *      (`assets/books/`, built by tools/app/pack_books.js: every book of the website as it was when the app was built, so reading works with
+ *      no internet from the first start)
  *   3. the website itself; whatever it returns is kept in (1) for next time ("read-through cache")
+ *
+ * The app's own copy of the site has a build time ([bundleStamp]). The entry page and the list files (`lazy.html` and the json lists under `content/`) are
+ * asked of the website first, but only when the website's page is NEWER than the app's copy ([siteIsNewer]: its Last-Modified): a website
+ * that was deployed before the app was built must not take the app back to older books. Offline, the app's copy is the answer.
  *
  * Files are immutable per `?v=<hash>` (the site names every script and book file by its content hash), so a copy is never stale.
  * `api/...` calls are never answered here: they go to the real server (and fail quietly when offline; the page keeps its own queue).
@@ -59,6 +75,49 @@ class SiteStore @Inject constructor(
         }.getOrDefault(emptyMap())
     }
 
+    /** the books that ship inside the app ([BooksIndex]); empty in a build made without tools/app/pack_books.js */
+    private val books: BooksIndex by lazy {
+        runCatching {
+            context.assets.open("books/books-index.json").bufferedReader().use { json.decodeFromString<BooksIndex>(it.readText()) }
+        }.getOrDefault(BooksIndex())
+    }
+    private val bookAssets: Set<String> by lazy { books.assets.toHashSet() }
+
+    /** When the app's own copy of the site was made (epoch ms); 0 = the app carries no books. */
+    val bundleStamp: Long get() = books.builtAt
+
+    private fun inBooks(path: String, v: String?): Boolean =
+        books.files[path]?.let { v.isNullOrEmpty() || it.isEmpty() || it == v } == true || (v.isNullOrEmpty() && path in bookAssets)
+
+    @Volatile private var siteCheckedAt = 0L
+    @Volatile private var siteNewer = true
+
+    /**
+     * True when the website's entry page was changed after the app's own copy was made (or when the app carries no copy), so the website is the
+     * newer source. False when the website is older, cannot be reached, or does not say: the app then answers from what it carries. The answer
+     * is kept for five minutes (twenty seconds when the website could not be asked).
+     */
+    private fun siteIsNewer(): Boolean {
+        val stamp = books.builtAt
+        if (stamp <= 0) return true
+        val now = System.currentTimeMillis()
+        if (now - siteCheckedAt < (if (siteNewer) 300_000L else 20_000L)) return siteNewer
+        val url = target("lazy.html", null)
+        // -2 = could not be asked (offline), -1 = answered without a usable date, otherwise the page's Last-Modified (epoch ms)
+        val modified: Long = if (url == null) -2L else try {
+            // a plain GET whose body is never read (some servers answer HEAD badly); the headers are all that is needed
+            quick.newCall(Request.Builder().url(url).header("Accept", "text/html").build()).execute().use { r ->
+                if (r.isSuccessful) (r.headers.getDate("Last-Modified")?.time ?: -1L) else -1L
+            }
+        } catch (e: IOException) {
+            -2L
+        }
+        val newer = modified > stamp
+        siteNewer = newer
+        siteCheckedAt = if (modified == -2L) now - 280_000L else now
+        return newer
+    }
+
     /** Called (on a WebView thread) when a file the page asked for is not on the phone and could not be fetched. */
     @Volatile var onMissing: (path: String) -> Unit = {}
 
@@ -67,15 +126,19 @@ class SiteStore @Inject constructor(
     private fun safe(path: String) = path.isNotEmpty() && path.split('/').none { it == ".." || it == "." } && !path.startsWith("/")
 
     fun has(path: String, v: String?): Boolean =
-        safe(path) && (diskFile(path, v).isFile || bundled[path]?.let { v.isNullOrEmpty() || it == v } == true)
+        safe(path) && (diskFile(path, v).isFile || bundled[path]?.let { v.isNullOrEmpty() || it == v } == true || inBooks(path, v))
 
     /** A stream of the file if the phone has it (downloaded, cached or bundled), otherwise null. */
     fun open(path: String, v: String?): InputStream? {
         if (!safe(path)) return null
         val f = diskFile(path, v)
-        if (f.isFile) return runCatching { vault.open(f) }.getOrNull()
         val b = bundled[path]
-        if (b != null && (v.isNullOrEmpty() || b == v)) return runCatching { context.assets.open("site/$path") }.getOrNull()
+        val hasShell = b != null && (v.isNullOrEmpty() || b == v)
+        // a list file (no ?v=) kept from an older visit, from before this app's copy of the site was made, is older than the copy that ships inside the app
+        val older = v.isNullOrEmpty() && books.builtAt > 0 && f.isFile && f.lastModified() < books.builtAt && (hasShell || inBooks(path, v))
+        if (f.isFile && !older) return runCatching { vault.open(f) }.getOrNull()
+        if (hasShell) return runCatching { context.assets.open("site/$path") }.getOrNull()
+        if (inBooks(path, v)) return runCatching { context.assets.open("books/$path") }.getOrNull()
         return null
     }
 
@@ -91,6 +154,8 @@ class SiteStore @Inject constructor(
      */
     fun download(path: String, v: String?, sha256: String? = null, quickTimeout: Boolean = false, force: Boolean = false, onBytes: (Long) -> Unit = {}): Boolean {
         if (!safe(path)) return false
+        // a list file (no ?v=) of a website that is older than this app's own copy of the site is not wanted: the app answers from what it carries
+        if (v.isNullOrEmpty() && books.builtAt > 0 && !siteIsNewer()) return false
         val dest = diskFile(path, v)
         if (dest.isFile && !force) return true
         val url = target(path, v) ?: return false
@@ -181,6 +246,7 @@ class SiteStore @Inject constructor(
      * can be downloaded now, so the phone never holds a page whose files it lacks. False = offline or the site is not serving it.
      */
     private fun refreshEntry(): Boolean {
+        if (!siteIsNewer()) return false
         val url = target("lazy.html", null) ?: return false
         val html = try {
             quick.newCall(Request.Builder().url(url).header("Accept", "text/html").build()).execute().use { r ->

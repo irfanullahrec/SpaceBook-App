@@ -13,7 +13,9 @@
   function pending(B, ch) {
     return `<div class="math-topic-card" style="padding:1.5rem;text-align:center;color:#475569;">${esc(B.book.name)} unit ${esc(ch.number)} is awaiting page-by-page source review. ${esc(B.book.reviewedPdfPages)} of ${esc(B.book.totalPdfPages)} source pages reviewed so far.</div>`;
   }
-  const badge = sec => /^\d+(\.\d+)*$/.test(sec.id) ? `Part ${sec.id}` : (sec.tabs && sec.tabs[0] ? sec.tabs[0][0].toUpperCase() + sec.tabs[0].slice(1) : 'Lesson');
+  // a poem / story / prose section is the lesson itself, whatever its sub-parts are tagged (Class 8 Urdu tags the lesson 'doing' for its activity part, which
+  // made sb_structure.js take the whole lesson out of the Lessons tab as if it were the exercise)
+  const badge = sec => /^\d+(\.\d+)*$/.test(sec.id) ? `Part ${sec.id}` : /-(?:poem|story|prose|ghazal|nazm)$/.test(String(sec.id || '')) ? 'Lesson' : (sec.tabs && sec.tabs[0] ? sec.tabs[0][0].toUpperCase() + sec.tabs[0].slice(1) : 'Lesson');
   const title = sec => sec.title + (sec.titleUrdu ? ` · ${sec.titleUrdu}` : '');
 
   function findBestSupport(paras, queryText) {
