@@ -343,7 +343,8 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal) { e.stopPropagation(); closeModal(); } }, true);
   new MutationObserver(muts => muts.forEach(m => {
     const t = m.target;
-    if (t.nodeType === 1 && t.classList.contains('sb-solve') && !t.hidden && t.closest('.bk-spread')) openModal(t);
+    // a maths solution opens the answer window; any other answer shows in place (sb_solve.js: .sbs-inline)
+    if (t.nodeType === 1 && t.classList.contains('sb-solve') && !t.classList.contains('sbs-inline') && !t.hidden && t.closest('.bk-spread')) openModal(t);
   })).observe(document.documentElement, {attributes: true, attributeFilter: ['hidden'], subtree: true});
   document.addEventListener('sb-fs-change', closeModal);
 

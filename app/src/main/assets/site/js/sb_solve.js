@@ -172,6 +172,13 @@
   .sbs-note{margin:.5rem 0 0;font-size:.72rem;color:#64748b}
   .sbs-src{margin:.1rem 0 .45rem;font-size:.85rem;color:#475569}
   .sbs-help{margin:.6rem .7rem;font-size:.85rem;color:#64748b}
+  /* answers in place: the word in the dash, or a small box right under the question */
+  .sbs-fill{display:inline;padding:0 .3em;margin:0 .1em;border-radius:5px;background:#dcfce7;color:#14532d;font-weight:800;border-bottom:2px solid #16a34a;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .sb-solve.sbs-inline{margin:.45rem 0 .8rem;border:1px solid #bbf7d0;border-radius:12px;background:#f7fef9;box-shadow:none;font-size:.95rem}
+  .sb-solve.sbs-inline .sbs-final{margin:0;border:0;border-radius:0;background:transparent}
+  .sbs-exp{margin:0;padding:.4rem .8rem;border-top:1px dashed #bbf7d0;color:#475569;font-size:.9rem;line-height:1.9}
+  .sbs-exp:first-child{border-top:0}
+  .sb-solve.sbs-inline .sbs-note{margin:0;padding:.2rem .8rem .4rem}
   .sbs-enter{animation:sbsin .45s ease-out}
   .sbs-pop{animation:sbspop .5s ease-out}
   @keyframes sbsin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -262,9 +269,116 @@
     if (!on) panel.scrollTop = 0;
   }
 
+  // ---- where an answer shows ----
+  // A solution worked in maths (steps with equations) opens the big answer window. Any other answer (a word, a sentence, an option, a
+  // paragraph) shows IN PLACE, on the page it belongs to: in the dash of a fill-in-the-blank question, otherwise in a small box right under
+  // the question. IN_PLACE lists the books that already work this way ("class:subject" of the open book, or '*' for every book); the others
+  // keep the answer window until each book has been checked.
+  const IN_PLACE = ['cls12:pakstudy'];
+  const inPlaceBook = () => typeof state !== 'undefined' && !!state && (IN_PLACE.includes('*') || IN_PLACE.includes(state.selectedClass + ':' + state.activeSubject));
+  const hasMaths = sol => (sol.steps || []).some(s => s.m || s.svg || SLOTS.some(k => typeof s[k] === 'string' && s[k].includes('$'))) ||
+    /\$/.test(String(sol.answer || '') + String(sol.answerUr || '') + String(sol.answerPs || ''));
+  const BLANK_G = /_{3,}|\.{4,}|…+|-{3,}|[—–]{2,}/g;                // a run of underscores, dots or dashes that stands for the missing word
+  const SENT_RX = /(?:^|\s)[a-z]+\d*-s(?:\s|$)/, TR_RX = /(?:^|\s)[a-z]+\d*-tr(?:\s|$)/;
+  const classOf = e => (typeof e.className === 'string' ? e.className : '');
+  // the sentence an Ans button belongs to (each book family names its sentence class with its own prefix: m6-s, c1-s ...)
+  function sentenceOf(btn) {
+    for (let e = btn.parentElement; e && e.nodeType === 1; e = e.parentElement) {
+      if (e.classList.contains('sb-solve')) return null;
+      if (e.classList.contains('lesson-sentence') || (SENT_RX.test(classOf(e)) && e.hasAttribute('onclick'))) return e;
+    }
+    return null;
+  }
+  // the text of a question that is part of the question itself (not the buttons, the translations, the answer box, equations)
+  function ownTextNode(n, root) {
+    for (let e = n.parentElement; e && e !== root.parentElement; e = e.parentElement) {
+      if (e.matches('button,script,style,.katex,.sb-solve,.sbs-fill,.sb-tri-drawer,[id^="sent-trans-"]') || TR_RX.test(classOf(e))) return false;
+      if (e === root) break;
+    }
+    return true;
+  }
+  function blanksOf(root, keep) {
+    const out = [], w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    for (let n; (n = w.nextNode());) {
+      if (!keep(n)) continue;
+      BLANK_G.lastIndex = 0;
+      for (let m; (m = BLANK_G.exec(n.data));) out.push({node: n, at: m.index, len: m[0].length});
+    }
+    return out;
+  }
+  // put one value in each blank (values.length === blanks.length); returns the filled spans so they can be taken out again
+  function fillBlanks(blanks, values, html) {
+    const spans = [], byNode = new Map();
+    blanks.forEach((b, i) => { if (!byNode.has(b.node)) byNode.set(b.node, []); byNode.get(b.node).push([b, values[i]]); });
+    byNode.forEach((list, node) => {
+      const frag = document.createDocumentFragment(); let pos = 0;
+      list.forEach(([b, v]) => {
+        if (b.at > pos) frag.appendChild(document.createTextNode(node.data.slice(pos, b.at)));
+        const sp = document.createElement('span');
+        sp.className = 'sbs-fill sbs-enter'; sp.dataset.blank = node.data.substr(b.at, b.len); sp.innerHTML = html(v);
+        frag.appendChild(sp); spans.push(sp); pos = b.at + b.len;
+      });
+      if (pos < node.data.length) frag.appendChild(document.createTextNode(node.data.slice(pos)));
+      node.replaceWith(frag);
+    });
+    return spans;
+  }
+  function unfill(btn) {
+    (btn._fills || []).forEach(sp => { const p = sp.parentNode; if (!p) return; sp.replaceWith(document.createTextNode(sp.dataset.blank)); p.normalize(); });
+    btn._fills = null;
+  }
+  // one answer for several dashes: "a, b" / "a ; b" / "a اور b" for two dashes
+  const splitAnswer = (text, n) => (n === 1 ? [text] : String(text).split(/\s*(?:[،,;؛]|\s+(?:اور|and|و)\s+)\s*/).filter(Boolean));
+  function fillQuestion(btn, panel, info) {
+    const se = sentenceOf(btn), host = se || btn.parentElement; if (!host) return false;
+    const med = panel._med, lines = info.lines;
+    const main = blanksOf(host, n => ownTextNode(n, host));
+    if (!main.length) return false;
+    const mainLang = ((se && se.getAttribute('lang')) || '').slice(0, 2) || med.text;
+    const line = lines[mainLang] || lines[med.text] || lines.en || Object.values(lines)[0];
+    if (!line) return false;
+    const vals = splitAnswer(line, main.length);
+    if (vals.length !== main.length) return false;
+    btn._fills = fillBlanks(main, vals, v => panel._inline(v, false));
+    // the translation lines of the same sentence carry the same dash: fill each with the answer in its own language
+    const tr = se && [se.nextElementSibling].concat([...(se.parentElement ? se.parentElement.children : [])]).find(e => e && TR_RX.test(classOf(e)));
+    if (tr) [...tr.querySelectorAll('p[lang]')].forEach(p => {
+      const l = p.getAttribute('lang'), v = lines[l]; if (!v) return;
+      const bl = blanksOf(p, n => !n.parentElement.closest('[class*="-lang"]'));
+      const vs = splitAnswer(v, bl.length);
+      if (bl.length && vs.length === bl.length) btn._fills = btn._fills.concat(fillBlanks(bl, vs, x => panel._inline(x, false)));
+    });
+    return true;
+  }
+  // the explanation of a plain answer, in the language of the book, under the answer
+  function explainHtml(panel) {
+    return panel._steps.map((s, i) => {
+      const t = stepText(panel, i); if (!t) return '';
+      return `<p class="sbs-exp" dir="${dirOf(t, panel)}">📖 ${panel._inline(t, false)}</p>`;
+    }).join('');
+  }
+  function toggleInPlace(btn, sol, cfg) {
+    const panel = panelFor(btn);
+    const closing = btn.getAttribute('aria-expanded') === 'true';
+    if (closing) { unfill(btn); panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); return; }
+    const med = medium(rootOf(btn));
+    const declared = cfg && cfg.langs ? String(cfg.langs).split(',') : (btn.dataset.langs ? btn.dataset.langs.split(',') : null);
+    const info = analyse(sol, med, declared);
+    panel.classList.add('sb-solve', 'sbs-inline');
+    Object.assign(panel, {_sol: sol, _med: med, _declared: declared, _inline: (cfg && cfg.inline) || esc, _plain: (cfg && cfg.plain) || defaultPlain,
+      _lang: med.text, _steps: info.steps, _lines: info.lines, _note: info.note});
+    const filled = fillQuestion(btn, panel, info);
+    const src = (() => { const n = info.note, l = n[med.text] ? med.text : Object.keys(n)[0], t = l ? cleanNote(n[l]) : ''; return t ? `<p class="sbs-exp" dir="${LANG[l].dir}">📖 ${panel._inline(t, false)}</p>` : ''; })();
+    const foot = `<p class="sbs-note" dir="ltr">${sol.src === 'book' ? 'Printed answer from the textbook' : `SpaceBook ${info.steps.length ? 'explanation' : 'answer'} · not printed in the textbook`}</p>`;
+    panel.innerHTML = (filled ? '' : `<div class="sbs-final">${finalHtml(panel)}</div>`) + explainHtml(panel) + src + foot;
+    panel.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+  }
+
   // Open or close the panel that belongs to an Ans button. cfg: {inline, plain, langs}
   function toggle(btn, sol, cfg) {
     addCss();
+    if (sol && !hasMaths(sol) && inPlaceBook()) return toggleInPlace(btn, sol, cfg);
     const panel = panelFor(btn);
     const open = panel.hidden || !panel._sol;
     if (!open) { if (panel.classList.contains('sbs-fs')) setFs(panel, false); panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); stop(panel); return; }
@@ -423,5 +537,5 @@
     });
   }
 
-  window.SBSolve = {toggle, loading, panelFor, decorate, medium, kind, slots, analyse, LANG};
+  window.SBSolve = {toggle, loading, panelFor, decorate, medium, kind, slots, analyse, LANG, IN_PLACE, hasMaths};
 })();
