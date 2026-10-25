@@ -620,6 +620,10 @@
     var sel = window.getSelection && window.getSelection(); if (sel && !sel.isCollapsed) return;
     var info = null, se = sentenceElOf(t);
     if (!se && t.closest(KEEP_SEL)) return;
+    // A button inside a sentence is still a button: "Ans" / "جواب" is placed right after the sentence it answers, inside that sentence's
+    // element, and its tap was taken for a tap on the sentence (a meaning pop-up, the answer never opened).
+    var btn = se && t.closest('button, .sb-ans');
+    if (btn && btn !== se && se.contains(btn)) return;
     if (se) info = fromSentenceEl(se, e.clientX, e.clientY);
     if (!info) {                                                                                      // any other text of the page
       if (!t.closest('#subjTabContent, #mathTabContent, #page-content')) return;
