@@ -141,10 +141,16 @@
     // a page is read, not browsed: the closed topic headings inside it (Classes 9-12) are opened, so the page shows its text
     var u = units[cur];
     if (u) [u].concat($$('.sb-topic-closed', u)).forEach(function (c) { if (!c.classList.contains('sb-topic-closed')) return; var h = c.querySelector(':scope > .sb-topic-head'); if (h) h.click(); });
+    // a tab that is one collapsed card (a short chapter, a lone exercise) is read open, not as a bare heading
+    if (!units.length) {
+      var lone = root() ? $$('.math-accordion-card', root()).filter(function (c) { return !c.closest('.bk-modal, .sb-tp, .sb-pt, dialog'); }) : [];
+      if (lone.length === 1) openCard(lone[0]);
+    }
   }
 
   function openCard(card) {
-    // a topic card is an accordion: show its body so the page reads like the book
+    // a topic card is an accordion (or a <details>, like the book information of a Class 12 Mathematics chapter): show its body so the page reads like the book
+    if (card.tagName === 'DETAILS' && !card.open) card.open = true;
     var body = card.querySelector && card.querySelector('.math-accordion-body');
     if (body && body.style.display !== 'block') {
       var h = card.querySelector('.math-acc-header');
@@ -189,9 +195,13 @@
     var c = collect();
     var tab = activeTab();
     var key = c.mode + '|' + c.units.length + '|' + tab + '|' + (root() ? root().id : '');
-    if (key === lastKey && units.length && units.every(function (u) { return doc.body.contains(u); })) return;
+    // the cards of a lesson can be wrapped into page cards a moment after they were first drawn (a unit inside a closed wrapper is
+    // hidden with it): the list is made again whenever it is no longer the list of the page
+    var sameList = units.length === c.units.length && units.every(function (u, i) { return u === c.units[i]; });
+    if (key === lastKey && units.length && sameList && units.every(function (u) { return doc.body.contains(u); })) return;
     // the tab or chapter changed (or the content was rebuilt): start again from the saved page or the first
     var changedTab = c.mode !== mode || tab !== lastTab;
+    units.forEach(function (u) { u.classList.remove('sbapp-hide', 'sbapp-page-on'); });
     lastKey = key; lastTab = tab; mode = c.mode; units = c.units;
     var start = pendingStart >= 0 ? pendingStart : (changedTab ? 0 : cur);
     pendingStart = -1;

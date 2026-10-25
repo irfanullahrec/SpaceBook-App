@@ -62,11 +62,11 @@
       const seg = t.split('○').map(s => s.trim()), opts = seg.slice(1);
       if (opts.length >= 3 && opts.length <= 4 && seg[0].length >= 2 && opts.every(o => o && o.length <= 220)) return {stem: seg[0], opts, circles: true};
     }
-    const rx = /(?:^|\s|—)(?:\(([a-d])\)|([a-d])[.)]|\((الف|ب|ج|د)\)|(الف|ب|ج|د)[.۔)])(?=\s)/g;
+    const rx = /(?:^|\s|—)(?:\(([a-d])\)|([a-d])[.)]|\((الف|ا|ب|ج|د)\)|(الف|ب|ج|د)[.۔)])(?=\s)/g;
     const marks = [];
     let m;
     while ((m = rx.exec(t))) {
-      const letter = m[1] || m[2] || 'abcd'[UR_SEQ.indexOf(m[3] || m[4])];
+      const letter = m[1] || m[2] || 'abcd'[(m[3] || m[4]) === 'ا' ? 0 : UR_SEQ.indexOf(m[3] || m[4])];
       const lead = m[0].length - m[0].replace(/^[\s—]+/, '').length;
       marks.push({letter, at: m.index + lead, end: rx.lastIndex});
       rx.lastIndex = Math.max(rx.lastIndex - 1, m.index + 1);
@@ -80,6 +80,12 @@
       const opts = run.map((r, k) => t.slice(r.end, k + 1 < run.length ? run[k + 1].at : t.length).replace(/[\s—–]+$/, '').trim());
       if (stem.length < 4 || opts.some(o => !o || o.length > 220)) continue;
       return {stem, opts};
+    }
+    // Urdu questions that print their choices in brackets at the end: "… کس سال میں کیا؟ (1863ء، 1869ء، 1875ء، 1886ء)" · "… تھے۔ (ا، ب، ج)"
+    const br = t.match(/^(.{6,}?)\s*[(（]([^()（）]*،[^()（）]*)[)）]\s*[.۔]?$/);
+    if (br) {
+      const opts = br[2].split(/\s*،\s*/).map(s => s.trim()).filter(Boolean);
+      if (opts.length >= 3 && opts.length <= 5 && opts.every(o => o.length <= 90)) return {stem: br[1], opts, bracket: true};
     }
     return null;
   }
@@ -97,8 +103,10 @@
     return -1;
   }
   // index of the correct option, or -1. partNo lets "i: d; ii: a; …" style keys answer one part.
-  function resolve(raw, opts, partNo) {
+  // textFirst: the key is the text of the option itself (choices printed in brackets), so "70" names the option 70, not the 71st
+  function resolve(raw, opts, partNo, textFirst) {
     if (raw == null || raw === '') return -1;
+    if (textFirst) { const n0 = norm(strip(raw)); const h0 = n0 ? opts.findIndex(o => norm(o) === n0) : -1; if (h0 >= 0) return h0; }
     if (typeof raw === 'number' && Number.isInteger(raw)) return raw >= 0 && raw < opts.length ? raw : -1;
     const s = strip(raw);
     if (/^\d+$/.test(s)) { const n = +s; return n < opts.length ? n : -1; }
@@ -191,7 +199,7 @@
     let correct = null, explain = '';
     const known = solId && api.sols ? api.sols(solId) : undefined;
     if (known) {
-      const c = resolve(known.answer, sp.opts, ctx.partNo);
+      const c = resolve(known.answer, sp.opts, ctx.partNo, sp.bracket);
       if (c >= 0) { correct = c; explain = stepsHtml(known, api, langOf(text)); }
     }
     if (correct === null && keyText) { const c = resolve(keyText, sp.opts, ctx.partNo); if (c >= 0) correct = c; }

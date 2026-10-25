@@ -32,9 +32,9 @@
    "sha256": "b2c5760ba466b67b7bd4cc028164cc5cd3703e64930cbf3d7aa539ede230581d"
   },
   "content/search/cls1-pashto.json": {
-   "v": "dbc0852c7fb0",
-   "bytes": 105262,
-   "sha256": "dbc0852c7fb0a74be28a312f88829e05ee33fbcd08e13e68d3a988c19a635302"
+   "v": "62c6038c2a37",
+   "bytes": 105285,
+   "sha256": "62c6038c2a3768f3c812b443c2dd56c60dbcedc8085904c2d41e9ff7a7f70f33"
   },
   "content/search/cls1-urdu.json": {
    "v": "1019023a97f2",
@@ -52,9 +52,9 @@
    "sha256": "560eb347072477f8d8810d23fa37e650981e908d29c7e90d7ab1fcc4cbbe1d81"
   },
   "content/search/cls10-comp.json": {
-   "v": "a2354efaf94e",
-   "bytes": 139198,
-   "sha256": "a2354efaf94e545e3c56b1b53ac2d7810c18f374e01144728b9cc9103f3a1c64"
+   "v": "e81845973805",
+   "bytes": 139200,
+   "sha256": "e8184597380588944b03474edbdf2d8cbf04ce1b1c49b742b6546577f4ef29c0"
   },
   "content/search/cls10-drawing.json": {
    "v": "a4c3e070a84b",
@@ -67,9 +67,9 @@
    "sha256": "d2cc4b01384bbfb323b53e8e863e56206a8f7cdadbe0c7212af0b561d5c986b8"
   },
   "content/search/cls10-hpe.json": {
-   "v": "198c3bfb9983",
-   "bytes": 168618,
-   "sha256": "198c3bfb9983447cdb3d152f4f5068eaf7860b32ea006b343b08f1a87a273c94"
+   "v": "4b167acd040e",
+   "bytes": 168644,
+   "sha256": "4b167acd040e0d2291be0719bd6a9c1b50a1bfe7e8c13dfe1840ffdb78a1834d"
   },
   "content/search/cls10-isl.json": {
    "v": "832ecdd43354",
@@ -87,9 +87,9 @@
    "sha256": "cd33b3b553735e558d16dbc2ab908f73437c3b86bcf2e01f034dac0e9a371de8"
   },
   "content/search/cls10-pakstudy.json": {
-   "v": "b93c4ee8d9fb",
-   "bytes": 189546,
-   "sha256": "b93c4ee8d9fb1114f5f4a21049d947523c32a0c1230719e7dd7cf71238c511a9"
+   "v": "68a6a84b5e61",
+   "bytes": 189643,
+   "sha256": "68a6a84b5e616d936654fd82bff4e350ec602d524ec5b2b7ba33ae44420336ef"
   },
   "content/search/cls10-phy.json": {
    "v": "8bd103a1e761",
@@ -192,39 +192,39 @@
    "sha256": "065084d81e201420cfb8f6fa2d6f065dd87eb783912644ca204b85a9edf02a0d"
   },
   "content/search/cls12-civics.json": {
-   "v": "0bc249c7c955",
-   "bytes": 305388,
-   "sha256": "0bc249c7c95527ad2a4db10650f768388bd7d23564cd3bcae87ccb4b0f5a462d"
+   "v": "1d7049e02768",
+   "bytes": 301613,
+   "sha256": "1d7049e0276809a1a8876799c21e66a22256df55336f68344dfad83276818733"
   },
   "content/search/cls12-comp.json": {
-   "v": "cd00a3ac1e72",
-   "bytes": 194731,
-   "sha256": "cd00a3ac1e72e2bf418a2517b163e81b8a1789ea4489718e20d7e33c300eac89"
+   "v": "739326517d54",
+   "bytes": 191180,
+   "sha256": "739326517d54a5ba5eae56d2911889e0cab8a53c3684a27bae2da184a004a7eb"
   },
   "content/search/cls12-econ.json": {
-   "v": "dd6c801cbfe5",
-   "bytes": 471011,
-   "sha256": "dd6c801cbfe50cfc7ac7e7cb963130fe9b0578a0e23cd263f591d2aa79604fb5"
+   "v": "5dc82c026ee6",
+   "bytes": 475111,
+   "sha256": "5dc82c026ee6258d7c0847e617576285c9cb3136bfb0dd7ba6627f7f370ccccc"
   },
   "content/search/cls12-eng.json": {
-   "v": "4f847202be74",
-   "bytes": 429793,
-   "sha256": "4f847202be744fef134f050a8ba04383d6278fdac72566f4f5674ec9c647000a"
+   "v": "b57c83f081d0",
+   "bytes": 431729,
+   "sha256": "b57c83f081d03e483604d3e60031e2e5dccf6ecb7fbb6bee9cb320c10fa1f358"
   },
   "content/search/cls12-hpe.json": {
-   "v": "74fff7679742",
-   "bytes": 155461,
-   "sha256": "74fff7679742ff10252ac549178101174d5f360b6dfd10e9dbe71cceb649ee43"
+   "v": "9444632d70d4",
+   "bytes": 157914,
+   "sha256": "9444632d70d4963b3ae69cede2804ca3a6ce4f30d51b3430b127c101e3f8baa1"
   },
   "content/search/cls12-islhist.json": {
-   "v": "e2b09f38affa",
-   "bytes": 400284,
-   "sha256": "e2b09f38affab58dbcdd3eb520535693bc503d042b5e8e778b4574baff321d8f"
+   "v": "62ab99225d0c",
+   "bytes": 401749,
+   "sha256": "62ab99225d0c7608bfb063133ccebbfd9be62759226de515e228cc3f351261aa"
   },
   "content/search/cls12-islopt.json": {
-   "v": "3abbadf41b0e",
-   "bytes": 355317,
-   "sha256": "3abbadf41b0e3d12a689d4d0b227664c321981c0968f9e877c7bf9214b92fa90"
+   "v": "dde742324998",
+   "bytes": 356537,
+   "sha256": "dde742324998f40196f0dead9719eeee4ad35a5c5e340fc91331fe5094ed7bdd"
   },
   "content/search/cls12-math.json": {
    "v": "1165b4dcbde7",
@@ -232,9 +232,9 @@
    "sha256": "1165b4dcbde7842632b8309082e6372ea43a9ae7b82d568e569f6b7dd40becea"
   },
   "content/search/cls12-pak.json": {
-   "v": "34f7969a65d3",
-   "bytes": 336863,
-   "sha256": "34f7969a65d34bbc780b32b6ce19b0b0ffa2b52ebd3af7616ade9baa7137fb39"
+   "v": "c6a042c42a81",
+   "bytes": 339728,
+   "sha256": "c6a042c42a818ce67625c47855be670e5f0a05792778b074ef7dd5fe80262083"
   },
   "content/search/cls12-phy.json": {
    "v": "0f13e15e58a5",
@@ -242,9 +242,9 @@
    "sha256": "0f13e15e58a5a22b843f2046eaeb7b1dfde8d914985e6a6d26ae692808ab6d57"
   },
   "content/search/cls12-quran.json": {
-   "v": "65d3e06b706b",
-   "bytes": 470949,
-   "sha256": "65d3e06b706b23a133285c29e842254309645e560dd04c7eed24557bc376e595"
+   "v": "c04beb2ffc4d",
+   "bytes": 475647,
+   "sha256": "c04beb2ffc4d59fc07a4c4376020107b51c0a3bef15fef6f67fe19533d734e7b"
   },
   "content/search/cls12-stat.json": {
    "v": "d082ef4cb35f",
@@ -252,9 +252,9 @@
    "sha256": "d082ef4cb35f2bb5baab1e282a26bc6cae84417434735a7f3fd8919e3f7c978e"
   },
   "content/search/cls12-urdu.json": {
-   "v": "6ae903137d16",
-   "bytes": 288699,
-   "sha256": "6ae903137d16cd933ec5e18f6ab62c386e0c59f5a397673d0c7dce27f2a8fe73"
+   "v": "d8c195d1e7cf",
+   "bytes": 572357,
+   "sha256": "d8c195d1e7cf08b709d995d526097b2426c8db71e68b3a02a01c556e64188bb0"
   },
   "content/search/cls2-drawing.json": {
    "v": "0226639ec5d9",
@@ -272,9 +272,9 @@
    "sha256": "efe4b5d7ab93c67600c60495592b60afb1a403ecefd287610925d36a9c1a8e6a"
   },
   "content/search/cls2-isl.json": {
-   "v": "677515213c35",
-   "bytes": 70528,
-   "sha256": "677515213c3573b469046b5c0db7819c68c5e57bf35ffa575bcc11ff07433306"
+   "v": "6ab7c981f29f",
+   "bytes": 70587,
+   "sha256": "6ab7c981f29f77fd22c06c375fec6814071c6e5e65b5eebae3e046fa4d2224f6"
   },
   "content/search/cls2-math.json": {
    "v": "b4e89bf3fab2",
@@ -287,9 +287,9 @@
    "sha256": "6655c3924f03137f8ad375c2189d969111185d691545e68dd69d3ca53928ca05"
   },
   "content/search/cls2-pashto.json": {
-   "v": "e56140b4d533",
-   "bytes": 154728,
-   "sha256": "e56140b4d533f12c8d552c665daa37cf13fdb04cdf07be620c07f0c51acae3df"
+   "v": "7068cd00cb01",
+   "bytes": 155781,
+   "sha256": "7068cd00cb01a80462ef30c55c7307a5cf39946f3fe0c08b12607a9bee683909"
   },
   "content/search/cls2-urdu.json": {
    "v": "7e2d9a109a99",
@@ -327,9 +327,9 @@
    "sha256": "d3fc95828b42aec32830b1a5259b171fbf4144a3b77239d62b787cba94282e8c"
   },
   "content/search/cls3-pashto.json": {
-   "v": "0a687b540db4",
-   "bytes": 174506,
-   "sha256": "0a687b540db4aee507db52e1aeb01421032ff5a472c218aed1cfc1a83cb8a0d9"
+   "v": "6cde96ba255e",
+   "bytes": 175193,
+   "sha256": "6cde96ba255e441669832a57400cecaac6fe837f845d56e81371913e19b339d0"
   },
   "content/search/cls3-urdu.json": {
    "v": "cb3b7d9f1c1f",
@@ -352,9 +352,9 @@
    "sha256": "99be9b37ddc5d12a5be658c7cef6f7e203dd9d76d045b12dc6179427b44a43ae"
   },
   "content/search/cls4-pashto.json": {
-   "v": "142fb5ee4090",
-   "bytes": 206233,
-   "sha256": "142fb5ee40903392465ec0fd693b4e856f1962f161e5bc253a8ccab2d6551dcb"
+   "v": "78c1fba10559",
+   "bytes": 206601,
+   "sha256": "78c1fba10559666a2326bc5bbbe0a9302acd0b3fcf3043a0f0cfdca2f9721035"
   },
   "content/search/cls4-sci.json": {
    "v": "55acd83f0f6e",
@@ -367,9 +367,9 @@
    "sha256": "ca513e0853d7f68b5830344ee79cd0c3f03a34491a1344f4b1623324e8a92086"
   },
   "content/search/cls4-sstum.json": {
-   "v": "91d3e33350f0",
-   "bytes": 220206,
-   "sha256": "91d3e33350f07502983c333ef1e0cf43acdc232888f55f1dcd48498c8a21a621"
+   "v": "a4615fa58b4a",
+   "bytes": 220341,
+   "sha256": "a4615fa58b4a55df687a03493e494fecac080941d73af57cac2f7eeec7e32bbc"
   },
   "content/search/cls4-urdu.json": {
    "v": "abbfbb120253",
@@ -392,9 +392,9 @@
    "sha256": "a875ba5417cc04c8a92798fd61f529b089c3187dc52aac6b34031a2de7012d41"
   },
   "content/search/cls5-pashto.json": {
-   "v": "967a77137200",
-   "bytes": 250427,
-   "sha256": "967a7713720062cf45d466e69328cae567b9f8287451af4c94ed062e3df7b3c7"
+   "v": "4eefd1470ae7",
+   "bytes": 250505,
+   "sha256": "4eefd1470ae79c679fff11dbb76860d8f028a78d37333f73f89f4fcc20d45c21"
   },
   "content/search/cls5-sci.json": {
    "v": "c4e998e3ac08",
@@ -417,9 +417,9 @@
    "sha256": "a4bf4c8245b86d31588862c042effa943f1c4a4884984e99c49fe2dc5dc061ec"
   },
   "content/search/cls6-arabic.json": {
-   "v": "787614d1e8c7",
-   "bytes": 145840,
-   "sha256": "787614d1e8c78ff8f2fa97e884a56a725eaacbce02c567a2e538957ffc30cc59"
+   "v": "1523de39238a",
+   "bytes": 145909,
+   "sha256": "1523de39238acf92fea9200af1c9d1a4f8def089e316cf07d02884dea81dd3d8"
   },
   "content/search/cls6-comp.json": {
    "v": "604ff255579f",
@@ -447,9 +447,9 @@
    "sha256": "cc0e751d9caf7b698497104688902494e569b1377a379fe776790aabc8cca450"
   },
   "content/search/cls6-hpe.json": {
-   "v": "cb6d220a3765",
-   "bytes": 121320,
-   "sha256": "cb6d220a3765c1f6b4d3c333645607f17d8b6dd1d519d6b040543660d1069c89"
+   "v": "748c38d747b9",
+   "bytes": 121648,
+   "sha256": "748c38d747b908c2d4884501564b084d3ca446a1d15d948141e21e286c9e788d"
   },
   "content/search/cls6-isl.json": {
    "v": "a28354a4031a",
@@ -462,9 +462,9 @@
    "sha256": "9e07c3078aa22fe508c6b8e31b96877fe0c127e744be170e1f03591797fe6295"
   },
   "content/search/cls6-pashto.json": {
-   "v": "0bd9b4dec6f2",
-   "bytes": 225027,
-   "sha256": "0bd9b4dec6f26812e405e186f4202c1df91e04cdb706b5feb4391adfd36593ac"
+   "v": "c01b290c4726",
+   "bytes": 225132,
+   "sha256": "c01b290c4726466108573462e7e53279097c8cf0e9fc39536811d1656e941eb0"
   },
   "content/search/cls6-quran.json": {
    "v": "0472742d1be6",
@@ -477,9 +477,9 @@
    "sha256": "ef659ac92a7b5e84b39b4287a30ec414975e92d809f54eaabd7e8eb7298fee88"
   },
   "content/search/cls6-urdu.json": {
-   "v": "9c3c4f9f3a85",
-   "bytes": 326377,
-   "sha256": "9c3c4f9f3a851f04d579412274a22658150f5d6a5c2010f2a4cd0ac48adb142e"
+   "v": "963a5c6e3a51",
+   "bytes": 326449,
+   "sha256": "963a5c6e3a5148676510d13c1bed5b2e9a1bea3adaf3588872bb452e29c6a795"
   },
   "content/search/cls7-arabic.json": {
    "v": "708148e0e423",
@@ -537,9 +537,9 @@
    "sha256": "0e46aedb89af36df5f59f840547f0a340043ad210e0ea6d123334f7be12e29ee"
   },
   "content/search/cls7-urdu.json": {
-   "v": "15d50a0eb90a",
-   "bytes": 360217,
-   "sha256": "15d50a0eb90a8b0bde118be5703fdf6a12aaeffe7eff88b4e4eb355efe21f1f6"
+   "v": "5fecb7f4817a",
+   "bytes": 360308,
+   "sha256": "5fecb7f4817a448c0f6ad9e1f11f43caae495c9778d7d6d8b29481259ef28dac"
   },
   "content/search/cls8-arabic.json": {
    "v": "af999f8eee6d",
@@ -632,9 +632,9 @@
    "sha256": "9f7d75a48661b57474a791fe0d50fc8a373f3952ef39a859311123f4d33ecd52"
   },
   "content/search/cls9-hpe.json": {
-   "v": "e7bcd1a6ccc3",
-   "bytes": 134576,
-   "sha256": "e7bcd1a6ccc3fb8ae11ea549329956db32ecc5fe46dd4e48842aa4061acf331d"
+   "v": "25a8f531be70",
+   "bytes": 134578,
+   "sha256": "25a8f531be70dc97bd5b897d1fc776835f00cf7b704221904beb2613c92a34d0"
   },
   "content/search/cls9-isl.json": {
    "v": "832ecdd43354",
@@ -821,6 +821,11 @@
    "bytes": 1851889,
    "sha256": "de51c84e59db09ccc4087487015bc6d572fa70de7b6cfb90e08a8699dd648a26"
   },
+  "js/civics_12_book.js": {
+   "v": "3da3b113534a",
+   "bytes": 2298433,
+   "sha256": "3da3b113534af8118ab4a60f9605b4ce4166ddfe185605b8d11b1fb5321ad1bc"
+  },
   "js/civics_12_data.js": {
    "v": "f051a9693ca2",
    "bytes": 7232914,
@@ -835,6 +840,11 @@
    "v": "1a105762ba0f",
    "bytes": 1699859,
    "sha256": "1a105762ba0fbb7142d786ee99faf4791f4480944a8109652c5ed890f11591ff"
+  },
+  "js/computer_12_book.js": {
+   "v": "0d7825aa3e64",
+   "bytes": 1948366,
+   "sha256": "0d7825aa3e64ffdb62401b93e762ac641bf4b48e6148524ae7af0858bb4b5538"
   },
   "js/computer_12_data.js": {
    "v": "588cff68336b",
@@ -931,6 +941,11 @@
    "bytes": 106603,
    "sha256": "7e889f6d10eebf847eab2d973bc36b290f7258d99d4000e5fa121c2651ee7b72"
   },
+  "js/economics_12_book.js": {
+   "v": "25e7aaab7b02",
+   "bytes": 5185866,
+   "sha256": "25e7aaab7b024c67d589786fb6c5e9b0fdadf4223ef62b64cb3317b76c91fbf1"
+  },
   "js/economics_12_data.js": {
    "v": "c91e6bd2342d",
    "bytes": 17900352,
@@ -955,6 +970,11 @@
    "v": "776bf021b92f",
    "bytes": 539498,
    "sha256": "776bf021b92ffa4dd59197fb8b89b79ba3efd3e169dfdb5133c7f7e086accb90"
+  },
+  "js/english_12_book.js": {
+   "v": "20850634924e",
+   "bytes": 2096365,
+   "sha256": "20850634924e426bfe5d71045dc135e678d1f29e288d48e6ac46abbed021b208"
   },
   "js/english_12_data.js": {
    "v": "a35966ef820c",
@@ -1007,9 +1027,9 @@
    "sha256": "8cfd4696b3e2394c9138fde2f36e68f76547addb43c86f4a3c64801927347f50"
   },
   "js/fills_data.js": {
-   "v": "0624723fb3a1",
+   "v": "d80837f05f3c",
    "bytes": 116780,
-   "sha256": "0624723fb3a16dc7699296db379ec948a1d28e282d4a29fad8cd83e5648c219b"
+   "sha256": "d80837f05f3c9ff87bb979d1b8d674e13cc8a1cfbe27ebb55a49eb6825c6f8d9"
   },
   "js/general_science_10_data.js": {
    "v": "be01a96c3ab7",
@@ -1106,6 +1126,11 @@
    "bytes": 993424,
    "sha256": "1329813a574ea5b929847089dbd666601e016cb4c8d788db247308b714ebb889"
   },
+  "js/hpe_12_book.js": {
+   "v": "038c2c30ee86",
+   "bytes": 1126009,
+   "sha256": "038c2c30ee8608152c55f5bcbedd276482ba17acf1735dbc25ca91b33bc741ca"
+  },
   "js/hpe_12_data.js": {
    "v": "f0945553ab75",
    "bytes": 3847447,
@@ -1181,10 +1206,20 @@
    "bytes": 2090368,
    "sha256": "989f8736d83f30254ef3ceb7b96d90932968973d0ecbc21b949c856d5d771dcc"
   },
+  "js/islamiat_ikhtiari_12_book.js": {
+   "v": "2f3ad8d162f5",
+   "bytes": 2847699,
+   "sha256": "2f3ad8d162f5cbfb47cd41b68e896ed102cd6719a3347ce3341a9c2b02f65044"
+  },
   "js/islamiat_ikhtiari_12_data.js": {
    "v": "dcb1f4146916",
    "bytes": 8839895,
    "sha256": "dcb1f4146916ff328b34bd08a0651d91214dfb4058258584fdb17ff551d1cb87"
+  },
+  "js/islamic_history_12_book.js": {
+   "v": "be4eb43ee601",
+   "bytes": 2206961,
+   "sha256": "be4eb43ee601b03a6152eb18d319bb32171c1ce370eb5ccfb84d002a92acb745"
   },
   "js/islamic_history_12_data.js": {
    "v": "0f10989496fe",
@@ -1431,6 +1466,11 @@
    "bytes": 1222479,
    "sha256": "b0e97ef1fcbcad9501b37fde31fea0552ccac3b023c0a94a50cc319d9fdb3dbb"
   },
+  "js/pakstudy_12_book.js": {
+   "v": "1bde04d629a7",
+   "bytes": 2421339,
+   "sha256": "1bde04d629a7cd91a674571706546ba9086d911d60c7cd58a4145781e3c0cc67"
+  },
   "js/pakstudy_12_data.js": {
    "v": "a54042a974bd",
    "bytes": 7325029,
@@ -1510,6 +1550,11 @@
    "v": "dd83afcb663a",
    "bytes": 262427,
    "sha256": "dd83afcb663a16710d33ca72e09857a87ce0f1b3db3d581ca8f8d0ee841ab46e"
+  },
+  "js/quran_12_book.js": {
+   "v": "a07f8434b3ee",
+   "bytes": 4503920,
+   "sha256": "a07f8434b3ee002eebceba0cb1e2b4a028b686681413b0ecec859553c400162c"
   },
   "js/quran_12_data.js": {
    "v": "683d6e1b4857",
@@ -1650,6 +1695,11 @@
    "v": "e95563b62e45",
    "bytes": 1516041,
    "sha256": "e95563b62e452b41de804fe22a25a6318e3111857f7ae79f4855e9f22c5622db"
+  },
+  "js/urdu_12_book.js": {
+   "v": "0f11f031966e",
+   "bytes": 2535651,
+   "sha256": "0f11f031966e095502e4c7da74cf623b1bcaec2ba7b89dcd427b8d57fcae3fbc"
   },
   "js/urdu_12_data.js": {
    "v": "2348c9ee303c",
@@ -2040,7 +2090,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 969221
+   "bytes": 969244
   },
   "cls1-drawing": {
    "classId": "cls1",
@@ -2118,7 +2168,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 756916
+   "bytes": 756975
   },
   "cls2-nazira": {
    "classId": "cls2",
@@ -2144,7 +2194,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1212277
+   "bytes": 1213330
   },
   "cls2-drawing": {
    "classId": "cls2",
@@ -2249,7 +2299,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1435038
+   "bytes": 1435725
   },
   "cls3-drawing": {
    "classId": "cls3",
@@ -2342,7 +2392,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2292459
+   "bytes": 2292594
   },
   "cls4-isl": {
    "classId": "cls4",
@@ -2368,7 +2418,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1676143
+   "bytes": 1676511
   },
   "cls5-math": {
    "classId": "cls5",
@@ -2464,7 +2514,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1825330
+   "bytes": 1825408
   },
   "cls6-math": {
    "classId": "cls6",
@@ -2517,7 +2567,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2912137
+   "bytes": 2912209
   },
   "cls6-isl": {
    "classId": "cls6",
@@ -2582,7 +2632,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1282425
+   "bytes": 1282753
   },
   "cls6-drawing": {
    "classId": "cls6",
@@ -2608,7 +2658,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1748030
+   "bytes": 1748099
   },
   "cls6-quran": {
    "classId": "cls6",
@@ -2634,7 +2684,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1756649
+   "bytes": 1756754
   },
   "cls7-eng": {
    "classId": "cls7",
@@ -2662,7 +2712,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5075890
+   "bytes": 5075981
   },
   "cls7-math": {
    "classId": "cls7",
@@ -3127,7 +3177,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2140892
+   "bytes": 2140894
   },
   "cls9-drawing": {
    "classId": "cls9",
@@ -3261,7 +3311,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1648135
+   "bytes": 1648232
   },
   "cls10-isl": {
    "classId": "cls10",
@@ -3302,7 +3352,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2935932
+   "bytes": 2935934
   },
   "cls10-sci": {
    "classId": "cls10",
@@ -3330,7 +3380,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2587088
+   "bytes": 2587114
   },
   "cls10-drawing": {
    "classId": "cls10",
@@ -3733,12 +3783,16 @@
    "files": [
     "js/english_12_data.js",
     "js/eng12_exercise_banks.js",
+    "js/english_12_book.js",
+    "js/english_6_data.js",
+    "js/answers_extra.js",
+    "js/fills_data.js",
     "content/search/cls12-eng.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 6618537
+   "bytes": 10339253
   },
   "cls12-urdu": {
    "classId": "cls12",
@@ -3746,12 +3800,15 @@
    "files": [
     "js/urdu_12_data.js",
     "js/urdu12_exercise_banks.js",
+    "js/urdu_12_book.js",
+    "js/urdu_6_data.js",
+    "js/answers_extra.js",
     "content/search/cls12-urdu.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 8251385
+   "bytes": 13401982
   },
   "cls12-bio": {
    "classId": "cls12",
@@ -3771,12 +3828,13 @@
    "files": [
     "js/pakstudy_12_data.js",
     "js/pakstudy12_exercise_banks.js",
+    "js/pakstudy_12_book.js",
     "content/search/cls12-pak.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 8039934
+   "bytes": 10464138
   },
   "cls12-comp": {
    "classId": "cls12",
@@ -3784,12 +3842,16 @@
    "files": [
     "js/computer_12_data.js",
     "js/comp12_exercise_banks.js",
+    "js/computer_12_book.js",
+    "js/computer_6_data.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls12-comp.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 6187748
+   "bytes": 9091746
   },
   "cls12-civics": {
    "classId": "cls12",
@@ -3797,12 +3859,14 @@
    "files": [
     "js/civics_12_data.js",
     "js/civics12_exercise_banks.js",
+    "js/civics_12_book.js",
+    "js/answers_extra.js",
     "content/search/cls12-civics.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 7904126
+   "bytes": 10297202
   },
   "cls12-econ": {
    "classId": "cls12",
@@ -3810,12 +3874,14 @@
    "files": [
     "js/economics_12_data.js",
     "js/econ12_exercise_banks.js",
+    "js/economics_12_book.js",
+    "js/fills_data.js",
     "content/search/cls12-econ.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 18714076
+   "bytes": 24020822
   },
   "cls12-hpe": {
    "classId": "cls12",
@@ -3823,12 +3889,14 @@
    "files": [
     "js/hpe_12_data.js",
     "js/hpe12_exercise_banks.js",
+    "js/hpe_12_book.js",
+    "js/hpe_6_data.js",
     "content/search/cls12-hpe.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4322708
+   "bytes": 6259385
   },
   "cls12-islopt": {
    "classId": "cls12",
@@ -3836,12 +3904,15 @@
    "files": [
     "js/islamiat_ikhtiari_12_data.js",
     "js/islopt12_exercise_banks.js",
+    "js/islamiat_ikhtiari_12_book.js",
+    "js/answers_extra.js",
+    "js/fills_data.js",
     "content/search/cls12-islopt.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 9575689
+   "bytes": 12639806
   },
   "cls12-islhist": {
    "classId": "cls12",
@@ -3849,12 +3920,14 @@
    "files": [
     "js/islamic_history_12_data.js",
     "js/islhist12_exercise_banks.js",
+    "js/islamic_history_12_book.js",
+    "js/fills_data.js",
     "content/search/cls12-islhist.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 6771831
+   "bytes": 9097037
   },
   "cls12-quran": {
    "classId": "cls12",
@@ -3862,12 +3935,15 @@
    "files": [
     "js/quran_12_data.js",
     "js/quran12_exercise_banks.js",
+    "js/quran_12_book.js",
+    "js/mutalia_quran_6_data.js",
+    "js/fills_data.js",
     "content/search/cls12-quran.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 13807689
+   "bytes": 20405008
   },
   "meanings": {
    "classId": "meanings",

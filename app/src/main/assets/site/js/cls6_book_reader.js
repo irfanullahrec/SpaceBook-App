@@ -210,7 +210,13 @@
   function exercises(B, ch) {
     if (!ch.sections.length) return pending(B, ch);
     if (!ch.exercises || !ch.exercises.length) return `<div class="math-topic-card" style="padding:1.25rem;color:#475569;">This unit has no separate exercise in the textbook; its activities are in the Lesson tab.</div>`;
-    return ch.exercises.map((ex, k) => card('c6-ex-' + ch.number + '-' + k, 'Exercise', (ex.id || 'Exercise') + (ex.printed ? ` (p. ${ex.printed})` : ''), root(blocks([ex], {showAnswers: true, noPages: true})), k === 0)).join('');
+    // a unit with one exercise shows it open (sb_global_ui.js closes every card it renders, and the app's one-page reader only opens a card when
+    // the tab has several pages: a lone closed card was a tab with a heading and nothing else)
+    const only = ch.exercises.length === 1;
+    return ch.exercises.map((ex, k) => {
+      const html = card('c6-ex-' + ch.number + '-' + k, 'Exercise', (ex.id || 'Exercise') + (ex.printed ? ` (p. ${ex.printed})` : ''), root(blocks([ex], {showAnswers: true, noPages: true})), k === 0);
+      return only ? html.replace('<div class="math-topic-card', '<div data-keep-open="1" class="math-topic-card') : html;
+    }).join('');
   }
   function slos(B, ch) {
     if (!ch.sections.length) return pending(B, ch);
@@ -338,9 +344,11 @@
   SBHooks.use('switchSubjectTab', function (originalSwitch) { return function (subjKey, tabId, chIdx, classId) {
     // Class 10 Islamiat (lazmi) is the Class 9 book, so cls10 'isl' opens CLS9_BOOKS.isl.
     // Class 9 Islamiat Ikhtiari is the same book as Class 10, so cls9 'islopt' opens CLS10_BOOKS.islopt.
-    const lib = classId === 'cls10' && subjKey === 'isl' ? (window.CLS9_BOOKS || {}) : classId === 'cls9' && subjKey === 'islopt' ? (window.CLS10_BOOKS || {}) : classId === 'cls6' ? books() : classId === 'cls7' ? (window.CLS7_BOOKS || {}) : classId === 'cls8' ? (window.CLS8_BOOKS || {}) : classId === 'cls10' ? (window.CLS10_BOOKS || {}) : classId === 'cls9' ? (window.CLS9_BOOKS || {}) : classId === 'cls12' ? (window.CLS12_BOOKS || {}) : {};
+    const lib = classId === 'cls10' && subjKey === 'isl' ? (window.CLS9_BOOKS || {}) : classId === 'cls9' && subjKey === 'islopt' ? (window.CLS10_BOOKS || {}) : classId === 'cls6' ? books() : classId === 'cls7' ? (window.CLS7_BOOKS || {}) : classId === 'cls8' ? (window.CLS8_BOOKS || {}) : classId === 'cls10' ? (window.CLS10_BOOKS || {}) : classId === 'cls9' ? (window.CLS9_BOOKS || {}) : classId === 'cls12' ? (window.CLS12_BOOKS || {}) : classId === 'cls11' ? (window.CLS11_BOOKS || {}) : {};
     const B = subjKey !== 'math' ? lib[subjKey] : null;
     if (!B || !B.units || !B.units.length) return originalSwitch.apply(this, arguments);
+    // a book may take over only some tabs (Class 12 Pakistan Studies: Lessons and Exercises); the others keep the study views
+    if (B.book && B.book.tabs && B.book.tabs.indexOf(tabId) < 0) return originalSwitch.apply(this, arguments);
     let ch;
     if (B.book && B.book.byNumber) {
       // book covers only some chapters of an existing list (Class 10 Physics 13-18, Chemistry): match by chapter number,
