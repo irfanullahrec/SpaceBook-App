@@ -272,12 +272,11 @@
   // ---- where an answer shows ----
   // A solution worked in maths (steps with equations) opens the big answer window. Any other answer (a word, a sentence, an option, a
   // paragraph) shows IN PLACE, on the page it belongs to: in the dash of a fill-in-the-blank question, otherwise in a small box right under
-  // the question. IN_PLACE lists the books that already work this way ("class:subject" of the open book, or '*' for every book); the others
-  // keep the answer window until each book has been checked.
-  const IN_PLACE = ['cls12:pakstudy'];
+  // the question. IN_PLACE lists the books that work this way ("class:subject" of the open book, or '*' for every book; a book left out
+  // keeps the answer window for every answer).
+  const IN_PLACE = ['*'];
   const inPlaceBook = () => typeof state !== 'undefined' && !!state && (IN_PLACE.includes('*') || IN_PLACE.includes(state.selectedClass + ':' + state.activeSubject));
-  const hasMaths = sol => (sol.steps || []).some(s => s.m || s.svg || SLOTS.some(k => typeof s[k] === 'string' && s[k].includes('$'))) ||
-    /\$/.test(String(sol.answer || '') + String(sol.answerUr || '') + String(sol.answerPs || ''));
+  const hasMaths = sol => (sol.steps || []).some(s => s.m || s.svg || SLOTS.some(k => typeof s[k] === 'string' && s[k].includes('$')));
   const BLANK_G = /_{3,}|\.{4,}|…+|-{3,}|[—–]{2,}/g;                // a run of underscores, dots or dashes that stands for the missing word
   const SENT_RX = /(?:^|\s)[a-z]+\d*-s(?:\s|$)/, TR_RX = /(?:^|\s)[a-z]+\d*-tr(?:\s|$)/;
   const classOf = e => (typeof e.className === 'string' ? e.className : '');
@@ -294,6 +293,7 @@
     for (let e = n.parentElement; e && e !== root.parentElement; e = e.parentElement) {
       if (e.matches('button,script,style,.katex,.sb-solve,.sbs-fill,.sb-tri-drawer,[id^="sent-trans-"]') || TR_RX.test(classOf(e))) return false;
       if (e === root) break;
+      if (e.matches('li,[class*="-parts"],[class~="m6-part"],[class$="-part"]')) return false;      // the text of another part of the question
     }
     return true;
   }
@@ -327,8 +327,8 @@
     (btn._fills || []).forEach(sp => { const p = sp.parentNode; if (!p) return; sp.replaceWith(document.createTextNode(sp.dataset.blank)); p.normalize(); });
     btn._fills = null;
   }
-  // one answer for several dashes: "a, b" / "a ; b" / "a اور b" for two dashes
-  const splitAnswer = (text, n) => (n === 1 ? [text] : String(text).split(/\s*(?:[،,;؛]|\s+(?:اور|and|و)\s+)\s*/).filter(Boolean));
+  // one answer for several dashes: "a, b" / "a ; b" / "a … b" / "a اور b" for two dashes
+  const splitAnswer = (text, n) => (n === 1 ? [text] : String(text).split(/\s*(?:[،,;؛…]|\.{3}|\s+(?:اور|and|و)\s+)\s*/).filter(Boolean));
   function fillQuestion(btn, panel, info) {
     const se = sentenceOf(btn), host = se || btn.parentElement; if (!host) return false;
     const med = panel._med, lines = info.lines;
@@ -336,7 +336,7 @@
     if (!main.length) return false;
     const mainLang = ((se && se.getAttribute('lang')) || '').slice(0, 2) || med.text;
     const line = lines[mainLang] || lines[med.text] || lines.en || Object.values(lines)[0];
-    if (!line) return false;
+    if (!line || line.length > 90) return false;                           // a paragraph does not go into a dash: it shows under the question
     const vals = splitAnswer(line, main.length);
     if (vals.length !== main.length) return false;
     btn._fills = fillBlanks(main, vals, v => panel._inline(v, false));
@@ -382,6 +382,8 @@
     const panel = panelFor(btn);
     const open = panel.hidden || !panel._sol;
     if (!open) { if (panel.classList.contains('sbs-fs')) setFs(panel, false); panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); stop(panel); return; }
+    panel.classList.remove('sbs-inline');                          // a maths solution opens the answer window (sb_book_spread.js)
+    panel._btn = btn;                                              // the window gives the button back its closed look when it closes
     panel.hidden = false;
     btn.setAttribute('aria-expanded', 'true');
     panel.classList.add('sb-solve');
@@ -503,7 +505,8 @@
   function loading(btn, text) {
     addCss();
     const panel = panelFor(btn);
-    panel.hidden = false; panel.classList.add('sb-solve');
+    panel.classList.add('sb-solve', 'sbs-inline');                 // no answer window yet: toggle() decides when the solution is in
+    panel.hidden = false;
     panel.innerHTML = `<p class="sbs-help">${esc(text)}</p>`;
     return panel;
   }
