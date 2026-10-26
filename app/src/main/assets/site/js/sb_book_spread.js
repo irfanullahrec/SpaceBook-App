@@ -326,7 +326,7 @@
   function openModal(panel) {
     if (modal || panel.closest('.bk-modal')) return;
     const host = document.querySelector('.sb-fs-host') || document.body;
-    const btn = panel.previousElementSibling && panel.previousElementSibling.matches('.sb-ans') ? panel.previousElementSibling : null;
+    const btn = panel._btn || (panel.previousElementSibling && panel.previousElementSibling.matches('.sb-ans') ? panel.previousElementSibling : null);
     const q = panel.closest('.m6-q');
     const label = (q && q.querySelector('.m6-qno') ? 'Question ' + q.querySelector('.m6-qno').textContent.trim() : 'Solution');
     const ph = document.createComment('sb-solve');
@@ -343,8 +343,9 @@
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal) { e.stopPropagation(); closeModal(); } }, true);
   new MutationObserver(muts => muts.forEach(m => {
     const t = m.target;
-    // a maths solution opens the answer window; any other answer shows in place (sb_solve.js: .sbs-inline)
-    if (t.nodeType === 1 && t.classList.contains('sb-solve') && !t.classList.contains('sbs-inline') && !t.hidden && t.closest('.bk-spread')) openModal(t);
+    // a maths solution opens the answer window wherever it is (the wide book view, a narrow window, the app); any other answer shows
+    // in place (sb_solve.js: .sbs-inline)
+    if (t.nodeType === 1 && t.classList.contains('sb-solve') && !t.classList.contains('sbs-inline') && !t.hidden) openModal(t);
   })).observe(document.documentElement, {attributes: true, attributeFilter: ['hidden'], subtree: true});
   document.addEventListener('sb-fs-change', closeModal);
 

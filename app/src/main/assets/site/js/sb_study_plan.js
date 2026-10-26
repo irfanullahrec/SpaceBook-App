@@ -742,6 +742,18 @@
     });
   }
 
+  // The days of a plan are cards, six in a row. A closed card says how far the day is (a percentage; a tick when every task is done); a click opens the
+  // day under its row of cards, a second click closes it. Which days are open is kept for the plan while the page is drawn again.
+  const openDays = {};
+  function dayStats(ss) {
+    let all = 0, done = 0, tasks = 0, full = 0;
+    ss.forEach(s => s.tasks.forEach(k => {
+      const w = k.cat === 'rev' ? 1 : CAT[k.cat].m * k.n, got = k.cat === 'rev' ? (k.done >= k.n ? 1 : 0) : CAT[k.cat].m * Math.min(k.done, k.n);
+      all += w; done += got; tasks++; if (k.done >= k.n) full++;
+    }));
+    const complete = tasks > 0 && full === tasks;
+    return {tasks, full, complete, pct: complete ? 100 : all ? Math.min(99, Math.round(done * 100 / all)) : 0, min: ss.reduce((a, s) => a + s.tasks.reduce((b, k) => b + taskMin(k), 0), 0)};
+  }
   function renderPlan(p) {
     const root = shell(p.name);
     if (!root) return;
@@ -749,16 +761,33 @@
     const byDate = {};
     p.sessions.forEach(s => { (byDate[s.date] = byDate[s.date] || []).push(s); });
     const t = today();
+    const dates = Object.keys(byDate).sort();
+    const open = openDays[p.id] = new Set([...(openDays[p.id] || [])].filter(d => byDate[d]));
     const dayStatus = ss => { const all = ss.flatMap(s => s.tasks); const done = all.filter(k => k.done >= k.n).length; return done === all.length ? 'ok' : done || all.some(k => k.done) ? 'part' : 'none'; };
-    const days = Object.keys(byDate).sort().map(d => {
-      const ss = byDate[d], status = dayStatus(ss), past = d < t;
+    const dayDetail = d => {
+      const ss = byDate[d], status = dayStatus(ss), past = d < t, m = dayStats(ss).min;
       const badge = d === t ? '<span class="spx-tag spx-today">Today</span>' : past ? (status === 'ok' ? '<span class="spx-tag spx-good">✅ Done</span>' : status === 'part' ? '<span class="spx-tag spx-mid">◐ Partly done</span>' : '<span class="spx-tag spx-bad">✖ Missed</span>') : '';
-      const m = ss.reduce((a, s) => a + s.tasks.reduce((b, k) => b + taskMin(k), 0), 0);
-      return `<section class="spx-day${d === t ? ' spx-isToday' : ''}${past ? ' spx-past' : ''}" id="spx-d-${d}">
-        <div class="spx-day-h"><h4>${esc(fmtDate(d))}</h4>${badge}<span class="spx-muted">${m ? '~' + dur(Math.round(m)) : ''}</span>${!past ? `<button type="button" class="spx-btn spx-sm spx-skipday" data-act="skipday" data-d="${d}" title="Take this day off; its work moves to the next study days">🚫 Skip this day</button>` : ''}</div>
+      return `<section class="spx-day${d === t ? ' spx-isToday' : ''}${past ? ' spx-past' : ''}" id="spx-d-${d}" data-day="${d}">
+        <div class="spx-day-h"><h4>${esc(fmtDate(d))}</h4>${badge}<span class="spx-muted">${m ? '~' + dur(Math.round(m)) : ''}</span>${!past ? `<button type="button" class="spx-btn spx-sm spx-skipday" data-act="skipday" data-d="${d}" title="Take this day off; its work moves to the next study days">🚫 Skip this day</button>` : ''}<button type="button" class="spx-btn spx-sm spx-closeday" data-act="toggleday" data-d="${d}" title="Close this day">✕ Close</button></div>
         ${ss.map(s => `<div class="spx-sess"><div class="spx-sess-t">⏰ ${hm(s.from)} – ${hm(s.to)}${s.revision ? ' · Revision' : ''}</div><div class="spx-tasks">${s.tasks.map(k => taskRow(p, s, k)).join('')}</div></div>`).join('')}
       </section>`;
-    }).join('');
+    };
+    const dayCard = d => {
+      const x = dayStats(byDate[d]), past = d < t, dt = parseYmd(d);
+      const cls = x.complete ? 'ok' : past ? (x.pct ? 'part' : 'miss') : x.pct ? 'part' : 'next';
+      const sub = past && !x.pct && !x.complete ? 'Missed' : x.tasks + (x.tasks === 1 ? ' task' : ' tasks') + (x.full && !x.complete ? ' · ' + x.full + ' done' : '') + (x.min ? ' · ~' + dur(Math.round(x.min)) : '');
+      const label = fmtDate(d) + (d === t ? ' (today)' : '') + ': ' + (x.complete ? 'all done' : x.pct + '% done') + ', ' + x.full + ' of ' + x.tasks + ' tasks';
+      return `<button type="button" class="spx-dc spx-dc-${cls}${d === t ? ' spx-dc-today' : ''}${open.has(d) ? ' spx-dc-open' : ''}" data-act="toggleday" data-d="${d}" aria-expanded="${open.has(d)}" aria-controls="spx-d-${d}" aria-label="${esc(label)}" title="${esc(label)}">
+        <span class="spx-dc-d">${esc(DAYS[dt.getDay()])} <b>${dt.getDate()}</b> <small>${esc(dt.toLocaleDateString(undefined, {month: 'short'}))}</small></span>
+        <span class="spx-dc-t" aria-hidden="true">${x.complete ? '✓' : ''}</span>
+        <span class="spx-dc-p">${x.pct}<small>%</small></span>
+        <span class="spx-dc-bar" aria-hidden="true"><i style="width:${x.pct}%"></i></span>
+        <span class="spx-dc-s">${esc(d === t ? 'Today · ' + sub : sub)}</span>
+      </button>`;
+    };
+    const days = dates.length ? dates.reduce((rows, d, i) => { if (i % 6 === 0) rows.push([]); rows[rows.length - 1].push(d); return rows; }, []).map(r =>
+      `<div class="spx-dayrow">${r.map(dayCard).join('')}</div><div class="spx-daydetails" data-days="${r.join(',')}">${r.filter(d => open.has(d)).map(dayDetail).join('')}</div>`).join('') : '';
+    const keepY = view.shown ? window.scrollY : null;
     const pend = pendingFromEarlier(p);
     root.innerHTML = `<div class="spx">
       <div class="spx-head"><div><button type="button" class="spx-btn spx-sm" data-act="back">← All plans</button><h2>${esc(p.name)}</h2>
@@ -778,13 +807,22 @@
     </div>`;
     const box = root.querySelector('.spx');
     bindTasks(box);
+    function toggleDay(d, scroll) {
+      const card = box.querySelector('.spx-dc[data-d="' + d + '"]'); if (!card) return;
+      if (open.has(d)) open.delete(d); else open.add(d);
+      const host = card.closest('.spx-dayrow').nextElementSibling, inRow = host.dataset.days.split(',');
+      host.innerHTML = inRow.filter(x => open.has(x)).map(dayDetail).join('');
+      inRow.forEach(x => { const c = box.querySelector('.spx-dc[data-d="' + x + '"]'); c.classList.toggle('spx-dc-open', open.has(x)); c.setAttribute('aria-expanded', String(open.has(x))); });
+      if (scroll !== false && open.has(d)) { const el = document.getElementById('spx-d-' + d); if (el) el.scrollIntoView({block: 'nearest', behavior: 'smooth'}); }
+    }
     box.addEventListener('click', e => {
       const a = e.target.closest('[data-act]'); if (!a || a.closest('.spx-task')) return;
       if (a.dataset.act === 'back') { view = {mode: 'list'}; render(); }
       else if (a.dataset.act === 'print') printPlan(p);
       else if (a.dataset.act === 'reset') { if (resetPlan(p)) render(); }
       else if (a.dataset.act === 'replan') { if (confirm('Spread everything not done yet over the days left in this plan?')) { replan(p); render(); } }
-      else if (a.dataset.act === 'today') jumpToday();
+      else if (a.dataset.act === 'today') jumpToday(true);
+      else if (a.dataset.act === 'toggleday') toggleDay(a.dataset.d);
       else if (a.dataset.act === 'skipday') {
         const d = a.dataset.d;
         const busy = p.sessions.some(s => s.date === d && s.tasks.some(k => k.done > 0));
@@ -828,8 +866,15 @@
         if (e.target.matches('input[type="checkbox"][data-rule]') && applyRuleEvent(e.target, rule, ed, p.start, end)) draw();
       };
     }
-    setTimeout(jumpToday, 50);
-    function jumpToday() { const el = document.getElementById('spx-d-' + t) || $$('.spx-day:not(.spx-past)', box)[0]; if (el) el.scrollIntoView({block: 'start', behavior: 'smooth'}); }
+    // the first time the plan is shown the page goes to today's card; when it is drawn again (a task was ticked) it stays where it was
+    if (keepY != null) window.scrollTo(0, keepY); else setTimeout(jumpToday, 50);
+    view.shown = true;
+    function jumpToday(openIt) {
+      const d = byDate[t] ? t : dates.find(x => x >= t); if (!d) return;
+      const card = box.querySelector('.spx-dc[data-d="' + d + '"]'); if (!card) return;
+      if (openIt && !open.has(d)) toggleDay(d, false);
+      const el = openIt ? document.getElementById('spx-d-' + d) : card; if (el) el.scrollIntoView({block: 'start', behavior: 'smooth'});
+    }
   }
 
   // ---------- new plan wizard ----------
@@ -1010,7 +1055,29 @@
   .spx-chk input:indeterminate+span{background:#bae6fd;border-color:#0284c7}.spx-chk input:focus-visible+span{outline:2px solid var(--spx-acc);outline-offset:2px}
   .spx-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem}
   .spx-stat{background:#fff;border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:.8rem 1rem}.spx-stat b{font-size:1.5rem;display:block}.spx-stat span{color:#64748b;font-size:.85rem}.spx-stat .spx-bar{margin-top:.4rem}
-  .spx-days{display:flex;flex-direction:column;gap:.8rem}
+  .spx-days{display:flex;flex-direction:column;gap:.6rem}
+  .spx-dayrow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.6rem}
+  .spx-daydetails{display:flex;flex-direction:column;gap:.8rem}.spx-daydetails:empty{display:none}
+  .spx-dc{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"d t" "p p" "b b" "s s";align-items:center;gap:.2rem .4rem;min-width:0;text-align:left;font:inherit;color:var(--text,#0f172a);background:#fff;border:1px solid var(--border,#e2e8f0);border-radius:14px;padding:.55rem .7rem .5rem;cursor:pointer;scroll-margin-top:90px;transition:border-color .15s,box-shadow .15s}
+  .spx-dc:hover{border-color:var(--spx-acc)}.spx-dc:focus-visible{outline:3px solid var(--spx-acc);outline-offset:2px}
+  .spx-dc-d{grid-area:d;display:flex;align-items:baseline;gap:.3rem;font-size:.82rem;font-weight:700;color:#475569;white-space:nowrap;overflow:hidden}.spx-dc-d b{font-size:1.2rem;color:var(--text,#0f172a)}.spx-dc-d small{font-weight:600;font-size:.74rem}
+  .spx-dc-t{grid-area:t;font-size:1.15rem;font-weight:800;color:#15803d;line-height:1}
+  .spx-dc-p{grid-area:p;font-size:1.55rem;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}.spx-dc-p small{font-size:.8rem;font-weight:700;margin-left:.1rem;color:#64748b}
+  .spx-dc-bar{grid-area:b;height:6px;border-radius:99px;background:#e2e8f0;overflow:hidden}.spx-dc-bar i{display:block;height:100%;border-radius:99px;background:var(--spx-acc)}
+  .spx-dc-s{grid-area:s;font-size:.72rem;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .spx-dc-ok{background:#f0fdf4;border-color:#86efac}.spx-dc-ok .spx-dc-bar i{background:#16a34a}.spx-dc-ok .spx-dc-p{color:#166534}
+  .spx-dc-part .spx-dc-bar i{background:#f59e0b}
+  .spx-dc-miss{background:#fef2f2;border-color:#fecaca}.spx-dc-miss .spx-dc-p{color:#b91c1c}.spx-dc-miss .spx-dc-s{color:#b91c1c;font-weight:700}
+  .spx-dc-today{border:2px solid var(--spx-acc);box-shadow:0 0 0 3px var(--spx-soft);padding:calc(.55rem - 1px) calc(.7rem - 1px) calc(.5rem - 1px)}
+  .spx-dc-open{border-color:var(--spx-acc2);box-shadow:0 0 0 3px var(--spx-soft)}
+  .spx-closeday{margin-left:auto}
+  @media (max-width:640px){
+    .spx-dayrow{gap:.35rem}
+    .spx-dc{grid-template-columns:1fr;grid-template-areas:"d" "p" "b";justify-items:stretch;gap:.15rem;padding:.4rem .3rem .4rem;border-radius:10px;text-align:center}
+    .spx-dc-d{justify-content:center;font-size:.62rem;gap:.15rem;flex-wrap:wrap;line-height:1.1}.spx-dc-d b{font-size:.95rem}.spx-dc-d small{display:none}
+    .spx-dc-p{font-size:.95rem}.spx-dc-p small{font-size:.58rem;margin:0}.spx-dc-bar{height:4px}.spx-dc-s{display:none}
+    .spx-dc-t{display:none}.spx-dc-ok .spx-dc-p::before{content:'✓';margin-right:.15rem;color:#15803d;font-size:.8rem}.spx-dc-today{padding:calc(.4rem - 1px) calc(.3rem - 1px)}
+  }
   .spx-day{border:1px solid var(--border,#e2e8f0);border-radius:16px;padding:.8rem 1rem;background:#fff;scroll-margin-top:90px}
   .spx-day.spx-isToday{border:2px solid var(--spx-acc);box-shadow:0 0 0 4px var(--spx-soft)}.spx-day.spx-past{background:#f8fafc}
   .spx-day-h{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.4rem}.spx-day-h h4{margin:0;font-size:1rem}
