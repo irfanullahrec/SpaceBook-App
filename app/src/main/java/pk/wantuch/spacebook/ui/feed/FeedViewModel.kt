@@ -335,6 +335,8 @@ class FeedViewModel @Inject constructor(
         f.offline -> "You are offline. Try again when you are connected."
         f.code == 401 -> "Please sign in to use the News Feed."
         f.code == 429 -> f.message
+        // a missing file answers 404 with a web page, not with the feed's own JSON, so the message is the generic one: the server has no News Feed yet
+        f.code == 404 && f.message.startsWith("Something went wrong") -> "The News Feed is not on the server yet. It starts working when the website is updated."
         else -> f.message
     }
 

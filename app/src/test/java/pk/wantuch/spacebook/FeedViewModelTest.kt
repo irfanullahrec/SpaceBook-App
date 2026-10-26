@@ -61,6 +61,7 @@ class FeedViewModelTest {
     private var createAnswer: () -> MockResponse = { MockResponse().setResponseCode(201).setBody("""{"ok":true,"post":${post(900, body = "Brand new post", mine = true)}}""") }
     private var down = false
     private var status = 200
+    private var statusIsPage = false          // the answer is a web page (a file the server does not have), not the feed's JSON
 
     private fun post(id: Int, kind: String = "text", body: String = "Post $id", mine: Boolean = false, likes: Int = 0, comments: Int = 0, shares: Int = 0, liked: Boolean = false, extra: String = "") =
         """{"id":$id,"kind":"$kind","author":{"name":"Ali K.","type":"student","initial":"A","hue":231},"mine":$mine,"body":"$body","card":null,"likes":$likes,"comments":$comments,"shares":$shares,"liked":$liked,"at":1793000000000$extra}"""
@@ -71,6 +72,7 @@ class FeedViewModelTest {
     private val dispatcher = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
             seen += request
+            if (status != 200 && statusIsPage) return MockResponse().setResponseCode(status).setBody("<html><body>Not Found</body></html>")
             if (status != 200) return MockResponse().setResponseCode(status).setBody("""{"ok":false,"error":"Sign in to see the News Feed"}""")
             val path = request.path.orEmpty()
             val q = path.substringAfter('?', "")
@@ -334,6 +336,27 @@ class FeedViewModelTest {
         until("the answer") { !vm.state.value.loading }
         assertTrue(vm.state.value.needSignIn)
         assertNull("no scary error: just the sign-in card", vm.state.value.error)
+    }
+
+    @Test fun aServerWithoutTheFeedSaysSoInPlainWords() {
+        status = 404; statusIsPage = true
+        val vm = feed(); vm.start(7)
+        until("the answer") { !vm.state.value.loading }
+        assertEquals("The News Feed is not on the server yet. It starts working when the website is updated.", vm.state.value.error)
+        var refused: String? = null
+        vm.createPost("text", "a post", null) { refused = it }
+        until("the refusal") { refused != null }
+        assertEquals("posting says the same, not \"Something went wrong (404)\"", "The News Feed is not on the server yet. It starts working when the website is updated.", refused)
+    }
+
+    @Test fun aServerAnswerOf404FromTheFeedItselfKeepsItsOwnWords() {
+        likeAnswer = { MockResponse().setResponseCode(404).setBody("""{"ok":false,"error":"That is no longer there"}""") }
+        val vm = feed(); vm.start(7)
+        until("the first page") { vm.state.value.posts.size == 20 }
+        val messages = messagesOf(vm)
+        vm.toggleLike(vm.state.value.posts[0])
+        until("the message") { messages.isNotEmpty() }
+        assertEquals("That is no longer there", messages[0])
     }
 
     @Test fun aBrokenServerSaysSoAndOffersAnotherTry() {
