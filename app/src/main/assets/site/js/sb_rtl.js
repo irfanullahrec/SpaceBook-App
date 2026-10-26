@@ -22,6 +22,7 @@
     return {ar, la};
   }
   function mark(el, medium) {
+    if (el.closest('[data-sb-fixed-dir]')) return;                       // the Study Plan's lesson sheet: not part of the subject that is open behind it
     // never nest: an area inside an already-marked area follows it
     const inner = el.parentElement && el.parentElement.closest('.sb-rtl-medium');
     const {ar, la} = sample(el);

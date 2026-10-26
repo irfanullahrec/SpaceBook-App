@@ -421,8 +421,29 @@
     tf: /true|false|درست/i, blank: /blank|fill|خالی/i, match: /match|ملاپ/i, slo: /slo|outcome/i};
   const tabButtons = area => $$('button', area.closest('.math-unified-view') || area)
     .filter(b => b.offsetParent !== null && !b.closest('.math-ch-list, .math-acc-header, .sb-fs-btn, .spx-task') && b.textContent.trim().length < 60);
+  // "Go" on lesson parts: the lessons themselves, one part at a time, in a sheet over the plan (js/sb_study_sheet.js): "Read & next" counts a part as read
+  // (done 1 / 4) and shows the next; the last one offers "I've finished — test me". Where the book has no such parts the student is taken to the chapter page.
+  function studySheet(p, k) {
+    const SS = window.SBStudySheet; if (!SS || !SS.partsFor) return false;
+    let parts = null;
+    const S = subjOf(p.classId, k.s), counted = S && S.chapters[k.ch] && S.chapters[k.ch].c ? S.chapters[k.ch].c.read : 0;
+    try { parts = SS.partsFor(p.classId, k.s, k.ch, k.a, k.b, counted); } catch (e) { parts = null; }
+    if (!parts || parts.length !== k.n) return false;
+    const t = taskText(p, k);
+    return SS.open({
+      title: t.subj + (t.chNo ? ' · ' + t.chNo : '') + (t.ch ? ' ' + t.ch : ''), sub: t.work, parts,
+      start: k.done >= k.n ? 0 : Math.min(k.done, k.n - 1),
+      onRead: n => { if (k.done < n && n < k.n) setDone(p, k, n); },
+      onFinish: () => { gate(p, k).then(() => { if (k.done >= k.n) SS.close(); }); },
+      onOpenBook: () => goBook(p, k)
+    });
+  }
   function go(p, k) {
     if (!k || k.cat === 'rev') { openPlan(p.id); return; }
+    if (k.cat === 'read' && studySheet(p, k)) return;
+    goBook(p, k);
+  }
+  function goBook(p, k) {
     try { if (typeof setActiveNav === 'function') setActiveNav('subjects'); openSubject(p.classId, k.s); } catch (e) { return; }
     setTimeout(() => {
       const list = $$('.math-ch-list [onclick*="Chapter("], .math-ch-list button, .drawing-page-list button').filter(e => e.offsetParent !== null);
@@ -1183,5 +1204,5 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 
-  window.SBStudyPlan = {plans: () => plans, reminders, createPlan, replan, render, open: openPlan, go, print: printPlan, tick, persist, removePlan, add: p => { plans.push(p); persist(p); }};
+  window.SBStudyPlan = {stats: planStats, pending: pendingFromEarlier, reset: resetPlan, scope: scopeLabel, plans: () => plans, reminders, createPlan, replan, render, open: openPlan, go, print: printPlan, tick, persist, removePlan, add: p => { plans.push(p); persist(p); }};
 })();
