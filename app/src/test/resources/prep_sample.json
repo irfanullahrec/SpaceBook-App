@@ -132,7 +132,9 @@
    "minutes": 65,
    "sessions": 3,
    "studyDays": 3,
-   "streak": 2
+   "streak": 2,
+   "todayQuestions": 10,
+   "todayCorrect": 9
   },
   "week": [
    0,
@@ -168,6 +170,7 @@
    "items": 1,
    "itemsDone": 0,
    "todayTasks": 1,
+   "todayTasksDone": 0,
    "todayMinutes": 20,
    "todayItemsLeft": 1,
    "pending": 0,
@@ -208,6 +211,7 @@
    "items": 47,
    "itemsDone": 27,
    "todayTasks": 3,
+   "todayTasksDone": 0,
    "todayMinutes": 35,
    "todayItemsLeft": 13,
    "pending": 3,
