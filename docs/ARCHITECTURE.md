@@ -132,7 +132,8 @@ The app's own coin steps always go through `api/v2/sync.php` (it has no older en
 | `data/` | `Prefs` (DataStore), `Titles` (split "2 My Family and I میرا…"), `local/Database` (Room v2: outbox, **items**, reactions; `MIGRATION_1_2`), `local/LibraryItems` (Bookmark, Note, ReadingPosition and their keys, `ItemCodec`), `remote/` (Retrofit `ApiService`, `Endpoint`, interceptors, models), `repo/Repositories` (catalog, auth, sync, entitlements), `repo/LibraryRepository` (the saved items, below), `search/BookSearch` (words inside the books), `reminders/` (study-plan reminders) |
 | `di/AppModule` | Hilt: Json, OkHttp, Retrofit, Room |
 | `work/SyncWorker` | sends the outbox |
-| `ui/home` | Home: My Stats / Project Stats / My Account tabs (see "Home" below). `FeedBuilder` (the old feed) is still there and unit-tested but no longer shown |
+| `ui/home` | Home: News Feed / My Stats / Project Stats / My Account icon tabs (see "Home" below). `FeedBuilder` (the old feed) is still there and unit-tested but no longer shown |
+| `ui/feed` | the News Feed tab of Home: posts, comments, composer, share, report (see "Home: News Feed") |
 | `data/prep` | `PrepReader` (reads the student's tests, plans, words and usage from the website's storage), `PrepModels`, `ProjectWords` |
 | `ui/library` | classes, subject tiles, chapter list, offline search |
 | `ui/reader` | `ReaderScreen` (footer with page arrows in its corners, bookmark, notes, read aloud, Games tab), `MeaningSheet` (the sentence / word pop-up), `Speaker` (the phone's voices) |
@@ -161,9 +162,11 @@ website's own search opens a chapter: `openSubject()` then the chapter's own but
 changes its markup, only this file and `reader_mobile.css` need updating, and the web can ship them without an app update
 if they are later served from the site (not done: they are bundled).
 
-## Home: My Stats, Project Stats, My Account
+## Home: News Feed, My Stats, Project Stats, My Account
 
-Home shows only what the student has started, in three tabs named as on the website.
+Home has four tabs and shows **icons only** (each has its name as a content description, for the screen reader and the tests); the **News Feed is
+open when Home starts**. The "My preparation" heading and the line under it were removed on 2026-10-26. The three tabs below are named as on the website;
+the News Feed is described in its own section after them.
 
 - **My Stats**: every test preparation (PST, CT, SST ... as many as were started) and every study plan, each with *Practice* and
   *Statistics* buttons that open that test (on its Practice or Stats tab) or that plan; a *Delete plan* button on each plan; the
@@ -184,6 +187,27 @@ record, never somebody else's.
 `SBApp.deletePlan` calls the website's own `SBStudyPlan.removePlan`, so a signed-in student's deletion also reaches the account and
 the plan does not come back with the next sync, then reports `done` and the screen closes. Not seen yet with a real signed-in
 account on a phone: the 1.5 s waits around the call (for the sign-in to reach the page and for the sync outbox) are a precaution.
+
+## Home: News Feed (2026-10-26)
+
+What students share with each other, the same function and data as the website's News Feed tab (`SpaceBook Web/docs/NEWS_FEED.md`; one endpoint,
+`api/feed.php`, and five tables, migration 008). Only the look is the app's own.
+
+- **Screens** (`ui/feed/`): `FeedScreen` (`FeedTab` wires the view model, `FeedContent` draws everything and is also what the tests and the screenshot test
+  draw), `FeedPostItem` (header with avatar, name, age, menu; text with "See more"; a few plain words are shown big on a colour; the counts line; the
+  Like / Comment / Share bar), `FeedCardsUi` (the My Stats, Today and Study plan cards, the question tags), `CommentsSheet` (comments with replies, like,
+  reply, delete or report, paging, the box to write at the foot), `ComposerSheet` (Create post with the five kinds, the card preview, the question's
+  class and subject; `ShareSheet`, `ReportDialog`, `ConfirmDialog`), `FeedViewModel`.
+- **Data**: `data/remote/FeedModels.kt` (the answers), nine calls in `ApiService`, `data/repo/FeedRepository` (also keeps the newest page in
+  `filesDir/feed_cache_<id>.json` for an offline phone; removed at sign-out), `data/feed/FeedCards.kt`.
+- **Cards come from the student's own records.** `FeedCardBuilder` reads the `PrepSnapshot` that `assets/prep_summary.js` makes (this script now also
+  reports today's questions and the tasks done today). Nothing is typed in; the server rebuilds the card from a whitelist anyway.
+- **Pull to refresh** is Home's own; on the News Feed tab it refreshes the posts, on the other tabs the statistics. More posts load as the list is scrolled.
+- **Signed out**: the page offers to sign in; the composer asks for it too. Reading needs an account (the server answers 401 otherwise).
+- **Safety** is on the server (`api/lib/feed.php`): only "Ali K." leaves it, no e-mail address, phone number or link in a post, limits per student,
+  three different reports hide a post until an administrator looks. The app offers Report and Hide on other students' posts and Delete on its own.
+- **Tests**: `FeedLogicTest` (dating, the author rule shared with the server, the cards, the golden file `src/test/resources/parity/feed_contract.json`
+  that `tools/app/sync_app.js` copies from the website), `FeedViewModelTest` (a fake server that speaks the API), `FeedUiTest` (Compose), `FeedScreenshotTest`.
 
 ## Games tab (changed 2026-10-24)
 

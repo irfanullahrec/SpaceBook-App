@@ -6,6 +6,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import kotlinx.serialization.json.Json
@@ -112,9 +113,9 @@ class HomeInteractionTest {
     @Test fun theTabsTellTheScreenWhichOneWasTapped() {
         val tabs = mutableListOf<Int>()
         show(HomeActions(), onTab = { tabs += it })
-        rule.onNodeWithText("📚 Project Stats").performClick()
-        rule.onNodeWithText("👤 My Account").performClick()
-        rule.onNodeWithText("📊 My Stats").performClick()
+        rule.onNodeWithContentDescription("Project Stats").performClick()          // the tabs are icons: each is found by its name
+        rule.onNodeWithContentDescription("My Account").performClick()
+        rule.onNodeWithContentDescription("My Stats").performClick()
         assertEquals(listOf(TAB_PROJECT, TAB_ACCOUNT, TAB_STATS), tabs)
     }
 

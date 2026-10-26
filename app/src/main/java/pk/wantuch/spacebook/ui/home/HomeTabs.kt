@@ -1,6 +1,28 @@
 package pk.wantuch.spacebook.ui.home
 
 import androidx.compose.foundation.background
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.BarChart
+import androidx.compose.material.icons.outlined.Newspaper
+import androidx.compose.material.icons.outlined.Public
+import androidx.compose.material.icons.rounded.AccountCircle
+import androidx.compose.material.icons.rounded.BarChart
+import androidx.compose.material.icons.rounded.Newspaper
+import androidx.compose.material.icons.rounded.Public
+import androidx.compose.material3.Icon
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.foundation.clickable
+import pk.wantuch.spacebook.ui.theme.Sb
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,11 +38,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,19 +62,55 @@ import java.text.NumberFormat
 import java.util.Date
 import java.util.Locale
 
-/** The three tabs of Home, named as on the website. */
-internal val HOME_TABS = listOf("📊 My Stats", "📚 Project Stats", "👤 My Account")
-internal const val TAB_STATS = 0
-internal const val TAB_PROJECT = 1
-internal const val TAB_ACCOUNT = 2
+/**
+ * The tabs of Home: the News Feed (open when Home starts), then My Stats, Project Stats and My Account as on the website. The strip shows icons
+ * only; every tab has its name as a content description so a screen reader (and the tests) can still find it.
+ */
+internal class HomeTab(val label: String, val icon: ImageVector, val iconOff: ImageVector)
 
+internal val HOME_TABS = listOf(
+    HomeTab("News Feed", Icons.Rounded.Newspaper, Icons.Outlined.Newspaper),
+    HomeTab("My Stats", Icons.Rounded.BarChart, Icons.Outlined.BarChart),
+    HomeTab("Project Stats", Icons.Rounded.Public, Icons.Outlined.Public),
+    HomeTab("My Account", Icons.Rounded.AccountCircle, Icons.Outlined.AccountCircle),
+)
+internal const val TAB_FEED = 0
+internal const val TAB_STATS = 1
+internal const val TAB_PROJECT = 2
+internal const val TAB_ACCOUNT = 3
+
+/**
+ * Four big icons in a row, like the tab bar of a social app. The open tab has a filled icon in the brand colour on a soft bubble and a
+ * gradient bar underneath; the others are quiet outlines. Tapping a tab never changes what the other tabs hold.
+ */
 @Composable
 internal fun HomeTabRow(selected: Int, onSelect: (Int) -> Unit) {
-    // scrollable, so a big text size or a small phone never cuts a name ("Project Stats") short
-    ScrollableTabRow(selectedTabIndex = selected, containerColor = Color.Transparent, edgePadding = 8.dp, divider = {}) {
-        HOME_TABS.forEachIndexed { i, label ->
-            Tab(selected = selected == i, onClick = { onSelect(i) }, text = { Text(label, maxLines = 1, softWrap = false, style = MaterialTheme.typography.labelLarge) })
+    Surface(color = MaterialTheme.colorScheme.surface, shadowElevation = 3.dp, modifier = Modifier.fillMaxWidth()) {
+        Row(Modifier.fillMaxWidth().padding(horizontal = 6.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+            HOME_TABS.forEachIndexed { i, t -> HomeTabButton(t, selected == i, Modifier.weight(1f)) { onSelect(i) } }
         }
+    }
+}
+
+@Composable
+private fun HomeTabButton(tab: HomeTab, on: Boolean, modifier: Modifier, onClick: () -> Unit) {
+    val bubble by animateColorAsState(if (on) MaterialTheme.colorScheme.primaryContainer else Color.Transparent, label = "bubble")
+    val tint by animateColorAsState(if (on) Sb.Violet else MaterialTheme.colorScheme.onSurfaceVariant, label = "tint")
+    val bar by animateFloatAsState(if (on) 1f else 0f, spring(stiffness = Spring.StiffnessMediumLow), label = "bar")
+    val pop by animateFloatAsState(if (on) 1.08f else 1f, spring(dampingRatio = Spring.DampingRatioMediumBouncy), label = "pop")
+    Column(
+        modifier
+            .clickable(role = Role.Tab, onClick = onClick)
+            .semantics { contentDescription = tab.label; selected = on },
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Spacer(Modifier.height(6.dp))
+        Box(Modifier.size(width = 56.dp, height = 36.dp).scale(pop).clip(RoundedCornerShape(18.dp)).background(bubble), contentAlignment = Alignment.Center) {
+            Icon(if (on) tab.icon else tab.iconOff, null, tint = tint, modifier = Modifier.size(26.dp))
+        }
+        Spacer(Modifier.height(5.dp))
+        Box(Modifier.fillMaxWidth(.5f * bar).height(3.dp).clip(RoundedCornerShape(50)).background(Sb.Brand))
+        Spacer(Modifier.height(if (on) 0.dp else 3.dp))
     }
 }
 

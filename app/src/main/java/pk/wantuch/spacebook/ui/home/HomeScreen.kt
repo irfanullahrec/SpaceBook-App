@@ -40,6 +40,8 @@ import pk.wantuch.spacebook.data.remote.UserDto
 import pk.wantuch.spacebook.expiry.ExpiryGate
 import pk.wantuch.spacebook.expiry.LockState
 import pk.wantuch.spacebook.ui.AppViewModel
+import pk.wantuch.spacebook.ui.feed.FeedTab
+import pk.wantuch.spacebook.ui.feed.FeedViewModel
 import pk.wantuch.spacebook.ui.components.LoadingPanel
 import pk.wantuch.spacebook.ui.components.rememberTimedPercent
 
@@ -69,18 +71,28 @@ fun HomeScreen(app: AppViewModel, actions: HomeActions, vm: HomeViewModel = hilt
     val state by app.state.collectAsStateWithLifecycle()
     val entitlements by app.entitlements.collectAsStateWithLifecycle()
     val prep by vm.prep.collectAsStateWithLifecycle()
-    val refreshing by vm.refreshing.collectAsStateWithLifecycle()
+    val statsRefreshing by vm.refreshing.collectAsStateWithLifecycle()
+    val feedVm: FeedViewModel = hiltViewModel()
+    val feed by feedVm.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val projectWords = remember { ProjectWords.load(context) }
     val grammar = remember { GrammarSummary.load(context) }
-    var tab by rememberSaveable { mutableIntStateOf(TAB_STATS) }
+    // the News Feed is the tab Home opens on
+    var tab by rememberSaveable { mutableIntStateOf(TAB_FEED) }
     var gate by remember { mutableStateOf(ExpiryGate.forApp(context).check()) }
     // what was practised on the website while Home was away shows the moment the student comes back
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { vm.refresh(); gate = ExpiryGate.forApp(context).check() }
-    PullToRefreshBox(isRefreshing = refreshing, onRefresh = vm::refresh, modifier = Modifier.fillMaxSize()) {
+    // pulling down refreshes what the open tab shows: the feed's posts, or the statistics
+    val onFeed = tab == TAB_FEED
+    PullToRefreshBox(
+        isRefreshing = if (onFeed) feed.refreshing else statsRefreshing,
+        onRefresh = if (onFeed) feedVm::refresh else vm::refresh,
+        modifier = Modifier.fillMaxSize(),
+    ) {
         HomeContent(
             tab, { tab = it }, prep, projectWords, catalog, accountInfo(state.user, state.coins, entitlements.plan, gate), actions,
             nowMillis = System.currentTimeMillis(), grammar = grammar,
+            feedContent = { FeedTab(feedVm, state.user, prep, state.coins, catalog, state.classId, actions.signIn) },
         )
     }
 }
@@ -103,13 +115,15 @@ internal fun HomeContent(
     tab: Int, onTab: (Int) -> Unit,
     prep: PrepSnapshot?, projectWords: ProjectWords?, catalog: Catalog?, account: AccountInfo, actions: HomeActions, nowMillis: Long,
     grammar: GrammarSummary? = null,
+    /** the News Feed tab (it has a view model, so the screenshot tests pass a stand-in) */
+    feedContent: @Composable () -> Unit = {},
 ) {
     var toDelete by remember { mutableStateOf<PlanDto?>(null) }
     var toResetWords by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxSize()) {
-        HomeTitle()
         HomeTabRow(tab, onTab)
         when (tab) {
+            TAB_FEED -> Box(Modifier.fillMaxSize()) { feedContent() }
             TAB_PROJECT -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = 6.dp, bottom = 24.dp)) { ProjectStatsTab(projectWords, catalog, grammar, actions.openGrammar) }
             TAB_ACCOUNT -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(top = 6.dp, bottom = 24.dp)) { AccountTab(account, prep, actions) }
             else -> MyStatsTab(prep, projectWords, catalog, actions, nowMillis, onDelete = { toDelete = it }, onResetWords = { toResetWords = true })
@@ -175,14 +189,6 @@ private fun MyStatsTab(
                 item(key = "words") { WordsCard(prep.words, projectWords?.project?.all ?: 0, onReset = onResetWords) }
             }
         }
-    }
-}
-
-@Composable
-private fun HomeTitle() {
-    Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 4.dp)) {
-        Text("My preparation", style = MaterialTheme.typography.headlineMedium)
-        Text("Your test preps and study plans, with practice and statistics", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 

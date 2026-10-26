@@ -84,6 +84,9 @@ data class TotalsDto(
     val sessions: Int = 0,
     val studyDays: Int = 0,
     val streak: Int = 0,
+    /** questions answered and right today in the Tests Preps (for the News Feed's "my study today" post) */
+    val todayQuestions: Int = 0,
+    val todayCorrect: Int = 0,
 ) {
     val accuracy get() = if (questions > 0) Math.round(100f * correct / questions) else 0
 }
@@ -107,6 +110,8 @@ data class PlanDto(
     val items: Int = 0,
     val itemsDone: Int = 0,
     val todayTasks: Int = 0,
+    /** of those tasks, the ones whose items are all done */
+    val todayTasksDone: Int = 0,
     val todayMinutes: Int = 0,
     val todayItemsLeft: Int = 0,
     /** items of sessions that are over but not finished */

@@ -31,4 +31,32 @@ interface ApiService {
 
     @GET("content/app_catalog.json")
     suspend fun catalog(): Response<Catalog>
+
+    // News Feed (api/feed.php). Signed-in students only; the device token is the credential.
+    @GET("api/feed.php?action=list")
+    suspend fun feedList(@Query("before") before: Long, @Query("limit") limit: Int, @Query("mine") mine: Int, @Query("kind") kind: String?): Response<FeedListResponse>
+
+    @GET("api/feed.php?action=comments")
+    suspend fun feedComments(@Query("post") post: Long, @Query("before") before: Long): Response<FeedCommentsResponse>
+
+    @POST("api/feed.php?action=create")
+    suspend fun feedCreate(@Body body: FeedCreateBody): Response<FeedPostResponse>
+
+    @POST("api/feed.php?action=share")
+    suspend fun feedShare(@Body body: FeedShareBody): Response<FeedPostResponse>
+
+    @POST("api/feed.php?action=like")
+    suspend fun feedLike(@Body body: FeedLikeBody): Response<FeedLikeResponse>
+
+    @POST("api/feed.php?action=comment")
+    suspend fun feedComment(@Body body: FeedCommentBody): Response<FeedCommentResponse>
+
+    @POST("api/feed.php?action=delete")
+    suspend fun feedDelete(@Body body: FeedIdBody): Response<OkResponse>
+
+    @POST("api/feed.php?action=comment_delete")
+    suspend fun feedCommentDelete(@Body body: FeedIdBody): Response<FeedCountResponse>
+
+    @POST("api/feed.php?action=report")
+    suspend fun feedReport(@Body body: FeedReportBody): Response<FeedCountResponse>
 }

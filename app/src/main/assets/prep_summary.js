@@ -58,7 +58,7 @@
   function summariseTests(hints, metaById, today) {
     var key = pickTestKey(hints);
     var db = key ? read(key, null) : null;
-    var out = { key: key || '', tests: [], recent: [], totals: { questions: 0, correct: 0, minutes: 0, sessions: 0, studyDays: 0, streak: 0 }, week: [] };
+    var out = { key: key || '', tests: [], recent: [], totals: { questions: 0, correct: 0, minutes: 0, sessions: 0, studyDays: 0, streak: 0, todayQuestions: 0, todayCorrect: 0 }, week: [] };
     if (!db) return out;
     var sessions = Array.isArray(db.sessions) ? db.sessions : [], days = db.days || {};
     var by = {};
@@ -101,6 +101,8 @@
     });
     out.totals.sessions = sessions.length;
     out.totals.streak = streakOf(all, today);
+    var tr = all[ymd(today)];
+    if (tr) { out.totals.todayQuestions = tr[1] || 0; out.totals.todayCorrect = tr[2] || 0; }          // for the News Feed's "my study today" post
     out.week = lastDays(all, 14, today);
     return out;
   }
@@ -111,7 +113,7 @@
     var t = ymd(today);
     var ended = function (s) { return s.date < t || (s.date === t && mins(s.to) <= nowMin); };
     return plans.filter(function (p) { return p && Array.isArray(p.sessions); }).map(function (p) {
-      var all = 0, done = 0, items = 0, itemsDone = 0, todayTasks = 0, todayMin = 0, todayItemsLeft = 0, pending = 0, byCat = {}, next = null, sessionsDone = 0;
+      var all = 0, done = 0, items = 0, itemsDone = 0, todayTasks = 0, todayTasksDone = 0, todayMin = 0, todayItemsLeft = 0, pending = 0, byCat = {}, next = null, sessionsDone = 0;
       p.sessions.forEach(function (s) {
         var finished = true;
         (s.tasks || []).forEach(function (k) {
@@ -120,7 +122,7 @@
           all += m * k.n; done += m * d; items += k.n; itemsDone += d;
           var c = byCat[k.cat] || (byCat[k.cat] = { n: 0, done: 0 }); c.n += k.n; c.done += d;
           if (d < k.n) finished = false;
-          if (s.date === t) { todayTasks++; todayMin += m * (k.n - d); todayItemsLeft += k.n - d; }
+          if (s.date === t) { todayTasks++; if (d >= k.n) todayTasksDone++; todayMin += m * (k.n - d); todayItemsLeft += k.n - d; }
           if (ended(s) && !s.revision && d < k.n) pending++;
         });
         if (finished && (s.tasks || []).length) sessionsDone++;
@@ -131,7 +133,7 @@
         id: p.id, name: p.name || 'Study plan', classId: p.classId || '', start: p.start || '', end: p.end || '',
         subjects: (p.scope || []).map(function (sc) { return { id: sc.subj, chapters: (sc.ch || []).length }; }),
         pct: all ? Math.round(done * 100 / all) : 0, items: items, itemsDone: itemsDone,
-        todayTasks: todayTasks, todayMinutes: Math.round(todayMin), todayItemsLeft: todayItemsLeft, pending: pending,
+        todayTasks: todayTasks, todayTasksDone: todayTasksDone, todayMinutes: Math.round(todayMin), todayItemsLeft: todayItemsLeft, pending: pending,
         nextDate: next ? next.date : '', nextFrom: next ? next.from : '', nextTo: next ? next.to : '',
         daysLeft: end ? Math.max(0, Math.round((end.getTime() - parseYmd(t).getTime()) / DAY)) : 0,
         sessions: p.sessions.length, sessionsDone: sessionsDone, byCat: byCat, updatedAt: p.updatedAt || 0,
