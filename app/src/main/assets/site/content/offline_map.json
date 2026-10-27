@@ -387,9 +387,9 @@
    "sha256": "c6b7337c4824b2a12844aceee0a7880d15c500f1dfdc51b14df9a2cc07ccc95a"
   },
   "content/search/cls5-math.json": {
-   "v": "a875ba5417cc",
+   "v": "88fdbef4eb6b",
    "bytes": 121127,
-   "sha256": "a875ba5417cc04c8a92798fd61f529b089c3187dc52aac6b34031a2de7012d41"
+   "sha256": "88fdbef4eb6b91c6f0f389d93e38afab7b3cd0fc38cce80d3a5a66a700abf596"
   },
   "content/search/cls5-pashto.json": {
    "v": "4eefd1470ae7",
@@ -457,9 +457,9 @@
    "sha256": "a28354a4031a3d84cfe413edc14d43728135f986aec085cbcc9860c60a9b8d94"
   },
   "content/search/cls6-math.json": {
-   "v": "9e07c3078aa2",
+   "v": "29e274f8597d",
    "bytes": 166822,
-   "sha256": "9e07c3078aa22fe508c6b8e31b96877fe0c127e744be170e1f03591797fe6295"
+   "sha256": "29e274f8597d6e7435dfc05e47cdc8ca0a571887b8c432e39633c9d4d174fc18"
   },
   "content/search/cls6-pashto.json": {
    "v": "c01b290c4726",
@@ -522,9 +522,9 @@
    "sha256": "ca1b4719ef5081f4a17888faf0105228eb74192df6b98b02d5d9a01882e9b0c7"
   },
   "content/search/cls7-math.json": {
-   "v": "c8bcff4c0149",
-   "bytes": 203515,
-   "sha256": "c8bcff4c01496c2dabd9947d85177f5b53c096f6957a435e1ec3e197af462c9f"
+   "v": "4d56cd8e1c13",
+   "bytes": 203517,
+   "sha256": "4d56cd8e1c13e3fd4d1d58180221211604596138c545a0ce5cee8824248875f7"
   },
   "content/search/cls7-quran.json": {
    "v": "cd7ff81e02ae",
@@ -582,9 +582,9 @@
    "sha256": "1b6e8d476ac936083339db147bf3833a25d486dc691296276be813e622e75e29"
   },
   "content/search/cls8-math.json": {
-   "v": "b9d2e9d4c8b5",
+   "v": "ae1bb4fdbc39",
    "bytes": 184088,
-   "sha256": "b9d2e9d4c8b523773246f702b12ced70c3ccce2a1999f54bc9f3f99217aadedd"
+   "sha256": "ae1bb4fdbc39350f49da6ae16976d942c7cd05c547cf7cccba21c161df53b480"
   },
   "content/search/cls8-pashto.json": {
    "v": "3014540562a6",
@@ -1027,9 +1027,9 @@
    "sha256": "fa96960ba99f2462cc7c9e416bf95e8b5fdce5d5b3100eb51ea0a5b82a628d95"
   },
   "js/fills_data.js": {
-   "v": "210c4ab2ac92",
+   "v": "061bfcb54650",
    "bytes": 116780,
-   "sha256": "210c4ab2ac926f37fee96ff1e9a51f47d0aba549ead8ff24020b8fd7233a8dea"
+   "sha256": "061bfcb54650dc08c05f07489f75566688aa9c71d9d6febaf13ae2e269ecf832"
   },
   "js/general_science_10_data.js": {
    "v": "be01a96c3ab7",
@@ -1387,24 +1387,24 @@
    "sha256": "a352606ec643d0332b0f6cfefbb0194cb66807db1439fc2f713489f8d3889efc"
   },
   "js/math_5_data.js": {
-   "v": "29853c311113",
-   "bytes": 1750483,
-   "sha256": "29853c31111353ba36cccdddd8d03a1020b1fb64267668bd56a75fbfd7b78c85"
+   "v": "205bab33c7b4",
+   "bytes": 1751419,
+   "sha256": "205bab33c7b44de654b1b5fd2d8302ed111f43808285aad51d1389de60f44e98"
   },
   "js/math_6_data.js": {
-   "v": "73c88e0d08f0",
-   "bytes": 2960907,
-   "sha256": "73c88e0d08f0ab7fbe7357d2bcfc0dd19211e4dc722304b7cf196427da718a21"
+   "v": "6d8795cc8941",
+   "bytes": 2961767,
+   "sha256": "6d8795cc89418ba50ed072429d0f029f51ac1aab6de7c6a8954eb8536fa654db"
   },
   "js/math_7_data.js": {
-   "v": "f591635d207b",
-   "bytes": 3603453,
-   "sha256": "f591635d207b5398f5cf961dc838a6a32506f70c3d41003f8cbf174ce3462b95"
+   "v": "e7f753cadc19",
+   "bytes": 3606917,
+   "sha256": "e7f753cadc1998cb7f01990b8c6707491f03ffdbf2b1eefd45ddd5863392be10"
   },
   "js/math_8_data.js": {
-   "v": "92de15065f63",
-   "bytes": 3750869,
-   "sha256": "92de15065f635d681c5980aaeccb5668793ac1e758a7169c19a752f75f836f0c"
+   "v": "758fd7e9aa7e",
+   "bytes": 3751247,
+   "sha256": "758fd7e9aa7eeb32e2a608318b540871b240fcccf9327f400f7317baddb93c63"
   },
   "js/math_data.js": {
    "v": "6dbcbeb5053b",
@@ -2430,7 +2430,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2107720
+   "bytes": 2108656
   },
   "cls5-sci": {
    "classId": "cls5",
@@ -2528,7 +2528,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3579037
+   "bytes": 3579897
   },
   "cls6-sci": {
    "classId": "cls6",
@@ -2724,7 +2724,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4043078
+   "bytes": 4046544
   },
   "cls7-sci": {
    "classId": "cls7",
@@ -2890,7 +2890,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4171067
+   "bytes": 4171445
   },
   "cls8-sci": {
    "classId": "cls8",

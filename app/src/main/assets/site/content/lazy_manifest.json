@@ -6504,8 +6504,8 @@
   },
   {
    "src": "js/math_5_data.js",
-   "bytes": 1750483,
-   "sha256": "29853c31111353ba36cccdddd8d03a1020b1fb64267668bd56a75fbfd7b78c85",
+   "bytes": 1751419,
+   "sha256": "205bab33c7b44de654b1b5fd2d8302ed111f43808285aad51d1389de60f44e98",
    "stubs": [
     {
      "name": "MATH_5_DATA",
@@ -6668,8 +6668,8 @@
   },
   {
    "src": "js/math_6_data.js",
-   "bytes": 2960907,
-   "sha256": "73c88e0d08f0ab7fbe7357d2bcfc0dd19211e4dc722304b7cf196427da718a21",
+   "bytes": 2961767,
+   "sha256": "6d8795cc89418ba50ed072429d0f029f51ac1aab6de7c6a8954eb8536fa654db",
    "stubs": [
     {
      "name": "MATH_6_DATA",
@@ -6692,8 +6692,8 @@
   },
   {
    "src": "js/math_7_data.js",
-   "bytes": 3603453,
-   "sha256": "f591635d207b5398f5cf961dc838a6a32506f70c3d41003f8cbf174ce3462b95",
+   "bytes": 3606917,
+   "sha256": "e7f753cadc1998cb7f01990b8c6707491f03ffdbf2b1eefd45ddd5863392be10",
    "stubs": [
     {
      "name": "MATH_7_DATA",
@@ -7196,8 +7196,8 @@
   },
   {
    "src": "js/math_8_data.js",
-   "bytes": 3750869,
-   "sha256": "92de15065f635d681c5980aaeccb5668793ac1e758a7169c19a752f75f836f0c",
+   "bytes": 3751247,
+   "sha256": "758fd7e9aa7eeb32e2a608318b540871b240fcccf9327f400f7317baddb93c63",
    "stubs": [
     {
      "name": "MATH_8_DATA",
@@ -7457,7 +7457,7 @@
   {
    "src": "js/fills_data.js",
    "bytes": 116780,
-   "sha256": "210c4ab2ac926f37fee96ff1e9a51f47d0aba549ead8ff24020b8fd7233a8dea",
+   "sha256": "061bfcb54650dc08c05f07489f75566688aa9c71d9d6febaf13ae2e269ecf832",
    "stubs": [
     {
      "name": "SB_FILLS",
@@ -7769,7 +7769,7 @@
   {
    "src": "js/study_plan_index.js",
    "bytes": 227261,
-   "sha256": "2de1e1790d16fa15139ed263a472b1cbb2445566e65cb172ffaddf33fec3f96f",
+   "sha256": "93010bd572cf9031a1e92278894cb98956182a7ed464c60d101126cdbc83e9f7",
    "stubs": [
     {
      "name": "SB_STUDY_INDEX",
