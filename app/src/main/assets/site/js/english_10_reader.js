@@ -59,7 +59,7 @@
       body += (g.examplePairs||[]).map(reading).join('');
       if(!g.examplePairs) body += (g.examples||[]).map(p=>reading(typeof p==='string'?p:{text:p.sentence,urdu:p.urdu,pashto:p.pashto})).join('');
       body += questions(g.exercises);
-      if(g.sourceClarification) body += `<aside>${esc(g.sourceClarification)}</aside>`;
+      if(g.sourceClarification) body += `<aside>${esc(g.sourceClarification)}</div>`;
       return `<section class="math-topic-card" style="padding:1rem;margin:1rem 0;line-height:1.8">${body}</section>`;
     }).join('');
   }

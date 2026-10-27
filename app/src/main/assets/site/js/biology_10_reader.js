@@ -105,7 +105,7 @@
           const heading = Number.isInteger(b.headingIndex) ? null : (b.heading ? (b.heading[FIELD[lang]] || b.heading.text) : kind[lang]);
           const title = b.title ? `<h6>${para(P(b.title), lang, `${k}-title`)}</h6>` : '';
           const inner = (b.blocks || (b.paras || []).map(i => ({t:'p', i}))).map((x, m) => render(x, `${n}-${m}`)).join('');
-          return `<aside class="bio10-box" style="background:${kind.bg};border:1px solid ${kind.border};border-inline-start:4px solid ${kind.border};color:${kind.color};"${DIR(lang)}${LANGATTR(lang)}>${heading === null ? `<h5>${para(P(b.headingIndex), lang, `${k}-head`)}</h5>` : `<h5>${esc(heading)}</h5>`}${title}${inner}</aside>`;
+          return `<div role="note" class="bio10-box" style="background:${kind.bg};border:1px solid ${kind.border};border-inline-start:4px solid ${kind.border};color:${kind.color};"${DIR(lang)}${LANGATTR(lang)}>${heading === null ? `<h5>${para(P(b.headingIndex), lang, `${k}-head`)}</h5>` : `<h5>${esc(heading)}</h5>`}${title}${inner}</div>`;
         }
         case 'side': return `<div class="bio10-side">${(b.blocks || []).map((x, m) => render(x, `${n}-${m}`)).join('')}</div>`;
         case 'columns': return `<div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start;"><div style="flex:1 1 260px;min-width:0;">${(b.main || []).map((x, m) => render(x, `${n}-m${m}`)).join('')}</div><div style="flex:0 1 ${b.sideWidth || 240}px;min-width:0;">${(b.side || []).map((x, m) => render(x, `${n}-s${m}`)).join('')}</div></div>`;

@@ -399,7 +399,7 @@
         case 'box': {
           const label = b.title ? b.title : (BOX_LABEL[b.kind] ? {en: BOX_LABEL[b.kind]} : null);
           const fk = fillKeyOfBox(b), fb = hasFill(fk) ? `<button type="button" class="sb-fill-btn" aria-expanded="false" onclick="SBFill.work(this)">Show the work</button>` : '';
-          return `<aside class="m6-box ${esc(b.kind)}"${fb ? ` data-fkey="${fk}"` : ''}>${label || fb ? `<div class="m6-box-t">${label ? (label.ur ? sentence(label, 'span') : esc(label.en)) : ''}${fb}</div>` : ''}${blocks(b.blocks, ctx)}</aside>`;
+          return `<div role="note" class="m6-box ${esc(b.kind)}"${fb ? ` data-fkey="${fk}"` : ''}>${label || fb ? `<div class="m6-box-t">${label ? (label.ur ? sentence(label, 'span') : esc(label.en)) : ''}${fb}</div>` : ''}${blocks(b.blocks, ctx)}</div>`;
         }
         case 'example': return `<section class="m6-example"><div class="m6-example-t">${/^\d/.test(b.no) ? 'Example ' + esc(b.no) : esc(b.no)}${b.title ? ': ' : ''}${b.title ? (b.title.ur ? sentence(b.title, 'span') : inline(b.title.en, true)) : ''}</div>${blocks(b.blocks, ctx)}</section>`;
         case 'exercise': {

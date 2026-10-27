@@ -89,11 +89,28 @@
       list.forEach(s => { s.tabIndex = s === stop ? 0 : -1; });                   // no role: a screen reader keeps reading the text as text
     });
   }
+  // The book readers write their headings as role="heading" with the level of the book's own scheme (3, 4, 5), under a page that has only the h1 of the
+  // header: a screen reader's list of headings then jumps from 1 to 3. A heading that is more than one level deeper than the one before it gets the level
+  // right after it. Only the aria-level of role="heading" elements changes (no CSS or script reads it); the real h1 to h6 are left alone.
+  function headingOrder() {
+    const hs = Array.prototype.slice.call(doc.querySelectorAll('h1, h2, h3, h4, h5, h6, [role="heading"]'));
+    const layout = !!doc.body && doc.body.getClientRects().length > 0;          // no layout engine (the jsdom tests): judge by the style attribute only
+    const shown = hs.map(h => layout ? h.getClientRects().length > 0 : !h.closest('[hidden], [style*="display: none"], [style*="display:none"]'));   // headings of a hidden tab or panel are not in a reader's list: leave them out of the count
+    let prev = 0;
+    hs.forEach((h, i) => {
+      if (!shown[i]) return;
+      const native = /^H[1-6]$/.test(h.tagName);
+      let lvl = native ? +h.tagName.charAt(1) : (+h.getAttribute('aria-level') || 2);
+      if (prev && lvl > prev + 1) { lvl = prev + 1; h.setAttribute('aria-level', String(lvl)); }     // on a real h3 this overrides its level for assistive technology only
+      prev = lvl;
+    });
+  }
   function enhance(scope) {
     if (!doc) return;
     const seen = new Set();
     (scope || doc).querySelectorAll(TAB).forEach(b => { const g = b.parentElement; if (g && !seen.has(g)) { seen.add(g); sync(g); } });
     clickables(scope);
+    if (!scope) headingOrder();
   }
 
   // Enter / Space on a clickable non-button; arrow keys between the sentences of a text

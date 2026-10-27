@@ -271,7 +271,7 @@
         case 'ul': return `<ul class="m5-ul">${b.items.map(i => `<li class="lv${i.lv || 1}">${sentence(i, 'span')}</li>`).join('')}</ul>`;
         case 'box': {
           const label = b.title ? b.title : (BOX_LABEL[b.kind] ? {en: BOX_LABEL[b.kind]} : null);
-          return `<aside class="m5-box ${esc(b.kind)}">${label ? `<div class="m5-box-t">${label.ur ? sentence(label, 'span') : esc(label.en)}</div>` : ''}${blocks(b.blocks, ctx)}</aside>`;
+          return `<div role="note" class="m5-box ${esc(b.kind)}">${label ? `<div class="m5-box-t">${label.ur ? sentence(label, 'span') : esc(label.en)}</div>` : ''}${blocks(b.blocks, ctx)}</div>`;
         }
         case 'example': return `<section class="m5-example"><div class="m5-example-t">${/^\d/.test(b.no) ? 'Example ' + esc(b.no) : esc(b.no)}${b.title ? ': ' : ''}${b.title ? (b.title.ur ? sentence(b.title, 'span') : inline(b.title.en, true)) : ''}</div>${blocks(b.blocks, ctx)}</section>`;
         case 'exercise': {

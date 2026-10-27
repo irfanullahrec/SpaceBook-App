@@ -627,9 +627,9 @@
    "sha256": "4c6a80e26d5de817e166d5b7de3657de82a7e6636410cd6591fbfdb27e3d04d2"
   },
   "content/search/cls9-eng.json": {
-   "v": "9f7d75a48661",
-   "bytes": 250098,
-   "sha256": "9f7d75a48661b57474a791fe0d50fc8a373f3952ef39a859311123f4d33ecd52"
+   "v": "ed6cea49b922",
+   "bytes": 256202,
+   "sha256": "ed6cea49b922d26c23a53340a8d3ffa06185a266725e13c69ea5094019f3b40a"
   },
   "content/search/cls9-hpe.json": {
    "v": "25a8f531be70",
@@ -652,9 +652,9 @@
    "sha256": "cf6137f2220f1e6ee564ba320c3f07e966333dc2f8d71fe4c9dd2763beb6d1af"
   },
   "content/search/cls9-pakstudy.json": {
-   "v": "6b26bc630da2",
-   "bytes": 168518,
-   "sha256": "6b26bc630da29519880b4b3f4a9e8ee99c004040fa86cd9971f11f3b29366243"
+   "v": "82d51e035a8f",
+   "bytes": 168555,
+   "sha256": "82d51e035a8f6b4fa2274023ecb28d11fb5745fc115e80423503abf4c5b34575"
   },
   "content/search/cls9-phy.json": {
    "v": "7f45bbdf0a48",
@@ -1022,14 +1022,14 @@
    "sha256": "d673cf8252259480e4c0d9731ff4b6f606c6ef8aba9c7fa185c3ff8abea1be54"
   },
   "js/english_9_book.js": {
-   "v": "8cfd4696b3e2",
-   "bytes": 1251129,
-   "sha256": "8cfd4696b3e2394c9138fde2f36e68f76547addb43c86f4a3c64801927347f50"
+   "v": "fa96960ba99f",
+   "bytes": 1344794,
+   "sha256": "fa96960ba99f2462cc7c9e416bf95e8b5fdce5d5b3100eb51ea0a5b82a628d95"
   },
   "js/fills_data.js": {
-   "v": "fbebaa5e09ea",
+   "v": "210c4ab2ac92",
    "bytes": 116780,
-   "sha256": "fbebaa5e09eaa325ae81a823a2315e3d35251086c79b2e8998498fbb87a95c8b"
+   "sha256": "210c4ab2ac926f37fee96ff1e9a51f47d0aba549ead8ff24020b8fd7233a8dea"
   },
   "js/general_science_10_data.js": {
    "v": "be01a96c3ab7",
@@ -1477,9 +1477,9 @@
    "sha256": "a54042a974bd8884e55bc5ba9dd1cd630d3c5ce6375e65cec506ef56934ae1b3"
   },
   "js/pakstudy_9_book.js": {
-   "v": "7cd6a3358a16",
-   "bytes": 1125677,
-   "sha256": "7cd6a3358a16f63fc73980d6bba0db6819e89282ef437eeebc9d389c79e563b1"
+   "v": "a04aade55f81",
+   "bytes": 1130048,
+   "sha256": "a04aade55f81a92f0594dfb0dc299be9ca92586729414d78469063bc3591aabc"
   },
   "js/pashto_1_book.js": {
    "v": "dadd38534a02",
@@ -3097,7 +3097,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3261334
+   "bytes": 3361103
   },
   "cls9-urdu": {
    "classId": "cls9",
@@ -3149,7 +3149,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1647085
+   "bytes": 1651493
   },
   "cls9-sci": {
    "classId": "cls9",

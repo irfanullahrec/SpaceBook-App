@@ -1128,8 +1128,8 @@
   },
   {
    "src": "js/english_9_book.js",
-   "bytes": 1251129,
-   "sha256": "8cfd4696b3e2394c9138fde2f36e68f76547addb43c86f4a3c64801927347f50",
+   "bytes": 1344794,
+   "sha256": "fa96960ba99f2462cc7c9e416bf95e8b5fdce5d5b3100eb51ea0a5b82a628d95",
    "stubs": [
     {
      "name": "ENGLISH_9_BOOK",
@@ -1148,8 +1148,8 @@
   },
   {
    "src": "js/pakstudy_9_book.js",
-   "bytes": 1125677,
-   "sha256": "7cd6a3358a16f63fc73980d6bba0db6819e89282ef437eeebc9d389c79e563b1",
+   "bytes": 1130048,
+   "sha256": "a04aade55f81a92f0594dfb0dc299be9ca92586729414d78469063bc3591aabc",
    "stubs": [
     {
      "name": "PAKSTUDY_9_BOOK",
@@ -5486,8 +5486,8 @@
   },
   {
    "src": "js/ikhtiari_11_book.js",
-   "bytes": 3229117,
-   "sha256": "04a58c37c4e8e3b4a74d05c975d7170c2d20b5c5c0496b0e662db88e01560e46",
+   "bytes": 3229114,
+   "sha256": "3f55c2286ba0872ed061e99af1572e9a65c0d70234bf070562ceda069b7bf74a",
    "stubs": [
     {
      "name": "IKHTIARI_11_BOOK",
@@ -7457,7 +7457,7 @@
   {
    "src": "js/fills_data.js",
    "bytes": 116780,
-   "sha256": "fbebaa5e09eaa325ae81a823a2315e3d35251086c79b2e8998498fbb87a95c8b",
+   "sha256": "210c4ab2ac926f37fee96ff1e9a51f47d0aba549ead8ff24020b8fd7233a8dea",
    "stubs": [
     {
      "name": "SB_FILLS",
@@ -7768,8 +7768,8 @@
   },
   {
    "src": "js/study_plan_index.js",
-   "bytes": 227238,
-   "sha256": "ea4422446bd269c9a492a28c90e1ca5371753717060f8bb39952f3f0535559d4",
+   "bytes": 227261,
+   "sha256": "2de1e1790d16fa15139ed263a472b1cbb2445566e65cb172ffaddf33fec3f96f",
    "stubs": [
     {
      "name": "SB_STUDY_INDEX",
