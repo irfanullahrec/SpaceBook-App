@@ -123,6 +123,13 @@
     cls11: () => typeof MATH_11_DATA !== 'undefined' ? MATH_11_DATA : null
   };
 
+  // the book of one Maths class: its own word list and printed key, and its class number, so that the Class 6 renderer that draws the pages reads that class's
+  // answers (the SpaceBook solution ids repeat from class to class: "s814" is a different answer in Class 5, 6, 7 and 8)
+  function mathRes(classId, arr, ch) {
+    const n = String(classId).replace('cls', '');
+    return {key: classId + ':math', units: arr, ch, wrap: n !== '6', cls: n, words: window['MATH_' + n + '_WORDS'], book: window['MATH_' + n + '_BOOK'], rtl: false};
+  }
+
   // which reviewed book (units of sections of blocks) a workspace is showing
   function resolve(subjKey, classId, chIdx) {
     if (classId === 'cls11v') classId = 'cls11';
@@ -143,7 +150,7 @@
       const arr = MATHD[classId]();
       const ch = arr && (arr[chIdx] || arr[0]);
       if (!ch || ch.legacy) return null;
-      return {key: classId + ':math', units: arr, ch, wrap: false, rtl: false};
+      return mathRes(classId, arr, ch);
     }
     return null;
   }
@@ -235,7 +242,7 @@
     // older cached readers still call book(chapter, mode): turn the chapter into the book it belongs to
     if (res && !res.units && res.sections) {
       const k = Object.keys(MATHD).find(c => { const a = MATHD[c](); return a && a.indexOf(res) >= 0; });
-      res = k ? {key: k + ':math', units: MATHD[k](), ch: res, wrap: false, rtl: false} : null;
+      res = k ? mathRes(k, MATHD[k](), res) : null;
     }
     if (!res || !R()) return null;
     addCss();
@@ -257,7 +264,7 @@
       });
       return html.join('');
     };
-    const out = res.wrap && R().withBook ? R().withBook(res.words, res.book, render) : render();
+    const out = res.wrap && R().withBook ? R().withBook(res.words, res.book, render, res.cls) : render();
     if (mode === 'ex') setTimeout(() => {
       // sb_structure draws every tab once to plan a chapter; only scroll when the Exercises tab is the one on screen
       const on = document.querySelector('.math-top-tab.active, .math-tab-btn.active');
