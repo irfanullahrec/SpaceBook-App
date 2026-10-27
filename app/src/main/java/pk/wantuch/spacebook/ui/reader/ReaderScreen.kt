@@ -29,6 +29,7 @@ import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.rounded.MenuBook
 import androidx.compose.material.icons.automirrored.rounded.VolumeUp
 import androidx.compose.material.icons.rounded.Bookmark
+import androidx.compose.material.icons.rounded.Feedback
 import androidx.compose.material.icons.rounded.BookmarkBorder
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
@@ -224,6 +225,11 @@ fun ReaderScreen(
                                 text = { Text("Go to page…") },
                                 leadingIcon = { Icon(Icons.Rounded.FormatListNumbered, null) },
                                 onClick = { menuOpen = false; showJump = true },
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Report a mistake or suggest") },
+                                leadingIcon = { Icon(Icons.Rounded.Feedback, null) },
+                                onClick = { menuOpen = false; tab = ReaderTab.Read; controller.openFeedback() },
                             )
                             DropdownMenuItem(
                                 text = { Text("Back to the chapters") },

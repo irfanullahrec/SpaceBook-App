@@ -124,7 +124,7 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController(), 
                 composable(Routes.LIBRARY) { LibraryScreen(app, onOpenSubject = { go(Routes.subject(it)) }, onSearch = { go(Routes.SEARCH) }) }
                 composable(Routes.PRACTICE) { PracticeScreen(onOpen = { page, title -> go(Routes.web(page, title)) }) }
                 composable(Routes.PLAN) { FeatureScreen(app, "study-plan", "Study Plan", onBack = null, onSignIn = { go(Routes.AUTH) }, onOpenOffline = { go(Routes.OFFLINE) }) }
-                composable(Routes.ME) { MeScreen(app, onSignIn = { go(Routes.AUTH) }, onSaved = { go(Routes.SAVED) }, onSettings = { go(Routes.SETTINGS) }, onOffline = { go(Routes.OFFLINE) }, onAccount = { go(Routes.web("account", "My account")) }) }
+                composable(Routes.ME) { MeScreen(app, onSignIn = { go(Routes.AUTH) }, onSaved = { go(Routes.SAVED) }, onSettings = { go(Routes.SETTINGS) }, onOffline = { go(Routes.OFFLINE) }, onAccount = { go(Routes.web("account", "My account")) }, onFeedback = { go(Routes.web("feedback", "Report a problem")) }) }
                 composable(Routes.AUTH) { AuthScreen(onDone = { nav.popBackStack() }, onBack = { nav.popBackStack() }) }
                 composable(Routes.SEARCH) {
                     SearchScreen(app, onBack = { nav.popBackStack() }, onOpen = { subject, chapter -> go(Routes.reader(subject, chapter)) })

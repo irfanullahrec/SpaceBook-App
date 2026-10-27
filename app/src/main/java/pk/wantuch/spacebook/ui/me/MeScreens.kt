@@ -26,6 +26,7 @@ import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.rounded.Login
 import androidx.compose.material.icons.automirrored.rounded.Logout
 import androidx.compose.material.icons.rounded.Bookmark
+import androidx.compose.material.icons.rounded.Feedback
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.Edit
@@ -101,10 +102,10 @@ class SavedViewModel @Inject constructor(private val library: LibraryRepository,
 }
 
 @Composable
-fun MeScreen(app: AppViewModel, onSignIn: () -> Unit, onSaved: () -> Unit, onSettings: () -> Unit, onOffline: () -> Unit, onAccount: () -> Unit = {}) {
+fun MeScreen(app: AppViewModel, onSignIn: () -> Unit, onSaved: () -> Unit, onSettings: () -> Unit, onOffline: () -> Unit, onAccount: () -> Unit = {}, onFeedback: () -> Unit = {}) {
     val state by app.state.collectAsStateWithLifecycle()
     val catalog by app.catalog.collectAsStateWithLifecycle()
-    MeContent(state.user, state.coins, catalog?.classes.orEmpty(), state.classId, onPickClass = { app.setClass(it) }, onSignIn = onSignIn, onSignOut = { app.logout() }, onSaved = onSaved, onSettings = onSettings, onOffline = onOffline, onAccount = onAccount)
+    MeContent(state.user, state.coins, catalog?.classes.orEmpty(), state.classId, onPickClass = { app.setClass(it) }, onSignIn = onSignIn, onSignOut = { app.logout() }, onSaved = onSaved, onSettings = onSettings, onOffline = onOffline, onAccount = onAccount, onFeedback = onFeedback)
 }
 
 @Composable
@@ -120,6 +121,7 @@ internal fun MeContent(
     onSettings: () -> Unit,
     onOffline: () -> Unit,
     onAccount: () -> Unit = {},
+    onFeedback: () -> Unit = {},
 ) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
         Text("Me", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 8.dp))
@@ -157,6 +159,7 @@ internal fun MeContent(
         if (user != null) MenuRow(Icons.Rounded.Person, "My account", "Details, password, download my data, delete my account", onAccount)
         MenuRow(Icons.Rounded.Download, "Books on this phone", "Download classes to read with no internet", onOffline)
         MenuRow(Icons.Rounded.Bookmark, "Saved pages and notes", "Bookmarks, notes and highlights; they follow your account", onSaved)
+        MenuRow(Icons.Rounded.Feedback, "Suggestions and problems", "Tell us about a mistake in a book, a wrong answer, something broken, or an idea", onFeedback)
         MenuRow(Icons.Rounded.Settings, "Settings", "Dark mode, text size", onSettings)
         Text("SpaceBook ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(16.dp))
     }

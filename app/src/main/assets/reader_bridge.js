@@ -5,6 +5,7 @@
  *   SBApp.openPage(name)                              a web section: tests-preps | papers | create-test | assistant | study-plan | subjects | home
  *   SBApp.openGrammar(lang)                           the Grammar Stats page on one language: en | ur | ps | ar
  *   SBApp.go(n) / next() / prev()                     one-page view
+ *   SBApp.openFeedback()                              the website's suggest / report-a-problem dialog (js/sb_feedback.js) over the page on screen
  *   SBApp.openAccount()                               the website's own "My account" dialog (details, password, download my data, delete my account)
  *   SBApp.setAuth(user, device, flags) / clearAuth()  hand the app's sign-in to the web page (cookie is shared already); flags = the owner's switches as the server published them
  *   SBApp.pageText()                                  text of the page on screen (for read aloud)
@@ -408,6 +409,14 @@
       var g = await until(function () { return window.SBGrammar && typeof window.SBGrammar.open === 'function'; }, 20000, 100);
       if (!g) { host('onAction', ['error', 'Grammar Stats did not load.']); return false; }
       window.SBGrammar.open(lang || 'en');
+      return true;
+    },
+
+    // The website's own suggest / report-a-problem dialog (js/sb_feedback.js), filled in with the class, subject, chapter and page on screen.
+    openFeedback: async function () {
+      var fb = await until(function () { return window.SBFeedback && window.SBFeedback.open; }, 20000, 100);
+      if (!fb) { host('onAction', ['error', 'The report form did not load.']); return false; }
+      window.SBFeedback.open({});
       return true;
     },
 
