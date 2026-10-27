@@ -29,11 +29,19 @@
     return out;
   }
   const NOISE = '.sb-tri-drawer, .sh-sdrawer, [id^="sent-trans-"], .sb-topic-tools, .para-lang-tabs-bar, button, script, style, .m6-tr';
-  function textOf(el) {
-    const c = el.cloneNode(true);
-    c.querySelectorAll(NOISE).forEach(x => x.remove());
-    return c.textContent || '';
+  // The text of an element without the parts that match `sel`, read straight from the nodes. This used to clone the whole element, delete the noise from the
+  // clone and take its textContent: for every card of every tab of every chapter (a third of the time to open a Class 5 Maths chapter on a phone).
+  function textWithout(el, sel) {
+    let out = '';
+    (function walk(n) {
+      for (let c = n.firstChild; c; c = c.nextSibling) {
+        if (c.nodeType === 3) out += c.data;
+        else if (c.nodeType === 1 && !c.matches(sel)) walk(c);
+      }
+    })(el);
+    return out;
   }
+  const textOf = el => textWithout(el, NOISE);
   // word level: short Urdu options and Qur'anic lines are rarely 30-character "sentences", so a textbook
   // exercise page can repeat the structured bank without sharing one sentence key. Diacritics are ignored.
   const words = text => String(text || '').replace(/[ً-ٰٟۖ-ۭـ]/g, '')
@@ -48,7 +56,8 @@
   const repeats = (own, text, target, wset, bank) => overlap(own, target) >= 0.5 || wordOverlap(text, wset) >= (bank ? 0.5 : 0.7);
   const BANK_ITEM = '.class12-question, .math12-study-question, .tb-mcq-card, .interactive-mcq-card, .slo-accordion-card, .sbq, .math-mcq-opt, .universal-mcq-opt-btn, .tb-qa-card, .c2-mcq-box';
   // text for word overlap keeps option buttons (textOf drops every button)
-  const fullText = el => { const c = el.cloneNode(true); c.querySelectorAll('.sb-tri-drawer, .sh-sdrawer, [id^="sent-trans-"], script, style, template, .sb-topic-tools').forEach(x => x.remove()); return c.textContent || ''; };
+  const FULL_NOISE = '.sb-tri-drawer, .sh-sdrawer, [id^="sent-trans-"], script, style, template, .sb-topic-tools';
+  const fullText = el => textWithout(el, FULL_NOISE);
   function overlap(set, ref) {
     if (!set.size) return 0;
     let n = 0; set.forEach(k => { if (ref.has(k)) n++; });

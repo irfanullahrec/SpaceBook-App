@@ -4910,8 +4910,8 @@
   },
   {
    "src": "js/chem_11_book.js",
-   "bytes": 4476499,
-   "sha256": "363914dedb4047092fa66053859c6d2d86cc728378efcd055ae774ab8e7b0a40",
+   "bytes": 4682746,
+   "sha256": "6dcc06b2e1393686fb27e37f9fef83646a9201934e5b9a8615424ec5586ec79b",
    "stubs": [
     {
      "name": "CHEM_11_BOOK",
@@ -5204,8 +5204,8 @@
   },
   {
    "src": "js/bio_11_book.js",
-   "bytes": 4702450,
-   "sha256": "c5dd20cfe595eee7a918ef0882fe7bd84d9a0043560b617b31ac1b1d2ec426a1",
+   "bytes": 4858446,
+   "sha256": "3e45424d6efb18617c2e5d531cf379479ebf77490b2341589d2523c28dc3ecdd",
    "stubs": [
     {
      "name": "BIO_11_BOOK",
@@ -5258,8 +5258,8 @@
   },
   {
    "src": "js/stat_11_book.js",
-   "bytes": 2167470,
-   "sha256": "f995831e9a807f6564e632fa2948c9a6f7ae38393d2c8247aec2a4a86d107471",
+   "bytes": 2275573,
+   "sha256": "71f663e00a796428a9d47e0e816b899707783ab8c373d766a1887a6834139e33",
    "stubs": [
     {
      "name": "STAT_11_BOOK",
@@ -5312,8 +5312,8 @@
   },
   {
    "src": "js/eng_11_book.js",
-   "bytes": 2483299,
-   "sha256": "da51a8eb4f30f5eb8793e0b37dee5ed92c66cdb07298b46826d589efb9d35334",
+   "bytes": 2721557,
+   "sha256": "2747f216da9c00c22efd8e6efbfb023c013773ebe25652e2f79e0e539d820022",
    "stubs": [
     {
      "name": "ENG_11_BOOK",
@@ -5370,8 +5370,8 @@
   },
   {
    "src": "js/ishist_11_book.js",
-   "bytes": 2837551,
-   "sha256": "b5432c46dfccf2cd447ab4250e570caef4cb4aad4bf9535b82f095d8f9881ad3",
+   "bytes": 3003806,
+   "sha256": "17831dc64cc4e3e923ca3de66a035189759a8767fa9f4f99eee0ce5485226dd2",
    "stubs": [
     {
      "name": "ISHIST_11_BOOK",
@@ -5428,8 +5428,8 @@
   },
   {
    "src": "js/cs_11_book.js",
-   "bytes": 2596356,
-   "sha256": "fa18caf0ef54dd323344d575c228c3626d48ac103580cf356a2622745d81f388",
+   "bytes": 2686479,
+   "sha256": "e755d2547fc257cf3af37f014ab29ad9508f96bd9b465b3793cefdfc38f389f6",
    "stubs": [
     {
      "name": "CS_11_BOOK",
@@ -5486,8 +5486,8 @@
   },
   {
    "src": "js/ikhtiari_11_book.js",
-   "bytes": 3099594,
-   "sha256": "2f9ec80fd158e8fe99f08dbdd1f528fab21c540a57c19b73d698230b10d12ada",
+   "bytes": 3229117,
+   "sha256": "04a58c37c4e8e3b4a74d05c975d7170c2d20b5c5c0496b0e662db88e01560e46",
    "stubs": [
     {
      "name": "IKHTIARI_11_BOOK",
@@ -5544,8 +5544,8 @@
   },
   {
    "src": "js/civics_11_book.js",
-   "bytes": 2100998,
-   "sha256": "ba2be2a496b8e5efe3bab2b27ceb336449394360f56f2ff4d9f04378f95495c8",
+   "bytes": 2212397,
+   "sha256": "6454b5932373c251e682710b802cf8bd0f7f4675ff673f2a062504d310ad1afb",
    "stubs": [
     {
      "name": "CIVICS_11_BOOK",
@@ -5602,8 +5602,8 @@
   },
   {
    "src": "js/urdu_11_book.js",
-   "bytes": 1891529,
-   "sha256": "4f58a1d23b2a3fa905ebe6102c6f429b1f4cf93d9afc83f7a9b976c010c56e70",
+   "bytes": 2016107,
+   "sha256": "b88afc0f7cb4c24913ecfcfbfeda4c5ab37a3331d77fd20efab313d1e7b46ea5",
    "stubs": [
     {
      "name": "URDU_11_BOOK",
@@ -5660,8 +5660,8 @@
   },
   {
    "src": "js/mq_11_book.js",
-   "bytes": 3404481,
-   "sha256": "a1a79e35d1c940a18af58ee14ee5cc56e5901bf67889af99c19f1aa9af1711b5",
+   "bytes": 3562101,
+   "sha256": "c7a2a940468c608f815422d205181a61e013379a427f492d347ab30072817d35",
    "stubs": [
     {
      "name": "MQ_11_BOOK",
@@ -5718,8 +5718,8 @@
   },
   {
    "src": "js/hpe_11_book.js",
-   "bytes": 1030126,
-   "sha256": "0d2437d4b1733fe32f0233d4efde0f36eb42657c9645b1ddca24c25916731cd5",
+   "bytes": 1103377,
+   "sha256": "b0b7b735f94a9f56e3cb786e12181958303fd10550f0aeca0b247fc08993482b",
    "stubs": [
     {
      "name": "HPE_11_BOOK",
@@ -5776,8 +5776,8 @@
   },
   {
    "src": "js/isl_11_book.js",
-   "bytes": 1314138,
-   "sha256": "57fc9ea0147ea7f2d93fdaf3dc6e430de2fd4b183e1e3d8aeb03f6ffe61a0e3e",
+   "bytes": 1361794,
+   "sha256": "a18bad5b944feb5b6cb2f4a68ef1ec835d3d5b33ceb8e03b7bf7867ab2d4883a",
    "stubs": [
     {
      "name": "ISL_11_BOOK",
@@ -5912,8 +5912,8 @@
   },
   {
    "src": "js/english_12_book.js",
-   "bytes": 2096365,
-   "sha256": "20850634924e426bfe5d71045dc135e678d1f29e288d48e6ac46abbed021b208",
+   "bytes": 2167695,
+   "sha256": "b1a312c48ce10c97a29da2dbe89b7244ed57408fcf9ef34ceaf4894dfcb19a91",
    "stubs": [
     {
      "name": "ENGLISH_12_BOOK",
@@ -6000,8 +6000,8 @@
   },
   {
    "src": "js/urdu_12_book.js",
-   "bytes": 2535651,
-   "sha256": "0f11f031966e095502e4c7da74cf623b1bcaec2ba7b89dcd427b8d57fcae3fbc",
+   "bytes": 2538610,
+   "sha256": "47bd97f839d9521f627c858dd7e309e34ee9323320b5bde1473ebaafedde46ce",
    "stubs": [
     {
      "name": "URDU_12_BOOK",
@@ -6060,8 +6060,8 @@
   },
   {
    "src": "js/computer_12_book.js",
-   "bytes": 1948366,
-   "sha256": "0d7825aa3e64ffdb62401b93e762ac641bf4b48e6148524ae7af0858bb4b5538",
+   "bytes": 1948352,
+   "sha256": "fbff4840daad5d92192c220617736e044f9c5cec9e805a9ce8a96fecc08bd5ba",
    "stubs": [
     {
      "name": "COMP_12_BOOK",
@@ -6104,8 +6104,8 @@
   },
   {
    "src": "js/civics_12_book.js",
-   "bytes": 2298433,
-   "sha256": "3da3b113534af8118ab4a60f9605b4ce4166ddfe185605b8d11b1fb5321ad1bc",
+   "bytes": 2316592,
+   "sha256": "8c243877989fffc8a7c94ff1595780a1cab2c69cbab460c5008329ca9c75fd61",
    "stubs": [
     {
      "name": "CIVICS_12_BOOK",
@@ -6148,8 +6148,8 @@
   },
   {
    "src": "js/economics_12_book.js",
-   "bytes": 5185866,
-   "sha256": "25e7aaab7b024c67d589786fb6c5e9b0fdadf4223ef62b64cb3317b76c91fbf1",
+   "bytes": 5240191,
+   "sha256": "6b466a08945bc0b83bc4d7f91ebb280d1c03b2e126959fd7da5badc97ef89de7",
    "stubs": [
     {
      "name": "ECON_12_BOOK",
@@ -6192,8 +6192,8 @@
   },
   {
    "src": "js/hpe_12_book.js",
-   "bytes": 1126009,
-   "sha256": "038c2c30ee8608152c55f5bcbedd276482ba17acf1735dbc25ca91b33bc741ca",
+   "bytes": 1126174,
+   "sha256": "e8c3acf4c14237b751982206090251bf5361f71360b5713302469b4527a9068d",
    "stubs": [
     {
      "name": "HPE_12_BOOK",
@@ -6236,8 +6236,8 @@
   },
   {
    "src": "js/islamiat_ikhtiari_12_book.js",
-   "bytes": 2847699,
-   "sha256": "2f3ad8d162f5cbfb47cd41b68e896ed102cd6719a3347ce3341a9c2b02f65044",
+   "bytes": 2864329,
+   "sha256": "b8a1834aaf4ce5eacb820725b3c37f609e9225d474ff19c4cdc7b608a6eb9625",
    "stubs": [
     {
      "name": "ISLAMIAT_IKHTIARI_12_BOOK",
@@ -6280,8 +6280,8 @@
   },
   {
    "src": "js/islamic_history_12_book.js",
-   "bytes": 2206961,
-   "sha256": "be4eb43ee601b03a6152eb18d319bb32171c1ce370eb5ccfb84d002a92acb745",
+   "bytes": 2212034,
+   "sha256": "a50986ff7b388dc49b3d112209b281949133d2df58e04ccc2ca8d07aaace84b3",
    "stubs": [
     {
      "name": "ISLAMIC_HISTORY_12_BOOK",
@@ -7457,7 +7457,7 @@
   {
    "src": "js/fills_data.js",
    "bytes": 116780,
-   "sha256": "81129e8aee4e631f48e6cf1e9e1b668b04b03728b2816134a927c633b3e12fa0",
+   "sha256": "fbebaa5e09eaa325ae81a823a2315e3d35251086c79b2e8998498fbb87a95c8b",
    "stubs": [
     {
      "name": "SB_FILLS",
@@ -7768,8 +7768,8 @@
   },
   {
    "src": "js/study_plan_index.js",
-   "bytes": 227010,
-   "sha256": "7d990394cc187d8a69510972d7c2d1bf3d2a6ca1b794c650b884cc5127f709ab",
+   "bytes": 227238,
+   "sha256": "ea4422446bd269c9a492a28c90e1ca5371753717060f8bb39952f3f0535559d4",
    "stubs": [
     {
      "name": "SB_STUDY_INDEX",

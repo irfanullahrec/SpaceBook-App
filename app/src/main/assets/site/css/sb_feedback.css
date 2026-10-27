@@ -1,0 +1,62 @@
+/* sb_feedback.js: the Suggest / Report a problem dialog, the header button and the "Wrong answer? Tell us" link */
+.sbfb-lock{overflow:hidden}
+.sbfb-overlay{position:fixed;inset:0;z-index:100050;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.sbfb-overlay[hidden]{display:none}
+.sbfb-dialog{background:#fff;color:#0f172a;width:100%;max-width:560px;max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;border-radius:16px;padding:18px 18px 16px;box-shadow:0 20px 50px rgba(15,23,42,.35);font-size:16px;line-height:1.5}
+.sbfb-dialog:focus{outline:none}
+.sbfb-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
+.sbfb-head h2{margin:0;font-size:1.2rem;line-height:1.35;color:#0f172a}
+.sbfb-ur{display:block;font-size:1.05rem;font-weight:600;color:#334155;font-family:var(--sb-font-ur,"Noto Naskh Arabic","Noto Nastaliq Urdu","Jameel Noor Nastaleeq","Segoe UI",Tahoma,serif);line-height:1.9}
+.sbfb-x{flex:none;min-width:44px;min-height:44px;border:0;background:transparent;font-size:1.2rem;color:#334155;border-radius:50%;cursor:pointer}
+.sbfb-dialog button,.sbfb-dialog input[type=file]+*,.sbfb-filebtn{font:inherit}
+.sbfb-dialog button:focus-visible,.sbfb-dialog input:focus-visible,.sbfb-dialog textarea:focus-visible,.sbfb-kind:focus-within,.sbfb-filebtn:focus-within{outline:3px solid #1d4ed8;outline-offset:2px}
+.sbfb-intro{margin:0 0 10px;color:#334155}
+.sbfb-kinds{border:0;margin:0 0 10px;padding:0;display:grid;gap:8px}
+.sbfb-kinds legend{font-weight:700;margin-bottom:6px;padding:0}
+.sbfb-kind{display:flex;align-items:center;gap:10px;min-height:48px;padding:8px 12px;border:2px solid #cbd5e1;border-radius:12px;cursor:pointer;background:#fff}
+.sbfb-kind input{width:20px;height:20px;flex:none;accent-color:#1d4ed8}
+.sbfb-kind:has(input:checked){border-color:#1d4ed8;background:#eff6ff}
+.sbfb-ico{font-size:1.4rem;flex:none}
+.sbfb-kt{display:flex;flex-direction:column}
+.sbfb-kt small{color:#475569;font-family:var(--sb-font-ur,"Noto Naskh Arabic","Noto Nastaliq Urdu","Jameel Noor Nastaleeq","Segoe UI",Tahoma,serif);font-size:.95rem}
+.sbfb-lab{display:block;font-weight:700;margin:8px 0 4px}
+.sbfb-lab small{font-weight:400;color:#475569}
+#sbfb-msg{width:100%;box-sizing:border-box;min-height:120px;padding:10px 12px;border:2px solid #94a3b8;border-radius:12px;font:inherit;color:#0f172a;background:#fff;resize:vertical}
+.sbfb-hint{margin:6px 0 10px;color:#475569;font-size:.9rem}
+.sbfb-check{display:flex;gap:10px;align-items:flex-start;margin:8px 0;min-height:44px;padding:6px 0}
+.sbfb-check input{width:22px;height:22px;flex:none;margin-top:2px;accent-color:#1d4ed8}
+.sbfb-pic{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:8px 0}
+.sbfb-pic img{max-height:84px;max-width:140px;border-radius:8px;border:1px solid #cbd5e1}
+.sbfb-filebtn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 14px;border:2px dashed #64748b;border-radius:12px;cursor:pointer;color:#0f172a;background:#f8fafc}
+.sbfb-filebtn input{position:absolute;opacity:0;width:1px;height:1px}
+.sbfb-filebtn small{color:#475569}
+.sbfb-err{min-height:1.4em;margin:6px 0;color:#b91c1c;font-weight:600}
+.sbfb-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.sbfb-actions button,.sbfb-pic button,.sbfb-rowact button{min-height:44px;padding:8px 16px;border:2px solid #1d4ed8;border-radius:12px;background:#fff;color:#1d4ed8;font-weight:700;cursor:pointer}
+.sbfb-actions .sbfb-primary{background:#1d4ed8;color:#fff}
+.sbfb-actions button[disabled]{opacity:.6;cursor:default}
+.sbfb-badge{display:inline-block;min-width:1.4em;padding:0 .4em;border-radius:999px;background:#b91c1c;color:#fff;font-size:.8rem;text-align:center}
+.sbfb-review{margin:0 0 8px}
+.sbfb-review dt{font-weight:700;margin-top:8px;color:#334155}
+.sbfb-review dd{margin:2px 0 0}
+.sbfb-msgbox{padding:8px 10px;border-radius:10px;background:#f1f5f9;white-space:normal;overflow-wrap:anywhere}
+.sbfb-thumb{max-height:90px;max-width:160px;vertical-align:middle;border-radius:8px;border:1px solid #cbd5e1}
+.sbfb-tech{list-style:none;margin:0;padding:0;font-size:.88rem;color:#334155}
+.sbfb-tech code{background:#e2e8f0;border-radius:4px;padding:0 4px}
+.sbfb-done{font-size:1.05rem}
+.sbfb-list{list-style:none;margin:8px 0;padding:0;display:grid;gap:8px}
+.sbfb-list li{display:flex;gap:10px;align-items:flex-start;padding:10px;border:1px solid #cbd5e1;border-radius:12px}
+.sbfb-list li>div:nth-child(2){flex:1;min-width:0}
+.sbfb-snip{color:#334155;overflow-wrap:anywhere}
+.sbfb-state{margin-top:4px;font-size:.92rem;font-weight:600}
+.sbfb-s-failed{color:#b91c1c}.sbfb-s-fixed{color:#047857}.sbfb-s-received,.sbfb-s-seen{color:#1d4ed8}.sbfb-s-waiting,.sbfb-s-sending{color:#92400e}
+.sbfb-rowact{display:flex;flex-direction:column;gap:6px}
+.sbfb-header-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;margin-inline-end:6px;border:0;border-radius:50%;background:transparent;font-size:1.35rem;cursor:pointer;color:inherit}
+.sbfb-header-btn:hover{background:rgba(2,132,199,.12)}
+.sbfb-header-btn:focus-visible{outline:3px solid #1d4ed8;outline-offset:1px}
+.sbfb-header-btn [data-sbfb-badge]{position:absolute;top:2px;inset-inline-end:2px;min-width:1.2em;padding:0 .3em;border-radius:999px;background:#b91c1c;color:#fff;font-size:.7rem;line-height:1.3}
+.sbfb-header-btn [data-sbfb-badge][hidden]{display:none}
+.sbs-report{margin:.2rem .8rem .5rem;padding:.3rem .6rem;min-height:32px;border:1px solid #94a3b8;border-radius:999px;background:#fff;color:#334155;font:inherit;font-size:.78rem;cursor:pointer}
+.sbs-report:hover,.sbs-report:focus-visible{background:#eff6ff;border-color:#1d4ed8;color:#1d4ed8}
+@media (max-width:520px){.sbfb-overlay{padding:0;align-items:stretch}.sbfb-dialog{max-width:none;max-height:none;height:100%;border-radius:0}}
+@media (prefers-reduced-motion:no-preference){.sbfb-dialog{animation:sbfb-in .15s ease-out}@keyframes sbfb-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}

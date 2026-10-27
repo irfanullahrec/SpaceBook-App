@@ -656,21 +656,21 @@ function renderClasses() {
       <div class="classes-jewel-grid">
         ${(() => {
           const clsCardCoverMap = {
-            'cls-pg': 'PG.png',
-            'cls-nur': 'Nursery.png',
-            'cls-kg': 'KG.png',
-            'cls1': '1.png',
-            'cls2': '2.png',
-            'cls3': '3.png',
-            'cls4': '4.png',
-            'cls5': '5.png',
-            'cls6': '6.png',
-            'cls7': '7.png',
-            'cls8': '8.png',
-            'cls9': '9.png',
-            'cls10': '10.png',
-            'cls11': '11.png',
-            'cls12': '12.png'
+            'cls-pg': 'PG.webp',
+            'cls-nur': 'Nursery.webp',
+            'cls-kg': 'KG.webp',
+            'cls1': '1.webp',
+            'cls2': '2.webp',
+            'cls3': '3.webp',
+            'cls4': '4.webp',
+            'cls5': '5.webp',
+            'cls6': '6.webp',
+            'cls7': '7.webp',
+            'cls8': '8.webp',
+            'cls9': '9.webp',
+            'cls10': '10.webp',
+            'cls11': '11.webp',
+            'cls12': '12.webp'
           };
           return DATA.classes.map(c => {
             const clsCoverFile = clsCardCoverMap[c.id];

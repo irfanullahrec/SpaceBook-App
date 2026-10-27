@@ -104,25 +104,38 @@
   // ── offline lexicon: SB_OFFLINE_LEXICON rows + ENG_URDU_DICT + every book's word list (built once, no network) ──
   const LX_NORM = (w, l) => l === 'en' ? String(w).toLowerCase().replace(/[^a-z'-]/g, '') :
     String(w).replace(/[\u0610-\u061A\u06D6-\u06ED]/g, '').replace(/\u0671/g, '\u0627').replace(/[ً-ٰٟـۡ]/g, '').replace(/ي/g, 'ی').replace(/ك/g, 'ک').replace(/ہ|ۀ|ة/g, 'ه').replace(/[^\p{L}\s]/gu, '').replace(/\s+/g, ' ').trim();
-  let LX = null;
-  function lexicon() {
-    if (LX) return LX;
-    LX = { en: new Map(), ur: new Map(), ps: new Map(), ar: new Map() };
-    // rec.q = quality per language: 'm' = computer-made (shown as approximate); anything else = from a book, a teacher list or a person
-    const add = rec => ORDER.forEach(l => String(rec[l] || '').split(/[،,]/).forEach(part => {
-      const k = LX_NORM(part.replace(/\(.*?\)/g, ''), l);
-      if (!k || k.split(' ').length > 3) return;
-      const cur = LX[l].get(k);
-      if (!cur) LX[l].set(k, Object.assign({}, rec, { q: Object.assign({}, rec.q) }));
-      else ORDER.forEach(t => { if (!cur[t] && rec[t]) { cur[t] = rec[t]; cur.q[t] = rec.q && rec.q[t] || ''; } });
-    }));
-    // Built at build time (tools/build/make_lexicon.js: the same sources in the same order): one file instead of reading the word list of
-    // every book, which loaded all of them on the lazy page at the first lookup (106 files, 150 MB, about 10 s).
-    const V1 = window.SB_LEXICON_V1;
-    if (V1 && Array.isArray(V1.rows)) {
-      V1.rows.forEach(r => add({ en: r[0], ur: r[1], ps: r[2], ar: r[3] }));
+  // lexicon(): the complete table (a caller that needs a word gets it at once). lexicon(ms): work for about `ms` milliseconds, return null if more is left (the
+  // idle builder at the end of this file calls it in slices: building the 900 KB file in one go was a 0.9 s freeze after every page load, 3.7 s on a 4x slower
+  // phone); the next call, of either kind, continues where this one stopped.
+  let LX = null, LXROWS = null, LXAT = 0, LXADD = null, LXDONE = false;
+  function lexicon(ms) {
+    if (LXDONE) return LX;
+    if (!LX) {
+      LX = { en: new Map(), ur: new Map(), ps: new Map(), ar: new Map() };
+      // rec.q = quality per language: 'm' = computer-made (shown as approximate); anything else = from a book, a teacher list or a person
+      LXADD = rec => ORDER.forEach(l => String(rec[l] || '').split(/[،,]/).forEach(part => {
+        const k = LX_NORM(part.replace(/\(.*?\)/g, ''), l);
+        if (!k || k.split(' ').length > 3) return;
+        const cur = LX[l].get(k);
+        if (!cur) LX[l].set(k, Object.assign({}, rec, { q: Object.assign({}, rec.q) }));
+        else ORDER.forEach(t => { if (!cur[t] && rec[t]) { cur[t] = rec[t]; cur.q[t] = rec.q && rec.q[t] || ''; } });
+      }));
+      // Built at build time (tools/build/make_lexicon.js: the same sources in the same order): one file instead of reading the word list of
+      // every book, which loaded all of them on the lazy page at the first lookup (106 files, 150 MB, about 10 s).
+      const V1 = window.SB_LEXICON_V1;
+      if (V1 && Array.isArray(V1.rows)) LXROWS = V1.rows;
+    }
+    if (LXROWS) {
+      const t0 = performance.now();
+      while (LXAT < LXROWS.length) {
+        const r = LXROWS[LXAT++];
+        LXADD({ en: r[0], ur: r[1], ps: r[2], ar: r[3] });
+        if (ms !== undefined && (LXAT & 31) === 0 && performance.now() - t0 > ms) return null;
+      }
+      LXROWS = null; LXDONE = true;
       return LX;
     }
+    const add = LXADD;
     try { String(window.SB_OFFLINE_LEXICON || '').split('\n').forEach(r => { const p = r.split('|'); if (p.length === 4) add({ en: p[0], ur: p[1], ps: p[2], ar: p[3] }); }); } catch (e) { /* none */ }
     try {
       ['CLS1_BOOKS', 'CLS2_BOOKS', 'CLS3_BOOKS', 'CLS4_BOOKS', 'CLS5_BOOKS', 'CLS6_BOOKS', 'CLS7_BOOKS', 'CLS8_BOOKS', 'CLS9_BOOKS', 'CLS10_BOOKS', 'CLASS11_BOOKS'].forEach(n => {
@@ -139,6 +152,7 @@
         if (u || e.p) add({ en, ur: u, ps: e.p || '' });
       });
     } catch (e) { /* partial lexicon is fine */ }
+    LXDONE = true;
     return LX;
   }
   // The meaning of a word or short phrase on this device. Returns { text, q, via } or null.
@@ -682,7 +696,19 @@
   }
 
   // build the word table while the page is idle, so the first hover is instant (and, online, the lexicon file is kept by the service worker for offline use)
-  try { (window.requestIdleCallback || (f => setTimeout(f, 3000)))(() => { try { lexicon(); } catch (e) { /* the first hover builds it */ } }, { timeout: 8000 }); } catch (e) { /* no idle callback */ }
+  // The table is 0.9 MB. It is fetched in the background (a synchronous request froze the page for as long as the download took: 7 s on a slow connection and
+  // it shared the line with the page the student was waiting for), only once the page has loaded and been used for a few seconds, and built in slices of 10 ms.
+  // A word looked up before that loads and builds it at once, as before.
+  try {
+    const pump = () => { try { if (lexicon(10) === null) setTimeout(pump, 40); } catch (e) { /* the first hover builds it */ } };
+    const prime = () => {
+      const L = window.SBLazy;
+      if (L && L.preload && !L.isLoaded('js/lexicon_data.js')) L.preload('js/lexicon_data.js').then(pump, () => { /* the first hover loads it */ });
+      else pump();
+    };
+    const later = () => setTimeout(() => (window.requestIdleCallback || (f => setTimeout(f, 0)))(prime, { timeout: 10000 }), 8000);
+    if (document.readyState === 'complete') later(); else window.addEventListener('load', later);
+  } catch (e) { /* no idle callback */ }
 
   window.SBTranslate = { translate, detectLang, isQuranic, speak, open: (text, tgt) => openCard(text, tgt, null), prepareSteps, languages: LANGS };
 })();

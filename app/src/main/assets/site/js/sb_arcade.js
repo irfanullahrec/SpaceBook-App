@@ -136,10 +136,10 @@
    * 2. The overlay: hub, the frame every game shares (lives, score, question bar, pause), coins, sounds
    * ===================================================================================================== */
   const LANG = {
-    en: { games: 'Games', play: 'Play', again: 'Play again', hub: 'All games', close: 'Close', none: 'There are no games on this page', noneWhy: 'Games are made from the words and numbers of a page. This page has too little text to make questions from. Open a page with a lesson, a paragraph or sums and try again.', made: n => n + ' questions from this page', best: 'Best', won: 'Level complete!', lost: 'Game over', coins: 'coins', score: 'Score', pause: 'Paused', resume: 'Resume', how: 'How to play', sound: 'Sound', correct: 'Right answer', paused: 'Paused' },
-    ur: { games: 'کھیل', play: 'کھیلیں', again: 'دوبارہ کھیلیں', hub: 'تمام کھیل', close: 'بند کریں', none: 'اس صفحے پر کوئی کھیل نہیں', noneWhy: 'کھیل صفحے کے الفاظ اور اعداد سے بنتے ہیں۔ اس صفحے میں سوال بنانے کے لیے متن کافی نہیں۔ کوئی سبق یا حساب والا صفحہ کھولیں۔', made: n => 'اس صفحے سے ' + n + ' سوال', best: 'بہترین', won: 'درجہ مکمل!', lost: 'کھیل ختم', coins: 'سکے', score: 'سکور', pause: 'رکا ہوا', resume: 'جاری رکھیں', how: 'کیسے کھیلیں', sound: 'آواز', correct: 'صحیح جواب', paused: 'رکا ہوا' },
-    ps: { games: 'لوبې', play: 'لوبه وکړئ', again: 'بیا لوبه', hub: 'ټولې لوبې', close: 'بندول', none: 'پدې مخ کې لوبه نشته', noneWhy: 'لوبې د مخ له کلمو او شمېرو جوړېږي. پدې مخ کې د پوښتنو جوړولو لپاره کافي متن نشته. یو درس یا حساب لرونکی مخ پرانیزئ.', made: n => 'له دې مخ ' + n + ' پوښتنې', best: 'غوره', won: 'کچه بشپړه شوه!', lost: 'لوبه پای ته ورسېده', coins: 'سکې', score: 'نمرې', pause: 'ودرېده', resume: 'دوام', how: 'څنګه لوبه کوئ', sound: 'غږ', correct: 'سم ځواب', paused: 'ودرېده' },
-    ar: { games: 'ألعاب', play: 'العب', again: 'العب مرة أخرى', hub: 'كل الألعاب', close: 'إغلاق', none: 'لا توجد ألعاب في هذه الصفحة', noneWhy: 'تُصنع الألعاب من كلمات وأرقام الصفحة. هذه الصفحة تحتوي نصًا قليلًا لصنع أسئلة. افتح صفحة فيها درس أو فقرة أو مسائل.', made: n => n + ' سؤالًا من هذه الصفحة', best: 'الأفضل', won: 'اكتمل المستوى!', lost: 'انتهت اللعبة', coins: 'عملات', score: 'النقاط', pause: 'متوقف', resume: 'متابعة', how: 'كيف تلعب', sound: 'الصوت', correct: 'إجابة صحيحة', paused: 'متوقف' },
+    en: { games: 'Games', play: 'Play', again: 'Play again', hub: 'All games', close: 'Close', none: 'There are no games on this page', noneWhy: 'Games are made from the words and numbers of a page. This page has too little text to make questions from. Open a page with a lesson, a paragraph or sums and try again.', made: n => n + ' questions from this page', best: 'Best', won: 'Level complete!', lost: 'Game over', coins: 'coins', score: 'Score', pause: 'Paused', resume: 'Resume', how: 'How to play', sound: 'Sound', correct: 'Right answer', paused: 'Paused', speed: 'Game speed', sp_slow: 'Slow', sp_easy: 'Easy', sp_normal: 'Normal' },
+    ur: { games: 'کھیل', play: 'کھیلیں', again: 'دوبارہ کھیلیں', hub: 'تمام کھیل', close: 'بند کریں', none: 'اس صفحے پر کوئی کھیل نہیں', noneWhy: 'کھیل صفحے کے الفاظ اور اعداد سے بنتے ہیں۔ اس صفحے میں سوال بنانے کے لیے متن کافی نہیں۔ کوئی سبق یا حساب والا صفحہ کھولیں۔', made: n => 'اس صفحے سے ' + n + ' سوال', best: 'بہترین', won: 'درجہ مکمل!', lost: 'کھیل ختم', coins: 'سکے', score: 'سکور', pause: 'رکا ہوا', resume: 'جاری رکھیں', how: 'کیسے کھیلیں', sound: 'آواز', correct: 'صحیح جواب', paused: 'رکا ہوا', speed: 'کھیل کی رفتار', sp_slow: 'آہستہ', sp_easy: 'آسان', sp_normal: 'عام' },
+    ps: { games: 'لوبې', play: 'لوبه وکړئ', again: 'بیا لوبه', hub: 'ټولې لوبې', close: 'بندول', none: 'پدې مخ کې لوبه نشته', noneWhy: 'لوبې د مخ له کلمو او شمېرو جوړېږي. پدې مخ کې د پوښتنو جوړولو لپاره کافي متن نشته. یو درس یا حساب لرونکی مخ پرانیزئ.', made: n => 'له دې مخ ' + n + ' پوښتنې', best: 'غوره', won: 'کچه بشپړه شوه!', lost: 'لوبه پای ته ورسېده', coins: 'سکې', score: 'نمرې', pause: 'ودرېده', resume: 'دوام', how: 'څنګه لوبه کوئ', sound: 'غږ', correct: 'سم ځواب', paused: 'ودرېده', speed: 'د لوبې چټکتیا', sp_slow: 'ورو', sp_easy: 'اسانه', sp_normal: 'نورمال' },
+    ar: { games: 'ألعاب', play: 'العب', again: 'العب مرة أخرى', hub: 'كل الألعاب', close: 'إغلاق', none: 'لا توجد ألعاب في هذه الصفحة', noneWhy: 'تُصنع الألعاب من كلمات وأرقام الصفحة. هذه الصفحة تحتوي نصًا قليلًا لصنع أسئلة. افتح صفحة فيها درس أو فقرة أو مسائل.', made: n => n + ' سؤالًا من هذه الصفحة', best: 'الأفضل', won: 'اكتمل المستوى!', lost: 'انتهت اللعبة', coins: 'عملات', score: 'النقاط', pause: 'متوقف', resume: 'متابعة', how: 'كيف تلعب', sound: 'الصوت', correct: 'إجابة صحيحة', paused: 'متوقف', speed: 'سرعة اللعبة', sp_slow: 'بطيء', sp_easy: 'سهل', sp_normal: 'عادي' },
   };
   const FONT = '"Segoe UI",system-ui,-apple-system,Roboto,"Noto Sans","Noto Naskh Arabic","Jameel Noori Nastaleeq",sans-serif';
   const GAMES = [];
@@ -173,6 +173,10 @@
 .sba-hub h2{margin:.2rem 0 .1rem;font-size:1.15rem}
 .sba-hub p{margin:.1rem 0 .6rem;color:#9fb3d9;font-size:.85rem}
 .sba-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;width:100%}
+.sba-speed{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.4rem;margin:.7rem 0 0;color:#e2e8f0;font:600 .9rem system-ui,sans-serif}
+.sba-speed button{min-height:44px;min-width:44px;padding:.3rem .9rem;border-radius:999px;border:2px solid #94a3b8;background:transparent;color:inherit;font:inherit;cursor:pointer}
+.sba-speed button.on{background:#fff;color:#0f172a;border-color:#fff}
+.sba-speed button:focus-visible{outline:3px solid #fde047;outline-offset:2px}
 @media (min-width:560px){.sba-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .sba-card{display:flex;flex-direction:column;align-items:flex-start;gap:.15rem;text-align:start;padding:.55rem .6rem;border:1px solid #2b3f68;background:linear-gradient(160deg,#16233f,#0f1a30);color:#fff;border-radius:14px;font:inherit;cursor:pointer;min-height:5.4rem}
 .sba-card:active{transform:scale(.98)}
@@ -195,6 +199,10 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
 
   // ---- sound (WebAudio, only after the first touch) and settings kept on the device ----
   const store = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage blocked: nothing is kept */ } } };
+  // How fast the games run: Easy is the default (a child who is still reading the question is not run over); the choice is kept. Only the live loop is scaled
+  // (frame()), the step() the tests call by hand is not.
+  const SPEEDS = { slow: 0.55, easy: 0.75, normal: 1 };
+  const speedPref = () => { const v = store.get('sb_arcade_speed', 'easy'); return SPEEDS[v] ? v : 'easy'; };
   let actx = null;
   function beep(freq, dur, type, vol) {
     if (store.get('sb_arcade_mute', false)) return;
@@ -274,7 +282,7 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
     let W = 300, H = 400, dpr = 1;
     const E = {
       el, stage, g, R, seed, meta, L, pack, rtlPage, auto: opt.auto || null, manual: !!opt.manual,
-      get W() { return W; }, get H() { return H; }, rnd: R, t: 0, FONT,
+      get W() { return W; }, get H() { return H; }, rnd: R, t: 0, FONT, speed: SPEEDS[speedPref()],
       lives: 3, score: 0, streak: 0, right: 0, goal: 8, state: 'hub', game: null, inst: null, paused: false, q: null, steps: 0, coinsEarned: 0, wrongs: 0,
     };
     const feed = makeFeed(pack, R);
@@ -417,6 +425,7 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
     // ---- screens ----
     function show(html, clear) { layer.hidden = false; layer.classList.toggle('clear', !!clear); layer.innerHTML = html; layer.scrollTop = 0; }
     function hideLayer() { layer.hidden = true; layer.innerHTML = ''; }
+    const speedHtml = () => `<div class="sba-speed" role="radiogroup" aria-label="${esc(L.speed)}"><span>${esc(L.speed)}</span>${['slow', 'easy', 'normal'].map(k => `<button type="button" role="radio" aria-checked="${speedPref() === k}" class="${speedPref() === k ? 'on' : ''}" data-sp="${k}">${esc(L['sp_' + k])}</button>`).join('')}</div>`;
     function showHub() {
       E.state = 'hub'; E.paused = false; timers.length = 0; if (E.inst && E.inst.destroy) { try { E.inst.destroy(); } catch (e) { /* closing */ } } E.inst = null; E.game = null; E.clearAsk(); E.setQuestion(null); setQ(false);
       pauseBtn.hidden = true; titleEl.textContent = '🎮 ' + L.games; paintStats(); g.clearRect(0, 0, W, H);
@@ -428,7 +437,7 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
       show(`<div class="sba-hub"><h2 dir="auto">${esc(meta.title)}</h2><p dir="auto">${esc(L.made(pack.items.length))}</p><div class="sba-grid">${GAMES.map(gm => {
         const bb = b[meta.pid + '|' + gm.id];
         return `<button type="button" class="sba-card" data-g="${gm.id}"><em aria-hidden="true">${gm.emoji}</em><b>${esc(gm.name)}</b><span>${esc(gm.teach)}</span>${bb ? `<small>${'⭐'.repeat(bb.stars)} ${esc(L.best)} ${bb.score}</small>` : ''}</button>`;
-      }).join('')}</div></div>`);
+      }).join('')}</div>${speedHtml()}</div>`);
     }
     function showResult(won) {
       const earned = E.right;
@@ -437,7 +446,7 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
         <div class="sba-row"><button type="button" class="sba-btn" data-g="${E.game.id}">${esc(L.again)}</button><button type="button" class="sba-btn alt" data-a="hub">${esc(L.hub)}</button></div></div>`);
     }
     function showHow(gm) {
-      show(`<div class="sba-msg"><div class="big">${gm.emoji}</div><h2>${esc(gm.name)}</h2><p dir="auto">${esc(gm.how || gm.teach)}</p><div class="sba-row"><button type="button" class="sba-btn" data-a="go">${esc(L.play)}</button><button type="button" class="sba-btn alt" data-a="hub">${esc(L.hub)}</button></div></div>`);
+      show(`<div class="sba-msg"><div class="big">${gm.emoji}</div><h2>${esc(gm.name)}</h2><p dir="auto">${esc(gm.how || gm.teach)}</p><div class="sba-row"><button type="button" class="sba-btn" data-a="go">${esc(L.play)}</button><button type="button" class="sba-btn alt" data-a="hub">${esc(L.hub)}</button></div>${speedHtml()}</div>`);
       E.pendingGame = gm;
     }
 
@@ -460,7 +469,7 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
       raf = 0;
       if (!current || current !== api) return;
       const dt = lastT ? Math.min(0.05, (ts - lastT) / 1000) : 0.016; lastT = ts;
-      step(dt);
+      step(dt * E.speed);
       raf = requestAnimationFrame(frame);
     }
     function step(dt) {
@@ -524,6 +533,8 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
     function close() { api.destroy(); try { root.SBHost && root.SBHost.onAction && root.SBHost.onAction('gamesClosed', ''); } catch (e) { /* not in the app */ } }
 
     el.addEventListener('click', e => {
+      const sp = e.target.closest('[data-sp]');
+      if (sp) { store.set('sb_arcade_speed', sp.dataset.sp); E.speed = SPEEDS[sp.dataset.sp] || SPEEDS.easy; el.querySelectorAll('[data-sp]').forEach(b => { const on = b.dataset.sp === sp.dataset.sp; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); }); return; }
       const c = e.target.closest('[data-g]'), a = e.target.closest('[data-a]');
       if (c) { const gm = GAMES.find(x => x.id === c.dataset.g); if (gm) { if (c.classList.contains('sba-card') && !store.get('sb_arcade_seen_' + gm.id, false)) { store.set('sb_arcade_seen_' + gm.id, true); showHow(gm); } else start(gm); } return; }
       if (!a) return;

@@ -24,7 +24,8 @@
   }
 
   const css = `
-  .bk-wrap{margin:0 0 2.2rem}
+  .bk-wrap{margin:0 0 2.2rem;content-visibility:auto;contain-intrinsic-size:auto 1250px}
+  @media print{.bk-wrap{content-visibility:visible}}
   .bk-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.6rem 1.2rem;max-width:1500px;margin:0 auto .55rem;font:700 .92rem system-ui,sans-serif;color:#334155}
   .bk-head b{color:#15803d}
   .bk-head label{display:inline-flex;align-items:center;gap:.4rem;font-weight:600;cursor:pointer}
@@ -201,14 +202,24 @@
     t.innerHTML = html;
     t.content.querySelectorAll('.m6-qno').forEach(n => { n.textContent = n.textContent.replace(/\.$/, ''); });
     t.content.querySelectorAll('.m6-parts.block').forEach(p => {
-      const short = [...p.querySelectorAll('.m6-part')].every(part => {
-        const c = part.cloneNode(true);
-        c.querySelectorAll('.sb-ans,.sb-solve,.katex-mathml,.m6-tr').forEach(x => x.remove());
-        return c.textContent.replace(/\s+/g, ' ').trim().length <= 30;
-      });
+      const short = [...p.querySelectorAll('.m6-part')].every(part => ownText(part, 2000).replace(/\s+/g, ' ').trim().length <= 30);
       if (short) p.classList.remove('block');
     });
     return t.innerHTML;
+  }
+  // the text of a part without its Ans button, answer box, hidden MathML copy and translation line, read straight from the nodes and cut off at `max`
+  // characters (a part is "short" or it is not: there is no need to read all of a long one). The old way cloned every part, which cost 0.5 s a chapter.
+  const SKIP_TEXT = '.sb-ans,.sb-solve,.katex-mathml,.m6-tr';
+  function ownText(el, max) {
+    let s = '';
+    const walk = node => {
+      for (let c = node.firstChild; c && s.length <= max; c = c.nextSibling) {
+        if (c.nodeType === 3) s += c.data;
+        else if (c.nodeType === 1 && !c.matches(SKIP_TEXT)) walk(c);
+      }
+    };
+    walk(el);
+    return s;
   }
 
   const label = pg => pg ? (pg.printed != null ? String(pg.printed) : pg.pdf != null ? 'Scan ' + pg.pdf : '') : '';
@@ -409,7 +420,7 @@
       sec.className = 'bk-wrap bk-dom';
       const labs = pair.map((e, k) => e ? labelOf(e, i + k) : '').filter(Boolean);
       sec.dataset.label = labs.length > 1 && labs[0] !== labs[1] ? labs[0] + '–' + labs[1] : labs[0];
-      if (pair.some(e => e && /exercise|مشق|تمرین|questions?/i.test((e.innerText || '').slice(0, 120)))) sec.dataset.ex = '1';
+      if (pair.some(e => e && /exercise|مشق|تمرین|questions?/i.test((e.textContent || '').slice(0, 120)))) sec.dataset.ex = '1';
       sec.innerHTML = '<div class="bk-head"><span>Page ' + esc(sec.dataset.label) + '</span><label><input type="checkbox" checked onchange="this.closest(\'.bk-wrap\').querySelector(\'.bk-spread\').classList.toggle(\'bk-ans\',this.checked)"> Show answers &amp; solutions</label></div><div class="bk-spread bk-ans' + (rtl ? ' bk-rtl' : '') + '" dir="' + (rtl ? 'rtl' : 'ltr') + '"></div>';
       const sp = sec.querySelector('.bk-spread');
       pair.forEach((el, k) => {
