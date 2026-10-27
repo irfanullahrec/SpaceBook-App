@@ -29,3 +29,21 @@ textarea:focus-visible,
     scroll-behavior: auto;
   }
 }
+
+/* touch screens: the controls that were smaller than 44 x 44 px are brought to that size (WCAG 2.5.5, a child's thumb); tests/launch/touch_zoom.js measures it */
+@media (pointer: coarse) {
+  body .hamburger-btn, body .sb-off-btn, body .header-user-avatar, body .math-sidebar-back-btn, body .rt-size-toggle, body .sbl-btn { width: auto; height: auto; min-width: 44px; min-height: 44px; }
+  body .nav-tab-back, body .math-top-tab, body .sb-fs-btn, body .sbl-class-star, body .rt-filter-input, body .header-search-box input, body .math-acc-header { min-height: 44px; }
+  body .header-brand, body .sbr-chip { min-height: 44px; display: inline-flex; align-items: center; }
+}
+
+/* phones: the header was wider than the screen, so the offline button, the coins and the account button were pushed off the right edge (found by
+   tests/launch/touch_zoom.js, header check). The brand text goes, the gaps shrink and the search box takes what is left. */
+@media (max-width: 560px) {
+  #top-header { padding: 0 8px; gap: 4px; }
+  #top-header .header-left { gap: 2px; }
+  #top-header .header-brand-text { display: none; }
+  #top-header .header-nav-tabs { display: none; }          /* it was squeezed to a 10 px sliver here; the hamburger menu has the same pages */
+  #top-header .header-right-group { gap: 4px; flex: 1 1 auto; min-width: 0; justify-content: flex-end; }
+  #top-header .header-right-search { flex: 1 1 40px; min-width: 40px; max-width: none; }
+}

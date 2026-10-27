@@ -1,9 +1,9 @@
 {
  "schema": "spacebook.app-sync/1",
- "serviceWorker": "03851b114c10",
+ "serviceWorker": "e3fc592890dd",
  "site": {
   "files": 261,
-  "sha256": "26b228e1cd99d9e253ae4c9aff67b85a0980cf2cfeedb778879b64ebbab400f1"
+  "sha256": "ebd46d4257b5d00e2f71e1a8aa94ec7f91f318ad9260758cda5856bdb79658cd"
  },
  "generated": {
   "app_catalog.json": "18237698537946f9810420156a8ee7a1c66d04cb81cbae9b8f4f67fbb7e817a9",
