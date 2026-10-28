@@ -11,6 +11,8 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.widget.Toast
 import android.webkit.JavascriptInterface
+import android.webkit.ServiceWorkerClient
+import android.webkit.ServiceWorkerController
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
@@ -310,6 +312,15 @@ class WebController(
         wv.addJavascriptInterface(Host(), "SBHost")
         // pages, scripts and books come from the phone's own copy first (SiteStore); only the API and anything new goes to the network
         store.onMissing = { path -> main.post { missing = path; loading = false } }
+        // The website's service worker (sw.js) answers the page's requests itself, from the live website, so the phone's own copy of the site (SiteStore)
+        // is never asked: a worker registered by an earlier visit kept the app on the website's older pages and scripts. A worker's own requests
+        // (its script and every file it fetches) are answered by the store too: sw.js is refused (404, nothing is registered) and a worker that is
+        // already there reads the same files as the page.
+        runCatching {
+            ServiceWorkerController.getInstance().setServiceWorkerClient(object : ServiceWorkerClient() {
+                override fun shouldInterceptRequest(request: WebResourceRequest): WebResourceResponse? = store.intercept(request)
+            })
+        }
         wv.webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? = store.intercept(request)
 

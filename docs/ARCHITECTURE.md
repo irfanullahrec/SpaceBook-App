@@ -75,7 +75,10 @@ pictures), so the app keeps its own copy and answers the WebView from it:
   reached) never takes the app back to older books, while a later deployment reaches the app by itself (new files are downloaded and kept).
   A list file kept from an older visit and older than `builtAt` is ignored in favour of the copy inside the app.
   `api/...` calls are never answered here: they go to the real server. The website's own service worker is refused (`sw.js` gets 404):
-  the app is its own offline layer.
+  the app is its own offline layer. A worker's own requests (its script and every file it fetches) do not pass through the WebView client, so
+  `SbWebView.create` also sets a `ServiceWorkerClient` that asks this same store; before that (found on a real phone, 2026-10-29) the page
+  registered `sw.js` 3 s after it loaded (`js/core/offline.js`), the worker fetched pages and scripts from the live website, and the phone's
+  copy was never used again after the first start (`docs/launch/FINDINGS_REGISTER.md` X-04 in the website repo).
 * Files are immutable per `?v=<hash>` (the site names them by content hash), so a copy is never stale. `lazy.html` and `content/*.json`
   are asked of the site first (3 s), and a new `lazy.html` is kept only when every script it names is on the phone, so the phone never
   holds a page whose files it lacks.

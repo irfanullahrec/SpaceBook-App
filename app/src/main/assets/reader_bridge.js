@@ -19,6 +19,27 @@
   'use strict';
   if (window.SBApp && window.SBApp.__v) return;
 
+  // The app is its own offline layer (SiteStore answers every file from the phone), so the website's service worker is not wanted. A worker's own
+  // script request never reaches the app's store, so it cannot be refused there: the page is not allowed to register one (js/core/offline.js does it
+  // 3 s after the page loads), one an earlier visit registered is removed with its caches, and when such a worker was controlling THIS page (it answers
+  // from its own caches, which can hold older copies of the files: the phone showed the website's old reader) the page is loaded once more without it,
+  // before this bridge reports ready, so the app asks for nothing until the clean page is there.
+  try {
+    var swc = navigator.serviceWorker;
+    if (swc) {
+      try { Object.defineProperty(swc, 'register', { configurable: true, value: function () { return Promise.reject(new Error('The app keeps its own copy of the site.')); } }); } catch (e) { /* the page catches a refused registration anyway */ }
+      var swGone = [];
+      if (swc.getRegistrations) swGone.push(swc.getRegistrations().then(function (rs) { return Promise.all(rs.map(function (r) { return r.unregister(); })); }));
+      if (window.caches && caches.keys) swGone.push(caches.keys().then(function (ks) { return Promise.all(ks.map(function (k) { return caches.delete(k); })); }));
+      if (swc.controller && window.SBHost && !sessionStorage.getItem('sbapp-sw-clean')) {
+        sessionStorage.setItem('sbapp-sw-clean', '1');
+        var again = function () { location.reload(); };
+        Promise.all(swGone).then(again, again);
+        return;                                                  // nothing else runs on this page: the reload brings the clean one
+      }
+    }
+  } catch (e) { /* not available: nothing to remove */ }
+
   var doc = document, html = doc.documentElement;
   html.classList.add('sbapp');
   var cfg = { paginate: true };
