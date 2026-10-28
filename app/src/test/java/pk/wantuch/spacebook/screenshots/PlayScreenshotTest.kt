@@ -45,4 +45,5 @@ class PlayScreenshotTest {
     @Test fun reelQuestion() = shot("reel-question") { ReelCard(qs[3], picked = null, page = 4, onPick = {}) }
     @Test fun reelAnswered() = shot("reel-answered") { ReelCard(qs[1], picked = (qs[1].answer + 1) % qs[1].options.size, page = 2, onPick = {}) }
     @Test fun lock() = shot("lock", dark = true) { LockScreen(expiredAt = 1_790_000_000_000L) { UnlockResult.Wrong(3) } }
+    @Test fun lockTrial() = shot("lock-trial") { LockScreen(expiredAt = 1_790_000_000_000L, trial = true, deviceId = "ABCD-2345") { UnlockResult.Wrong(3) } }
 }

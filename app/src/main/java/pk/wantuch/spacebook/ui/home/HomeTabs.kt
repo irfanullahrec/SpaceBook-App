@@ -291,6 +291,8 @@ data class AccountInfo(
     /** epoch millis when this preview build stops working, 0 = never */
     val previewEnds: Long = 0,
     val previewDaysLeft: Int = 0,
+    /** previewEnds is the end of the person's 1-month free trial, not of a dated preview build */
+    val previewTrial: Boolean = false,
 )
 
 private fun planName(id: String) = id.ifBlank { "free" }.replaceFirstChar { it.uppercase() }
@@ -333,7 +335,8 @@ internal fun AccountTab(info: AccountInfo, prep: PrepSnapshot?, actions: HomeAct
         ))
         if (info.previewEnds > 0) {
             Text(
-                "This is a preview build: it works for ${info.previewDaysLeft} more ${if (info.previewDaysLeft == 1) "day" else "days"}. After that it needs the unlock code from the SpaceBook team.",
+                if (info.previewTrial) "Access: ${info.previewDaysLeft} more ${if (info.previewDaysLeft == 1) "day" else "days"}. After that, contact the developer on WhatsApp ${pk.wantuch.spacebook.expiry.Contact.LOCAL}."
+                else "This is a preview build: it works for ${info.previewDaysLeft} more ${if (info.previewDaysLeft == 1) "day" else "days"}. After that it needs the unlock code from the SpaceBook team.",
                 style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }

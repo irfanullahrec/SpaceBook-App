@@ -96,6 +96,9 @@
     try { Object.defineProperty(window, 'speechSynthesis', { value: synth, configurable: true, writable: true }); } catch (e) { window.speechSynthesis = synth; }
   })();
 
+  // a button the person can see (a fixed or sticky strip has no offsetParent, so the boxes are asked)
+  function shown(b) { return !!b && b.getClientRects().length > 0 && getComputedStyle(b).visibility !== 'hidden'; }
+
   // ---------- where the readable content is ----------
   function root() {
     var cands = ['#subjTabContent', '#mathTabContent', '#page-content'].map(function (q) { return $(q); }).filter(Boolean);
@@ -115,6 +118,16 @@
     return !(k.textContent || '').replace(/\s+/g, '').length;
   }
 
+  // a printed page (.bk-page) that carries nothing but its page number, its Board SLOs / Exercise bar and perhaps a heading (a divider page,
+  // a page the scan left blank) is not a page to turn to: the old page cards skipped it too
+  function blankBook(p) {
+    var k = p.cloneNode(true);
+    $$('.sb-pt, [class$="-tools"], [class*="-tools "], [class$="-help"], [class*="-help "], [aria-label="Source page"], .c1-pno, .bk-no, .bk-foot, .sbl-tools, script, style', k).forEach(function (e) { e.remove(); });
+    if (k.querySelector('img, svg, canvas, table, video, audio, iframe, input, textarea, select, .katex, .sb-ans')) return false;
+    $$('[role="heading"], h1, h2, h3, h4, h5, h6', k).forEach(function (e) { e.remove(); });
+    return !(k.textContent || '').replace(/\s+/g, '').length;
+  }
+
   // The units shown one at a time. A printed-page view (.bk-page, the web's open-book exercise pages) wins;
   // otherwise each topic / page card of the tab (one topic / exercise / section) is a page, however deep the tab nests them.
   var CARD_SEL = '.math-topic-card, .para-card, .sb-pgcard';
@@ -122,7 +135,10 @@
     var r = root();
     if (!r) return { mode: '', units: [] };
     var pages = $$('.bk-page', r);
-    if (pages.length) return { mode: 'book', units: pages };
+    if (pages.length) {
+      var real = pages.filter(function (p) { var b = blankBook(p); p.classList.toggle('sbapp-blank', b); var w = p.closest('.bk-wrap'); if (w) w.classList.toggle('sbapp-blank', b); return !b; });
+      return { mode: 'book', units: real.length ? real : pages };
+    }
     var nested = $$(CARD_SEL, r).filter(function (c) {
       var up = c.parentElement && c.parentElement.closest(CARD_SEL);
       return !up && !c.closest('.bk-modal, .sb-tp, .sb-pt, dialog') && (c.textContent || '').trim().length > 0;
@@ -183,6 +199,8 @@
     units.forEach(function (u, i) {
       u.classList.toggle('sbapp-hide', i !== cur);
       u.classList.toggle('sbapp-page-on', i === cur);
+      var w = mode === 'book' && u.closest ? u.closest('.bk-wrap') : null;      // a printed page sits in a box with its own heading: it goes with the page
+      if (w) w.classList.toggle('sbapp-hide', i !== cur);
     });
     if (mode === 'cards') openCard(units[cur]);
     dressPage();
@@ -218,9 +236,15 @@
     if (key === lastKey && units.length && sameList && units.every(function (u) { return doc.body.contains(u); })) return;
     // the tab or chapter changed (or the content was rebuilt): start again from the saved page or the first
     var changedTab = c.mode !== mode || tab !== lastTab;
-    units.forEach(function (u) { u.classList.remove('sbapp-hide', 'sbapp-page-on'); });
+    units.forEach(function (u) { u.classList.remove('sbapp-hide', 'sbapp-page-on'); var w = u.closest && u.closest('.bk-wrap'); if (w) w.classList.remove('sbapp-hide'); });
     lastKey = key; lastTab = tab; mode = c.mode; units = c.units;
-    var start = pendingStart >= 0 ? pendingStart : (changedTab ? 0 : cur);
+    // a printed-page book (the same pages the website shows): its Exercises tab opens at the first exercise page, not at the first page of the unit
+    var firstEx = 0;
+    if (c.mode === 'book' && /exercise/i.test(tab)) {
+      var fi = units.findIndex(function (u) { var w = u.closest('.bk-wrap'); return !!(w && w.hasAttribute('data-ex')); });
+      firstEx = fi < 0 ? 0 : fi;
+    }
+    var start = pendingStart > 0 ? pendingStart : (changedTab || pendingStart === 0 ? firstEx : cur);
     pendingStart = -1;
     if (units.length) show(start); else { cur = 0; dressPage(); report(); }
     setTimeout(dressPage, 350);
@@ -279,13 +303,16 @@
     selectedText: function () { return String(window.getSelection ? window.getSelection() : '').trim(); },
     setTextZoom: function (pct) { html.style.fontSize = pct + '%'; },
     clickTab: function (label) {
-      // the same whitespace as tabs() reports, so a label read from tabs() always finds its button
+      // the same whitespace as tabs() reports, so a label read from tabs() always finds its button; the tab strip first (its exact words), then the sticky bar
       var want = String(label).replace(/\s+/g, ' ').trim();
-      var b = $$('.math-nav-tabs button, .topic-sub-tabs-bar button').find(function (x) { return (x.textContent || '').replace(/\s+/g, ' ').indexOf(want) >= 0; });
+      var text = function (x) { return (x.textContent || '').replace(/\s+/g, ' ').trim(); };
+      var strip = $$('.math-nav-tabs button').filter(shown), bar = $$('.topic-sub-tabs-bar button').filter(shown);
+      var b = strip.find(function (x) { return text(x) === want; }) || strip.find(function (x) { return text(x).indexOf(want) >= 0; }) || bar.find(function (x) { return text(x).indexOf(want) >= 0; });
       if (b) b.click();
       return !!b;
     },
-    tabs: function () { return $$('.math-nav-tabs button').map(function (b) { return (b.textContent || '').replace(/\s+/g, ' ').trim(); }); },
+    // only the tabs the website itself shows: a tab it hides (Glossary, Use of Language ... of a book whose pages hold them) would be a button that goes nowhere
+    tabs: function () { return $$('.math-nav-tabs button').filter(shown).map(function (b) { return (b.textContent || '').replace(/\s+/g, ' ').trim(); }); },
 
     // Open a chapter exactly the way the website's own search does: openSubject, then the chapter's button.
     open: async function (classId, subjectId, call, startPage, tab) {

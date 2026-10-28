@@ -80,6 +80,9 @@ html.sbapp .bk-page { min-height: 0 !important; }
 
 /* the web's floating bars are replaced by the app's controls */
 html.sbapp .bk-nav { display: none !important; }
+/* a printed page: its number is in the footer circle, so the heading above it ("Textbook page 7", the exercise names) is not repeated; a blank page and the box of a page that is not on screen stay hidden */
+html.sbapp .bk-head { display: none !important; }
+html.sbapp .sbapp-blank, html.sbapp .bk-wrap.sbapp-hide { display: none !important; }
 
 /* meanings open in the app's own pop-up: no text selection handles or system menu, and the website's floating cards stay hidden */
 html.sbapp, html.sbapp * { -webkit-user-select: none !important; user-select: none !important; -webkit-touch-callout: none !important; -webkit-tap-highlight-color: transparent; }

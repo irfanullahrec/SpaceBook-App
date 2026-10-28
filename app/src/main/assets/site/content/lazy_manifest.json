@@ -5258,8 +5258,8 @@
   },
   {
    "src": "js/stat_11_book.js",
-   "bytes": 2275573,
-   "sha256": "71f663e00a796428a9d47e0e816b899707783ab8c373d766a1887a6834139e33",
+   "bytes": 2275851,
+   "sha256": "15624db6e14a5e83e007b41d55d0721735e80a0fbf055c78cf5ba2f880abf508",
    "stubs": [
     {
      "name": "STAT_11_BOOK",
@@ -7457,7 +7457,7 @@
   {
    "src": "js/fills_data.js",
    "bytes": 116780,
-   "sha256": "eb13c9dbbbb225579becb22a5fc924f6ea474f16dc3c6e608fa1dbdd77a9374e",
+   "sha256": "53e2fbfbb41008f6141a2143f51318b5b194e2b95c716ec0167f169e09afdc49",
    "stubs": [
     {
      "name": "SB_FILLS",

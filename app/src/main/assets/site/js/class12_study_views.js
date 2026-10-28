@@ -91,6 +91,26 @@
     const label=[en&&'English',ur&&'Urdu',ps&&'Pashto'].filter(Boolean).join(' / ');
     return en||ur||ps?`<details class="class12-language"><summary>${answer?'Answer':'Question'} in ${label}</summary>${en?`<p lang="en">${safe(en)}</p>`:''}${ur?`<p dir="rtl" lang="ur">${safe(ur)}</p>`:''}${ps?`<p dir="rtl" lang="ps">${safe(ps)}</p>`:''}</details>`:'';
   };
+  // The instruction of a group of questions ("Fill in the blanks below.", "خالی جگہیں پُر کریں۔", "سوال ۳: درست جواب پر نشان لگائیں۔") or a piece of
+  // the page that is not a question at all ("c) Queries" - an option of the question above): the questions of the group are answered one by one,
+  // so the line itself waits for no answer. A real writing task ("Write a letter ...") is not an instruction: it keeps its note until it is answered.
+  const INSTR_EN=/^\s*(?:(?:[A-Z]|\d+)\s*[.:)]\s*)?(?:fill|filling|choose|put|change|make|replace|combine|determine|decide|identify|tell|use|ask|translate|search|look|find|consult|now|each|select|circle|complete|underline|rewrite|match|rearrange|correct|supply|tick|mark|answer|read|study|which of the three|using|the following|active and passive|interpret|create|give|state|define|differentiate|explain|discuss|write|attempt|solve|compare|list|name|draw|construct|punctuate|paraphrase|summari[sz]e)\b[^?]*$/i;
+  const WRITING_TASK=/^\s*(?:activity\s*[:.\-]?\s*|(?:[A-Z]|\d+)\s*[.:)]\s*)?write\s+(?:a|an|the|your)\s+(?:letter|essay|paragraph|story|application|summary|dialogue|email|speech|report|note|article|review)/i;
+  const INSTR_UR=/(?:خالی\s*جگہ|درست\s*جواب|درست\s*\/\s*غلط|درست\s*غلط|ہاں|نشان\s*لگائیں|مناسب\s*الفاظ|ملائیں|کالم|انتخاب\s*کریں|مختصر\s*جواب|تفصیلی\s*جواب|تفصیل\s*سے\s*جواب|درج\s*ذیل|مندرجہ\s*ذیل)/;
+  const plainQ=item=>String(item.q||'').replace(/&#39;/g,"'").replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+  const isInstruction=item=>{
+    const q=plainQ(item);
+    if(!q)return false;
+    if(/^\s*[A-F][.:]\s*which of the three sentences/i.test(q))return true;
+    if(/^[a-z]/.test(q)&&q.length<120)return true;                              // starts in lower case: the rest of a question cut in two
+    if(/[?؟]/.test(q))return false;
+    if(/^\s*[a-d]\)\s/i.test(q)&&q.length<80)return true;                       // "c) Optical disks": an option of the question above
+    if(q.length<26&&!/[a-z]{3,}.*\b(is|are|was|were)\b/i.test(q)&&/[۔.]$/.test(q))return true;   // a broken piece of a sentence
+    if(q.length>=300)return false;
+    if(WRITING_TASK.test(q))return false;
+    return INSTR_EN.test(q)||INSTR_UR.test(q);
+  };
+  const hasNoAnswer=(item,choice)=>!(item.sol||item.solution||item.explanation||item.exp||item.plainAnswer||(typeof item.answer==='string'&&item.answer)||(typeof item.ans==='string'&&item.ans)||item.desc||array(item.steps).length||choice.correct!==null);
   function answerBody(item,choice){
     const text=item.sol||item.solution||item.explanation||item.exp||item.plainAnswer||(typeof item.answer==='string'?item.answer:typeof item.ans==='string'?item.ans:'')||item.desc||'';
     const steps=array(item.steps);
@@ -101,17 +121,17 @@
       ${steps.length?((()=>{const st=steps.map(step=>typeof step==='string'?step:step.text||'');return window.SBVR&&window.SBVR.autoHtml&&!st.some(s=>/\n/.test(s))?window.SBVR.autoHtml({steps:st,question:item.q,solutionStatus:item.solutionStatus}):'';})())||`<ol>${steps.map(step=>{const s=typeof step==='string'?step:step.text||'';return /\n/.test(s)?`<li><pre class="class12-answer-code"><code>${safe(s)}</code></pre></li>`:`<li>${safe(s)}</li>`;}).join('')}</ol>`:text?`<div class="class12-answer-text">${text}</div>`:''}
       ${steps.length&&final?`<p><strong>Answer:</strong> ${final}</p>`:''}
       ${translation(item,true)}
-      ${!hasAnswer?'<p class="class12-study-note" data-answer-pending="true">The answer to this saved question still needs to be completed.</p>':''}`;
+      ${!hasAnswer&&!isInstruction(item)?(WRITING_TASK.test(plainQ(item))?'<p class="class12-study-note">Writing activity: write it in your own words in your notebook. Your teacher can check it.</p>':'<p class="class12-study-note" data-answer-pending="true">The answer to this saved question still needs to be completed.</p>'):''}`;
   }
   function card(item,index,prefix){
     const choice=choices(item),canQuiz=choice.options.length>1&&choice.correct!==null;
     return `<article class="math-topic-card class12-question" id="${safe(prefix)}-${index}">
       <div class="math-badge">${choice.options.length?'MCQ':'Question'} ${safe(item.qNo||index+1)}</div>
       ${item.origin==='SpaceBook supplementary practice'?'<p class="class12-study-note">SpaceBook supplementary practice</p>':''}
-      <div class="class12-question-text" dir="auto">${item.q}</div>${translation(item)}
+      <div class="class12-question-text" dir="auto">${item.q}${item.solId&&!choice.options.length?`<button type="button" class="sb-ans" data-langs="en,ur,ps" aria-expanded="false" title="Answer and step-by-step explanation" onclick="event.stopPropagation();m6SolOpen(this,'${safe(item.solId)}')">Ans</button>`:''}</div>${translation(item)}
       ${item.diagramSvg||''}
       ${choice.options.length?`<div class="class12-choices"${item.lang==='ur'?' dir="rtl"':''}>${choice.options.map((option,i)=>canQuiz?`<button type="button" class="math-mcq-opt" data-option="${i}" data-correct="${choice.correct}" onclick="class12CheckAnswer(this)"><strong>${String.fromCharCode(65+i)}.</strong> ${option}</button>`:`<div><strong>${String.fromCharCode(65+i)}.</strong> ${option}</div>`).join('')}</div><p role="status"></p>`:''}
-      <details class="class12-answer"${item.lang==='ur'?' dir="rtl"':''}><summary>Show answer and explanation</summary>${answerBody(item,choice)}</details>
+      ${item.solId&&!choice.options.length?'':hasNoAnswer(item,choice)&&isInstruction(item)?'':`<details class="class12-answer"${item.lang==='ur'?' dir="rtl"':''}><summary>Show answer and explanation</summary>${answerBody(item,choice)}</details>`}
     </article>`;
   }
   window.class12CheckAnswer=function(button){
@@ -120,8 +140,70 @@
     card.querySelector('[role="status"]').textContent=correct===chosen?'Correct. The explanation is shown below.':`The correct answer is ${String.fromCharCode(65+correct)}. Read the explanation below.`;
     card.querySelector('.class12-answer').open=true;
   };
+  // Class 11: a saved question is the SAME textbook question that the reviewed book (its pages, with the Ans button) already answers.
+  // The saved records carry no answer of their own, so the answer of the matching book question is shown here too (same text, same unit).
+  const bookIndexCache=new Map();
+  // a question number in front of the text ("(i)", "a.", "3)", "(الف)", "۲۔") is not part of the question
+  const ENUM=/^\s*(?:\(\s*(?:[ivxlc]+|[a-z]|\d+|[\u06F0-\u06F9\u0660-\u0669]+|الف|ب|ج|د)\s*\)|(?:[ivxlc]+|[a-z]|\d+|[\u06F0-\u06F9\u0660-\u0669]+|الف|ب|ج|د)\s*[.\u06D4:])\s*/i;
+  const qKey=s=>String(s==null?'':s).replace(/&#39;|&apos;/g,"'").replace(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/<[^>]*>/g,' ').replace(ENUM,'').toLowerCase().replace(/[\u200b-\u200f]/g,'').replace(/[^\p{L}\p{N}]+/gu,' ').trim();
+  function bookQuestions(view,chapter){
+    const lib=window.CLS11_BOOKS&&window.CLS11_BOOKS[view];          // the page books of Class 11 are registered under the same key as the subject view
+    if(!lib||!lib.units)return null;
+    const unit=lib.units.find(u=>String(u.number)===String(chapter.number??chapter.num));
+    if(!unit)return null;
+    const ck=view+'|'+unit.number;
+    if(bookIndexCache.has(ck))return bookIndexCache.get(ck);
+    const idx=new Map(),sols=window.CLS6_SOLUTIONS||{};
+    idx.all=[];
+    const walk=list=>(list||[]).forEach(b=>{
+      if(!b||typeof b!=='object')return;
+      if(b.solId&&sols[b.solId])for(const f of ['en','ur','text','q']){const k=qKey(b[f]);if(k&&!idx.has(k))idx.set(k,b.solId);if(k)idx.all.push([k,b.solId]);}
+      if(b.blocks)walk(b.blocks);
+      if(Array.isArray(b.parts))walk(b.parts);
+      if(Array.isArray(b.items))walk(b.items);
+    });
+    (unit.sections||[]).forEach(s=>walk(s.blocks));
+    bookIndexCache.set(ck,idx);
+    return idx;
+  }
+  // the same question: the same text, or (a multiple-choice stem, or a text cut short by "…") the beginning of the book's text
+  function findSol(idx,text){
+    if(!text)return null;
+    const k=qKey(text);
+    if(!k)return null;
+    if(idx.has(k))return idx.get(k);
+    const stem=qKey(String(text).split('…')[0]);
+    if(stem.length<5)return null;
+    const hits=idx.all.filter(([bk])=>bk===stem||bk.startsWith(stem+' ')||(stem.length>=14&&bk.startsWith(stem)));
+    const ids=[...new Set(hits.map(h=>h[1]))];
+    return ids.length===1?ids[0]:null;
+  }
+  function fillFromBook(view,chapter,bank){
+    if(state.selectedClass!=='cls11'||!chapter||!chapter.class11Adapted)return;
+    const idx=bookQuestions(view,chapter);
+    if(!idx||!idx.size)return;
+    const sols=window.CLS6_SOLUTIONS||{};
+    for(const category of Object.keys(bank))for(const item of array(bank[category])){
+      if(!item||typeof item!=='object'||item.sol||item.solution||item.plainAnswer||array(item.steps).length||(typeof item.answer==='string'&&item.answer))continue;
+      const id=findSol(idx,item.q)||findSol(idx,item.qEnglish)||findSol(idx,item.qUrdu);
+      const rec=id&&sols[id];
+      if(!rec)continue;
+      const lines=lang=>array(rec.steps).map(s=>typeof s==='string'?s:(s&&(s[lang]||''))||'').filter(Boolean);
+      const main=item.lang==='ur'?(lines('ur').length?lines('ur'):lines('en')):lines('en');
+      if(!main.length&&!rec.answer)continue;
+      item.solId=id;
+      item.steps=main;
+      item.plainAnswer=item.answer=String(rec.answer||'');
+      item.sol=item.solution=main.join('\n')||item.plainAnswer;
+      item.answerOrigin='SpaceBook model answer (not printed in the textbook)';
+      if(lines('ur').length&&item.lang!=='ur')item.solUrdu=lines('ur').join('\n');
+      if(lines('ps').length)item.solPashto=lines('ps').join('\n');
+      if(item.lang==='ur'&&lines('en').length)item.solEnglish=lines('en').join('\n');
+    }
+  }
   function renderBank(key,chapter,kind){
     const bank=getClass12QuestionBank(chapter,kind);
+    fillFromBook(key,chapter,bank);
     const fields=[['mcqs','🎯 MCQs'],['objective','🧩 Fill in, True/False & Matching'],['shortQuestions','📝 Short Questions'],['longQuestions','📚 Long Questions'],['numericals','🔢 Numericals'],['activities','🛠️ Activities']]; // Class 9 wording
     const available=fields.filter(([field])=>bank[field].length);
     if(!available.length)return null;

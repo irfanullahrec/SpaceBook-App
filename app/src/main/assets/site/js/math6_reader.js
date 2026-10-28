@@ -306,9 +306,11 @@
     }
     return solLoads[cls];
   }
+  // the answers the books ship inline: the page books of Class 5 keep theirs in CLS5_SOLUTIONS (js/*_5_*.js), every other book in CLS6_SOLUTIONS
+  const otherSols = id => { const a = window.CLS6_SOLUTIONS || {}; if (a[id]) return a; const b = window.CLS5_SOLUTIONS || {}; return b[id] ? b : a; };
   window.m6SolOpen = function (btn, id, cls) {
     if (KEYREC[id]) { SBSolve.toggle(btn, KEYREC[id], {inline, plain}); return; }
-    const other = id.includes('-');   // other Class 6 books ship their answers inline (CLS6_SOLUTIONS)
+    const other = id.includes('-');   // other books ship their answers inline (CLS6_SOLUTIONS, CLS5_SOLUTIONS)
     if (!other && cls && String(cls) !== '6') {   // drawn by the open-book view for another Maths class: that class's own solutions
       const key = 'MATH_' + cls + '_SOLUTIONS';
       if (!window[key]) {
@@ -324,10 +326,10 @@
       loadSolutions().then(() => { panel.hidden = true; m6SolOpen(btn, id); }).catch(() => { panel.innerHTML = '<p class="sbs-help">The solution could not be loaded. Please check your connection and try again.</p>'; });
       return;
     }
-    SBSolve.toggle(btn, (other ? window.CLS6_SOLUTIONS || {} : window.MATH_6_SOLUTIONS)[id], {inline, plain});
+    SBSolve.toggle(btn, (other ? otherSols(id) : window.MATH_6_SOLUTIONS)[id], {inline, plain});
   };
   // Inline-option MCQs ("Stem? a. … b. … c. …") become the shared radio widget (js/sb_mcq.js).
-  const solMap = id => String(id).includes('-') ? (window.CLS6_SOLUTIONS || {}) : window.MATH_6_SOLUTIONS;
+  const solMap = id => String(id).includes('-') ? otherSols(String(id)) : window.MATH_6_SOLUTIONS;
   if (window.SBMcq) SBMcq.register('m6', {
     inline,
     sols: id => { const m = solMap(id); return m ? m[id] : undefined; },

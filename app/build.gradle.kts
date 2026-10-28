@@ -13,7 +13,8 @@ plugins {
 // unless -Pspacebook.debugExpireDays=N is given (to try the lock on a phone).
 val unlockProps = Properties().apply { file("unlock.properties").takeIf { it.exists() }?.inputStream()?.use { load(it) } }
 fun expiryMillis(days: Int): String = if (days > 0) "${System.currentTimeMillis() + days * 86_400_000L}L" else "0L"
-val releaseExpireDays = (providers.gradleProperty("spacebook.expireDays").orNull ?: "30").toInt()
+// 0 = a release build has no end date of its own: the person's 1-month free trial (TrialGate, below) is the lock. -Pspacebook.expireDays=N still makes a dated preview build.
+val releaseExpireDays = (providers.gradleProperty("spacebook.expireDays").orNull ?: "0").toInt()
 val debugExpireDays = (providers.gradleProperty("spacebook.debugExpireDays").orNull ?: "0").toInt()
 
 android {
@@ -33,6 +34,9 @@ android {
         buildConfigField("int", "UNLOCK_ITERATIONS", unlockProps.getProperty("iterations", "1"))
         // SHA-256 of the release signing certificate; a release build with a different one refuses to start (security/Integrity.kt). Empty = not pinned yet.
         buildConfigField("String", "CERT_SHA256", "\"${providers.gradleProperty("spacebook.certSha256").orNull ?: ""}\"")
+        // The free trial: this many days from the first start on a phone, then only the lock screen (contact the developer on WhatsApp, or an unlock code).
+        // -Pspacebook.trialDays=0 builds a copy without the trial lock (for development). docs/EXPIRY.md and docs/TRIAL_LOCK.md of the website repository.
+        buildConfigField("int", "TRIAL_DAYS", (providers.gradleProperty("spacebook.trialDays").orNull ?: "30").toInt().toString())
     }
 
     // SITE_URL is the web app (pages, books, API). No database host, user or password is ever put in the APK: the app only

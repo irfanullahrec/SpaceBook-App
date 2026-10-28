@@ -286,11 +286,12 @@ fun SettingsScreen(app: AppViewModel, onBack: () -> Unit) {
             Button(onClick = { siteError = !app.setBaseUrl(site.trim()) }) { Text("Use this address") }
 
             val context = androidx.compose.ui.platform.LocalContext.current
-            val gate = remember { pk.wantuch.spacebook.expiry.ExpiryGate.forApp(context).check() }
+            val gate = remember { pk.wantuch.spacebook.expiry.AccessGate.forApp(context).check() }
             if (gate is pk.wantuch.spacebook.expiry.LockState.Counting) {
                 val date = java.text.DateFormat.getDateInstance(java.text.DateFormat.LONG).format(java.util.Date(gate.expiresAt))
-                Text("Preview build", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 20.dp))
-                Text("This preview works until $date (${gate.daysLeft} ${if (gate.daysLeft == 1) "day" else "days"} left). After that it needs the unlock code from the SpaceBook team.",
+                Text(if (gate.trial) "SpaceBook access" else "Preview build", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = 20.dp))
+                Text(if (gate.trial) "SpaceBook works on this phone until $date (${gate.daysLeft} ${if (gate.daysLeft == 1) "day" else "days"} left). After that, contact the developer on WhatsApp ${pk.wantuch.spacebook.expiry.Contact.LOCAL}."
+                    else "This preview works until $date (${gate.daysLeft} ${if (gate.daysLeft == 1) "day" else "days"} left). After that it needs the unlock code from the SpaceBook team.",
                     style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
