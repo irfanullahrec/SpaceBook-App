@@ -1,18 +1,11 @@
-# The 1-month free trial lock comes first
+# The dated preview lock
 
-Since 2026-10-28 every copy of the app also has the person's **own 30-day free trial** (`expiry/TrialGate.kt`, `LicenseCode.kt`, `AccessGate.kt`): 30 days
-after the first start on a phone only a lock screen is left. It asks the person to **contact the developer on WhatsApp 0343 0155606** or to type an unlock
-code made for that phone. How it works, how to unlock a person, the key, the limits: **`SpaceBook Web/docs/TRIAL_LOCK.md`**. Build settings:
+The app's **1-month free trial lock (30 days, WhatsApp contact, device unlock codes) was removed on 2026-10-29**, when plans and payments arrived: access is now decided
+by the free allowance and the plans the server knows (`SpaceBook Web/docs/BILLING.md`), the same on the website and in the app. Nothing in the app locks
+a person out after a month any more.
 
-```
-.\gradlew.bat :app:assembleRelease                              # 30-day trial, no build end date
-.\gradlew.bat :app:assembleRelease -Pspacebook.trialDays=60      # a 60-day trial
-.\gradlew.bat :app:assembleRelease -Pspacebook.trialDays=0       # no trial lock (a copy for the developer)
-```
-
-A **release build no longer carries a build end date by default** (`-Pspacebook.expireDays` defaults to 0, it was 30): the person's own 30 days are the
-only clock. Everything below describes the older **dated preview lock**, which is still there for a preview APK handed out with
-`-Pspacebook.expireDays=N`; a signed code for the phone opens it too.
+A **release build has no end date** (`-Pspacebook.expireDays` defaults to 0). What is left, and described below, is the **dated preview lock** for a preview APK handed out with
+`-Pspacebook.expireDays=N`: after that date only the unlock screen is shown until the unlock code is typed.
 
 # The offline expiry lock (preview builds)
 

@@ -11,11 +11,11 @@ sealed interface LockState {
     /** this build never expires, or it was opened with the unlock code */
     data object Open : LockState
 
-    /** still working; [daysLeft] counts today. [trial] = the person's 1-month free trial (see [TrialGate]), not a dated preview build */
-    data class Counting(val expiresAt: Long, val daysLeft: Int, val trial: Boolean = false) : LockState
+    /** a dated preview build, still working; [daysLeft] counts today */
+    data class Counting(val expiresAt: Long, val daysLeft: Int) : LockState
 
-    /** the preview period or the free trial is over: only the unlock screen is shown */
-    data class Locked(val expiredAt: Long, val trial: Boolean = false) : LockState
+    /** the dated preview period is over: only the unlock screen is shown */
+    data class Locked(val expiredAt: Long) : LockState
 }
 
 sealed interface UnlockResult {

@@ -37,7 +37,7 @@ import pk.wantuch.spacebook.data.prep.PrepSnapshot
 import pk.wantuch.spacebook.data.prep.ProjectWords
 import pk.wantuch.spacebook.data.remote.Catalog
 import pk.wantuch.spacebook.data.remote.UserDto
-import pk.wantuch.spacebook.expiry.AccessGate
+import pk.wantuch.spacebook.expiry.ExpiryGate
 import pk.wantuch.spacebook.expiry.LockState
 import pk.wantuch.spacebook.ui.AppViewModel
 import pk.wantuch.spacebook.ui.feed.FeedTab
@@ -62,6 +62,8 @@ data class HomeActions(
     val openProfile: () -> Unit = {},
     /** the website's Grammar Stats page on one language: "en" | "ur" | "ps" | "ar" */
     val openGrammar: (lang: String) -> Unit = {},
+    /** the website's plans window (prices, Easypaisa payment) inside the app */
+    val openPlans: () -> Unit = {},
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,9 +81,9 @@ fun HomeScreen(app: AppViewModel, actions: HomeActions, vm: HomeViewModel = hilt
     val grammar = remember { GrammarSummary.load(context) }
     // the News Feed is the tab Home opens on
     var tab by rememberSaveable { mutableIntStateOf(TAB_FEED) }
-    var gate by remember { mutableStateOf(AccessGate.forApp(context).check()) }
+    var gate by remember { mutableStateOf(ExpiryGate.forApp(context).check()) }
     // what was practised on the website while Home was away shows the moment the student comes back
-    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { vm.refresh(); gate = AccessGate.forApp(context).check() }
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { vm.refresh(); gate = ExpiryGate.forApp(context).check() }
     // pulling down refreshes what the open tab shows: the feed's posts, or the statistics
     val onFeed = tab == TAB_FEED
     PullToRefreshBox(
@@ -105,7 +107,7 @@ internal fun accountInfo(user: UserDto?, coins: Int, plan: String, gate: LockSta
         subtitle = if (user != null) user.whatsapp
         else "Reading without an account: progress stays on this phone",
         signedIn = user != null, planId = plan, coins = coins,
-        previewEnds = counting?.expiresAt ?: 0, previewDaysLeft = counting?.daysLeft ?: 0, previewTrial = counting?.trial == true,
+        previewEnds = counting?.expiresAt ?: 0, previewDaysLeft = counting?.daysLeft ?: 0,
     )
 }
 

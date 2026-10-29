@@ -131,8 +131,15 @@ class HomeInteractionTest {
         rule.onNodeWithText("Guest").assertIsDisplayed()
         rule.onNodeWithText("Sign in").performClick()
         rule.onNodeWithText("Profile & settings").performClick()
-        rule.onNodeWithText("Premium").assertIsDisplayed()
+        rule.onNodeWithText("Free for everyone").assertIsDisplayed()       // the plans card (the old static Free / Premium cards are gone)
         assertEquals(listOf("signIn", "profile"), went)
+    }
+
+    @Test fun thePlansCardOpensTheWebsitePlansWindow() {
+        val went = mutableListOf<String>()
+        show(HomeActions(openPlans = { went += "plans" }), tab = TAB_ACCOUNT)
+        rule.onNodeWithText("See plans").performClick()
+        assertEquals(listOf("plans"), went)
     }
 
     @Test fun aSignedInStudentHasNoSignInButton() {
