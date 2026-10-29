@@ -43,6 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -97,7 +98,23 @@ fun LibraryScreen(app: AppViewModel, onOpenSubject: (String) -> Unit, onSearch: 
     var picked by remember(state.classId, classes.size) {
         mutableStateOf(classes.firstOrNull { it.id == state.classId }?.id ?: classes.firstOrNull()?.id.orEmpty())
     }
-    LibraryContent(classes, picked, reading, onPick = { picked = it; app.setClass(it) }, onOpenSubject = onOpenSubject, onSearch = onSearch)
+    var saved by rememberSaveable { mutableStateOf("") }                 // the board chosen for the class: "cls1:munawar", "" = Government
+    var dialog by remember { mutableStateOf("") }                         // "", "boards" (Government / Private), "series"
+    val series = boardFor(saved, picked)
+    LibraryContent(
+        classes, picked, reading,
+        onPick = { picked = it; app.setClass(it); if (isBoardClass(it)) dialog = "boards" },
+        onOpenSubject = onOpenSubject, onSearch = onSearch,
+        series = series, seriesName = if (series.isEmpty()) "" else catalog?.seriesName(series).orEmpty(),
+        onChangeBoard = { if (isBoardClass(picked)) dialog = "boards" },
+    )
+    val cls = classes.firstOrNull { it.id == picked }
+    if (cls != null && dialog == "boards") {
+        BoardChoiceDialog(cls, catalog, onGovernment = { saved = ""; dialog = "" }, onPrivate = { dialog = "series" }, onDismiss = { dialog = "" })
+    }
+    if (cls != null && dialog == "series") {
+        SeriesChoiceDialog(cls, catalog, onSeries = { saved = boardSaved(cls.id, it); dialog = "" }, onBack = { dialog = "boards" }, onDismiss = { dialog = "" })
+    }
 }
 
 @Composable
@@ -108,6 +125,9 @@ internal fun LibraryContent(
     onPick: (String) -> Unit,
     onOpenSubject: (String) -> Unit,
     onSearch: () -> Unit,
+    series: String = "",
+    seriesName: String = "",
+    onChangeBoard: () -> Unit = {},
 ) {
     val cls = classes.firstOrNull { it.id == pickedId }
     Column(Modifier.fillMaxSize()) {
@@ -119,15 +139,34 @@ internal fun LibraryContent(
         if (cls == null) {
             EmptyState("📚", "Loading books…", "The list of classes is on its way.")
         } else {
-            LazyVerticalGrid(
+            if (isBoardClass(cls.id)) BoardBar(if (series.isEmpty()) "🏛️ Government books" else "🏫 Private · $seriesName", onChangeBoard)
+            val shown = cls.subjects.filter { it.series == series }
+            if (shown.isEmpty()) {
+                EmptyState("⏳", "$seriesName books for ${cls.name} are coming", "Pick Government or another series with the button above.")
+            } else LazyVerticalGrid(
                 columns = GridCells.Adaptive(104.dp),
                 contentPadding = PaddingValues(12.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxSize(),
             ) {
-                items(cls.subjects, key = { it.id }) { s -> SubjectTile(s, reading[s.id], onClick = { onOpenSubject(s.id) }) }
+                items(shown, key = { it.id }) { s -> SubjectTile(s, reading[s.id], onClick = { onOpenSubject(s.id) }) }
             }
+        }
+    }
+}
+
+/** Which books the class is showing, and the way to change it (the website's slim bar above a series' covers). */
+@Composable
+private fun BoardBar(label: String, onChange: () -> Unit) {
+    Surface(
+        shape = RoundedCornerShape(50), color = MaterialTheme.colorScheme.secondaryContainer,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp).clickable(onClick = onChange).semantics { contentDescription = "$label. Change books" },
+    ) {
+        Row(Modifier.padding(horizontal = 14.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(label, style = MaterialTheme.typography.labelLarge, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
+            Spacer(Modifier.width(8.dp))
+            Text("Change ▾", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
         }
     }
 }
