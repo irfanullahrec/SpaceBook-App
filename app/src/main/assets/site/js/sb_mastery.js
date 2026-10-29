@@ -306,9 +306,24 @@ body.sbm-lock{overflow:hidden}
     if (!S.run.answered && (it.y === 'mcq' || it.y === 'tf')) { const k = '1234567'.indexOf(e.key), k2 = 'abcdef'.indexOf(String(e.key).toLowerCase()); const v = k >= 0 ? k : k2; if (v >= 0 && v < (it.y === 'tf' ? 2 : it.o.length)) { e.preventDefault(); choose(v); } }
     else if (S.run.answered && (e.key === 'Enter' || e.key === 'ArrowRight')) { e.preventDefault(); advance(); }
   }
+  // Question 51 of the Study Plan needs a Student plan for the class: the server counts the free 50 (api/lib/billing.php; js/sb_access.js)
+  function spend(it, go) {
+    const A = typeof window !== 'undefined' && window.SBAccess;
+    if (!A) return go();
+    const ctx = {cls: (S.o && S.o.cls) || ''};
+    if (A.unlimited('plan_q', ctx)) return go();
+    if (S.gating) return;
+    S.gating = true;
+    const run = S.run;
+    A.useQuestion('plan_q', String(it.id != null ? it.id : it.q).slice(0, 80), ctx).then(r => {
+      S.gating = false;
+      if (S.run !== run || S.done) return;
+      if (r.allowed) go(); else A.paywall('plan_q', ctx);
+    });
+  }
   function choose(v) {
     const run = S.run, it = run && run.current(); if (!it || run.answered) return;
-    S.chosen = v; run.answer(v === it.a); paint();
+    spend(it, () => { S.chosen = v; run.answer(v === it.a); paint(); });
   }
   function advance() {
     const run = S.run; if (!run) return;
@@ -326,7 +341,7 @@ body.sbm-lock{overflow:hidden}
     if (a === 'pick') choose(+b.dataset.v);
     else if (a === 'next') advance();
     else if (a === 'reveal') { S.revealed = true; paint(); }
-    else if (a === 'self-right' || a === 'self-wrong') { if (!S.run.answered) S.run.answer(a === 'self-right'); advance(); }
+    else if (a === 'self-right' || a === 'self-wrong') { const it = S.run.current(); if (S.run.answered) advance(); else spend(it, () => { S.run.answer(a === 'self-right'); advance(); }); }
     else if (a === 'retry') { S.run.retry(); S.chosen = null; S.revealed = false; paint(); }
     else if (a === 'start') begin();
     else if (a === 'retryload') load();
@@ -363,7 +378,7 @@ body.sbm-lock{overflow:hidden}
 
   /* The check of one plan task. spec: {classNum, task, counts, title, sub, onPass, onSelf, planLabel}. */
   function checkTask(spec) {
-    return open({title: spec.title, sub: spec.sub, planLabel: spec.planLabel, onPass: spec.onPass, onSelf: spec.onSelf, getItems: () => forTask(spec)});
+    return open({title: spec.title, sub: spec.sub, planLabel: spec.planLabel, cls: spec.classNum ? 'cls' + spec.classNum : '', onPass: spec.onPass, onSelf: spec.onSelf, getItems: () => forTask(spec)});
   }
 
   return {

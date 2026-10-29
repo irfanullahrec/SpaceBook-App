@@ -425,6 +425,7 @@
   // (done 1 / 4) and shows the next; the last one offers "I've finished — test me". Where the book has no such parts the student is taken to the chapter page.
   function studySheet(p, k) {
     const SS = window.SBStudySheet; if (!SS || !SS.partsFor) return false;
+    if (window.SBAccess && !window.SBAccess.canRead(p.classId, k.s, k.ch)) { window.SBAccess.paywall('chapter', {cls: p.classId, subject: k.s}); return true; }     // Chapter 1 is free, the rest needs a plan
     let parts = null;
     const S = subjOf(p.classId, k.s), counted = S && S.chapters[k.ch] && S.chapters[k.ch].c ? S.chapters[k.ch].c.read : 0;
     try { parts = SS.partsFor(p.classId, k.s, k.ch, k.a, k.b, counted); } catch (e) { parts = null; }

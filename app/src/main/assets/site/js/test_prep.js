@@ -936,7 +936,25 @@
     tick();
   }
 
+  // Question 51 needs the Test Preparation module: the server counts the free 50 (api/lib/billing.php), this asks it (js/sb_access.js).
   function answer(oi) {
+    const r = S.run;
+    if (!r || r.finished) return;
+    const A = window.SBAccess;
+    if (A && oi >= 0 && r.answers[r.i] == null && !A.unlimited('prep_q')) {
+      if (S.gating) return;
+      const m0 = r.qs[r.i];
+      S.gating = true;
+      A.useQuestion('prep_q', String(m0.i != null ? m0.i : m0.id != null ? m0.id : r.i), {}).then(v => {
+        S.gating = false;
+        if (S.run !== r || r.finished) return;
+        if (v.allowed) commitAnswer(oi); else A.paywall('prep_q', {});
+      });
+      return;
+    }
+    commitAnswer(oi);
+  }
+  function commitAnswer(oi) {
     const r = S.run;
     if (!r || r.finished) return;
     const m = r.qs[r.i];
