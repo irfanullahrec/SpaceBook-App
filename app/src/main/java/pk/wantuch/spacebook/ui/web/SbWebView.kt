@@ -292,7 +292,7 @@ class WebController(
     @SuppressLint("SetJavaScriptEnabled")
     fun create(context: Context, textZoom: Int): WebView {
         webView?.let { return it }
-        val wv = WebView(context)
+        val wv = GuardedWebView(context)        // the system's selection bar has no Copy, Cut or Share for the book text (the page switches off the rest: js/sb_rights.js)
         WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
         wv.settings.apply {
             javaScriptEnabled = true
