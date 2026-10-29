@@ -22,7 +22,6 @@ import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -74,8 +73,8 @@ class AuthViewModel @Inject constructor(
 
     fun login(whatsapp: String, password: String) = run { auth.login(whatsapp, password) }
 
-    fun register(name: String, father: String, type: String, whatsapp: String, password: String) = run {
-        auth.register(name, father, type, whatsapp, password)
+    fun register(name: String, father: String, whatsapp: String, password: String) = run {
+        auth.register(name, father, whatsapp, password)
     }
 
     private fun run(call: suspend () -> ApiResult<UserDto>) {
@@ -111,7 +110,6 @@ fun AuthScreen(onDone: () -> Unit, onBack: () -> Unit, vm: AuthViewModel = hiltV
     var show by remember { mutableStateOf(false) }
     var name by remember { mutableStateOf("") }
     var father by remember { mutableStateOf("") }
-    var type by remember { mutableStateOf("student") }
 
     val user = ui.signedIn
     if (user != null && ui.guestEvents > 0) {
@@ -141,12 +139,6 @@ fun AuthScreen(onDone: () -> Unit, onBack: () -> Unit, vm: AuthViewModel = hiltV
             if (tab == 1) {
                 OutlinedTextField(name, { name = it }, Modifier.fillMaxWidth(), label = { Text("Your name") }, singleLine = true, keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
                 OutlinedTextField(father, { father = it }, Modifier.fillMaxWidth(), label = { Text("Father's name") }, singleLine = true, keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-                Text("I am a", style = MaterialTheme.typography.labelLarge)
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    listOf("student" to "Student", "teacher" to "Teacher", "school" to "School").forEach { (v, label) ->
-                        FilterChip(type == v, { type = v }, label = { Text(label, Modifier.padding(vertical = 6.dp)) })
-                    }
-                }
             }
             OutlinedTextField(
                 whatsapp, { whatsapp = it }, Modifier.fillMaxWidth(), label = { Text("WhatsApp number") }, singleLine = true,
@@ -162,7 +154,7 @@ fun AuthScreen(onDone: () -> Unit, onBack: () -> Unit, vm: AuthViewModel = hiltV
             ui.error?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium) }
             Spacer(Modifier.height(4.dp))
             Button(
-                onClick = { if (tab == 0) vm.login(whatsapp, password) else vm.register(name, father, type, whatsapp, password) },
+                onClick = { if (tab == 0) vm.login(whatsapp, password) else vm.register(name, father, whatsapp, password) },
                 enabled = !ui.busy && whatsapp.isNotBlank() && password.length >= (if (tab == 1) 6 else 1) && (tab == 0 || (name.length >= 2 && father.length >= 2)),
                 modifier = Modifier.fillMaxWidth().height(54.dp),
             ) {

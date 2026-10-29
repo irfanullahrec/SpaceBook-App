@@ -39,12 +39,26 @@ class AppViewModel @Inject constructor(
     val entitlements: StateFlow<EntitlementsDto> =
         entitlementsRepo.current.stateIn(viewModelScope, SharingStarted.Eagerly, EntitlementsDto())
 
+    /** What the paid plans open now, worked out from the saved answer with this phone's clock (an expired plan opens nothing even offline). */
+    fun access(): pk.wantuch.spacebook.data.remote.AccessDto =
+        pk.wantuch.spacebook.access.AccessRules.fromSubscriptions(entitlements.value, System.currentTimeMillis())
+
+    /** Chapter 1 is free; later chapters need a plan for the class or the subject (api/lib/billing.php, js/sb_access.js). [chapter] is 0-based. */
+    fun canRead(subjectId: String, chapter: Int): Boolean {
+        val cls = catalog.value?.classOf(subjectId)?.id.orEmpty()
+        return pk.wantuch.spacebook.access.AccessRules.canRead(access(), cls, subjectId, chapter)
+    }
+
+    /** the class a subject belongs to, for the purchase window */
+    fun classOf(subjectId: String): String = catalog.value?.classOf(subjectId)?.id.orEmpty()
+
     /** false until the first stored settings are applied to the network layer (nothing is requested before that) */
     var started = false
         private set
 
     init {
         viewModelScope.launch {
+            endpoint.visitor = prefs.ensureInstallId().replace("-", "")      // X-SB-Visitor: the free allowance of a person with no account is counted by it
             applyNetwork(prefs.state.first())
             started = true
             // the bundled catalog shows at once; the site's newer one replaces it when it arrives

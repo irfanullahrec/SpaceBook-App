@@ -10,7 +10,8 @@ data class UserDto(
     val id: Int,
     val name: String = "",
     @SerialName("father_name") val fatherName: String = "",
-    @SerialName("user_type") val userType: String = "student",
+    /** no longer asked at registration: every new account is "general" (older accounts keep what they chose) */
+    @SerialName("user_type") val userType: String = "general",
     val whatsapp: String = "",
     @SerialName("created_at") val createdAt: String = "",
 )
@@ -38,7 +39,6 @@ data class LoginBody(
 data class RegisterBody(
     val name: String,
     @SerialName("father_name") val fatherName: String,
-    @SerialName("user_type") val userType: String,
     val whatsapp: String,
     val password: String,
     @SerialName("want_device") val wantDevice: Boolean = true,
@@ -120,12 +120,56 @@ data class ItemDto(val kind: String, val key: String, val value: JsonObject = Js
 @Serializable
 data class ItemGoneDto(val kind: String, val key: String, val at: Long = 0)
 
+/** What the paid plans open, as the server lists it (api/lib/billing.php sb_access). Chapter 1 is always open: see [AccessRules]. */
+@Serializable
+data class AccessDto(
+    val readClasses: List<String> = emptyList(),
+    val readSubjects: List<String> = emptyList(),
+    val planClasses: List<String> = emptyList(),
+    val paperSubjects: List<String> = emptyList(),
+    val prep: Boolean = false,
+)
+
+@Serializable
+data class FreeUseDto(val limit: Int = 0, val used: Int = 0)
+
+/** The free allowance: Chapter 1 of every subject, 50 Test Preparation questions, 50 Study Plan questions, 1 paper. */
+@Serializable
+data class FreeDto(
+    val chapters: Int = 1,
+    @SerialName("prep_q") val prepQ: FreeUseDto = FreeUseDto(50, 0),
+    @SerialName("plan_q") val planQ: FreeUseDto = FreeUseDto(50, 0),
+    val paper: FreeUseDto = FreeUseDto(1, 0),
+)
+
+@Serializable
+data class SubjectRefDto(val id: String = "", val name: String = "")
+
+/** One plan of the signed-in person. Times are ISO 8601 UTC; status is active | expired | suspended as the server saw it. */
+@Serializable
+data class SubscriptionDto(
+    val id: Int = 0,
+    val planType: String = "",
+    val classId: String? = null,
+    val label: String = "",
+    val subjects: List<SubjectRefDto> = emptyList(),
+    val status: String = "active",
+    val startsAt: String? = null,
+    val expiresAt: String? = null,
+    val daysLeft: Int = 0,
+)
+
 @Serializable
 data class EntitlementsDto(
     val ok: Boolean = true,
     val plan: String = "free",
     val signedIn: Boolean = false,
-    val unlocked: Boolean = true,
+    /** false: the free tier applies (a first run with no answer yet is the free tier, never "everything open") */
+    val unlocked: Boolean = false,
+    val access: AccessDto = AccessDto(),
+    val free: FreeDto = FreeDto(),
+    val subscriptions: List<SubscriptionDto> = emptyList(),
+    val pendingPayments: Int = 0,
     /** "all" or a list; kept as JSON because the server may send either */
     val classes: JsonElement? = null,
     val features: Map<String, Boolean> = emptyMap(),

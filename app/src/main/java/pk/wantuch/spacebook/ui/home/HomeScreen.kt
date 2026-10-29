@@ -102,7 +102,7 @@ internal fun accountInfo(user: UserDto?, coins: Int, plan: String, gate: LockSta
     val counting = gate as? LockState.Counting
     return AccountInfo(
         name = user?.name?.takeIf { it.isNotBlank() } ?: if (user != null) "Student" else null,
-        subtitle = if (user != null) listOf(user.userType.replaceFirstChar { it.uppercase() }, user.whatsapp).filter { it.isNotBlank() }.joinToString(" · ")
+        subtitle = if (user != null) user.whatsapp
         else "Reading without an account: progress stays on this phone",
         signedIn = user != null, planId = plan, coins = coins,
         previewEnds = counting?.expiresAt ?: 0, previewDaysLeft = counting?.daysLeft ?: 0, previewTrial = counting?.trial == true,

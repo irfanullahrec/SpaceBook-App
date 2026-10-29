@@ -130,6 +130,9 @@ class WebController(
 
         @JavascriptInterface fun stopSpeech(@Suppress("UNUSED_PARAMETER") unused: String) { main.post { tts?.stop() } }
 
+        /** this install's visitor id (32 hex): the page sends it as X-SB-Visitor, the same id the app's own requests carry, so the free allowance is counted once */
+        @JavascriptInterface fun visitorId(): String = endpoint.visitor
+
         @JavascriptInterface fun onAction(name: String, detail: String) {
             when (name) {
                 "meaning" -> runCatching { json.decodeFromString<MeaningDto>(detail).toState() }.getOrNull()?.let { m -> main.post { meaning = m } }
@@ -253,6 +256,9 @@ class WebController(
             p[0] == "words-reset" -> resetWords()
             p[0] == "feedback" -> openFeedback()
             p[0] == "account" -> { loading = true; run("SBApp.openAccount()") }
+            // the website's plans window ("plans" or "plans:<class>:<subject>") and "My plans" (js/sb_billing.js): the same prices, payment and account as the website
+            p[0] == "plans" -> run("SBApp.openPlans(${quote(p.getOrElse(1) { "" })}, ${quote(p.getOrElse(2) { "" })})")
+            p[0] == "my-plans" -> run("SBApp.openMyPlans()")
             // Grammar Stats on one language (Home's Project Stats links to it): "grammar-stats:en|ur|ps|ar"
             p[0] == "grammar-stats" -> { loading = true; run("SBApp.openGrammar(${quote(p.getOrElse(1) { "en" })})") }
             else -> openPage(p[0])

@@ -479,6 +479,22 @@
       return true;
     },
 
+    // The website's plans window (prices, Student / Teacher / Test Preparation, Easypaisa payment) over the page: the same window, prices and account as the website.
+    // cls / subject (optional) say which chapter was reached, so that class or subject is already chosen.
+    openPlans: async function (cls, subject) {
+      var b = await until(function () { return window.SBBilling && window.SBBilling.open; }, 20000, 100);
+      if (!b) { host('onAction', ['error', 'The plans did not load.']); return false; }
+      window.SBBilling.open({ why: cls || subject ? 'chapter' : '', cls: cls || '', subject: subject || '' });
+      return true;
+    },
+    // "My plans": current plans with their dates, payments (Pending Verification, Approved, Rejected with the reason), messages, renewal
+    openMyPlans: async function () {
+      var b = await until(function () { return window.SBBilling && window.SBBilling.openAccount; }, 20000, 100);
+      if (!b) { host('onAction', ['error', 'The plans did not load.']); return false; }
+      window.SBBilling.openAccount();
+      return true;
+    },
+
     // The app signed in (or out): tell the page so rewards, plans and tests sync to the same account.
     setAuth: async function (user, device, flags) {
       // The page follows the owner's one switch (api/lib/flags.php), exactly as the website does: this does not switch sync on by itself.
@@ -490,6 +506,8 @@
     clearAuth: function () { doc.dispatchEvent(new CustomEvent('spacebook:auth', { detail: { user: null } })); },
   };
   window.SBApp = api;
+  // the plans window was closed by the person: the app screen that held it goes back
+  doc.addEventListener('sbbilling:close', function () { host('onAction', ['plansClosed', '']); });
 
   // a file the page wants the student to keep (the data download): a blob link cannot be saved in a WebView, so the phone's share sheet gets it
   window.SBDownload = function (name, mime, text) { host('onAction', ['saveFile', JSON.stringify({ name: String(name), mime: String(mime), text: String(text) })]); };

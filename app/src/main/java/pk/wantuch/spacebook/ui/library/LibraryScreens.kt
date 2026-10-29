@@ -53,6 +53,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -152,12 +154,13 @@ private fun SubjectTile(s: SubjectDto, position: ReadingPosition?, onClick: () -
 fun SubjectScreen(app: AppViewModel, subjectId: String, onBack: () -> Unit, onOpenChapter: (Int) -> Unit, vm: LibraryViewModel = hiltViewModel()) {
     val catalog by app.catalog.collectAsStateWithLifecycle()
     val reading by vm.reading.collectAsStateWithLifecycle()
-    SubjectContent(catalog?.subject(subjectId), catalog?.classOf(subjectId), reading[subjectId], onBack, onOpenChapter)
+    val entitlements by app.entitlements.collectAsStateWithLifecycle()      // the lock marks follow the plans: bought, ended or suspended
+    SubjectContent(catalog?.subject(subjectId), catalog?.classOf(subjectId), reading[subjectId], onBack, onOpenChapter, locked = { i -> entitlements.let { !app.canRead(subjectId, i) } })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun SubjectContent(subject: SubjectDto?, cls: ClassDto?, position: ReadingPosition?, onBack: () -> Unit, onOpenChapter: (Int) -> Unit) {
+internal fun SubjectContent(subject: SubjectDto?, cls: ClassDto?, position: ReadingPosition?, onBack: () -> Unit, onOpenChapter: (Int) -> Unit, locked: (Int) -> Boolean = { false }) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -211,6 +214,7 @@ internal fun SubjectContent(subject: SubjectDto?, cls: ClassDto?, position: Read
                             if (t.local.isNotBlank()) Text(t.local, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
                         }
                         if (position?.chapterIndex == i) Text("📖", style = MaterialTheme.typography.titleMedium)
+                        if (locked(i)) Text("🔒", style = MaterialTheme.typography.titleMedium, modifier = Modifier.semantics { contentDescription = "needs a plan" })
                     }
                 }
             }

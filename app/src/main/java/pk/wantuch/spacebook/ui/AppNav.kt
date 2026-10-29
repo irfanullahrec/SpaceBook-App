@@ -84,6 +84,11 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController(), 
     val showBar = tabs.any { it.route == route }
 
     fun go(r: String) = nav.navigate(r) { launchSingleTop = true }
+    /** Chapter 1 of every subject is free; a later chapter without a plan opens the plans window (the website's, inside the app) instead of the reader. */
+    fun openReader(id: String, chapter: Int, page: Int = 0, tab: String = "") {
+        if (app.canRead(id, chapter)) go(Routes.reader(id, chapter, page, tab))
+        else go(Routes.web("plans:${app.classOf(id)}:$id", "Plans"))
+    }
     // a study reminder was tapped: the Plan tab
     androidx.compose.runtime.LaunchedEffect(openRequest) {
         if (openRequest == "plan") switchTab(nav, Routes.PLAN)
@@ -124,19 +129,19 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController(), 
                 composable(Routes.LIBRARY) { LibraryScreen(app, onOpenSubject = { go(Routes.subject(it)) }, onSearch = { go(Routes.SEARCH) }) }
                 composable(Routes.PRACTICE) { PracticeScreen(onOpen = { page, title -> go(Routes.web(page, title)) }) }
                 composable(Routes.PLAN) { FeatureScreen(app, "study-plan", "Study Plan", onBack = null, onSignIn = { go(Routes.AUTH) }, onOpenOffline = { go(Routes.OFFLINE) }) }
-                composable(Routes.ME) { MeScreen(app, onSignIn = { go(Routes.AUTH) }, onSaved = { go(Routes.SAVED) }, onSettings = { go(Routes.SETTINGS) }, onOffline = { go(Routes.OFFLINE) }, onAccount = { go(Routes.web("account", "My account")) }, onFeedback = { go(Routes.web("feedback", "Report a problem")) }) }
+                composable(Routes.ME) { MeScreen(app, onSignIn = { go(Routes.AUTH) }, onSaved = { go(Routes.SAVED) }, onSettings = { go(Routes.SETTINGS) }, onOffline = { go(Routes.OFFLINE) }, onAccount = { go(Routes.web("account", "My account")) }, onPlans = { go(Routes.web("plans", "Plans")) }, onMyPlans = { go(Routes.web("my-plans", "My plans")) }, onFeedback = { go(Routes.web("feedback", "Report a problem")) }) }
                 composable(Routes.AUTH) { AuthScreen(onDone = { nav.popBackStack() }, onBack = { nav.popBackStack() }) }
                 composable(Routes.SEARCH) {
-                    SearchScreen(app, onBack = { nav.popBackStack() }, onOpen = { subject, chapter -> go(Routes.reader(subject, chapter)) })
+                    SearchScreen(app, onBack = { nav.popBackStack() }, onOpen = { subject, chapter -> openReader(subject, chapter) })
                 }
-                composable(Routes.SAVED) { SavedScreen(app, onBack = { nav.popBackStack() }, onOpen = { s, c, p, t -> go(Routes.reader(s, c, p, t)) }) }
+                composable(Routes.SAVED) { SavedScreen(app, onBack = { nav.popBackStack() }, onOpen = { s, c, p, t -> openReader(s, c, p, t) }) }
                 composable(Routes.SETTINGS) { SettingsScreen(app, onBack = { nav.popBackStack() }) }
                 composable(Routes.QUIZ) { QuizScreen(onBack = { nav.popBackStack() }, onReels = { nav.popBackStack(); go(Routes.REELS) }) }
                 composable(Routes.REELS) { ReelsScreen(onBack = { nav.popBackStack() }) }
                 composable(Routes.OFFLINE) { OfflineScreen(onBack = { nav.popBackStack() }) }
                 composable(Routes.SUBJECT, listOf(navArgument("id") { type = NavType.StringType })) { e ->
                     val id = e.arguments?.getString("id").orEmpty()
-                    SubjectScreen(app, id, onBack = { nav.popBackStack() }, onOpenChapter = { go(Routes.reader(id, it)) })
+                    SubjectScreen(app, id, onBack = { nav.popBackStack() }, onOpenChapter = { openReader(id, it) })
                 }
                 composable(
                     Routes.READER,
