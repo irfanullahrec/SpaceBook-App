@@ -23,25 +23,49 @@ import pk.wantuch.spacebook.ui.web.ExportFree
 class ExportFreeTest {
     private val context get() = ApplicationProvider.getApplicationContext<android.content.Context>()
 
-    private fun systemBar(): RoboMenu {
+    /** selected book text: the system offers no Cut and no Paste on text that cannot be typed into */
+    private fun bookTextBar(): RoboMenu {
         val m = RoboMenu(context)
         m.add(Menu.NONE, android.R.id.copy, 0, "Copy")
-        m.add(Menu.NONE, android.R.id.cut, 1, "Cut")
-        m.add(Menu.NONE, android.R.id.shareText, 2, "Share")
-        m.add(Menu.NONE, android.R.id.paste, 3, "Paste")
-        m.add(Menu.NONE, android.R.id.pasteAsPlainText, 4, "Paste as plain text")
-        m.add(Menu.NONE, android.R.id.selectAll, 5, "Select all")
-        m.add(Menu.NONE, 4242, 6, "Translate").intent = Intent(Intent.ACTION_PROCESS_TEXT)
-        m.add(Menu.NONE, 4243, 7, "The app's own entry")
+        m.add(Menu.NONE, android.R.id.shareText, 1, "Share")
+        m.add(Menu.NONE, android.R.id.selectAll, 2, "Select all")
+        m.add(Menu.NONE, 4242, 3, "Translate").intent = Intent(Intent.ACTION_PROCESS_TEXT)
+        m.add(Menu.NONE, 4243, 4, "The app's own entry")
+        return m
+    }
+
+    /** selected text in a typing field (notes, an answer, the report form) */
+    private fun typingFieldBar(): RoboMenu {
+        val m = RoboMenu(context)
+        m.add(Menu.NONE, android.R.id.cut, 0, "Cut")
+        m.add(Menu.NONE, android.R.id.copy, 1, "Copy")
+        m.add(Menu.NONE, android.R.id.paste, 2, "Paste")
+        m.add(Menu.NONE, android.R.id.pasteAsPlainText, 3, "Paste as plain text")
+        m.add(Menu.NONE, android.R.id.selectAll, 4, "Select all")
+        m.add(Menu.NONE, 4242, 5, "Translate").intent = Intent(Intent.ACTION_PROCESS_TEXT)
         return m
     }
 
     private fun titles(m: Menu) = (0 until m.size()).map { m.getItem(it).title.toString() }
 
-    @Test fun `copy, cut, share, paste and other apps' process-text entries are taken out, the rest stays`() {
-        val menu = systemBar()
+    @Test fun `copy, share and other apps' process-text entries are taken out of the bar of book text, the rest stays`() {
+        val menu = bookTextBar()
         ExportFree.strip(menu)
         assertEquals(listOf("Select all", "The app's own entry"), titles(menu))
+    }
+
+    @Test fun `a typing field keeps its whole bar, with Cut, Copy and Paste`() {
+        val menu = typingFieldBar()
+        ExportFree.strip(menu)
+        assertEquals(listOf("Cut", "Copy", "Paste", "Paste as plain text", "Select all", "Translate"), titles(menu))
+    }
+
+    @Test fun `a cursor with nothing selected in a typing field keeps Paste`() {
+        val m = RoboMenu(context)
+        m.add(Menu.NONE, android.R.id.paste, 0, "Paste")
+        m.add(Menu.NONE, android.R.id.selectAll, 1, "Select all")
+        ExportFree.strip(m)
+        assertEquals(listOf("Paste", "Select all"), titles(m))
     }
 
     private class Inner(val add: (Menu) -> Unit) : ActionMode.Callback {
@@ -63,6 +87,14 @@ class ExportFreeTest {
         wrapped.onActionItemClicked(null, menu.getItem(0))
         wrapped.onDestroyActionMode(null)
         assertEquals(listOf(1, 1, 1), listOf(inner.created, inner.clicked, inner.destroyed))
+    }
+
+    @Test fun `a wrapped callback leaves the bar of a typing field as the system made it`() {
+        val inner = Inner { m -> m.add(Menu.NONE, android.R.id.cut, 0, "Cut"); m.add(Menu.NONE, android.R.id.copy, 1, "Copy"); m.add(Menu.NONE, android.R.id.paste, 2, "Paste") }
+        val wrapped = ExportFree.wrap(inner)!!
+        val menu = RoboMenu(context)
+        assertTrue(wrapped.onCreateActionMode(null, menu))
+        assertEquals(listOf("Cut", "Copy", "Paste"), titles(menu))
     }
 
     @Test fun `the floating bar keeps telling the system where the selection is`() {
