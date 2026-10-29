@@ -1262,9 +1262,9 @@
    "sha256": "fa96960ba99f2462cc7c9e416bf95e8b5fdce5d5b3100eb51ea0a5b82a628d95"
   },
   "js/fills_data.js": {
-   "v": "86fd73e18bbb",
+   "v": "746a13f16d77",
    "bytes": 116780,
-   "sha256": "86fd73e18bbb1ad95a0c3b5651202d4cc771104b0a8e08cc3526c6010b2ca33c"
+   "sha256": "746a13f16d77553d53b5137196d5f5bfdf46556972dbe240631918e7464ba338"
   },
   "js/general_science_10_data.js": {
    "v": "be01a96c3ab7",
@@ -1707,9 +1707,9 @@
    "sha256": "79cf58314139ca0f8a4bf8e692e3810c942cff1550fba01f0b0e69ea2bba85b6"
   },
   "js/munawar_c1_math_book.js": {
-   "v": "27316c0a110c",
-   "bytes": 291337,
-   "sha256": "27316c0a110c3eef73a2da1e98bbae5454acda3c4fb2a4d68ce4d4a4124ea6e4"
+   "v": "31bda19e4be2",
+   "bytes": 282330,
+   "sha256": "31bda19e4be2931c60c04f38c8e20f8d23fe0e07927cd90a13143585d65d3f34"
   },
   "js/munawar_c1_prel_book.js": {
    "v": "1fe98d675af2",
@@ -2673,7 +2673,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 692000
+   "bytes": 682993
   },
   "cls1-mun-prel": {
    "classId": "cls1",
