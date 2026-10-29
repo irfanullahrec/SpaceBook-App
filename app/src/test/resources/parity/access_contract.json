@@ -1,0 +1,93 @@
+{
+  "note": "The access rules both platforms apply (api/lib/billing.php sb_access / sb_can_read / sb_metric_unlimited, js/sb_access.js, the app's AccessRules.kt). Each scenario lists the subscriptions a person holds at `now`, the access lists the server derives from them, and what must be readable / unlimited. Chapter 0 is Chapter 1. Edit here, then run the three suites.",
+  "now": "2026-10-29T12:00:00Z",
+  "scenarios": [
+    {
+      "name": "no plan: only Chapter 1 and the free allowance",
+      "subscriptions": [],
+      "access": { "readClasses": [], "readSubjects": [], "planClasses": [], "paperSubjects": [], "prep": false },
+      "read": [
+        { "cls": "cls9", "subject": "cls9-eng", "chapter": 0, "expect": true },
+        { "cls": "cls9", "subject": "cls9-eng", "chapter": 1, "expect": false },
+        { "cls": "cls1", "subject": "cls1-math", "chapter": 0, "expect": true },
+        { "cls": "cls12", "subject": "cls12-phy", "chapter": 4, "expect": false }
+      ],
+      "unlimited": [
+        { "metric": "prep_q", "cls": "", "subject": "", "expect": false },
+        { "metric": "plan_q", "cls": "cls9", "subject": "", "expect": false },
+        { "metric": "paper", "cls": "cls9", "subject": "cls9-math", "expect": false }
+      ]
+    },
+    {
+      "name": "Student plan for Class 9: every subject and chapter of that class, its Study Plan; no papers, no Test Preparation",
+      "subscriptions": [ { "planType": "student", "classId": "cls9", "status": "active", "expiresAt": "2026-11-20T08:00:00Z", "subjects": [] } ],
+      "access": { "readClasses": ["cls9"], "readSubjects": [], "planClasses": ["cls9"], "paperSubjects": [], "prep": false },
+      "read": [
+        { "cls": "cls9", "subject": "cls9-eng", "chapter": 7, "expect": true },
+        { "cls": "cls9", "subject": "cls9-math", "chapter": 3, "expect": true },
+        { "cls": "cls10", "subject": "cls10-math", "chapter": 1, "expect": false },
+        { "cls": "cls10", "subject": "cls10-math", "chapter": 0, "expect": true }
+      ],
+      "unlimited": [
+        { "metric": "plan_q", "cls": "cls9", "subject": "", "expect": true },
+        { "metric": "plan_q", "cls": "cls10", "subject": "", "expect": false },
+        { "metric": "paper", "cls": "cls9", "subject": "cls9-math", "expect": false },
+        { "metric": "prep_q", "cls": "", "subject": "", "expect": false }
+      ]
+    },
+    {
+      "name": "Teacher plan: three chosen subjects from different classes, with their papers; no Study Plan, no Test Preparation",
+      "subscriptions": [ { "planType": "teacher", "classId": null, "status": "active", "expiresAt": "2026-11-05T00:00:00Z", "subjects": [ { "id": "cls9-math" }, { "id": "cls9-eng" }, { "id": "cls10-math" } ] } ],
+      "access": { "readClasses": [], "readSubjects": ["cls10-math", "cls9-eng", "cls9-math"], "planClasses": [], "paperSubjects": ["cls10-math", "cls9-eng", "cls9-math"], "prep": false },
+      "read": [
+        { "cls": "cls9", "subject": "cls9-math", "chapter": 5, "expect": true },
+        { "cls": "cls10", "subject": "cls10-math", "chapter": 2, "expect": true },
+        { "cls": "cls9", "subject": "cls9-phy", "chapter": 1, "expect": false },
+        { "cls": "cls9", "subject": "cls9-phy", "chapter": 0, "expect": true }
+      ],
+      "unlimited": [
+        { "metric": "paper", "cls": "cls9", "subject": "cls9-math", "expect": true },
+        { "metric": "paper", "cls": "cls9", "subject": "cls9-phy", "expect": false },
+        { "metric": "plan_q", "cls": "cls9", "subject": "", "expect": false },
+        { "metric": "prep_q", "cls": "", "subject": "", "expect": false }
+      ]
+    },
+    {
+      "name": "Test Preparation module alone: unlimited questions, no chapters",
+      "subscriptions": [ { "planType": "prep", "classId": null, "status": "active", "expiresAt": "2026-11-29T12:00:01Z", "subjects": [] } ],
+      "access": { "readClasses": [], "readSubjects": [], "planClasses": [], "paperSubjects": [], "prep": true },
+      "read": [ { "cls": "cls9", "subject": "cls9-eng", "chapter": 1, "expect": false } ],
+      "unlimited": [ { "metric": "prep_q", "cls": "", "subject": "", "expect": true }, { "metric": "plan_q", "cls": "cls9", "subject": "", "expect": false } ]
+    },
+    {
+      "name": "ended and suspended plans open nothing",
+      "subscriptions": [
+        { "planType": "student", "classId": "cls9", "status": "active", "expiresAt": "2026-10-29T11:59:59Z", "subjects": [] },
+        { "planType": "prep", "classId": null, "status": "suspended", "expiresAt": "2026-12-01T00:00:00Z", "subjects": [] }
+      ],
+      "access": { "readClasses": [], "readSubjects": [], "planClasses": [], "paperSubjects": [], "prep": false },
+      "read": [ { "cls": "cls9", "subject": "cls9-eng", "chapter": 1, "expect": false }, { "cls": "cls9", "subject": "cls9-eng", "chapter": 0, "expect": true } ],
+      "unlimited": [ { "metric": "prep_q", "cls": "", "subject": "", "expect": false } ]
+    },
+    {
+      "name": "several plans together add up",
+      "subscriptions": [
+        { "planType": "student", "classId": "cls8", "status": "active", "expiresAt": "2026-11-10T00:00:00Z", "subjects": [] },
+        { "planType": "student", "classId": "cls9", "status": "active", "expiresAt": "2026-11-10T00:00:00Z", "subjects": [] },
+        { "planType": "teacher", "classId": null, "status": "active", "expiresAt": "2026-11-10T00:00:00Z", "subjects": [ { "id": "cls12-phy" } ] },
+        { "planType": "prep", "classId": null, "status": "active", "expiresAt": "2026-11-10T00:00:00Z", "subjects": [] }
+      ],
+      "access": { "readClasses": ["cls8", "cls9"], "readSubjects": ["cls12-phy"], "planClasses": ["cls8", "cls9"], "paperSubjects": ["cls12-phy"], "prep": true },
+      "read": [
+        { "cls": "cls8", "subject": "cls8-sci", "chapter": 6, "expect": true },
+        { "cls": "cls12", "subject": "cls12-phy", "chapter": 3, "expect": true },
+        { "cls": "cls12", "subject": "cls12-chem", "chapter": 1, "expect": false }
+      ],
+      "unlimited": [
+        { "metric": "prep_q", "cls": "", "subject": "", "expect": true },
+        { "metric": "plan_q", "cls": "cls8", "subject": "", "expect": true },
+        { "metric": "paper", "cls": "cls12", "subject": "cls12-phy", "expect": true }
+      ]
+    }
+  ]
+}

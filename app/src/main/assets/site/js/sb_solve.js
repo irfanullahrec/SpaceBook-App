@@ -84,6 +84,19 @@
   const CREDIT = /^[\s(]*(?:(?:د|دَ)\s*)?(?:spacebook|اسپیس بک|اسپیس بُک|agent|model|نمونے کا|نمونه)\s*(?:answer|note|sentence|جواب|نوٹ|ځواب|یادونه|نمونه)?\s*(?:\((?:agent|ایجنٹ)\)|\(ایجنٹ کا جواب\))?\s*[:：.۔،,-]?\s*|^\s*جواب\s*\(ایجنٹ\)\s*[:.۔]?\s*/i;
   const cleanNote = t => { const c = String(t || '').replace(CREDIT, '').trim(); return /[\p{L}\p{N}]/u.test(c) ? c : ''; };
   const hasText = s => SLOTS.some(k => typeof s[k] === 'string' && s[k].trim()) || s.m || s.svg;
+  // The note under every answer says where it comes from. An answer that is a model (a sentence, a paragraph, a drawing described) says that other
+  // correct answers exist: the data says so itself (sol.open, or a note such as "Model answer" / "answers may vary"), the panel never guesses. One button
+  // tells us about a wrong answer (js/sb_feedback.js opens its dialog with the question).
+  const MODEL_RX = /model|sample|may vary|answers? vary|نمونے|نمونه/i;
+  const MODEL_START = /^s*(?:model answer|sample answer|answers? (?:may|will) vary|نمونے کا جواب|نمونہ جواب|د نمونې ځواب)/i;      // an open question's answer starts with these words
+  const isOpen = (sol, note) => !!sol.open || MODEL_START.test(String(sol.answer || '')) || Object.keys(note || {}).some(k => MODEL_RX.test(String(note[k])));
+  function footNote(sol, hasSteps, note) {
+    const what = sol.src === 'book' ? 'Printed answer from the textbook'
+      : isOpen(sol, note) ? 'SpaceBook model answer · not printed in the textbook · other correct answers are possible'
+      : `SpaceBook ${hasSteps ? 'explanation' : 'answer'} · not printed in the textbook`;
+    const check = /needs a teacher.s check|ٹیچر سے تصدیق/i.test(String(sol.answer || '') + ' ' + JSON.stringify(sol.steps || [])) ? ' · ⚠ not yet checked by a teacher' : '';
+    return `<p class="sbs-note" dir="ltr">${what}${check}</p><button type="button" class="sbs-report" data-sbfb="answer">Wrong answer? Tell us</button>`;
+  }
   function analyse(sol, med, declared) {
     const lines = {}, note = {};
     const put = (l, v) => { v = String(v || '').trim(); if (v && l && LANG[l] && !lines[l]) lines[l] = v; };
@@ -369,7 +382,7 @@
       _lang: med.text, _steps: info.steps, _lines: info.lines, _note: info.note});
     const filled = fillQuestion(btn, panel, info);
     const src = (() => { const n = info.note, l = n[med.text] ? med.text : Object.keys(n)[0], t = l ? cleanNote(n[l]) : ''; return t ? `<p class="sbs-exp" dir="${LANG[l].dir}">📖 ${panel._inline(t, false)}</p>` : ''; })();
-    const foot = `<p class="sbs-note" dir="ltr">${sol.src === 'book' ? 'Printed answer from the textbook' : `SpaceBook ${info.steps.length ? 'explanation' : 'answer'} · not printed in the textbook`}</p>`;
+    const foot = footNote(sol, info.steps.length > 0, info.note);
     panel.innerHTML = (filled ? '' : `<div class="sbs-final">${finalHtml(panel)}</div>`) + explainHtml(panel) + src + foot;
     panel.hidden = false;
     btn.setAttribute('aria-expanded', 'true');
@@ -405,7 +418,7 @@
       ${hasSteps ? `<ol class="sbs-steps">${panel._steps.map(s => `<li class="sbs-step${s.m ? ' sbs-hasm' : ''}" hidden><span class="sbs-teacher" aria-hidden="true">🧑‍🏫</span><div class="sbs-say" aria-live="polite"></div>${s.m ? `<div class="sbs-show" hidden>${inl('$$' + s.m + '$$', false)}</div>` : ''}${s.svg ? `<div class="sbs-show" hidden>${s.svg}</div>` : ''}</li>`).join('')}</ol>` : ''}
       <p class="sbs-src"></p>
       <div class="sbs-final"${hasSteps ? ' hidden' : ''}>${finalHtml(panel)}</div>
-      <p class="sbs-note" dir="ltr">${sol.src === 'book' ? 'Printed answer from the textbook' : `SpaceBook ${hasSteps ? 'explanation' : 'answer'} · not printed in the textbook`}</p></div>`;
+      ${footNote(sol, hasSteps, info.note)}</div>`;
     // Visual reasoning (additive): when the English steps hold equations, offer the animated board next to the language buttons
     if (hasSteps && window.SBVR && window.SBVR.autoFromSolve) { try { window.SBVR.autoFromSolve(panel, panel._steps, declared, slots); } catch (e) { /* never break the panel */ } }
     const playBtn = panel.querySelector('[data-a="play"]');

@@ -33,7 +33,9 @@
     const k = PK + ':' + uid();
     if (prefsCache && prefsKey === k) return prefsCache;
     let d = null; try { d = JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { d = null; }
-    prefsCache = Object.assign({cls: null, scope: {}, sound: true, tr: {}, best: {}, streak: {n: 0, last: ''}, last: null}, d || {});
+    // timing: 'off' (no clock), 'relaxed' (twice the time, the default: a child reading slowly is not punished), 'normal'
+    prefsCache = Object.assign({cls: null, scope: {}, sound: true, tr: {}, best: {}, streak: {n: 0, last: ''}, last: null, timing: 'relaxed'}, d || {});
+    if (!['off', 'relaxed', 'normal'].includes(prefsCache.timing)) prefsCache.timing = 'relaxed';
     prefsKey = k;
     return prefsCache;
   }
@@ -277,11 +279,14 @@
     const hasTimer = game === 'math' || game === 'tf';
     const rules = game === 'memory'
       ? '<li>Look at the cards, press <b>Hide</b>, then flip two at a time to find each question’s answer.</li><li>Every pair you find is one step.</li>'
-      : '<li>' + lv.total + ' ' + (game === 'spell' ? 'words' : 'questions') + ' · ' + LIVES + ' lives ❤️</li><li>Get <b>' + C.stepsNeeded(lv.total) + ' of ' + lv.total + '</b> right to clear the level.</li>' + (hasTimer ? '<li>Beat the clock on every question.</li>' : '');
+      : '<li>' + lv.total + ' ' + (game === 'spell' ? 'words' : 'questions') + ' · ' + LIVES + ' lives ❤️</li><li>Get <b>' + C.stepsNeeded(lv.total) + ' of ' + lv.total + '</b> right to clear the level.</li>' + (hasTimer ? '<li>Each question has a clock. You can pause it (<b>⏸</b> or the <b>P</b> key) while you read or think, or switch it off below.</li>' : '') +
+        (game === 'tiles' || game === 'spell' ? '<li>Tap a letter to put it in the next empty box; tap a filled box to take the letter back. The 💡 Hint puts the next letter in.</li>' : '<li>Tap an answer, or press <b>1</b>–<b>4</b> (or <b>A</b>–<b>D</b>). Wrong answers show the right one, so you learn from them.</li>');
+    const timingBox = !hasTimer ? '' : '<fieldset class="gm-timing"><legend>Clock</legend>' + [['off', 'Take my time (no clock)'], ['relaxed', 'Relaxed (twice as long)'], ['normal', 'Normal']]
+      .map(o => '<label><input type="radio" name="gm-timing" value="' + o[0] + '"' + (prefs().timing === o[0] ? ' checked' : '') + '> ' + o[1] + '</label>').join('') + '</fieldset>';
     ov.inner.innerHTML = '<div class="gm-intro"><button type="button" class="gm-x" data-x aria-label="Close">✕</button>' +
       '<div class="gm-bigico" aria-hidden="true">' + (lv.level === plan.levels.length && plan.levels.length >= 3 ? '👑' : G.emoji) + '</div>' +
       '<h2>' + esc(G.title) + ' · Level ' + level + '</h2><p class="gm-sub">Class ' + S.cls + esc(scName) + ' · ' + esc(lv.label) + '</p>' +
-      '<ul class="gm-rules">' + rules + '</ul>' +
+      '<ul class="gm-rules">' + rules + '</ul>' + timingBox +
       '<div class="gm-earn"><b>🪙 What you can earn</b><span>+1 for each new right answer · +5 when all ' + lv.total + ' are done' + (p.completed ? ' · +2 for playing again today' : '') + '</span>' +
       (p.done ? '<span class="gm-got">Done so far: ' + p.done + ' / ' + lv.total + (p.completed ? ' ✅' : '') + '</span>' : '') + '</div>' +
       '<div class="gm-introbtns"><button type="button" class="gm-go" data-go>Start ▶</button><button type="button" class="gm-ghost" data-x>Not now</button></div></div>';
@@ -289,6 +294,7 @@
       if (ev.target.closest('[data-x]')) closeOverlay();
       else if (ev.target.closest('[data-go]')) start(game, scope, level);
     });
+    ov.inner.addEventListener('change', ev => { if (ev.target.name === 'gm-timing') { prefs().timing = ev.target.value; savePrefs(); } });
     ov.el.addEventListener('click', ev => { if (ev.target === ov.el) closeOverlay(); });
     ov.onKey = ev => { if (ev.key === 'Escape') closeOverlay(); };
     const go = ov.inner.querySelector('[data-go]'); if (go) go.focus();
@@ -307,12 +313,15 @@
     const ov = S.ov;
     ov.el.setAttribute('aria-label', run.title);
     ov.inner.innerHTML = '<div class="gm-top"><button type="button" class="gm-x" data-leave aria-label="Leave this level">✕</button><div class="gm-ttl"><span>' + run.G.emoji + '</span> Level ' + level + '</div>' +
-      '<div class="gm-lives" aria-live="polite"></div><div class="gm-run" title="Coins earned in this run">🪙 <b>+0</b></div><button type="button" class="gm-snd" data-snd aria-pressed="' + p.sound + '" title="Sound">' + (p.sound ? '🔊' : '🔇') + '</button></div>' +
+      '<div class="gm-lives" aria-live="polite"></div><div class="gm-run" title="Coins earned in this run">🪙 <b>+0</b></div><button type="button" class="gm-snd" data-snd aria-pressed="' + p.sound + '" title="Sound">' + (p.sound ? '🔊' : '🔇') + '</button>' +
+      (clockOn({built}) ? '<button type="button" class="gm-snd gm-pause" data-pause aria-pressed="false" title="Pause the clock (P)" aria-label="Pause the clock">⏸</button>' : '') + '</div>' +
       '<div class="gm-bar" role="progressbar" aria-valuemin="0" aria-valuemax="' + run.total + '" aria-valuenow="0"><i></i></div><div class="gm-body"></div>';
     run.body = ov.inner.querySelector('.gm-body');
     ov.inner.onclick = ev => {
       if (ev.target.closest('[data-leave]')) return askLeave();
-      const snd = ev.target.closest('[data-snd]');
+      if (ev.target.closest('[data-pause]')) return togglePause(run);
+      if (ev.target.closest('[data-resume]')) return togglePause(run, false);
+      const snd = ev.target.closest('[data-snd]:not([data-pause])');
       if (snd) { p.sound = !p.sound; savePrefs(); snd.textContent = p.sound ? '🔊' : '🔇'; snd.setAttribute('aria-pressed', p.sound); beep('ok'); }
     };
     ov.onKey = ev => { if (ev.key === 'Escape') askLeave(); else if (run.keys) run.keys(ev); };
@@ -373,7 +382,7 @@
     if (it.c.length >= 3 && run.fifty && run.game !== 'learn') tools.push('<button type="button" class="gm-tool" data-fifty title="Remove two wrong answers (no coin for this question)">💡 50:50</button>');
     const opts = it.c.map((c, i) => '<button type="button" class="gm-opt" data-i="' + i + '"' + (rtl ? ' dir="rtl"' : '') + '><span class="gm-k">' + (it.c.length === 2 ? (i ? '✘' : '✔') : 'ABCD'[i]) + '</span><span class="gm-t">' + c + '</span></button>').join('');
     run.body.innerHTML = '<div class="gm-qno">Question ' + (run.idx + 1) + ' of ' + run.total + (run.streak > 1 ? ' · 🔥 ' + run.streak + ' in a row' : '') + '</div>' +
-      (run.built.secs ? '<div class="gm-clock" aria-hidden="true"><i></i></div>' : '') +
+      (clockOn(run) ? '<div class="gm-clock" aria-hidden="true"><i></i></div>' : '') +
       '<div class="gm-q" ' + (rtl ? 'dir="rtl" ' : '') + 'id="gm-q">' + it.p + '</div>' +
       (tools.length ? '<div class="gm-tools">' + tools.join('') + '</div>' : '') + '<div class="gm-trbox" hidden></div>' +
       '<div class="gm-opts' + (it.big ? ' is-big' : '') + (it.c.length === 2 ? ' is-two' : '') + '" role="group" aria-labelledby="gm-q">' + opts + '</div>' +
@@ -396,25 +405,52 @@
     run.keys = ev => {
       if (ev.metaKey || ev.ctrlKey || ev.altKey) return;
       const k = ev.key.toLowerCase();
+      if (k === 'p' && clockOn(run)) { ev.preventDefault(); return togglePause(run); }
+      if (run.paused) return;
       if (!st.locked) { const i = /^[1-4]$/.test(k) ? +k - 1 : 'abcd'.indexOf(k); if (i >= 0 && i < it.c.length && k.length === 1) { const b = run.body.querySelector('.gm-opt[data-i="' + i + '"]'); if (b && !b.disabled) { ev.preventDefault(); pick(run, i, b); } } }
       else if ((k === 'enter' || k === ' ') && run.body.querySelector('[data-next]') && document.activeElement && document.activeElement.tagName !== 'BUTTON') { ev.preventDefault(); nextQ(run); }
     };
     if (it.say && run.game === 'learn') later(() => { if (S.run === run && run.q === st) speak(it.say); }, 350);
-    if (run.built.secs) startClock(run, st);
+    run.paused = false; syncPauseUi(run);
+    if (clockOn(run)) startClock(run, st);
     const first = run.body.querySelector('.gm-opt'); if (first && !reduceMotion()) first.focus({preventScroll: true});
   }
+  // ---- the clock: it can be switched off, it is twice as long by default, and it stops while the game is paused (or the page is hidden)
+  const clockOn = run => !!run.built.secs && prefs().timing !== 'off';
   function startClock(run, st) {
-    const bar = run.body.querySelector('.gm-clock i'), total = run.built.secs * 1000, t0 = Date.now();
+    const bar = run.body.querySelector('.gm-clock i'), total = run.built.secs * 1000 * (prefs().timing === 'normal' ? 1 : 2);
+    const c = st.clock = {left: total, last: Date.now()};
     const t = setInterval(() => {
       if (st.locked || S.run !== run || run.q !== st) return clearInterval(t);
-      const left = total - (Date.now() - t0);
-      if (bar) { bar.style.width = Math.max(0, 100 * left / total) + '%'; bar.parentNode.classList.toggle('is-low', left < total * 0.3); }
-      if (left <= 0) { clearInterval(t); pick(run, -1, null); }
+      const now = Date.now();
+      if (!run.paused) c.left -= now - c.last;          // only time that was really spent counts: a pause, a hidden tab or a stalled timer take nothing
+      c.last = now;
+      if (bar) { bar.style.width = Math.max(0, 100 * c.left / total) + '%'; bar.parentNode.classList.toggle('is-low', c.left < total * 0.3); }
+      if (c.left <= 0) { clearInterval(t); pick(run, -1, null); }
     }, 100);
     S.ov.timers.push(t);
   }
+  function syncPauseUi(run) {
+    const b = S.ov && S.ov.inner.querySelector('[data-pause]');
+    if (b) { b.setAttribute('aria-pressed', run.paused ? 'true' : 'false'); b.textContent = run.paused ? '▶' : '⏸'; b.setAttribute('aria-label', run.paused ? 'Resume' : 'Pause the clock'); b.title = run.paused ? 'Resume (P)' : 'Pause the clock (P)'; }
+    const body = run.body; if (!body) return;
+    let layer = body.querySelector('.gm-paused');
+    if (run.paused && !layer) {
+      layer = document.createElement('div'); layer.className = 'gm-paused'; layer.setAttribute('role', 'status');
+      layer.innerHTML = '<div><div class="gm-bigico" aria-hidden="true">⏸</div><h3>Paused</h3><p>The clock is stopped. Take your time.</p><button type="button" class="gm-go" data-resume>Resume ▶</button></div>';
+      body.appendChild(layer);
+      const rb = layer.querySelector('[data-resume]'); if (rb) rb.focus();
+    } else if (!run.paused && layer) layer.remove();
+  }
+  function togglePause(run, force) {
+    if (!run || run.finished || !run.q || run.q.locked || !clockOn(run)) return;
+    run.paused = force === undefined ? !run.paused : !!force;
+    syncPauseUi(run);
+    if (!run.paused) { const o = run.body.querySelector('.gm-opt:not([disabled])'); if (o && !reduceMotion()) o.focus({preventScroll: true}); }
+  }
+  document.addEventListener('visibilitychange', () => { if (document.hidden && S.run && !S.run.paused) togglePause(S.run, true); });
   function pick(run, i, btn) {
-    const st = run.q, it = st.it; if (st.locked) return;
+    const st = run.q, it = st.it; if (st.locked || run.paused) return;
     st.locked = true;
     const right = i === it.a, timeout = i < 0;
     run.body.querySelectorAll('.gm-opt').forEach(b => { b.disabled = true; if (+b.dataset.i === it.a) b.classList.add('is-right'); });
@@ -425,7 +461,8 @@
       beep('ok');
       if (!st.assisted) reportStep(run, run.idx, btn);
     } else {
-      run.lives--; run.streak = 0; beep('bad');
+      if (!(timeout && prefs().timing !== 'normal')) run.lives--;      // running out of a relaxed clock costs no life: only the Normal clock does
+      run.streak = 0; beep('bad');
       run.missed.push({p: it.p, a: it.x ? '' : it.c[it.a], x: it.x || '', rtl: it.dir === 'rtl'});   // x (when there is one) already names the right answer
       if (btn && !reduceMotion()) { btn.classList.add('gm-shake'); }
     }

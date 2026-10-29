@@ -1,0 +1,72 @@
+/* sb_private.css - the board choice (Government / Private), the series choice (Munawar) and the Private series bar.
+   Used by js/sb_private_books.js. Sizes use rem and %, not vh: the Android app's WebView reports 0 for vh/dvh. */
+.sbp-overlay {
+  position: fixed; inset: 0; z-index: 2600; display: flex; align-items: center; justify-content: center;
+  padding: 16px; background: rgba(15, 23, 42, .55); overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+.sbp-overlay[hidden] { display: none; }
+.sbp-dialog {
+  position: relative; width: 100%; max-width: 44rem; margin: auto; padding: 1.5rem 1.5rem 1.25rem;
+  background: #fff; border-radius: 20px; box-shadow: 0 24px 60px -12px rgba(15, 23, 42, .45);
+  animation: sbp-pop .18s ease-out;
+}
+@keyframes sbp-pop { from { transform: translateY(8px) scale(.98); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .sbp-dialog { animation: none; } }
+.sbp-close {
+  position: absolute; top: .75rem; inset-inline-end: .75rem; width: 2.25rem; height: 2.25rem; border: 0; border-radius: 50%;
+  background: #f1f5f9; color: #475569; font-size: 1rem; line-height: 1; cursor: pointer;
+}
+.sbp-close:hover { background: #e2e8f0; color: #0f172a; }
+.sbp-back {
+  display: inline-flex; align-items: center; gap: .35rem; margin: 0 0 .5rem; padding: .3rem .7rem; border: 1px solid #e2e8f0;
+  border-radius: 999px; background: #fff; color: #475569; font: 600 .8rem/1 inherit; cursor: pointer;
+}
+.sbp-back:hover { background: #f1f5f9; color: #0f172a; }
+.sbp-eyebrow { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #64748b; padding-inline-end: 2.5rem; }
+.sbp-title { margin: .15rem 0 .25rem; font-size: 1.45rem; line-height: 1.25; color: #0f172a; padding-inline-end: 2.5rem; }
+.sbp-lead { margin: 0 0 1rem; font-size: .92rem; color: #475569; }
+.sbp-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 34rem) { .sbp-cards { grid-template-columns: minmax(0, 1fr); } .sbp-dialog { padding: 1.25rem 1rem 1rem; } }
+.sbp-card {
+  --sbp-a: #2563eb; --sbp-b: #1d4ed8; --sbp-tint: #eff6ff;
+  display: flex; flex-direction: column; gap: .75rem; width: 100%; padding: 0; text-align: start; cursor: pointer;
+  background: #fff; border: 1.5px solid #e2e8f0; border-radius: 18px; overflow: hidden; font: inherit; color: #0f172a;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.sbp-card:hover, .sbp-card:focus-visible { transform: translateY(-3px); border-color: var(--sbp-a); box-shadow: 0 14px 28px -14px var(--sbp-a); outline: none; }
+.sbp-card:focus-visible { box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--sbp-a); }
+@media (prefers-reduced-motion: reduce) { .sbp-card { transition: none; } .sbp-card:hover { transform: none; } }
+.sbp-gov { --sbp-a: #0f766e; --sbp-b: #115e59; --sbp-tint: #f0fdfa; }
+.sbp-priv { --sbp-a: #b45309; --sbp-b: #92400e; --sbp-tint: #fffbeb; }
+.sbp-munawar { --sbp-a: #be185d; --sbp-b: #9d174d; --sbp-tint: #fdf2f8; }
+.sbp-card-head { display: flex; align-items: center; gap: .85rem; padding: 1rem 1rem .9rem; color: #fff; background: linear-gradient(135deg, var(--sbp-a), var(--sbp-b)); }
+.sbp-icon { flex: none; display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 14px; background: rgba(255, 255, 255, .2); font-size: 1.6rem; }
+.sbp-icon svg { width: 2rem; height: 2rem; }
+.sbp-card-name { font-size: 1.15rem; font-weight: 800; line-height: 1.2; }
+.sbp-card-sub { margin-top: .15rem; font-size: .78rem; opacity: .92; }
+.sbp-card-ur { font-size: .9rem; opacity: .95; }
+.sbp-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; padding: 0 1rem; }
+.sbp-stat { padding: .55rem .35rem; text-align: center; border-radius: 12px; background: var(--sbp-tint); }
+.sbp-stat b { display: block; font-size: 1.3rem; line-height: 1.1; color: var(--sbp-b); font-variant-numeric: tabular-nums; }
+.sbp-stat span { display: block; margin-top: .15rem; font-size: .7rem; line-height: 1.2; color: #475569; }
+.sbp-chips { display: flex; flex-wrap: wrap; gap: .35rem; padding: 0 1rem; }
+.sbp-chip { padding: .2rem .55rem; border-radius: 999px; background: #f1f5f9; font-size: .74rem; color: #334155; white-space: nowrap; }
+.sbp-go { margin-top: auto; padding: .7rem 1rem; display: flex; align-items: center; justify-content: space-between; font-size: .85rem; font-weight: 700; color: var(--sbp-b); border-top: 1px solid #f1f5f9; }
+.sbp-card[aria-disabled="true"] { cursor: default; }
+.sbp-note { margin: 1rem 0 0; font-size: .78rem; color: #64748b; }
+
+/* the slim bar above the Private series' book covers */
+.sbp-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .6rem .9rem; margin: 0 0 1rem; padding: .65rem .9rem;
+  border-radius: 14px; background: linear-gradient(135deg, #fdf2f8, #fff7ed); border: 1px solid #fbcfe8;
+}
+.sbp-bar-back { padding: .35rem .8rem; border: 1px solid #f9a8d4; border-radius: 999px; background: #fff; color: #9d174d; font: 700 .8rem/1 inherit; cursor: pointer; }
+.sbp-bar-back:hover { background: #fdf2f8; }
+.sbp-bar-crumbs { font-size: .85rem; color: #475569; }
+.sbp-bar-crumbs b { color: #9d174d; }
+.sbp-bar-note { margin-inline-start: auto; font-size: .78rem; color: #64748b; }
+
+.sbp-empty { max-width: 34rem; margin: 2rem auto; padding: 1.75rem 1.25rem; text-align: center; border: 1.5px dashed #f9a8d4; border-radius: 18px; background: #fff; }
+.sbp-empty h2 { margin: .5rem 0 .4rem; font-size: 1.2rem; color: #0f172a; }
+.sbp-empty p { margin: 0 0 1rem; font-size: .9rem; color: #475569; }
+.sbp-empty button { padding: .55rem 1.1rem; border: 0; border-radius: 999px; background: #9d174d; color: #fff; font: 700 .85rem/1 inherit; cursor: pointer; }

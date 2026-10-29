@@ -1,4 +1,6 @@
-/* Open-book view for Class 6 Mathematics exercises.
+/* Open-book view for the reviewed books (and Class 6 Mathematics exercises).
+ * Wide screens and full screen show two facing pages; a NARROW screen and the Android app show the SAME printed pages, one at a time
+ * (bk-single), so a phone reads exactly what the website reads: the same text, the same exercises, the same Ans buttons. 
  * In full screen the Exercises tab shows each exercise as the printed book does: two facing pages
  * (odd page on the left, even page on the right), question numbers in green squares, answer options in a row,
  * a green "Exercise" banner and the yellow page-number circle on a green footer bar.
@@ -24,7 +26,15 @@
   }
 
   const css = `
-  .bk-wrap{margin:0 0 2.2rem}
+  .bk-wrap{margin:0 0 2.2rem;content-visibility:auto;contain-intrinsic-size:auto 1250px}
+  .bk-wrap.bk-one{margin:0 0 1.1rem;contain-intrinsic-size:auto 900px}
+  .bk-single{display:block;max-width:760px;box-shadow:0 2px 10px rgba(15,23,42,.18),0 0 0 1px #cbd5e1}
+  .bk-single::before{display:none}
+  .bk-single .bk-page,.bk-page.bk-solo{border-radius:6px;background:#fff;min-height:0;padding:1rem .85rem 3.4rem}
+  .bk-one .bk-head{font-size:.85rem;margin-bottom:.35rem}
+  .bk-single .bk-page table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .bk-single .bk-page td,.bk-single .bk-page th{overflow-wrap:normal;word-break:normal;min-width:3.2em}
+  @media print{.bk-wrap{content-visibility:visible}}
   .bk-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:.6rem 1.2rem;max-width:1500px;margin:0 auto .55rem;font:700 .92rem system-ui,sans-serif;color:#334155}
   .bk-head b{color:#15803d}
   .bk-head label{display:inline-flex;align-items:center;gap:.4rem;font-weight:600;cursor:pointer}
@@ -122,6 +132,13 @@
     cls11: () => typeof MATH_11_DATA !== 'undefined' ? MATH_11_DATA : null
   };
 
+  // the book of one Maths class: its own word list and printed key, and its class number, so that the Class 6 renderer that draws the pages reads that class's
+  // answers (the SpaceBook solution ids repeat from class to class: "s814" is a different answer in Class 5, 6, 7 and 8)
+  function mathRes(classId, arr, ch) {
+    const n = String(classId).replace('cls', '');
+    return {key: classId + ':math', units: arr, ch, wrap: n !== '6', cls: n, words: window['MATH_' + n + '_WORDS'], book: window['MATH_' + n + '_BOOK'], rtl: false};
+  }
+
   // which reviewed book (units of sections of blocks) a workspace is showing
   function resolve(subjKey, classId, chIdx) {
     if (classId === 'cls11v') classId = 'cls11';
@@ -142,7 +159,7 @@
       const arr = MATHD[classId]();
       const ch = arr && (arr[chIdx] || arr[0]);
       if (!ch || ch.legacy) return null;
-      return {key: classId + ':math', units: arr, ch, wrap: false, rtl: false};
+      return mathRes(classId, arr, ch);
     }
     return null;
   }
@@ -201,14 +218,24 @@
     t.innerHTML = html;
     t.content.querySelectorAll('.m6-qno').forEach(n => { n.textContent = n.textContent.replace(/\.$/, ''); });
     t.content.querySelectorAll('.m6-parts.block').forEach(p => {
-      const short = [...p.querySelectorAll('.m6-part')].every(part => {
-        const c = part.cloneNode(true);
-        c.querySelectorAll('.sb-ans,.sb-solve,.katex-mathml,.m6-tr').forEach(x => x.remove());
-        return c.textContent.replace(/\s+/g, ' ').trim().length <= 30;
-      });
+      const short = [...p.querySelectorAll('.m6-part')].every(part => ownText(part, 2000).replace(/\s+/g, ' ').trim().length <= 30);
       if (short) p.classList.remove('block');
     });
     return t.innerHTML;
+  }
+  // the text of a part without its Ans button, answer box, hidden MathML copy and translation line, read straight from the nodes and cut off at `max`
+  // characters (a part is "short" or it is not: there is no need to read all of a long one). The old way cloned every part, which cost 0.5 s a chapter.
+  const SKIP_TEXT = '.sb-ans,.sb-solve,.katex-mathml,.m6-tr';
+  function ownText(el, max) {
+    let s = '';
+    const walk = node => {
+      for (let c = node.firstChild; c && s.length <= max; c = c.nextSibling) {
+        if (c.nodeType === 3) s += c.data;
+        else if (c.nodeType === 1 && !c.matches(SKIP_TEXT)) walk(c);
+      }
+    };
+    walk(el);
+    return s;
   }
 
   const label = pg => pg ? (pg.printed != null ? String(pg.printed) : pg.pdf != null ? 'Scan ' + pg.pdf : '') : '';
@@ -224,13 +251,14 @@
     // older cached readers still call book(chapter, mode): turn the chapter into the book it belongs to
     if (res && !res.units && res.sections) {
       const k = Object.keys(MATHD).find(c => { const a = MATHD[c](); return a && a.indexOf(res) >= 0; });
-      res = k ? {key: k + ':math', units: MATHD[k](), ch: res, wrap: false, rtl: false} : null;
+      res = k ? mathRes(k, MATHD[k](), res) : null;
     }
     if (!res || !R()) return null;
     addCss();
     const pages = pagesOf(res);
     const ui = res.units.indexOf(res.ch);
-    const all = spreadsOf(pages);
+    const one = !fsOn();             // a narrow screen or the app: one printed page at a time, no facing pair
+    const all = one ? pages.map(p => [p, null]) : spreadsOf(pages);
     let first = -1, last = -1;
     all.forEach((s, k) => { if (s.some(p => p && p.units.has(ui))) { if (first < 0) first = k; last = k; } });
     if (first < 0) return null;
@@ -242,11 +270,15 @@
         const nums = s.map(label).filter(Boolean);
         const title = nums.length > 1 ? 'Textbook pages ' + nums[0] + '–' + nums[1] : 'Textbook page ' + (nums[0] || '');
         const key = (s[0] || s[1]).key;
+        if (one) {
+          html.push(`<section class="bk-wrap bk-one" id="bk-spread-${esc(key)}" data-label="${esc(nums.join('–'))}"${ids.length ? ' data-ex="1"' : ''}><div class="bk-head"><span>${ids.length ? `<b>${esc(ids.join(' · '))}</b> · ` : ''}${esc(title)}</span></div><div class="bk-spread bk-single bk-ans${res.rtl ? ' bk-rtl' : ''}" dir="${res.rtl ? 'rtl' : 'ltr'}">${pageHtml(s[0], 'bk-solo')}</div></section>`);
+          return;
+        }
         html.push(`<section class="bk-wrap" id="bk-spread-${esc(key)}" data-label="${esc(nums.join('–'))}"${ids.length ? ' data-ex="1"' : ''}><div class="bk-head"><span>${ids.length ? `<b>${esc(ids.join(' · '))}</b> · ` : ''}${esc(title)}</span><label><input type="checkbox" checked onchange="this.closest('.bk-wrap').querySelector('.bk-spread').classList.toggle('bk-ans',this.checked)"> Show answers &amp; solutions</label></div><div class="bk-spread bk-ans${res.rtl ? ' bk-rtl' : ''}" dir="${res.rtl ? 'rtl' : 'ltr'}">${pageHtml(s[0], 'bk-left')}${pageHtml(s[1], 'bk-right')}</div></section>`);
       });
       return html.join('');
     };
-    const out = res.wrap && R().withBook ? R().withBook(res.words, res.book, render) : render();
+    const out = res.wrap && R().withBook ? R().withBook(res.words, res.book, render, res.cls) : render();
     if (mode === 'ex') setTimeout(() => {
       // sb_structure draws every tab once to plan a chapter; only scroll when the Exercises tab is the one on screen
       const on = document.querySelector('.math-top-tab.active, .math-tab-btn.active');
@@ -409,7 +441,7 @@
       sec.className = 'bk-wrap bk-dom';
       const labs = pair.map((e, k) => e ? labelOf(e, i + k) : '').filter(Boolean);
       sec.dataset.label = labs.length > 1 && labs[0] !== labs[1] ? labs[0] + '–' + labs[1] : labs[0];
-      if (pair.some(e => e && /exercise|مشق|تمرین|questions?/i.test((e.innerText || '').slice(0, 120)))) sec.dataset.ex = '1';
+      if (pair.some(e => e && /exercise|مشق|تمرین|questions?/i.test((e.textContent || '').slice(0, 120)))) sec.dataset.ex = '1';
       sec.innerHTML = '<div class="bk-head"><span>Page ' + esc(sec.dataset.label) + '</span><label><input type="checkbox" checked onchange="this.closest(\'.bk-wrap\').querySelector(\'.bk-spread\').classList.toggle(\'bk-ans\',this.checked)"> Show answers &amp; solutions</label></div><div class="bk-spread bk-ans' + (rtl ? ' bk-rtl' : '') + '" dir="' + (rtl ? 'rtl' : 'ltr') + '"></div>';
       const sp = sec.querySelector('.bk-spread');
       pair.forEach((el, k) => {
@@ -452,15 +484,17 @@
     setTimeout(tick, 120);
   }
 
-  // in full screen the Lessons and Exercises tabs of every reviewed book open as the printed book
+  // the Lessons and Exercises tabs of every reviewed book open as the printed book: facing pages in full screen and on wide screens, one printed page at a
+  // time on a narrow screen and in the app (book() decides), so the phone and the website show the same book
   function apply(subjKey, tabId, chIdx, classId) {
-    if (!fsOn() || (tabId !== 'lesson' && tabId !== 'exercise')) return;
+    if (tabId !== 'lesson' && tabId !== 'exercise') return;
     const res = resolve(subjKey, classId, chIdx);
+    if (res && !fsOn() && /:math$/.test(res.key)) return;          // Mathematics keeps its own reader on a narrow screen and in the app (they have their own Ans handlers)
     const container = tabBox();
     if (!container) return;
     const html = res ? book(res, tabId === 'exercise' ? 'ex' : '') : null;
     if (html) { container.innerHTML = html; container.scrollTop = 0; }
-    else settled(container, tabId === 'exercise' ? 'ex' : '');
+    else if (fsOn()) settled(container, tabId === 'exercise' ? 'ex' : '');     // books not in the page format: their cards become pages only in the open-book view
   }
   if (window.SBHooks && typeof window.switchSubjectTab === 'function') {
     SBHooks.use('switchSubjectTab', function (original) { return function (subjKey, tabId, chIdx, classId) {

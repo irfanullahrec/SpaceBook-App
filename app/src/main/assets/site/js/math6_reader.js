@@ -15,10 +15,14 @@
   let LANGS = ['en', 'ur', 'ps'];
   const RTL_PRIMARY = () => LANG_INFO[LANGS[0]].dir === 'rtl';
   // Other Class 6 books reuse this renderer with their own word list and answer key.
-  function withBook(words, book, fn) {
-    const w = WORDS, b = BOOK, l = LANGS;
-    WORDS = words || {}; BOOK = book || {answers: {}}; LANGS = (book && book.langs) || ['en', 'ur', 'ps'];
-    try { return fn(); } finally { WORDS = w; BOOK = b; LANGS = l; }
+  // cls: the Maths class (5, 7, 8, 11) when the open-book view (js/sb_book_spread.js) draws that class's own book with this renderer. The SpaceBook solution
+  // ids of the Maths books ("s814") repeat from class to class, so what is drawn while cls is set carries its class (Ans button, multiple-choice widget) and
+  // reads that class's MATH_<cls>_SOLUTIONS, never Class 6's. Class 6 itself and the books with their own inline answers (ids with a dash) pass nothing.
+  let SOLCLS = '';
+  function withBook(words, book, fn, cls) {
+    const w = WORDS, b = BOOK, l = LANGS, c = SOLCLS;
+    WORDS = words || {}; BOOK = book || {answers: {}}; LANGS = (book && book.langs) || ['en', 'ur', 'ps']; SOLCLS = cls && String(cls) !== '6' ? String(cls) : '';
+    try { return fn(); } finally { WORDS = w; BOOK = b; LANGS = l; SOLCLS = c; }
   }
 
   const css = `
@@ -206,7 +210,7 @@
   // ---- SpaceBook answers: the Ans button opens the shared step-by-step panel (js/sb_solve.js) ----
   function solButton(sid) {
     if (!sid) return '';
-    return `<button type="button" class="sb-ans" data-langs="${LANGS.join(',')}" aria-expanded="false" title="Answer and step-by-step explanation" onclick="event.stopPropagation();m6SolOpen(this,'${esc(sid)}')">Ans</button><div class="sb-solve" hidden></div>`;
+    return `<button type="button" class="sb-ans" data-langs="${LANGS.join(',')}" aria-expanded="false" title="Answer and step-by-step explanation" onclick="event.stopPropagation();m6SolOpen(this,'${esc(sid)}'${SOLCLS ? `,'${SOLCLS}'` : ''})">Ans</button><div class="sb-solve" hidden></div>`;
   }
 
   // ---- the printed answer key (and answers written for what the key leaves out) as Ans records ----
@@ -284,24 +288,60 @@
     return solLoad;
   }
   const plain = text => String(text || '').replace(/\$([^$]*)\$/g, (_, m) => m.replace(/\\times/g, '×').replace(/\\div/g, '÷').replace(/\^\{([^}]*)\}/g, '^$1').replace(/\\text\{([^}]*)\}/g, '$1').replace(/[{}\\]/g, ''));
-  window.m6SolOpen = function (btn, id) {
+  // The solutions file of another Maths class (5, 7, 8, 11) for the open-book view; loaded like Class 6's, with the version of that class's reader.
+  const solLoads = {};
+  function loadSolutionsFor(cls) {
+    const key = 'MATH_' + cls + '_SOLUTIONS';
+    if (window[key]) return Promise.resolve(window[key]);
+    if (!solLoads[cls]) {
+      solLoads[cls] = new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        const own = [...document.scripts].find(x => new RegExp('math' + cls + '_reader\\.js').test(x.src)) || [...document.scripts].find(x => /math6_reader\.js/.test(x.src));
+        const v = own && own.src.includes('?') ? own.src.slice(own.src.indexOf('?')) : '';
+        s.src = 'js/math_' + cls + '_solutions.js' + v;
+        s.onload = () => resolve(window[key]);
+        s.onerror = () => { delete solLoads[cls]; reject(new Error('Solutions could not be loaded')); };
+        document.head.appendChild(s);
+      });
+    }
+    return solLoads[cls];
+  }
+  // the answers the books ship inline: the page books of Class 5 keep theirs in CLS5_SOLUTIONS (js/*_5_*.js), every other book in CLS6_SOLUTIONS
+  const otherSols = id => { const a = window.CLS6_SOLUTIONS || {}; if (a[id]) return a; const b = window.CLS5_SOLUTIONS || {}; return b[id] ? b : a; };
+  window.m6SolOpen = function (btn, id, cls) {
     if (KEYREC[id]) { SBSolve.toggle(btn, KEYREC[id], {inline, plain}); return; }
-    const other = id.includes('-');   // other Class 6 books ship their answers inline (CLS6_SOLUTIONS)
+    const other = id.includes('-');   // other books ship their answers inline (CLS6_SOLUTIONS, CLS5_SOLUTIONS)
+    if (!other && cls && String(cls) !== '6') {   // drawn by the open-book view for another Maths class: that class's own solutions
+      const key = 'MATH_' + cls + '_SOLUTIONS';
+      if (!window[key]) {
+        const panel = SBSolve.loading(btn, 'Loading the solution…');
+        loadSolutionsFor(cls).then(() => { panel.hidden = true; m6SolOpen(btn, id, cls); }).catch(() => { panel.innerHTML = '<p class="sbs-help">The solution could not be loaded. Please check your connection and try again.</p>'; });
+        return;
+      }
+      SBSolve.toggle(btn, window[key][id], {inline, plain});
+      return;
+    }
     if (!other && !window.MATH_6_SOLUTIONS) {
       const panel = SBSolve.loading(btn, 'Loading the solution…');
       loadSolutions().then(() => { panel.hidden = true; m6SolOpen(btn, id); }).catch(() => { panel.innerHTML = '<p class="sbs-help">The solution could not be loaded. Please check your connection and try again.</p>'; });
       return;
     }
-    SBSolve.toggle(btn, (other ? window.CLS6_SOLUTIONS || {} : window.MATH_6_SOLUTIONS)[id], {inline, plain});
+    SBSolve.toggle(btn, (other ? otherSols(id) : window.MATH_6_SOLUTIONS)[id], {inline, plain});
   };
   // Inline-option MCQs ("Stem? a. … b. … c. …") become the shared radio widget (js/sb_mcq.js).
-  const solMap = id => String(id).includes('-') ? (window.CLS6_SOLUTIONS || {}) : window.MATH_6_SOLUTIONS;
+  const solMap = id => String(id).includes('-') ? otherSols(String(id)) : window.MATH_6_SOLUTIONS;
   if (window.SBMcq) SBMcq.register('m6', {
     inline,
     sols: id => { const m = solMap(id); return m ? m[id] : undefined; },
     get: id => { const m = solMap(id); return m ? Promise.resolve(m[id]) : loadSolutions().then(x => x && x[id]); }
   });
-  const mcqHtml = (b, key, after, partNo) => window.SBMcq ? SBMcq.book(b, {src: 'm6', inline, sentence, after, textbook: key && key.a, partNo}) : '';
+  // the same widget for the books of the other Maths classes drawn by the open-book view: one source per class ('m6c5', 'm6c7', 'm6c8', 'm6c11')
+  if (window.SBMcq) ['5', '7', '8', '11'].forEach(c => SBMcq.register('m6c' + c, {
+    inline,
+    sols: id => { const m = window['MATH_' + c + '_SOLUTIONS']; return m ? m[id] : undefined; },
+    get: id => { const m = window['MATH_' + c + '_SOLUTIONS']; return m ? Promise.resolve(m[id]) : loadSolutionsFor(c).then(x => x && x[id]); }
+  }));
+  const mcqHtml = (b, key, after, partNo) => window.SBMcq ? SBMcq.book(b, {src: SOLCLS ? 'm6c' + SOLCLS : 'm6', inline, sentence, after, textbook: key && key.a, partNo}) : '';
 
 
   // The labels of the parts of one question, with a repeated label read as the next one ("i, ii, ii, iv" is a misprint for "i, ii, iii, iv"), so a part never
@@ -399,7 +439,7 @@
         case 'box': {
           const label = b.title ? b.title : (BOX_LABEL[b.kind] ? {en: BOX_LABEL[b.kind]} : null);
           const fk = fillKeyOfBox(b), fb = hasFill(fk) ? `<button type="button" class="sb-fill-btn" aria-expanded="false" onclick="SBFill.work(this)">Show the work</button>` : '';
-          return `<aside class="m6-box ${esc(b.kind)}"${fb ? ` data-fkey="${fk}"` : ''}>${label || fb ? `<div class="m6-box-t">${label ? (label.ur ? sentence(label, 'span') : esc(label.en)) : ''}${fb}</div>` : ''}${blocks(b.blocks, ctx)}</aside>`;
+          return `<div role="note" class="m6-box ${esc(b.kind)}"${fb ? ` data-fkey="${fk}"` : ''}>${label || fb ? `<div class="m6-box-t">${label ? (label.ur ? sentence(label, 'span') : esc(label.en)) : ''}${fb}</div>` : ''}${blocks(b.blocks, ctx)}</div>`;
         }
         case 'example': return `<section class="m6-example"><div class="m6-example-t">${/^\d/.test(b.no) ? 'Example ' + esc(b.no) : esc(b.no)}${b.title ? ': ' : ''}${b.title ? (b.title.ur ? sentence(b.title, 'span') : inline(b.title.en, true)) : ''}</div>${blocks(b.blocks, ctx)}</section>`;
         case 'exercise': {

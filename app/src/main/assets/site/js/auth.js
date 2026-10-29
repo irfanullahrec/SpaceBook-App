@@ -1,7 +1,6 @@
 // ─── ACCOUNTS: login / create account modal (talks to api/auth.php) ───
 (function () {
   const API = 'api/auth.php';
-  const TYPES = [['student', 'Student'], ['teacher', 'Teacher'], ['school', 'School']];
   let currentUser = null;
 
   async function call(action, body, extraHeaders) {
@@ -65,11 +64,6 @@
           <label>Father Name
             <input name="father_name" type="text" maxlength="100" required>
           </label>
-          <fieldset class="auth-types">
-            <legend>User Type</legend>
-            ${TYPES.map(([v, l], i) => `
-              <label class="auth-type"><input type="radio" name="user_type" value="${v}" ${i === 0 ? 'checked' : ''}><span>${l}</span></label>`).join('')}
-          </fieldset>
           <label>WhatsApp Number
             <input name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="03XX XXXXXXX" required>
           </label>
@@ -247,18 +241,19 @@
   function showMenu(anchor) {
     if (document.getElementById('authMenu')) { closeMenu(); return; }
     const u = currentUser;
-    const type = (TYPES.find(t => t[0] === u.user_type) || [, u.user_type])[1];
     const menu = document.createElement('div');
     menu.id = 'authMenu';
     menu.className = 'auth-menu';
     menu.innerHTML = `
       <div class="auth-menu-name">${esc(u.name)}</div>
-      <div class="auth-menu-meta">${esc(type)} · +${esc(u.whatsapp)}</div>
+      <div class="auth-menu-meta">+${esc(u.whatsapp)}</div>
+      <button type="button" class="auth-logout" data-act="plans" style="margin-bottom:.4rem">My plans</button>
       <button type="button" class="auth-logout" data-act="account" style="margin-bottom:.4rem">My account</button>
       <button type="button" class="auth-logout">Logout</button>`;
     anchor.appendChild(menu);
     menu.addEventListener('click', e => e.stopPropagation());
     menu.querySelector('[data-act="account"]').addEventListener('click', () => { closeMenu(); openAccount(); });
+    menu.querySelector('[data-act="plans"]').addEventListener('click', () => { closeMenu(); if (window.SBBilling) window.SBBilling.openAccount(); });
     menu.querySelector('.auth-logout:not([data-act])').addEventListener('click', async () => {
       const uid = currentUser && currentUser.id;
       await call('logout', {}, window.SBSync ? window.SBSync.bearerHeaders() : {});   // the device token ends with the logout

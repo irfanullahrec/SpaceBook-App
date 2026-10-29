@@ -291,7 +291,7 @@ function renderHome() {
 
   // Class selection tiles
   const classCardsHtml = DATA.classes.map(c => `
-    <div class="class-portal-card" onclick="goToSubjects('${c.id}')">
+    <div class="class-portal-card" onclick="window.SBPrivate ? SBPrivate.entry('${c.id}') : goToSubjects('${c.id}')">
       <div class="class-portal-emoji">${c.emoji}</div>
       <div class="class-portal-name">${c.name}</div>
       <div class="class-portal-meta">KPK Textbook Board</div>
@@ -656,27 +656,27 @@ function renderClasses() {
       <div class="classes-jewel-grid">
         ${(() => {
           const clsCardCoverMap = {
-            'cls-pg': 'PG.png',
-            'cls-nur': 'Nursery.png',
-            'cls-kg': 'KG.png',
-            'cls1': '1.png',
-            'cls2': '2.png',
-            'cls3': '3.png',
-            'cls4': '4.png',
-            'cls5': '5.png',
-            'cls6': '6.png',
-            'cls7': '7.png',
-            'cls8': '8.png',
-            'cls9': '9.png',
-            'cls10': '10.png',
-            'cls11': '11.png',
-            'cls12': '12.png'
+            'cls-pg': 'PG.webp',
+            'cls-nur': 'Nursery.webp',
+            'cls-kg': 'KG.webp',
+            'cls1': '1.webp',
+            'cls2': '2.webp',
+            'cls3': '3.webp',
+            'cls4': '4.webp',
+            'cls5': '5.webp',
+            'cls6': '6.webp',
+            'cls7': '7.webp',
+            'cls8': '8.webp',
+            'cls9': '9.webp',
+            'cls10': '10.webp',
+            'cls11': '11.webp',
+            'cls12': '12.webp'
           };
           return DATA.classes.map(c => {
             const clsCoverFile = clsCardCoverMap[c.id];
             if (!clsCoverFile) return '';
             return `
-            <button type="button" class="class-jewel-card" onclick="goToSubjects('${c.id}')" aria-label="Open ${c.name}">
+            <button type="button" class="class-jewel-card" onclick="window.SBPrivate ? SBPrivate.entry('${c.id}') : goToSubjects('${c.id}')" aria-label="Open ${c.name}">
               <img class="cjc-cover-bg" src="covers/Classes Cards/Another-Look/${clsCoverFile}" alt="${c.name} textbook cover" loading="lazy">
             </button>`;
           }).join("");
@@ -687,19 +687,38 @@ function renderClasses() {
 
 
 // ─── SUBJECTS ────────────────────────────
-function goToSubjects(classId) {
+function goToSubjects(classId, series) {
+  // series: '' = the Government books, 'munawar' = that private series, omitted = the choice already made for this class (js/sb_private_books.js)
+  if (window.SBPrivate) SBPrivate.setSeries(classId, series);
   state.page = "subjects";
   state.selectedClass = classId;
   state.activeView = "subjects";
   setActiveNav("subjects");
   const cls  = DATA.classes.find(c => c.id === classId) || { id: classId, name: "Class " + classId.replace("cls","") };
-  const subs = DATA.subjects[classId] || [];
+  const subs = window.SBPrivate ? SBPrivate.subjectsFor(classId) : (DATA.subjects[classId] || []);
+  if (window.SBPrivate && SBPrivate.isEmpty(classId)) {
+    const subNavBarEmpty = $("subpage-nav-bar");
+    if (subNavBarEmpty) subNavBarEmpty.style.display = "none";
+    currentNavCrumbs = [
+      { label: "Home",     onclick: () => { setActiveNav("home"); renderHome(); } },
+      { label: "Subjects", onclick: () => renderClasses() },
+      { label: cls.name,   active: true }
+    ];
+    pageContent().innerHTML = SBPrivate.emptyHtml(classId);
+    return;
+  }
 
   // Hide separate multi-line subpage bar to avoid duplicated stacked elements
   const subNavBar = $("subpage-nav-bar");
   if (subNavBar) subNavBar.style.display = "none";
 
-  currentNavCrumbs = [
+  const seriesNow = window.SBPrivate ? SBPrivate.current(classId) : "";
+  currentNavCrumbs = seriesNow ? [
+    { label: "Home",     onclick: () => { setActiveNav("home"); renderHome(); } },
+    { label: "Subjects", onclick: () => renderClasses() },
+    { label: cls.name,   onclick: () => SBPrivate.entry(classId) },
+    { label: (DATA.series && DATA.series[seriesNow] ? DATA.series[seriesNow].name : "Private"), active: true }
+  ] : [
     { label: "Home",     onclick: () => { setActiveNav("home"); renderHome(); } },
     { label: "Subjects", onclick: () => renderClasses() },
     { label: cls.name,   active: true }
@@ -1839,7 +1858,50 @@ function goToSubjects(classId) {
     "cls11-isl": "Books/11th/kptb_cls11_isl.webp",
     "cls11-mq": "Books/11th/kptb_cls11_mq.webp",
     "cls11-ishist": "Books/11th/kptb_cls11_ishist.webp",
-    "cls11-civics": "Books/11th/kptb_cls11_civics.webp"
+    "cls11-civics": "Books/11th/kptb_cls11_civics.webp",
+    // Munawar (Kanz) series, Classes 1-4: covers made by docs/source-verification/private/munawar/tools/make_covers.py
+    "cls1-mun-comp": "Munawar/cls1-mun-comp.webp",
+    "cls1-mun-compbl": "Munawar/cls1-mun-compbl.webp",
+    "cls1-mun-eng": "Munawar/cls1-mun-eng.webp",
+    "cls1-mun-gram": "Munawar/cls1-mun-gram.webp",
+    "cls1-mun-gk": "Munawar/cls1-mun-gk.webp",
+    "cls1-mun-isl": "Munawar/cls1-mun-isl.webp",
+    "cls1-mun-math": "Munawar/cls1-mun-math.webp",
+    "cls1-mun-prel": "Munawar/cls1-mun-prel.webp",
+    "cls1-mun-urdu": "Munawar/cls1-mun-urdu.webp",
+    "cls1-mun-ugram": "Munawar/cls1-mun-ugram.webp",
+    "cls1-mun-waqf": "Munawar/cls1-mun-waqf.webp",
+    "cls2-mun-comp": "Munawar/cls2-mun-comp.webp",
+    "cls2-mun-compbl": "Munawar/cls2-mun-compbl.webp",
+    "cls2-mun-eng": "Munawar/cls2-mun-eng.webp",
+    "cls2-mun-gram": "Munawar/cls2-mun-gram.webp",
+    "cls2-mun-gk": "Munawar/cls2-mun-gk.webp",
+    "cls2-mun-isl": "Munawar/cls2-mun-isl.webp",
+    "cls2-mun-math": "Munawar/cls2-mun-math.webp",
+    "cls2-mun-prel": "Munawar/cls2-mun-prel.webp",
+    "cls2-mun-ugram": "Munawar/cls2-mun-ugram.webp",
+    "cls2-mun-waqf": "Munawar/cls2-mun-waqf.webp",
+    "cls3-mun-comp": "Munawar/cls3-mun-comp.webp",
+    "cls3-mun-compbl": "Munawar/cls3-mun-compbl.webp",
+    "cls3-mun-eng": "Munawar/cls3-mun-eng.webp",
+    "cls3-mun-gram": "Munawar/cls3-mun-gram.webp",
+    "cls3-mun-gk": "Munawar/cls3-mun-gk.webp",
+    "cls3-mun-isl": "Munawar/cls3-mun-isl.webp",
+    "cls3-mun-math": "Munawar/cls3-mun-math.webp",
+    "cls3-mun-prel": "Munawar/cls3-mun-prel.webp",
+    "cls3-mun-urdu": "Munawar/cls3-mun-urdu.webp",
+    "cls3-mun-ugram": "Munawar/cls3-mun-ugram.webp",
+    "cls3-mun-waqf": "Munawar/cls3-mun-waqf.webp",
+    "cls4-mun-comp": "Munawar/cls4-mun-comp.webp",
+    "cls4-mun-compbl": "Munawar/cls4-mun-compbl.webp",
+    "cls4-mun-eng": "Munawar/cls4-mun-eng.webp",
+    "cls4-mun-gram": "Munawar/cls4-mun-gram.webp",
+    "cls4-mun-isl": "Munawar/cls4-mun-isl.webp",
+    "cls4-mun-math": "Munawar/cls4-mun-math.webp",
+    "cls4-mun-sci": "Munawar/cls4-mun-sci.webp",
+    "cls4-mun-sst": "Munawar/cls4-mun-sst.webp",
+    "cls4-mun-urdu": "Munawar/cls4-mun-urdu.webp",
+    "cls4-mun-ugram": "Munawar/cls4-mun-ugram.webp"
   };
 
   const getCoverPage = (subjId) => {
@@ -1847,6 +1909,7 @@ function goToSubjects(classId) {
     if (!filename) return null;
     return `covers/${filename}`;
   };
+  const seriesBar = window.SBPrivate ? SBPrivate.bar(classId) : '';
 
   const getGridColsClass = (count) => {
     if (count <= 6) return 'cols-3';
@@ -1861,6 +1924,7 @@ function goToSubjects(classId) {
 
 if (['cls1', 'cls2', 'cls3', 'cls4', 'cls5'].includes(classId)) {
     pageContent().innerHTML = `
+      ${seriesBar}
       <div class="cls1-cover-stage-grid">
         ${displaySubs.map(s => {
           const coverSrc = getCoverPage(s.id);
@@ -1875,6 +1939,7 @@ if (['cls1', 'cls2', 'cls3', 'cls4', 'cls5'].includes(classId)) {
   }
 
 pageContent().innerHTML = `
+    ${seriesBar}
     <div class="subjects-compact-grid ${gridColsClass}">
       ${displaySubs.map(s => {
         const meta = getSubjectMeta(s);
@@ -9297,7 +9362,7 @@ function handleGlobalSearch(query) {
         badge: "🏫 Class",
         title: c.name,
         sub: `Contains ${c.subjects} subjects · KPK Board`,
-        action: () => { clearGlobalSearch(); goToSubjects(c.id); }
+        action: () => { clearGlobalSearch(); if (window.SBPrivate) SBPrivate.entry(c.id); else goToSubjects(c.id); }
       });
     }
   });

@@ -239,7 +239,7 @@
         case 'ul': return `<ul class="m11-ul">${b.items.map(i => `<li class="lv${i.lv || 1}">${sentence(i, 'span')}</li>`).join('')}</ul>`;
         case 'box': {
           const label = b.title ? b.title : (BOX_LABEL[b.kind] ? {en: BOX_LABEL[b.kind]} : null);
-          return `<aside class="m11-box ${esc(b.kind)}">${label ? `<div class="m11-box-t">${label.ur ? sentence(label, 'span') : esc(label.en)}</div>` : ''}${blocks(b.blocks, ctx)}</aside>`;
+          return `<div role="note" class="m11-box ${esc(b.kind)}">${label ? `<div class="m11-box-t">${label.ur ? sentence(label, 'span') : esc(label.en)}</div>` : ''}${blocks(b.blocks, ctx)}</div>`;
         }
         case 'example': return `<section class="m11-example"><div class="m11-example-t">Example ${esc(b.no)}${b.title ? ': ' : ''}${b.title ? (b.title.ur ? sentence(b.title, 'span') : inline(b.title.en, true)) : ''}</div>${blocks(b.blocks, ctx)}</section>`;
         case 'exercise': {

@@ -128,7 +128,7 @@
     }
     const map = await loadMap();
     const have = await readDownloaded();
-    for (const id of ids) if (map.subjects[id]) have[id] = { at: new Date().toISOString(), bytes: map.subjects[id].bytes };
+    for (const id of ids) if (map.subjects[id]) have[id] = { at: new Date().toISOString(), bytes: map.subjects[id].bytes, files: map.subjects[id].files };
     await writeDownloaded(have);
     return { ok: true, bytes: total, files: count };
   }
@@ -158,6 +158,7 @@
   function register(opts = {}) {
     if (!nav.serviceWorker) return Promise.resolve(null);
     const url = opts.url || 'sw.js';
+    const hadController = !!nav.serviceWorker.controller;      // false on the very first visit: the page in front of the student is already the newest, so taking control needs no reload
     return nav.serviceWorker.register(url, { scope: opts.scope || './' }).then(reg => {
       const offer = worker => showUpdateBanner(() => { worker.postMessage({ type: 'SKIP_WAITING' }); });
       if (reg.waiting && nav.serviceWorker.controller) offer(reg.waiting);
@@ -167,7 +168,7 @@
         w.addEventListener('statechange', () => { if (w.state === 'installed' && nav.serviceWorker.controller) offer(w); });
       });
       let reloaded = false;
-      nav.serviceWorker.addEventListener('controllerchange', () => { if (reloaded || !opts.reloadOnUpdate) return; reloaded = true; win.location.reload(); });
+      nav.serviceWorker.addEventListener('controllerchange', () => { if (reloaded || !opts.reloadOnUpdate || !hadController) return; reloaded = true; win.location.reload(); });
       return reg;
     }).catch(e => { if (win.console) win.console.warn('service worker not registered:', e && e.message); return null; });
   }
@@ -210,7 +211,7 @@
     overlay.className = 'sb-off-overlay'; overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-labelledby', 'sbOffTitle');
     overlay.innerHTML = '<div class="sb-off-box"><div class="sb-off-head"><h2 id="sbOffTitle">Offline books</h2><button type="button" class="sb-off-close" aria-label="Close">✕</button></div>' +
       '<p class="sb-off-note">Download a subject while you are online. It then opens with no connection. Your progress is kept on this device and sent when you are back online.</p>' +
-      '<div class="sb-off-meter" aria-live="polite"></div><div class="sb-off-list">Loading…</div>' +
+      '<div class="sb-off-meter" aria-live="polite"></div><div class="sb-off-sync" role="status"></div><div class="sb-off-list">Loading…</div>' +
       '<div class="sb-off-actions"><button type="button" data-act="download" disabled>Download</button><button type="button" data-act="remove" disabled>Remove from this device</button></div>' +
       '<div class="sb-off-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><div class="sb-off-bar"></div></div><p class="sb-off-msg" role="status"></p></div>';
     doc.body.appendChild(overlay);
@@ -256,8 +257,28 @@
       dl.disabled = e.bytes === 0 && ids.every(id => have[id]);
       dl.textContent = e.bytes ? 'Download (' + mb(e.bytes) + ')' : 'Already on this device';
     };
+    // What happened to the student's progress: waiting on this device, sent to the account, or refused / needs a new sign-in (never pretended sent)
+    const refreshSync = async () => {
+      const S = win.SBSync, el = q('.sb-off-sync');
+      if (!S || !S.status || !el) { if (el) el.hidden = true; return; }
+      let st, rej = [];
+      try { st = await S.status(); rej = (S.rejected && await S.rejected()) || []; } catch (e) { el.hidden = true; return; }
+      let t, kind = 'ok';
+      if (!st.signedIn) { t = 'Your progress is saved on this device. Sign in to keep it on your account as well.' + (st.pendingGuest ? ' (' + st.pendingGuest + ' change' + (st.pendingGuest === 1 ? '' : 's') + ' will be sent after you sign in.)' : ''); kind = 'info'; }
+      else if (!S.isEnabled()) { t = 'You are signed in. Your progress is kept on this device; saving it to the account is not switched on yet.'; kind = 'info'; }
+      else if (st.authLost) { t = 'Please sign in again: ' + st.pending + ' change' + (st.pending === 1 ? '' : 's') + ' could not be sent because the sign-in ran out. Nothing is lost; they are sent after you sign in.'; kind = 'bad'; }
+      else if (st.pending > 0) { t = st.pending + ' change' + (st.pending === 1 ? '' : 's') + ' saved on this device, waiting to be sent' + (nav.onLine === false ? ' (no connection: they are sent when it returns)' : st.lastError ? ' (the last try failed; it will try again)' : '') + '.'; kind = 'wait'; }
+      else { t = 'Everything is saved to your account.'; }
+      if (rej.length) t += ' ' + rej.length + ' older change' + (rej.length === 1 ? ' was' : 's were') + ' refused by the server (out of date or not allowed) and dropped.';
+      const mark = { ok: '✅', info: 'ℹ️', wait: '⏳', bad: '⚠️' }[kind];
+      el.hidden = false; el.className = 'sb-off-sync sb-off-sync-' + kind;
+      el.innerHTML = mark + ' ' + esc(t) + (kind === 'wait' && nav.onLine !== false ? ' <button type="button" data-act="syncnow">Send now</button>' : '');
+    };
+    overlay.addEventListener('click', async e => { if (e.target.closest && e.target.closest('[data-act="syncnow"]')) { try { await win.SBSync.sync(); } catch (x) { /* shown below */ } await refreshSync(); } });
+    win.addEventListener('online', refreshSync);
     overlay.addEventListener('change', refreshButtons);
     await refreshMeter();
+    await refreshSync();
 
     q('[data-act="download"]').addEventListener('click', async () => {
       const ids = selected();
@@ -286,20 +307,50 @@
     });
   }
 
+  // Offline, the service worker answers fetch() from the files the student downloaded but NOT the synchronous request lazy.js makes to load a book
+  // (a service worker cannot answer a synchronous request). So the books on the device are read ahead of use with SBLazy.preload (a fetch, which the
+  // worker does answer from its cache): lazy.js then finds the text and only has to run it. Done when the page starts without a network and when the
+  // network goes away; online nothing changes (the synchronous request goes to the network or the browser's cache as before).
+  const WARM_LIMIT = 150 * 1048576;           // bytes of book text kept ready at once; a student who downloaded more than that gets the rest on the next start
+  let warmPromise = Promise.resolve();
+  function warm(ids) {
+    warmPromise = warmPromise.then(async () => {
+      if (!win.SBLazy || !win.SBLazy.preload) return;
+      const got = await downloaded();
+      let used = 0;
+      for (const id of (ids || Object.keys(got)).sort((a, b) => ((got[a] || {}).bytes || 0) - ((got[b] || {}).bytes || 0))) {
+        const rec = got[id]; if (!rec) continue;
+        if (used + (rec.bytes || 0) > WARM_LIMIT) continue;
+        let files = rec.files;
+        if (!files) { try { files = (await loadMap()).subjects[id].files; } catch (e) { continue; } }
+        for (const src of files) { try { await win.SBLazy.preload(src); } catch (e) { /* not a lazy file, or not on the device */ } }
+        used += rec.bytes || 0;
+      }
+    }).catch(() => {});
+    return warmPromise;
+  }
+  const offlineNow = () => !!(win.navigator && win.navigator.onLine === false);
+
   function init() {
     if (!doc) return;
+    if (offlineNow()) warm();
     addButton();
     badge();
-    if (win.addEventListener) { win.addEventListener('online', badge); win.addEventListener('offline', badge); }
+    if (win.addEventListener) { win.addEventListener('online', badge); win.addEventListener('offline', () => { badge(); warm(); }); }
     // lazy.js could not fetch a book (offline and not downloaded): say why instead of leaving a blank screen
-    if (win.addEventListener) win.addEventListener('sb:lazy-error', () => {
+    if (win.addEventListener) win.addEventListener('sb:lazy-error', e => {
       const m = doc.getElementById('sbOffBadge'); if (!m) return;
-      m.textContent = 'This subject is not on the device. Open the ⬇ button while online to download it.'; m.hidden = false;
+      const src = e && e.detail && e.detail.src;
+      m.textContent = 'This subject is not on the device. Open the \u2B07 button while online to download it.'; m.hidden = false;
+      // but if the file IS on the device (downloaded earlier) the request failed only because a service worker cannot answer a synchronous one: read it ahead
+      downloaded().then(got => {
+        if (src && offlineNow() && Object.values(got).some(r => r && (r.files || []).includes(src))) { warm(); m.textContent = 'Opening this subject from the device. Wait a moment and tap it again.'; }
+      }).catch(() => {});
       setTimeout(badge, 8000);
     });
   }
 
-  return { register, loadMap, estimate, download, remove, downloaded, usage, openPanel, init, supported, active, _fileUrl: fileUrl };
+  return { register, loadMap, estimate, download, remove, downloaded, usage, openPanel, init, supported, active, warm, warmed: () => warmPromise, _fileUrl: fileUrl };
 });
 
 // browser start-up: the button and the badge always (when the feature is active), the service worker only on a secure origin
@@ -308,5 +359,10 @@
   const O = window.SBOffline;
   const secure = location.protocol === 'https:' || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
   O.init();
-  if (secure && O.active()) O.register({ reloadOnUpdate: true });
+  // The service worker installs by downloading the whole start-up shell again in the background: that is done after the first screen is drawn (a few seconds
+  // after the page has loaded), so on a slow connection it does not compete with the page the student is waiting for.
+  if (secure && O.active()) {
+    const go = () => O.register({ reloadOnUpdate: true });
+    if (document.readyState === 'complete') setTimeout(go, 3000); else window.addEventListener('load', () => setTimeout(go, 3000));
+  }
 })();

@@ -32,6 +32,21 @@
   const CONST = /^(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=/gm;                // top-level const/let/var become window properties (a script tag would make them global bindings)
   const run = (code, src) => (0, eval)(code.replace(CONST, 'window.$1 =') + '\n//# sourceURL=' + src);
 
+  // preload(src): fetch a file (and the files that go with it) in the background, without blocking the page; a later loadFile() finds the text and
+  // only has to run it. Used for data that is wanted soon but not now (the word table): the synchronous request of loadFile() freezes the page for as
+  // long as the download takes, seconds on a slow connection. Resolves when the text is here; rejects when it cannot be fetched (the sync path then
+  // behaves as before).
+  const pre = new Map();
+  function preload(src) {
+    const f = byFile[src];
+    if (!f || loaded.has(src) || !window.fetch) return Promise.resolve();
+    return Promise.all([f].concat(f.also || [], f.after || []).map(o => {
+      const u = url(o);
+      if (pre.has(u)) return null;
+      return fetch(u).then(r => { if (!r.ok) throw new Error('SBLazy: cannot preload ' + u + ' (' + r.status + ')'); return r.text(); }).then(t => { pre.set(u, t); });
+    })).then(() => undefined);
+  }
+
   function loadFile(src) {
     if (loaded.has(src)) return;
     loaded.add(src);                                  // before running: the file itself touches its own names
@@ -42,7 +57,7 @@
     // scripts that only patch its data, each in the original order.
     const parts = [f].concat(f.also || [], f.after || []);
     let texts;
-    try { texts = parts.map(o => fetchSync(url(o))); }
+    try { texts = parts.map(o => { const u = url(o); if (pre.has(u)) { const t = pre.get(u); pre.delete(u); return t; } return fetchSync(u); }); }   // text fetched ahead by preload(): no waiting here
     catch (e) {
       loaded.delete(src);
       try { window.dispatchEvent(new CustomEvent('sb:lazy-error', { detail: { src } })); } catch (x) { /* no events in this environment */ }
@@ -132,6 +147,7 @@
     manifest: M,
     attachData,
     isLoaded: src => loaded.has(src),
+    preload,
     loadAll() { M.files.forEach(f => loadFile(f.src)); },
     stats() {
       return { files: M.files.length, loaded: log.length, bytesLoaded: log.reduce((n, l) => n + l.bytes, 0), bytesTotal: M.files.reduce((n, f) => n + f.bytes, 0), ms: log.reduce((n, l) => n + l.ms, 0), log: log.slice() };

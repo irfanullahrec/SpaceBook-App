@@ -29,3 +29,33 @@ textarea:focus-visible,
     scroll-behavior: auto;
   }
 }
+
+/* touch screens: the controls that were smaller than 44 x 44 px are brought to that size (WCAG 2.5.5, a child's thumb); tests/launch/touch_zoom.js measures it */
+@media (pointer: coarse) {
+  body .hamburger-btn, body .sb-off-btn, body .header-user-avatar, body .math-sidebar-back-btn, body .rt-size-toggle, body .sbl-btn { width: auto; height: auto; min-width: 44px; min-height: 44px; }
+  body .nav-tab-back, body .math-top-tab, body .sb-fs-btn, body .sbl-class-star, body .rt-filter-input, body .header-search-box input, body .math-acc-header { min-height: 44px; }
+  body .header-brand, body .sbr-chip { min-height: 44px; display: inline-flex; align-items: center; }
+  body .sb-skip, body [data-sb-proxy] { min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center; }
+  body .math-acc-header > [data-sb-proxy], body .sb-topic-head > [data-sb-proxy] { display: flex; }
+}
+
+/* phones: the header was wider than the screen, so the offline button, the coins and the account button were pushed off the right edge (found by
+   tests/launch/touch_zoom.js, header check). The brand text goes, the gaps shrink and the search box takes what is left. */
+@media (max-width: 560px) {
+  #top-header { padding: 0 8px; gap: 4px; }
+  #top-header .header-left { gap: 2px; }
+  #top-header .header-brand-text { display: none; }
+  #top-header .header-nav-tabs { display: none; }          /* it was squeezed to a 10 px sliver here; the hamburger menu has the same pages */
+  #top-header .header-right-group { gap: 4px; flex: 1 1 auto; min-width: 0; justify-content: flex-end; }
+  #top-header .header-right-search { flex: 1 1 40px; min-width: 40px; max-width: none; }
+}
+
+/* found by tests/launch/axe_browser.js (axe-core in a real Chrome): colour pairs under 4.5:1, the skip link and the heading every page needs */
+body .header-brand-sub { color: #0369a1; }
+body .math-ch-btn .mcb-name, body .math-ch-btn.active .mcb-name { color: #0369a1; }
+body .mcb-sub { color: #475569; }
+body .bk-next { background: #15803d !important; }
+body .c1-lo-tab { background: #be185d !important; }
+.sb-vh { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.sb-skip { position: absolute; left: 8px; top: -60px; z-index: 2000; padding: 10px 14px; background: #0f172a; color: #fff; border-radius: 8px; font-weight: 700; text-decoration: none; }
+.sb-skip:focus { top: 8px; }

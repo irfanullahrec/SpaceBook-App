@@ -156,6 +156,7 @@
         if (u.mode === 'book' && getComputedStyle(el).position === 'static') el.style.position = 'relative';
       }
     });
+    if (u.mode === 'cards' && window.SBA11y) u.units.forEach(el => { try { window.SBA11y.enhance(el); } catch (e) { /* never break the page */ } });   // a header that now holds buttons is no longer a button itself
     if (obs) obs.takeRecords();
     refreshTools();
     applyMarks();
