@@ -80,7 +80,7 @@
   // -------- the three plans
   function whyText() {
     const w = whyInfo && whyInfo.why;
-    const m = { prep_q: 'You have used your ' + 50 + ' free Test Preparation questions.', plan_q: 'You have used your 50 free Study Plan questions.', paper: 'Your free paper is used. Paper creation needs a plan.', chapter: 'Chapter 1 is free. The other chapters need a plan.' };
+    const m = { prep_q: 'You have used your ' + 50 + ' free Test Preparation questions.', plan_q: 'You have used your 50 free Study Plan questions.', paper: 'Your free paper is used. Paper creation needs a plan.', chapter: 'Chapters 1 and 2 are free. The other chapters need a plan.' };
     return m[w] || '';
   }
   function planCard(p) {
@@ -98,8 +98,11 @@
       '<div class="sbb-plans">' + plans.plans.map(planCard).join('') + '</div>' +
       '<div class="sbb-free"><h3>🎁 ' + esc(plans.free.title) + '</h3><ul>' + plans.free.items.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' +
       '<p class="sbb-note">💳 Pay with Easypaisa. We check every payment by hand, usually within 1 hour. Your plan starts only after we approve it.</p>' +
-      (u ? '<p><button type="button" class="sbb-link" data-act="account">My plans and payments</button></p>' : '<p class="sbb-note">Already paid? <button type="button" class="sbb-link" data-act="signin">Sign in</button></p>'));
+      (u ? '<p><button type="button" class="sbb-link" data-act="account">My plans and payments</button></p>' : '<p class="sbb-note">Already paid? <button type="button" class="sbb-link" data-act="signin">Sign in</button></p>') +
+      '<p><button type="button" class="sbb-btn" data-act="key">Enter licence key</button></p>');
   }
+  // the owner's pass (js/sb_access.js): a line in "My plans" while it is on, with the way to switch it off
+  const ownerNote = () => (A.ownerPass && A.ownerPass() ? '<p class="sbb-note" role="status">Owner access is on for this device. <button type="button" class="sbb-link" data-act="keyoff">Turn off</button></p>' : '');
 
   // -------- class / subjects
   function viewPick() {
@@ -227,7 +230,7 @@
   }
   async function viewAccount() {
     view = 'account';
-    if (!user()) { paint('<h2>My plans</h2><p>Sign in to see your plans and payments.</p><div class="sbb-actions"><button type="button" class="sbb-btn sbb-main" data-act="signin">Sign in</button><button type="button" class="sbb-btn" data-act="plans">See plans</button></div>'); return; }
+    if (!user()) { paint('<h2>My plans</h2>' + ownerNote() + '<p>Sign in to see your plans and payments.</p><div class="sbb-actions"><button type="button" class="sbb-btn sbb-main" data-act="signin">Sign in</button><button type="button" class="sbb-btn" data-act="plans">See plans</button></div>'); return; }
     paint('<h2>My plans</h2><p class="sbb-note">Loading…</p>');
     let r = null;
     try { r = await A.call('billing.php?action=account', { headers: A.headers() }, 10000); } catch (e) { r = null; }
@@ -235,9 +238,9 @@
     if (!r || !r.json || !r.json.ok) { paint('<h2>My plans</h2><p class="sbb-err">' + (r && r.json && r.json.needSignIn ? 'Please sign in again.' : 'We could not load your plans. Check your internet.') + '</p><div class="sbb-actions"><button type="button" class="sbb-btn" data-act="plans">See plans</button></div>'); return; }
     const j = r.json;
     window.__sbbAccount = j;
-    paint('<h2>My plans</h2>' +
+    paint('<h2>My plans</h2>' + ownerNote() +
       (j.reminders.length ? '<div class="sbb-remind">' + j.reminders.map(x => '<p>⏰ ' + esc(x.text) + '</p>').join('') + '</div>' : '') +
-      '<section><h3 class="sbb-h">Current plans</h3>' + (j.subscriptions.length ? j.subscriptions.map(subCard).join('') : '<p class="sbb-note">You do not have a plan yet. Chapter 1 of every subject is free.</p>') + '</section>' +
+      '<section><h3 class="sbb-h">Current plans</h3>' + (j.subscriptions.length ? j.subscriptions.map(subCard).join('') : '<p class="sbb-note">You do not have a plan yet. Chapters 1 and 2 of every subject are free.</p>') + '</section>' +
       '<section><h3 class="sbb-h">Payments</h3>' + (j.payments.length ? j.payments.map(payRow).join('') : '<p class="sbb-note">No payments yet.</p>') + '</section>' +
       '<section><h3 class="sbb-h">Messages ' + (j.unread ? '<span class="sbb-badge sbb-b-pending">' + j.unread + ' new</span>' : '') + '</h3>' +
       (j.notifications.length ? j.notifications.map(n => '<article class="sbb-note-row' + (n.read ? '' : ' sbb-unread') + '"><b>' + esc(n.title) + '</b><p>' + esc(n.body) + '</p><small>' + fmtTime(n.at) + '</small></article>').join('') : '<p class="sbb-note">Nothing yet.</p>') + '</section>' +
@@ -254,6 +257,8 @@
     else if (a === 'pick') planById(sel.plan).pick === 'none' ? viewPlans() : viewPick();
     else if (a === 'continue') toPayment();
     else if (a === 'account') viewAccount();
+    else if (a === 'key') { if (A.keyDialog) A.keyDialog(() => { if (view === 'account') viewAccount(); else close(); }); }
+    else if (a === 'keyoff') { if (A.lockOwnerPass) A.lockOwnerPass(); viewAccount(); }
     else if (a === 'close') close();
     else if (a === 'signin') { resumeAfterAuth = false; close(true); askAuth('login'); }
     else if (a === 'renew') {

@@ -122,9 +122,18 @@
     if (!e || !e.closest || e.closest(TYPING) || e.closest('[draggable="true"]')) return;   // exercises that are dragged on purpose keep working
     if (inBook(e)) ev.preventDefault();
   }
+  // The browser's own right-click menu over selected text offers Copy, "Ask Gemini", "Search Google" and "Translate selection": ways to carry the text out of the reader.
+  // It is not opened over book text for a mouse or the menu key. A long press on a touch screen is left alone: word meanings and the phone's selection handles use it.
+  function onContextMenu(ev) {
+    if (ev.pointerType === 'touch' || (ev.sourceCapabilities && ev.sourceCapabilities.firesTouchEvents)) return;
+    const e = elOf(ev.target);
+    if (!e || !e.closest || e.closest(TYPING) || !inBook(e)) return;
+    ev.preventDefault(); toast();
+  }
   doc.addEventListener('copy', onCopyOrCut, true);
   doc.addEventListener('cut', onCopyOrCut, true);
   doc.addEventListener('dragstart', onDragStart, true);
+  doc.addEventListener('contextmenu', onContextMenu, true);
 
   // ---------- the notice follows every book that is opened
   if (window.SBHooks && typeof window.openSubject === 'function') {
