@@ -2,7 +2,7 @@
 .sbb-backdrop { position: fixed; inset: 0; z-index: 10010; display: flex; align-items: center; justify-content: center; padding: 12px; background: rgba(15, 23, 42, .6); }
 .sbb-backdrop[hidden] { display: none; }
 body.sbb-lock { overflow: hidden; }
-.sbb-card { position: relative; width: 100%; max-width: 760px; max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); overflow-y: auto; background: var(--card-bg, #fff); color: var(--text, #1e293b);
+.sbb-card { position: relative; width: 100%; max-width: 760px; max-height: 100%; /* of the backdrop (fixed, padded 12px), not calc(100vh - 24px): viewport-height units are 0 in the app's WebView and the window collapsed to its title */ overflow-y: auto; background: var(--card-bg, #fff); color: var(--text, #1e293b);
   border-radius: var(--radius, 14px); padding: 1.25rem 1.1rem 1.1rem; box-shadow: 0 24px 60px rgba(15, 23, 42, .3); -webkit-overflow-scrolling: touch; }
 .sbb-card:focus { outline: none; }
 .sbb-card h2 { margin: 0 2rem .7rem 0; font-size: 1.3rem; font-weight: 800; }
