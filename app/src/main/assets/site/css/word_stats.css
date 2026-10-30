@@ -68,7 +68,7 @@ body.ws-modal-open { overflow: hidden; }
 }
 .ws-modal-backdrop[hidden] { display: none; }
 .ws-modal {
-  background: #fff; color: #0f172a; border-radius: 16px; width: min(1100px, 100%); max-height: calc(100vh - 32px);
+  background: #fff; color: #0f172a; border-radius: 16px; width: min(1100px, 100%); max-height: max(calc(100vh - 32px), 60%);
   display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
@@ -129,7 +129,7 @@ body.ws-modal-open { overflow: hidden; }
   .ws-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ws-tile-val { font-size: 1.2rem; }
   .ws-modal-backdrop { padding: 0; }
-  .ws-modal { border-radius: 0; max-height: 100vh; height: 100vh; }
+  .ws-modal { border-radius: 0; max-height: 100%; height: 100%; }
   .ws-search { min-width: 0; flex: 1 1 100%; }
   .ws-wtable { font-size: 0.85rem; }
   .ws-wtable td, .ws-wtable thead th { padding: 0.35rem 0.45rem; }

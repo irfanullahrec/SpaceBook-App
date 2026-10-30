@@ -10434,12 +10434,12 @@ function renderPapersView() {
   pageContent().innerHTML = `
     <div class="papers-universe-wrapper papers-creator-view">
       <!-- 1. Left Wizard Controller Panel -->
-      <aside class="paper-creator-sidebar" id="paperCreatorSidebar" style="position:relative;height:calc(100vh - 128px);overflow-y:auto;display:block;padding:0.85rem;box-sizing:border-box;">
+      <aside class="paper-creator-sidebar" id="paperCreatorSidebar" style="position:relative;height:max(calc(100vh - 128px),480px);overflow-y:auto;display:block;padding:0.85rem;box-sizing:border-box;">
         ${renderPaperGeneratorLeftPanel()}
       </aside>
 
       <!-- 2. Right Canvas: Authentic Board Exam Paper Live Preview -->
-      <main class="paper-preview-canvas" id="paperPreviewCanvas" style="height:calc(100vh - 128px);overflow-y:auto;">
+      <main class="paper-preview-canvas" id="paperPreviewCanvas" style="height:max(calc(100vh - 128px),480px);overflow-y:auto;">
         ${renderLiveExamPaperHtml()}
       </main>
     </div>

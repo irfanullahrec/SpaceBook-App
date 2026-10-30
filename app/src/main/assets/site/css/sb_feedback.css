@@ -2,7 +2,7 @@
 .sbfb-lock{overflow:hidden}
 .sbfb-overlay{position:fixed;inset:0;z-index:100050;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;padding:16px}
 .sbfb-overlay[hidden]{display:none}
-.sbfb-dialog{background:#fff;color:#0f172a;width:100%;max-width:560px;max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;border-radius:16px;padding:18px 18px 16px;box-shadow:0 20px 50px rgba(15,23,42,.35);font-size:16px;line-height:1.5}
+.sbfb-dialog{background:#fff;color:#0f172a;width:100%;max-width:560px;max-height:max(calc(100vh - 32px),60%);max-height:max(calc(100dvh - 32px),60%);overflow:auto;border-radius:16px;padding:18px 18px 16px;box-shadow:0 20px 50px rgba(15,23,42,.35);font-size:16px;line-height:1.5}
 .sbfb-dialog:focus{outline:none}
 .sbfb-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:6px}
 .sbfb-head h2{margin:0;font-size:1.2rem;line-height:1.35;color:#0f172a}

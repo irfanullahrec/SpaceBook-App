@@ -325,7 +325,7 @@
     .sb-pt-subtab.on{background:#dcfce7;border-color:#16a34a;color:#166534}.sb-pt-subtab.zero:not(.on){opacity:.6}
     .sb-pt-drawer{border-top:1px solid #e2e8f0;padding:.4rem .5rem .5rem}
     .sb-pt-sub{display:flex;gap:.4rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-bottom:.45rem}
-    .sb-pt-panel{max-height:min(44vh,420px);overflow:auto;padding-inline-end:.2rem;scrollbar-width:thin}
+    .sb-pt-panel{max-height:max(min(44vh,420px),220px);overflow:auto;padding-inline-end:.2rem;scrollbar-width:thin}
     .sb-pt-pol{font-size:.78rem;font-weight:600;color:#1e3a8a;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:.3rem .6rem;margin-bottom:.5rem}
     .sb-pt-cov{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:.3rem .6rem;margin-bottom:.5rem;font-size:.84rem}
     .sb-pt-cov summary{cursor:pointer;font-weight:700;color:#075985}.sb-pt-cov ul{margin:.3rem 0 .1rem;padding-inline-start:1.2rem;line-height:1.6}.sb-pt-cov em{color:#64748b;font-size:.75rem}
@@ -345,7 +345,7 @@
     .bk-page>.sb-pt{margin-bottom:.8rem;margin-right:5.6rem}   /* the page's Bookmark / Notes buttons sit in the top corner, beside the bar */
     .bk-page>.sb-pt .sb-pt-tab{padding:.28rem .7rem;font-size:.8rem}
     .math-accordion-body>.sb-pt{margin-top:-.2rem}
-    @media (max-width:560px){.sb-pt-tab,.sb-pt-subtab{padding:.26rem .55rem;font-size:.76rem;gap:.25rem}.sb-pt-tab{flex:1 1 0;justify-content:center}.sb-pt-panel{max-height:38vh}}
+    @media (max-width:560px){.sb-pt-tab,.sb-pt-subtab{padding:.26rem .55rem;font-size:.76rem;gap:.25rem}.sb-pt-tab{flex:1 1 0;justify-content:center}.sb-pt-panel{max-height:max(38vh,200px)}}
     `;
     document.head.appendChild(s);
     new MutationObserver(recs => {
