@@ -912,7 +912,7 @@
     const selectAll = () => { f.sel = {}; (classOf(f.classId).subjects || []).forEach(s => { f.sel[s.id] = new Set(s.chapters.map((_, i) => i)); }); };
     selectAll();
     root.innerHTML = `<div class="spx spx-wiz">
-      <div class="spx-head"><div><button type="button" class="spx-btn spx-sm" data-act="back">← All plans</button><h2>New study plan</h2></div></div>
+      <div class="spx-head"><div><button type="button" class="spx-btn spx-sm" data-act="back">← All plans</button><h2>Create Your Study Plan</h2><p class="spx-lead">Tell us your goals and we’ll create a personalized plan to help you learn and practice effectively.</p></div></div>
       <div class="spx-wiz-grid">
         <div class="spx-wiz-main">
           <section class="spx-step"><h3><i>1</i> What do you want to study?</h3>
@@ -986,7 +986,7 @@
         <div class="spx-pv-row"><span>Time you have</span><b>${dur(have)}</b></div>
         ${have ? `<div class="spx-fit ${fit > 1.15 ? 'spx-tight' : fit < 0.5 ? 'spx-easy' : 'spx-okfit'}">${fit > 1.15 ? `⚠️ Tight: you need about ${Math.round(fit * 100)}% of your time. Add days or time, or choose fewer kinds of work.` : fit < 0.5 ? `🙂 Relaxed: about ${dur(Math.round(need / Math.max(1, studyDays)))} of work per day.` : `👍 Good fit: about ${dur(Math.round(need / Math.max(1, studyDays)))} of work per day.`}</div>` : ''}
         ${errors.length ? `<ul class="spx-err">${errors.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}
-        <button type="button" class="spx-btn spx-pri spx-big spx-wide" data-act="create" ${errors.length ? 'disabled' : ''}>Create plan</button>`;
+        <button type="button" class="spx-btn spx-pri spx-big spx-wide" data-act="create" ${errors.length ? 'disabled' : ''}>✨ Create My Study Plan →</button>`;
       return {scope, cats, autoName, ok: !errors.length};
     }
     function drawRules() {

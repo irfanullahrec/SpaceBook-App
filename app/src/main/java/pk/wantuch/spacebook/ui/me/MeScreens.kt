@@ -9,6 +9,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.rounded.CalendarMonth
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -155,61 +162,77 @@ internal fun MeContent(
     onMyPlans: () -> Unit = {},
     onKey: () -> Unit = {},
 ) {
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
-        Text("Me", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 8.dp))
-        Surface(shape = MaterialTheme.shapes.large, shadowElevation = 3.dp, modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp)) {
-            Column {
-                Box(Modifier.fillMaxWidth().background(Sb.Brand).padding(20.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(Modifier.size(64.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.25f)), contentAlignment = Alignment.Center) {
-                            Text(user?.name?.trim()?.firstOrNull()?.uppercase() ?: "👤", color = Color.White, style = MaterialTheme.typography.headlineSmall)
-                        }
-                        Spacer(Modifier.width(16.dp))
-                        Column(Modifier.weight(1f)) {
-                            Text(user?.name ?: "Guest", color = Color.White, style = MaterialTheme.typography.titleLarge)
-                            Text(if (user != null) user.whatsapp else "Reading without an account", color = Color.White.copy(alpha = 0.9f), style = MaterialTheme.typography.bodyMedium)
-                        }
-                        CoinChip(coins)
+    val navy = Color(0xFF0B2056)
+    val line = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFD7E6F8))
+    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = 12.dp).padding(bottom = 24.dp)) {
+        // who the student is: avatar, name, class and coins
+        Surface(shape = RoundedCornerShape(18.dp), color = MaterialTheme.colorScheme.surface, border = line, shadowElevation = 1.dp, modifier = Modifier.fillMaxWidth()) {
+            Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.size(84.dp).clip(CircleShape).background(Brush.linearGradient(listOf(Color(0xFFBFD9FF), Color(0xFF5AAEFF)))), contentAlignment = Alignment.Center) {
+                    Text(user?.name?.trim()?.firstOrNull()?.uppercase() ?: "👤", color = Color.White, fontSize = 34.sp, fontWeight = FontWeight.ExtraBold)
+                }
+                Column(Modifier.weight(1f).padding(start = 14.dp)) {
+                    Text(user?.name ?: "Guest", fontSize = 20.sp, fontWeight = FontWeight.ExtraBold, color = navy, maxLines = 2)
+                    Text(if (user != null) user.whatsapp else "Reading without an account", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    classes.firstOrNull { it.id == classId }?.let { c ->
+                        Text(c.name, color = Color(0xFF0785FF), fontWeight = FontWeight.SemiBold, fontSize = 13.sp,
+                            modifier = Modifier.padding(top = 6.dp).clip(RoundedCornerShape(10.dp)).background(Color(0xFFE3F0FF)).padding(horizontal = 12.dp, vertical = 6.dp))
                     }
                 }
-                Row(Modifier.padding(14.dp)) {
-                    if (user == null) Button(onClick = onSignIn, modifier = Modifier.weight(1f).height(52.dp)) {
-                        Icon(Icons.AutoMirrored.Rounded.Login, null); Spacer(Modifier.width(8.dp)); Text("Sign in or create account")
-                    } else OutlinedButton(onClick = onSignOut, modifier = Modifier.weight(1f).height(52.dp)) {
-                        Icon(Icons.AutoMirrored.Rounded.Logout, null); Spacer(Modifier.width(8.dp)); Text("Sign out")
-                    }
+                Column(horizontalAlignment = Alignment.Start) {
+                    Text("🪙 $coins", fontSize = 22.sp, fontWeight = FontWeight.ExtraBold, color = navy)
+                    Text("Coins", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
         }
+        Spacer(Modifier.height(10.dp))
+        if (user == null) Button(onClick = onSignIn, modifier = Modifier.fillMaxWidth().height(52.dp)) {
+            Icon(Icons.AutoMirrored.Rounded.Login, null); Spacer(Modifier.width(8.dp)); Text("Sign in or create account")
+        }
+        // the plans the person has bought (same as the website's My Plans)
         PlansCard(plans, pendingPayments, user != null, onPlans, onMyPlans, onKey)
-        Text("My class", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(start = 16.dp, top = 20.dp, bottom = 4.dp))
-        LazyRow(contentPadding = PaddingValues(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(classes, key = { it.id }) { c ->
-                FilterChip(classId == c.id, { onPickClass(c.id) }, label = { Text(c.name.removePrefix("Class "), Modifier.padding(horizontal = 6.dp, vertical = 8.dp)) })
+        // my classes
+        Surface(shape = RoundedCornerShape(18.dp), color = MaterialTheme.colorScheme.surface, border = line, shadowElevation = 1.dp, modifier = Modifier.fillMaxWidth().padding(top = 4.dp)) {
+            Column(Modifier.padding(14.dp)) {
+                Text("My Classes", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = navy)
+                val chipState = androidx.compose.foundation.lazy.rememberLazyListState()
+                androidx.compose.runtime.LaunchedEffect(classId, classes.size) { val k = classes.indexOfFirst { it.id == classId }; if (k > 1) chipState.scrollToItem(k - 1) }
+                LazyRow(Modifier.padding(top = 10.dp), state = chipState, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(classes, key = { it.id }) { c ->
+                        val on = classId == c.id
+                        Text(c.name, color = if (on) Color(0xFF0785FF) else navy, fontWeight = if (on) FontWeight.Bold else FontWeight.Normal,
+                            modifier = Modifier.clip(RoundedCornerShape(10.dp)).background(if (on) Color.White else Color(0xFFEAF1FA))
+                                .border(if (on) 1.5.dp else 0.dp, if (on) Color(0xFF0785FF) else Color.Transparent, RoundedCornerShape(10.dp))
+                                .clickable { onPickClass(c.id) }.padding(horizontal = 16.dp, vertical = 11.dp))
+                    }
+                }
             }
         }
-        Spacer(Modifier.height(12.dp))
-        if (user != null) MenuRow(Icons.Rounded.Person, "My account", "Details, password, download my data, delete my account", onAccount)
-        MenuRow(Icons.Rounded.Download, "Books on this phone", "Download classes to read with no internet", onOffline)
-        MenuRow(Icons.Rounded.Bookmark, "Saved pages and notes", "Bookmarks, notes and highlights; they follow your account", onSaved)
-        MenuRow(Icons.Rounded.Feedback, "Suggestions and problems", "Tell us about a mistake in a book, a wrong answer, something broken, or an idea", onFeedback)
-        MenuRow(Icons.Rounded.Settings, "Settings", "Dark mode, text size", onSettings)
+        // the menu: one card, coloured icon squares, thin dividers
+        Surface(shape = RoundedCornerShape(18.dp), color = MaterialTheme.colorScheme.surface, border = line, shadowElevation = 1.dp, modifier = Modifier.fillMaxWidth().padding(top = 10.dp)) {
+            Column {
+                if (user != null) MenuRow(Icons.Rounded.Person, "My Account", Color(0xFF0785FF), onAccount)
+                MenuRow(Icons.Rounded.Favorite, "Saved", Color(0xFFE8304F), onSaved)
+                MenuRow(Icons.Rounded.Download, "Books on this phone", Color(0xFF7A3FE0), onOffline)
+                MenuRow(Icons.Rounded.Feedback, "Suggestions and problems", Color(0xFF14A5A5), onFeedback)
+                MenuRow(Icons.Rounded.CalendarMonth, "My Plans", Color(0xFF12A05C), onMyPlans)
+                MenuRow(Icons.Rounded.Settings, "Settings", Color(0xFFF58220), onSettings, last = user == null)
+                if (user != null) MenuRow(Icons.AutoMirrored.Rounded.Logout, "Sign Out", Color(0xFFE8304F), onSignOut, last = true)
+            }
+        }
         Text("SpaceBook ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(16.dp))
     }
 }
 
 @Composable
-private fun MenuRow(icon: ImageVector, title: String, subtitle: String, onClick: () -> Unit) {
-    Surface(shape = MaterialTheme.shapes.medium, color = MaterialTheme.colorScheme.surface, shadowElevation = 1.dp, modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 5.dp).clickable(onClick = onClick)) {
-        Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-            Icon(icon, null, tint = MaterialTheme.colorScheme.primary)
-            Spacer(Modifier.width(14.dp))
-            Column(Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.titleSmall)
-                Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null)
+private fun MenuRow(icon: ImageVector, title: String, tint: Color, onClick: () -> Unit, last: Boolean = false) {
+    Column(Modifier.clickable(onClick = onClick)) {
+        Row(Modifier.padding(horizontal = 14.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+            Box(Modifier.size(40.dp).clip(RoundedCornerShape(11.dp)).background(tint), contentAlignment = Alignment.Center) { Icon(icon, null, tint = Color.White, modifier = Modifier.size(24.dp)) }
+            Text(title, Modifier.weight(1f).padding(start = 14.dp), fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF0B2056))
+            Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = Color(0xFF0B2056))
         }
+        if (!last) androidx.compose.material3.HorizontalDivider(Modifier.padding(start = 68.dp), color = Color(0xFFE3ECF7))
     }
 }
 

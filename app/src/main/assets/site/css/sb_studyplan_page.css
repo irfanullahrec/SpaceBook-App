@@ -1,0 +1,8 @@
+/* 2026-10 redesign: study plan pages (designs 25, 26). */
+.spx h2 { font-size:2.4rem !important; letter-spacing:-.02em; font-weight:800; }
+.spx-lead { margin:.3rem 0 0; font-size:1.1rem; color:#34476f; }
+.spx-card, .spx-panel { border-radius:16px !important; border:1px solid #d9e6f7 !important; }
+.spx-pri { background:linear-gradient(180deg,#14a85f,#0a8a47) !important; color:#fff !important; border:0 !important; border-radius:12px !important; font-weight:700; }
+.spx-pri.spx-big { min-height:56px; font-size:1.2rem; }
+.spx-chipb.on { background:#e3efff !important; color:#0b4fc2 !important; border-color:#1d6fe8 !important; }
+.spx-today.on, .spx-cal .on { background:#1d6fe8 !important; color:#fff !important; }

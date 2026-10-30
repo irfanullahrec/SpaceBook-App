@@ -1,0 +1,25 @@
+/* 2026-10 redesign: Learning Games hub (design 27): artwork on every card, hero with streak / coins, blue play buttons. */
+.gm-root { color:#0a1f5c; }
+.gm-hero { background:#fff !important; border:1px solid #d9e6f7 !important; border-radius:16px !important; padding:14px 20px !important; }
+.gm-hero h2 { font-size:2.8rem !important; letter-spacing:-.03em; }
+.gm-hero h2::before { content:""; display:inline-block; width:64px; height:64px; vertical-align:middle; margin-right:14px; border-radius:14px; background:url("../assets/ui/games-icon.png") center/cover; }
+.gm-grid { display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px !important; }
+.gm-card { position:relative; display:grid !important; grid-template-columns:150px 1fr; grid-template-rows:auto auto auto auto; column-gap:14px; align-items:start; min-height:200px; padding:12px !important; background:linear-gradient(135deg,#f0f6ff,#fff) !important; border:1px solid #cfe0f5 !important; border-radius:16px !important; overflow:hidden; }
+.gm-card::before { content:""; grid-row:1 / span 3; grid-column:1; width:150px; height:132px; border-radius:12px; background:#e8f2ff center/cover no-repeat; }
+.gm-card[data-game="quiz"]::before { background-image:url("../assets/ui/game-mcq.png"); }
+.gm-card[data-game="math"]::before { background-image:url("../assets/ui/game-number.png"); }
+.gm-card[data-game="learn"]::before { background-image:url("../assets/ui/game-wordmatch.png"); }
+.gm-card[data-game="spell"]::before { background-image:url("../assets/ui/game-sentence.png"); }
+.gm-card[data-game="tf"]::before { background-image:url("../assets/ui/game-tf.png"); }
+.gm-card[data-game="memory"]::before { background-image:url("../assets/ui/game-memory.png"); }
+.gm-card[data-game="math"] { background:linear-gradient(135deg,#fff3dc,#fff) !important; border-color:#f7dca9 !important; }
+.gm-card[data-game="tf"] { background:linear-gradient(135deg,#ffe8ef,#fff) !important; border-color:#f6c9d6 !important; }
+.gm-card[data-game="spell"] { background:linear-gradient(135deg,#efe8ff,#fff) !important; border-color:#ddd0fa !important; }
+.gm-card[data-game="quiz"] { background:linear-gradient(135deg,#e3f6ec,#fff) !important; border-color:#bfe6cf !important; }
+.gm-cardhead { grid-column:2; grid-row:1; } .gm-ico { display:none; } .gm-cardhead h3 { margin:0; font-size:1.5rem; color:#0a1f5c; }
+.gm-blurb { grid-column:2; grid-row:2; margin:4px 0 !important; color:#34476f; }
+.gm-meter { grid-column:1 / -1; grid-row:4; margin-top:10px; }
+.gm-cardstats { grid-column:1 / -1; grid-row:5; display:flex; justify-content:space-between; font-size:.95rem; color:#34476f; margin-top:6px; }
+.gm-play { grid-column:2; grid-row:3; justify-self:end; align-self:end; min-width:110px; height:44px; border:0 !important; border-radius:10px !important; background:linear-gradient(180deg,#1f7bf4,#0b5fd6) !important; color:#fff !important; font-weight:700; font-size:1.05rem; }
+.gm-how { border-radius:14px; }
+@media (max-width:1099px) { .gm-grid { grid-template-columns:1fr; } .gm-hero h2 { font-size:1.9rem !important; } .gm-card { grid-template-columns:110px 1fr; } .gm-card::before { width:110px; height:100px; } }

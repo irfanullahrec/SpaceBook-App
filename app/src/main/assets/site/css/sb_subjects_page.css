@@ -1,0 +1,25 @@
+/* 2026-10 redesign: Class N Subjects (design 05). */
+.sbs-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin:6px 0 14px; color:#0a1f5c; }
+.sbs-crumb { display:flex; gap:10px; color:#4a5f8a; font-size:.95rem; } .sbs-crumb a { color:#4a5f8a; cursor:pointer; } .sbs-crumb b { font-weight:500; color:#0a1f5c; }
+.sbs-head h1 { margin:.2rem 0 0; font-size:3rem; line-height:1.05; letter-spacing:-.03em; font-weight:800; } .sbs-head p { margin:.3rem 0 0; font-size:1.15rem; color:#34476f; }
+.sbs-switch { display:flex; align-items:center; gap:12px; background:#fff; border:1px solid #d9e6f7; border-radius:16px; padding:12px 16px; font-size:1.1rem; font-weight:600; }
+.sbs-switch button { width:56px; height:48px; border:1.5px solid #cdddf2; border-radius:10px; background:#fff; font-size:1.15rem; font-weight:600; color:#0a1f5c; cursor:pointer; } .sbs-switch button.on { background:#1d6fe8; border-color:#1d6fe8; color:#fff; }
+.sbs-grid { display:grid !important; grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:16px !important; }
+.sbs-card { display:flex; flex-direction:column; background:#fff; border:1px solid #d9e6f7; border-radius:18px; padding:10px; cursor:pointer; box-shadow:0 2px 10px rgba(16,52,120,.05); transition:box-shadow .15s, transform .15s; }
+.sbs-card:hover { box-shadow:0 8px 22px rgba(16,52,120,.14); transform:translateY(-2px); }
+.sbs-card .subject-card-compact { padding:0; border:0; background:transparent; }
+.sbs-cover { display:flex; justify-content:center; align-items:center; height:200px; border-radius:12px; overflow:hidden; background:linear-gradient(180deg,#eaf3ff,#f6faff); }
+.sbs-green .sbs-cover { background:linear-gradient(180deg,#e3f6ec,#f3fbf7); } .sbs-purple .sbs-cover { background:linear-gradient(180deg,#efe8ff,#f8f4ff); } .sbs-orange .sbs-cover { background:linear-gradient(180deg,#fff0dc,#fff8ee); }
+.sbs-cover img { height:100%; width:auto; max-width:100%; object-fit:contain; }
+.sbs-info { padding:12px 8px 6px; display:flex; flex-direction:column; gap:10px; }
+.sbs-name { display:flex; align-items:center; justify-content:space-between; gap:8px; } .sbs-name b { font-size:1.5rem; color:#0a1f5c; } .sbs-name em { font-style:normal; font-size:1rem; padding:3px 12px; border-radius:8px; background:#e3efff; color:#1d6fe8; }
+.sbs-green .sbs-name em { background:#e3f6ec; color:#0a7a45; } .sbs-purple .sbs-name em { background:#efe8ff; color:#7a3fe0; } .sbs-orange .sbs-name em { background:#fff0dc; color:#d46a00; }
+.sbs-ch { display:flex; align-items:center; gap:8px; font-size:1rem; color:#34476f; }
+.sbs-bar { position:relative; height:12px; border-radius:99px; background:#e0e8f3; margin-right:48px; } .sbs-bar i { display:block; height:100%; border-radius:99px; background:#1d6fe8; } .sbs-bar span { position:absolute; right:-48px; top:-5px; font-size:1.05rem; font-weight:600; color:#0a1f5c; }
+.sbs-green .sbs-bar i { background:#12a05c; } .sbs-purple .sbs-bar i { background:#8d3df0; } .sbs-orange .sbs-bar i { background:#f58220; }
+.sbs-open { display:flex; align-items:center; justify-content:center; gap:12px; height:50px; border-radius:10px; color:#fff; font-size:1.15rem; font-weight:700; background:linear-gradient(180deg,#1f7bf4,#0b5fd6); } .sbs-open b { font-size:1.4rem; }
+.sbs-green .sbs-open { background:linear-gradient(180deg,#14a85f,#0a8a47); } .sbs-purple .sbs-open { background:linear-gradient(180deg,#8d3df0,#6a22d4); } .sbs-orange .sbs-open { background:linear-gradient(180deg,#f9922f,#e8700f); }
+.sbs-active { margin-top:16px; background:#fff; border:1px solid #d9e6f7; border-radius:16px; padding:14px 20px; } .sbs-active h2 { display:flex; align-items:center; gap:12px; margin:0; font-size:1.6rem; color:#0a1f5c; } .sbs-active p { margin:.2rem 0 12px; color:#4a5f8a; }
+.sbs-active div { display:flex; flex-wrap:wrap; gap:10px; } .sbs-chip { display:inline-flex; align-items:center; gap:10px; padding:10px 18px; border:1px solid #d9e6f7; border-radius:10px; background:#f7fbff; font-size:1rem; color:#0a1f5c; } .sbs-chip i { width:20px; height:20px; border-radius:50%; background:#1d6fe8; } .sbs-chip.sbs-green i { background:#12a05c; } .sbs-chip.sbs-purple i { background:#8d3df0; } .sbs-chip.sbs-orange i { background:#f58220; }
+@media (max-width:1300px) { .sbs-grid { grid-template-columns:repeat(3,minmax(0,1fr)) !important; } }
+@media (max-width:900px) { .sbs-grid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; } .sbs-head { flex-direction:column; } .sbs-head h1 { font-size:2rem; } .sbs-cover { height:150px; } }

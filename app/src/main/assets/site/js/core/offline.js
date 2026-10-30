@@ -209,9 +209,15 @@
     if (!doc || panel) return;
     const overlay = doc.createElement('div');
     overlay.className = 'sb-off-overlay'; overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-labelledby', 'sbOffTitle');
-    overlay.innerHTML = '<div class="sb-off-box"><div class="sb-off-head"><h2 id="sbOffTitle">Offline books</h2><button type="button" class="sb-off-close" aria-label="Close">✕</button></div>' +
+    overlay.innerHTML = '<div class="sb-off-box sbo-page"><button type="button" class="sb-off-close" aria-label="Close">✕</button>' +
+      '<header class="sbo-head"><span class="sbo-ic"><svg viewBox="0 0 24 24" width="54" height="54" fill="none" stroke="#12a05c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4 4 0 0 1-.5-7.97A6 6 0 0 1 18 9a4.5 4.5 0 0 1 0 9"/><path d="M12 11v8M9 16l3 3 3-3"/></svg></span>' +
+      '<div><h2 id="sbOffTitle">Offline &amp; Downloads</h2><p>Download your books and resources to study anytime, anywhere. Access your learning even without an internet connection.</p></div>' +
+      '<div class="sbo-net" data-net></div></header>' +
+      '<div class="sbo-stats"><div class="sbo-stat"><span class="sbo-si g"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M2 9a15 15 0 0 1 20 0M5 13a10 10 0 0 1 14 0M8.5 16.5a5 5 0 0 1 7 0"/><circle cx="12" cy="20" r="1" fill="#fff"/></svg></span><div><small>Current Status</small><b data-status>Online</b><em data-status-sub></em></div></div>' +
+      '<div class="sbo-stat"><span class="sbo-si p"><svg viewBox="0 0 24 24" width="30" height="30" fill="#fff"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6" fill="none" stroke="#fff" stroke-width="2"/></svg></span><div class="sbo-grow"><small>Storage Used</small><b class="sb-off-meter" aria-live="polite"></b><i class="sbo-bar"><u data-sbar></u></i></div></div>' +
+      '<div class="sbo-stat"><span class="sbo-si b"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg></span><div><small>Total Downloads</small><b data-total>0 subjects</b><em>Ready for offline study</em></div></div></div>' +
       '<p class="sb-off-note">Download a subject while you are online. It then opens with no connection. Your progress is kept on this device and sent when you are back online.</p>' +
-      '<div class="sb-off-meter" aria-live="polite"></div><div class="sb-off-sync" role="status"></div><div class="sb-off-list">Loading…</div>' +
+      '<div class="sb-off-sync" role="status"></div><div class="sb-off-list">Loading…</div>' +
       '<div class="sb-off-actions"><button type="button" data-act="download" disabled>Download</button><button type="button" data-act="remove" disabled>Remove from this device</button></div>' +
       '<div class="sb-off-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><div class="sb-off-bar"></div></div><p class="sb-off-msg" role="status"></p></div>';
     doc.body.appendChild(overlay);
@@ -229,24 +235,28 @@
     try { map = await loadMap(); } catch (e) { q('.sb-off-list').textContent = 'The list of books could not be loaded. Connect to the internet once and try again.'; return; }
     const have = await readDownloaded();
     const classNames = {};
-    try { (win.DATA && win.DATA.classes || []).forEach(c => { classNames[c.id] = c.name; }); } catch (e) { /* names only */ }
+    try { ((typeof DATA !== 'undefined' ? DATA : win.DATA) && (typeof DATA !== 'undefined' ? DATA : win.DATA).classes || []).forEach(c => { classNames[c.id] = c.name; }); } catch (e) { /* names only */ }
     const byClass = {};
     Object.keys(map.subjects).forEach(id => { (byClass[map.subjects[id].classId] = byClass[map.subjects[id].classId] || []).push(id); });
     const order = Object.keys(byClass).sort((a, b) => (parseInt(a.replace(/\D/g, '') || 0, 10) || 0) - (parseInt(b.replace(/\D/g, '') || 0, 10) || 0));
     q('.sb-off-list').innerHTML = order.map(cid => {
       const rows = byClass[cid].map(id => {
         const s = map.subjects[id], isHave = !!have[id], none = !s.files.length && !s.assets.length;
-        return '<label class="sb-off-row"><input type="checkbox" data-id="' + esc(id) + '"' + (none ? ' disabled' : '') + '> <span class="sb-off-name">' + esc(s.name) + '</span> <small>' +
-          (none ? 'always available' : mb(s.bytes) + (isHave ? ' · on this device' : '')) + '</small></label>';
+        return '<label class="sb-off-row' + (isHave ? ' have' : '') + '"><input type="checkbox" data-id="' + esc(id) + '"' + (none ? ' disabled' : '') + '> <span class="sb-off-name">' + esc(s.name) + '</span> <small>' +
+          (none ? 'always available' : mb(s.bytes)) + '</small><em class="sbo-badge ' + (isHave || none ? 'ok' : 'no') + '">' + (isHave ? 'Ready Offline' : none ? 'Always available' : 'Not Downloaded') + '</em></label>';
       }).join('');
       const n = byClass[cid].filter(id => have[id]).length;
-      return '<details' + (cid === 'meanings' ? ' open' : '') + '><summary>' + esc(classNames[cid] || (cid === 'meanings' ? 'Meanings for hover and sentence click' : cid)) + (n ? ' <small>(' + n + ' on this device)</small>' : '') + '</summary>' + rows + '</details>';
+      return '<details open><summary>' + esc(classNames[cid] || (cid === 'meanings' ? 'Meanings for hover and sentence click' : cid)) + (n ? ' <small>(' + n + ' on this device)</small>' : '') + '</summary>' + rows + '</details>';
     }).join('');
 
     const selected = () => [...overlay.querySelectorAll('input[data-id]:checked')].map(i => i.getAttribute('data-id'));
     const refreshMeter = async () => {
       const u = await usage();
-      q('.sb-off-meter').textContent = u.usage != null ? 'Stored by this app: ' + mb(u.usage) + (u.quota ? ' of about ' + mb(u.quota) + ' allowed' : '') + (u.persisted ? ' · protected from automatic clean-up' : '') : '';
+      q('.sb-off-meter').textContent = u.usage != null ? mb(u.usage) + (u.quota ? ' of about ' + mb(u.quota) : '') : '';
+      const bar = q('[data-sbar]'); if (bar && u.usage != null && u.quota) bar.style.width = Math.max(2, Math.min(100, Math.round(100 * u.usage / u.quota))) + '%';
+      const tot = q('[data-total]'); if (tot) { const all = Object.keys(map.subjects).filter(id => map.subjects[id].files.length || map.subjects[id].assets.length).length; tot.textContent = Object.keys(have).length + ' of ' + all + ' subjects'; }
+      const on = nav.onLine !== false; const st = q('[data-status]'); if (st) { st.textContent = on ? 'Online' : 'Working Offline'; q('[data-status-sub]').textContent = on ? 'Your downloaded content is also available offline.' : 'Your downloaded content is available.'; }
+      const net = q('[data-net]'); if (net) { net.className = 'sbo-net ' + (on ? 'on' : 'off'); net.innerHTML = on ? '<b>You are online</b><small>Downloads and sync are available.</small>' : '<b>You are currently offline</b><small>No internet connection detected. Some features may be limited.</small><button type="button" data-retry>Try Again</button>'; const rt = net.querySelector('[data-retry]'); if (rt) rt.addEventListener('click', () => refreshMeter()); }
     };
     const refreshButtons = async () => {
       const ids = selected();

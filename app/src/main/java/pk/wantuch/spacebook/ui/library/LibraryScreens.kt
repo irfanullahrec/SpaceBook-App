@@ -1,6 +1,14 @@
 package pk.wantuch.spacebook.ui.library
 
 import androidx.compose.foundation.background
+import pk.wantuch.spacebook.R
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.border
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -112,40 +120,79 @@ internal fun LibraryContent(
     onSearch: () -> Unit,
 ) {
     val cls = classes.firstOrNull { it.id == pickedId }
+    val navy = Color(0xFF0B2056)
     Column(Modifier.fillMaxSize()) {
-        Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp, top = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text("Library", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.weight(1f))
-            IconButton(onClick = onSearch) { Icon(Icons.Rounded.Search, "Search books") }
+        Image(painterResource(R.drawable.sb_logo), "SpaceBook", Modifier.padding(start = 14.dp, top = 8.dp).width(150.dp), contentScale = ContentScale.FillWidth)
+        Text("Your Library", fontSize = 32.sp, fontWeight = FontWeight.ExtraBold, color = navy, letterSpacing = (-1).sp, modifier = Modifier.padding(start = 14.dp, top = 4.dp))
+        Text("Access your textbooks and continue learning anytime.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(start = 14.dp, bottom = 10.dp))
+        Surface(
+            Modifier.fillMaxWidth().padding(horizontal = 14.dp).height(46.dp).clickable(onClick = onSearch), shape = RoundedCornerShape(12.dp),
+            color = MaterialTheme.colorScheme.surface, border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFCFE0F5)),
+        ) {
+            Row(Modifier.padding(horizontal = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Rounded.Search, null, tint = Color(0xFF4A5F8A))
+                Text("Search books, subjects or topics...", Modifier.padding(start = 10.dp), color = Color(0xFF6B7C9C))
+            }
         }
-        ClassStrip(classes, pickedId, onPick, cardWidth = 128.dp)
+        val chipState = androidx.compose.foundation.lazy.rememberLazyListState()
+        androidx.compose.runtime.LaunchedEffect(pickedId, classes.size) {
+            val i = classes.indexOfFirst { it.id == pickedId }
+            if (i > 2) chipState.animateScrollToItem(i - 2)
+        }
+        LazyRow(state = chipState, contentPadding = PaddingValues(horizontal = 14.dp, vertical = 10.dp), horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+            items(classes, key = { it.id }) { c ->
+                val on = c.id == pickedId
+                Box(
+                    Modifier.size(width = 42.dp, height = 38.dp).clip(RoundedCornerShape(9.dp))
+                        .background(if (on) Color(0xFF0785FF) else MaterialTheme.colorScheme.surface)
+                        .border(1.dp, if (on) Color(0xFF0785FF) else Color(0xFFCFE0F5), RoundedCornerShape(9.dp)).clickable { onPick(c.id) },
+                    contentAlignment = Alignment.Center,
+                ) { Text(c.name.filter { it.isDigit() }.ifEmpty { c.name.take(2) }, color = if (on) Color.White else navy, fontWeight = FontWeight.SemiBold, fontSize = 15.sp) }
+            }
+        }
         if (cls == null) {
             EmptyState("📚", "Loading books…", "The list of classes is on its way.")
         } else {
             LazyVerticalGrid(
-                columns = GridCells.Adaptive(104.dp),
-                contentPadding = PaddingValues(12.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                columns = GridCells.Fixed(2),
+                contentPadding = PaddingValues(start = 14.dp, end = 14.dp, bottom = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier.fillMaxSize(),
             ) {
-                items(cls.subjects, key = { it.id }) { s -> SubjectTile(s, reading[s.id], onClick = { onOpenSubject(s.id) }) }
+                items(cls.subjects, key = { it.id }) { s -> SubjectTile(s, cls.name, reading[s.id], onClick = { onOpenSubject(s.id) }) }
             }
         }
     }
 }
 
 @Composable
-private fun SubjectTile(s: SubjectDto, position: ReadingPosition?, onClick: () -> Unit) {
-    Column(Modifier.fillMaxWidth().clickable(onClick = onClick), horizontalAlignment = Alignment.CenterHorizontally) {
-        BookCover(s.id, s.emoji, Modifier.fillMaxWidth().shadow(5.dp, RoundedCornerShape(12.dp)))
-        Text(
-            s.name, style = MaterialTheme.typography.titleSmall, maxLines = 2, overflow = TextOverflow.Ellipsis,
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center, modifier = Modifier.padding(top = 8.dp),
-        )
-        Text(
-            if (position != null) "Continue · ch. ${position.chapterIndex + 1}" else "${s.chapters.size} chapters",
-            style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary,
-        )
+private fun SubjectTile(s: SubjectDto, className: String, position: ReadingPosition?, onClick: () -> Unit) {
+    val total = s.chapters.size.coerceAtLeast(1)
+    val done = if (position != null) (position.chapterIndex + 1).coerceAtMost(total) else 0
+    val pct = (100 * done / total)
+    Surface(shape = RoundedCornerShape(16.dp), color = MaterialTheme.colorScheme.surface,
+        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFD7E6F8)), shadowElevation = 1.dp,
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick)) {
+        Column(Modifier.padding(8.dp)) {
+            Row(verticalAlignment = Alignment.Top) {
+                BookCover(s.id, s.emoji, Modifier.width(62.dp), ratio = 1.4f, corner = 6.dp)
+                Column(Modifier.weight(1f).padding(start = 8.dp)) {
+                    Text(s.name, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold, color = Color(0xFF0B2056), maxLines = 2, overflow = TextOverflow.Ellipsis, lineHeight = 18.sp)
+                    Text("$className • Textbook", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
+            }
+            Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.weight(1f).height(6.dp).clip(CircleShape).background(Color(0xFFDDE6F2))) {
+                    Box(Modifier.fillMaxWidth(pct / 100f).height(6.dp).clip(CircleShape).background(Color(0xFF079F51)))
+                }
+                Text("$pct%", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFF0B2056), modifier = Modifier.padding(start = 6.dp))
+            }
+            Text("$done of ${s.chapters.size} chapters", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(top = 2.dp, bottom = 6.dp))
+            Row(Modifier.fillMaxWidth().height(38.dp).clip(RoundedCornerShape(10.dp)).background(Brush.verticalGradient(listOf(Color(0xFF1F7BF4), Color(0xFF0B5FD6)))), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                Text(if (position != null) "▶  Continue" else "▶  Open Book", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+            }
+        }
     }
 }
 

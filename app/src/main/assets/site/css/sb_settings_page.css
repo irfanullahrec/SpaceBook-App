@@ -1,0 +1,13 @@
+/* Reading & Offline Settings (design 36). */
+.sbset { color:#0a1f5c; }
+.sbset-head { display:flex; align-items:center; gap:16px; margin:6px 0 14px; } .sbset-head h1 { margin:0; font-size:2.6rem; letter-spacing:-.02em; font-weight:800; } .sbset-head p { margin:.2rem 0 0; font-size:1.1rem; color:#34476f; }
+.sbset-ic { display:inline-flex; width:64px; height:64px; border-radius:14px; align-items:center; justify-content:center; background:var(--c); flex:0 0 64px; }
+.sbset-cols { display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start; }
+.sbset-card { background:#fff; border:1px solid #d9e6f7; border-radius:18px; padding:18px 22px; }
+.sbset-card h2 { display:flex; align-items:center; gap:14px; margin:0 0 6px; font-size:1.7rem; } .sbset-card h2 .sbset-ic { width:48px; height:48px; flex-basis:48px; } .sbset-card h2 svg { width:26px; height:26px; }
+.sbset-card > p { color:#34476f; margin:0 0 14px; }
+.sbset-sizes { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; } .sbset-sizes button { display:flex; flex-direction:column; align-items:center; gap:4px; padding:12px 4px; border:1.5px solid #cdddf2; border-radius:12px; background:#f7fbff; color:#0a1f5c; cursor:pointer; } .sbset-sizes button.on { border-color:#1d6fe8; background:#e6f1ff; box-shadow:0 0 0 2px rgba(29,111,232,.2); }
+.sbset-preview { margin-top:14px; padding:16px; background:#eef5ff; border-radius:14px; line-height:1.5; } .sbset-preview b { color:#1d6fe8; }
+.sbset-row { display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #e6eef8; font-size:1.05rem; }
+.sbset-go { margin-top:16px; width:100%; height:54px; border:0; border-radius:12px; background:linear-gradient(180deg,#1f7bf4,#0b5fd6); color:#fff; font-size:1.15rem; font-weight:700; cursor:pointer; }
+@media (max-width:1099px) { .sbset-cols { grid-template-columns:1fr; } .sbset-head h1 { font-size:1.8rem; } }
