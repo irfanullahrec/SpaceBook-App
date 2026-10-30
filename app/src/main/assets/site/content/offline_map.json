@@ -27,9 +27,9 @@
    "sha256": "69e154fd07e76a006c35788ad4fbeb02a1519f52d9162c0a30ada6d096bb5b44"
   },
   "content/search/cls1-mun-comp.json": {
-   "v": "c00bb1e3caab",
-   "bytes": 1499,
-   "sha256": "c00bb1e3caabd9d4201dd7c2c6b75af1093fd4860866f453e1f0df64dac280f3"
+   "v": "a0c1eb060703",
+   "bytes": 38491,
+   "sha256": "a0c1eb060703187e3b5aa5a88fa04c998ba044f59c973eca4f484c38ffbe9748"
   },
   "content/search/cls1-mun-compbl.json": {
    "v": "6fb2c6ac241f",
@@ -37,19 +37,19 @@
    "sha256": "6fb2c6ac241f1c3ad34a12f6674c03ec12452cb04cba21c0138ed5672ba02ea0"
   },
   "content/search/cls1-mun-eng.json": {
-   "v": "300389f57b99",
-   "bytes": 520,
-   "sha256": "300389f57b99877c58f55d52be42013914b9913cb7d58252c435ead8792d3c7e"
+   "v": "f3bc344c4838",
+   "bytes": 125505,
+   "sha256": "f3bc344c4838d65203e433abaed6a6640edbc4bcf704a3759b23e40426ecc1d7"
   },
   "content/search/cls1-mun-gk.json": {
-   "v": "6fc7ff5be138",
-   "bytes": 3286,
-   "sha256": "6fc7ff5be138f30896b39c76890b8515ee2dab7b361d00b83bdd9341412351c4"
+   "v": "c01b5b93b833",
+   "bytes": 121976,
+   "sha256": "c01b5b93b8330539efd0f5c88e80403f87ae4397703343d5993b5bb6e0d61222"
   },
   "content/search/cls1-mun-gram.json": {
-   "v": "e2968b0a5f5b",
-   "bytes": 3754,
-   "sha256": "e2968b0a5f5b1e2dad6bb80a9b126cc23a8aae44e9cbe8d930046cf493bb1a7a"
+   "v": "5154016f76b1",
+   "bytes": 37837,
+   "sha256": "5154016f76b197e9b6b6e905c5b85753be4b72669e5cd6e242c05243411c2476"
   },
   "content/search/cls1-mun-isl.json": {
    "v": "b91a3adc36c2",
@@ -62,9 +62,9 @@
    "sha256": "d470e968fd919ec9a510d3cf6c39733c26e85cfa9f4fa451bb4369f1e17e3708"
   },
   "content/search/cls1-mun-prel.json": {
-   "v": "e680bc5b4b8e",
-   "bytes": 3215,
-   "sha256": "e680bc5b4b8e877128cbe5334f91beaff910ce64542d017817e9265e1d299051"
+   "v": "29efc8ef636a",
+   "bytes": 108039,
+   "sha256": "29efc8ef636a554116bc2c818dc9c2a8c6cc0736441d5ac28748458fe7b8c2bc"
   },
   "content/search/cls1-mun-ugram.json": {
    "v": "4afe53d5f5cb",
@@ -337,29 +337,29 @@
    "sha256": "b4e89bf3fab29c1d0d75bea4ac73d28a424ec2889d7885bddf61b555689e2dbb"
   },
   "content/search/cls2-mun-comp.json": {
-   "v": "1a20046c2a25",
-   "bytes": 1812,
-   "sha256": "1a20046c2a25a171a13fef0908b88b7ff0d4ef0c0f01d24f572ac0a01e397e79"
+   "v": "ef6bceddaa2d",
+   "bytes": 49989,
+   "sha256": "ef6bceddaa2dc4a25991e970d9d7ef6ac5a81d189b6a834eece7c5ddfbca0ce8"
   },
   "content/search/cls2-mun-compbl.json": {
-   "v": "62afc895dcf6",
-   "bytes": 539,
-   "sha256": "62afc895dcf69e8a3a22a3bdc03fdcd214a6650c2925af41be628736ed0011b3"
+   "v": "f6456d20ac81",
+   "bytes": 33668,
+   "sha256": "f6456d20ac816bf9b5df54ce5b47cf53a9f47a8edd5a39f387c5011493188fa3"
   },
   "content/search/cls2-mun-eng.json": {
-   "v": "ead885ea5005",
-   "bytes": 520,
-   "sha256": "ead885ea50053b8aacc2594893f9680da9e4b8d91d76fbecf640cc04556a63a2"
+   "v": "c658a2518e47",
+   "bytes": 148703,
+   "sha256": "c658a2518e476f5105b79cf2a679cffbeaef32c956e3f18d9e7a53bda7ef79fd"
   },
   "content/search/cls2-mun-gk.json": {
-   "v": "c717486c405b",
-   "bytes": 3837,
-   "sha256": "c717486c405b744bbfec8ba7ceaf7a899137da298b8cb3d26b3a9637bbc0008d"
+   "v": "0992b1e6c47f",
+   "bytes": 128039,
+   "sha256": "0992b1e6c47fc7b4d040b69c8eeb8b92e61565851f133b7ae35dc21fb02eb563"
   },
   "content/search/cls2-mun-gram.json": {
-   "v": "9b40132efb33",
-   "bytes": 4882,
-   "sha256": "9b40132efb335bdbe1e96eb4005f8329d35f5811d0656abadb1180c2e368bfc2"
+   "v": "c554739b7338",
+   "bytes": 57960,
+   "sha256": "c554739b7338f296a828960216384f80f501b847ca926833806fcc7959db9cca"
   },
   "content/search/cls2-mun-isl.json": {
    "v": "76a1eccb6a55",
@@ -367,14 +367,14 @@
    "sha256": "76a1eccb6a55c5845490509bff2ebe01ddd6ae98a9dcd8532e5b52442f43e9db"
   },
   "content/search/cls2-mun-math.json": {
-   "v": "84899212e35e",
-   "bytes": 1677,
-   "sha256": "84899212e35e4ada04407f41b97df095e432a92c05fe4b1c77aff8d58e392485"
+   "v": "4c12ec9a0435",
+   "bytes": 43472,
+   "sha256": "4c12ec9a0435553e23f9f66eef56ed2b33990b4427a943e75b2890c69f959366"
   },
   "content/search/cls2-mun-prel.json": {
-   "v": "23c6db9d62d1",
-   "bytes": 3855,
-   "sha256": "23c6db9d62d130693e16025f09c6ff672697e3ce4279eef43319c440fdba2f02"
+   "v": "f8d3f3153576",
+   "bytes": 124431,
+   "sha256": "f8d3f3153576238db1c24f76eab85cdc1566e46ec01ca678a84c7523111d78d0"
   },
   "content/search/cls2-mun-ugram.json": {
    "v": "4afe53d5f5cb",
@@ -427,9 +427,9 @@
    "sha256": "146e54fff4103332185971acd262565b72e7fa80b2dcdb1cc3bbd79d80393c93"
   },
   "content/search/cls3-mun-comp.json": {
-   "v": "d434147d310e",
-   "bytes": 2025,
-   "sha256": "d434147d310e8120dcc83e001cb5b009b81562629948f00224c2e664f5214bd5"
+   "v": "cabb1f8710cb",
+   "bytes": 67879,
+   "sha256": "cabb1f8710cb7cad3ed4877b060c03f736a0c07eeec74514a1ab26a88dc49abf"
   },
   "content/search/cls3-mun-compbl.json": {
    "v": "0cea2353179e",
@@ -437,19 +437,19 @@
    "sha256": "0cea2353179ec7675d5322eed381347c08d7ea663586790d92e5755e02bd2d40"
   },
   "content/search/cls3-mun-eng.json": {
-   "v": "233394cd2f6e",
-   "bytes": 520,
-   "sha256": "233394cd2f6ec6dbfeb082994172d19e04b765d0b5731192be4e9776018a6c6c"
+   "v": "d7f096d7710c",
+   "bytes": 119892,
+   "sha256": "d7f096d7710cd597552bf8f288459226d33e59672c4dae5ad013b36f9494561e"
   },
   "content/search/cls3-mun-gk.json": {
-   "v": "6141cd006fe7",
-   "bytes": 3732,
-   "sha256": "6141cd006fe720729fd0264d6d936408e689622a2ea82e341c4a318387b3d4a6"
+   "v": "ac4c9266f125",
+   "bytes": 196149,
+   "sha256": "ac4c9266f125ec92ea635a996cd8d3660217ccb7d5aa66c031e2e0f079ae274a"
   },
   "content/search/cls3-mun-gram.json": {
-   "v": "ced91635c283",
-   "bytes": 4622,
-   "sha256": "ced91635c283a4056dc49eef736f36844375574b0402f92c253249f089812f80"
+   "v": "ba53d11eabf0",
+   "bytes": 79763,
+   "sha256": "ba53d11eabf0cab01aae690be883a5d2ef2c72945a2d12285fd57a7e0047b326"
   },
   "content/search/cls3-mun-isl.json": {
    "v": "08f8e7e9d8e3",
@@ -457,14 +457,14 @@
    "sha256": "08f8e7e9d8e376d45eb723dd30fb1cce83c193ba7aa54827f233eeb60405b3b6"
   },
   "content/search/cls3-mun-math.json": {
-   "v": "3e1c0a7d35b6",
-   "bytes": 1570,
-   "sha256": "3e1c0a7d35b6d0a87ef95cbb3ec3aa8806ad1e41d1578cee2a7bbe68162554c9"
+   "v": "95f641775347",
+   "bytes": 40882,
+   "sha256": "95f641775347daaf781fb3087bb1f5289eadc0d4112384d700bc108ab98a6338"
   },
   "content/search/cls3-mun-prel.json": {
-   "v": "84d86f0289b2",
-   "bytes": 3744,
-   "sha256": "84d86f0289b2ff62b0f1b31e884274c7f94663d337f5ac85528eea6b7b32f55a"
+   "v": "452cba6be6a7",
+   "bytes": 180629,
+   "sha256": "452cba6be6a799b0a4e2a9d20ad35abfa0e283d4eb34e99de2ee4b7b4c93028a"
   },
   "content/search/cls3-mun-ugram.json": {
    "v": "f22a5b272547",
@@ -512,9 +512,9 @@
    "sha256": "99be9b37ddc5d12a5be658c7cef6f7e203dd9d76d045b12dc6179427b44a43ae"
   },
   "content/search/cls4-mun-comp.json": {
-   "v": "a6e13002511e",
-   "bytes": 1866,
-   "sha256": "a6e13002511ea55e365a192da9fe97a9c98564f332e69054ec32895fc9c889a3"
+   "v": "8ea801ed1eea",
+   "bytes": 89388,
+   "sha256": "8ea801ed1eead694f6d664669c78b0a478f850fba71a37eda47aac3998d34507"
   },
   "content/search/cls4-mun-compbl.json": {
    "v": "0cea2353179e",
@@ -522,14 +522,14 @@
    "sha256": "0cea2353179ec7675d5322eed381347c08d7ea663586790d92e5755e02bd2d40"
   },
   "content/search/cls4-mun-eng.json": {
-   "v": "5cf8642fa97b",
-   "bytes": 521,
-   "sha256": "5cf8642fa97b3c0055edb7e635cb694ce5117809bd519a4acc94b17a462153a6"
+   "v": "868d06e60c84",
+   "bytes": 109562,
+   "sha256": "868d06e60c84db04d297dfa844ba77e9de2cc3d98e03f630a9fe9534ebdd5856"
   },
   "content/search/cls4-mun-gram.json": {
-   "v": "ab796e6a4940",
-   "bytes": 3841,
-   "sha256": "ab796e6a494098e7871ed1c5535dce749d6418e5b732ab0fb5262afc4069eb6d"
+   "v": "94504adf5d3f",
+   "bytes": 85923,
+   "sha256": "94504adf5d3fbd4d7e7b5df35e75f9d0bcfcdf4bded7d8064dcd7891c3d3913e"
   },
   "content/search/cls4-mun-isl.json": {
    "v": "4ddd89936ec4",
@@ -537,19 +537,19 @@
    "sha256": "4ddd89936ec4579b5b8e0c693125be81f288063a1112cc752aa6025974558869"
   },
   "content/search/cls4-mun-math.json": {
-   "v": "3fb574d39e47",
-   "bytes": 1704,
-   "sha256": "3fb574d39e4716197afeb3bd2c51163e34fdc5d8cde839d592a79df2fad8222f"
+   "v": "e4f698514d25",
+   "bytes": 40317,
+   "sha256": "e4f698514d25c82306b943098fd665524afdf9eb44011b1e313ce5c294690731"
   },
   "content/search/cls4-mun-sci.json": {
-   "v": "ccc29fde455d",
-   "bytes": 2444,
-   "sha256": "ccc29fde455d373dba2dd414939092e132c81bcc38f45ba4c5f05048590afd2a"
+   "v": "3fdd61532302",
+   "bytes": 89508,
+   "sha256": "3fdd61532302d45b003ad57b9f1e032987079df1e763c6ffc7419c3987db0458"
   },
   "content/search/cls4-mun-sst.json": {
-   "v": "cd34b92830f9",
-   "bytes": 1298,
-   "sha256": "cd34b92830f9d1215831a9458e3359d140fd4ed00e1aa9991de66a4680d6c1c4"
+   "v": "7f0ada06e70c",
+   "bytes": 96060,
+   "sha256": "7f0ada06e70c892457b3626fd28ea753ddf59f1516694a1a00a313af0daf574b"
   },
   "content/search/cls4-mun-ugram.json": {
    "v": "0426d9aa9a7f",
@@ -1262,9 +1262,9 @@
    "sha256": "fa96960ba99f2462cc7c9e416bf95e8b5fdce5d5b3100eb51ea0a5b82a628d95"
   },
   "js/fills_data.js": {
-   "v": "63fde1e9a8c0",
+   "v": "da418413e9d4",
    "bytes": 116780,
-   "sha256": "63fde1e9a8c06f14a9d903b93f6177d76f5c0002ee5750ad492b9960994d7336"
+   "sha256": "da418413e9d46ceda3c8365844ba309854e974919378eb28065163c63595d0c4"
   },
   "js/general_science_10_data.js": {
    "v": "be01a96c3ab7",
@@ -1507,9 +1507,9 @@
    "sha256": "247dd25f04c93569ea5f6e79453bcb724a5319a68f0e9a758777c799c8fbea42"
   },
   "js/lexicon_data.js": {
-   "v": "24c1eadbab95",
-   "bytes": 3098058,
-   "sha256": "24c1eadbab956425cb2f7235f86d82688721bb2bba33293991f248b69c025f6c"
+   "v": "9cbbc63b298f",
+   "bytes": 3099958,
+   "sha256": "9cbbc63b298f63af040976457ff7bca3a653a3888da704e37496f012e756dc13"
   },
   "js/math12_answer_repairs.js": {
    "v": "45888bb7fc5a",
@@ -1677,9 +1677,9 @@
    "sha256": "9525086cdbd9cf2f6e12930b5da6f40ae7859472b4c4eaceed7ab51f845c9c91"
   },
   "js/munawar_c1_comp_book.js": {
-   "v": "9a1b53100004",
-   "bytes": 2947,
-   "sha256": "9a1b53100004577a4640f5068a5602b8de3e07f4022a08be092880f25f33828a"
+   "v": "d0159d5c4eac",
+   "bytes": 186931,
+   "sha256": "d0159d5c4eac9f9b8b0c5c6ab8c7dd0d4cd122dc2fc28f3e2544a5892dcd7353"
   },
   "js/munawar_c1_compbl_book.js": {
    "v": "030311ba35bc",
@@ -1687,19 +1687,19 @@
    "sha256": "030311ba35bcb2348fee226279d3c1c81506599806f9d148f9c82f0d6bfac919"
   },
   "js/munawar_c1_eng_book.js": {
-   "v": "9ea888d3a579",
-   "bytes": 1306,
-   "sha256": "9ea888d3a579e1f7a8f3cf71f3d13b13b1b7d02d9e9d3731024ac07d6875a962"
+   "v": "8a0fa1d9cb07",
+   "bytes": 736723,
+   "sha256": "8a0fa1d9cb07edb94b532f47da069bb684ac9d6f6833a4d33e852e9753e788fe"
   },
   "js/munawar_c1_gk_book.js": {
-   "v": "88d5b69853d3",
-   "bytes": 5401,
-   "sha256": "88d5b69853d36966444f0b0565f6dc3d05e533fb7a0b63ac4a14ca7bc5daedae"
+   "v": "9157bf5876d1",
+   "bytes": 638393,
+   "sha256": "9157bf5876d12b1a5b711e6e17728a726d957fe97e2cfaa3b6cf525f237fc312"
   },
   "js/munawar_c1_gram_book.js": {
-   "v": "220ebd3682ad",
-   "bytes": 6309,
-   "sha256": "220ebd3682adea165fd181d94ff5fc3753e8719dc3cff38c8bc116d2d35c576b"
+   "v": "accd6aecfabb",
+   "bytes": 171032,
+   "sha256": "accd6aecfabb947440fcddaff576f1eab354ae2a749fd924df1a541ad1e1ff79"
   },
   "js/munawar_c1_isl_book.js": {
    "v": "79cf58314139",
@@ -1712,9 +1712,9 @@
    "sha256": "f0c9d29732bbad5c91566e6ba631d628600fb19493d217394d721d5eae9e9dc8"
   },
   "js/munawar_c1_prel_book.js": {
-   "v": "1fe98d675af2",
-   "bytes": 5357,
-   "sha256": "1fe98d675af2a08760c75c245229679678dbb2bd86094088478f4250420adba1"
+   "v": "21a27e78bf1d",
+   "bytes": 547987,
+   "sha256": "21a27e78bf1dfd2cc4a16a4001f1ab9e5e6286cd5594d7b86dc74f1df62c6cca"
   },
   "js/munawar_c1_ugram_book.js": {
    "v": "4714bf779196",
@@ -1732,29 +1732,29 @@
    "sha256": "c4dd6ff883336f18b96e6ce1103085a4ba8ecd45d3eb55353cb2ba875b15b7e5"
   },
   "js/munawar_c2_comp_book.js": {
-   "v": "0dc6289f49a6",
-   "bytes": 3428,
-   "sha256": "0dc6289f49a634eddf8a5a03ef390d3d9d2b40aa4764da316ea97aa50a76180e"
+   "v": "e93e711d15cd",
+   "bytes": 247995,
+   "sha256": "e93e711d15cd8d82df62472efc12b8b7f83f18affd09b9d08b0db7c74ca99f70"
   },
   "js/munawar_c2_compbl_book.js": {
-   "v": "f1d09cc3a2c5",
-   "bytes": 1360,
-   "sha256": "f1d09cc3a2c5782137c744124804aa3bf6311c3919aac2c9e3d33f47b2e39f80"
+   "v": "6a93dcee7e90",
+   "bytes": 165761,
+   "sha256": "6a93dcee7e90e14a3432a732dff054f3258a9a6ded17f5eb570c9c42679fd60b"
   },
   "js/munawar_c2_eng_book.js": {
-   "v": "9c6b71d7f736",
-   "bytes": 1306,
-   "sha256": "9c6b71d7f73639bd9b7641ad93a02e2fd9f7aa41239448a329d006bf7a8175ce"
+   "v": "9af7cf1eca2b",
+   "bytes": 923485,
+   "sha256": "9af7cf1eca2b65136cb90d2887ee4aaee90da5cc782734fd0f960acaddc8a4c4"
   },
   "js/munawar_c2_gk_book.js": {
-   "v": "004f31d95458",
-   "bytes": 6187,
-   "sha256": "004f31d95458ff4dd2a4b016fe0d5fefd3290f7a6d3d4c8fe269649ae6934634"
+   "v": "3a622b0137a5",
+   "bytes": 646040,
+   "sha256": "3a622b0137a5e9dfa1ad5da2263961d1e0192359aca4a2349dcad1bea6f8ff73"
   },
   "js/munawar_c2_gram_book.js": {
-   "v": "3e677b0e2281",
-   "bytes": 8092,
-   "sha256": "3e677b0e2281ca719c14f93ea6500d28de12f4296d7b209ed0f49a524da7bb8d"
+   "v": "0dff8ddfba85",
+   "bytes": 244109,
+   "sha256": "0dff8ddfba852d5547a13599d8601c4c6c0eb5b681c76aa870c88c720bd8165a"
   },
   "js/munawar_c2_isl_book.js": {
    "v": "d3a9ef6833a9",
@@ -1762,14 +1762,14 @@
    "sha256": "d3a9ef6833a90a292cb97b1e4ec1897621a2a3487d9395776d0e73c93f7068f8"
   },
   "js/munawar_c2_math_book.js": {
-   "v": "2bf979a2d975",
-   "bytes": 3460,
-   "sha256": "2bf979a2d97539e65b81c47edbf90852505b10d325aa84f099f7407f45c2e917"
+   "v": "159f936d5b9e",
+   "bytes": 251518,
+   "sha256": "159f936d5b9e3158c4ee25b7bfe9b7e2812001448015d3d317f41a66674770fa"
   },
   "js/munawar_c2_prel_book.js": {
-   "v": "9a28f7d0fa16",
-   "bytes": 6245,
-   "sha256": "9a28f7d0fa1663b478ac20af68d67183dee47319db2499479f16f6695a931fce"
+   "v": "2b282eb2df4e",
+   "bytes": 620254,
+   "sha256": "2b282eb2df4ee64401669802a5cb474c8b4c487693dd064149129c8f0fa1bea3"
   },
   "js/munawar_c2_ugram_book.js": {
    "v": "ebfefc869dfa",
@@ -1782,9 +1782,9 @@
    "sha256": "1de26241421810042633116ab0c6820d4491481c48d83f5475fa3fc418b3bb90"
   },
   "js/munawar_c3_comp_book.js": {
-   "v": "a82b7d4afb47",
-   "bytes": 3664,
-   "sha256": "a82b7d4afb4763349711090884977d7bdfaef11f52396dee9347017ea63e2509"
+   "v": "c17a0bafd356",
+   "bytes": 360597,
+   "sha256": "c17a0bafd356411b23e8550fd3d1a4a2b941a592ff28b317cf31e7d90514f456"
   },
   "js/munawar_c3_compbl_book.js": {
    "v": "f347e664f544",
@@ -1792,19 +1792,19 @@
    "sha256": "f347e664f544664e64adaab4731039189e4538c324df78359340c74bf7a8f1d4"
   },
   "js/munawar_c3_eng_book.js": {
-   "v": "65eb10ea6ec7",
-   "bytes": 1306,
-   "sha256": "65eb10ea6ec7868625a68a7246db9492d2fe2ce8981b0ee75fa77de3996633e5"
+   "v": "c033a4bfff39",
+   "bytes": 776813,
+   "sha256": "c033a4bfff39b80fa2498cbb0f764616bcaed1d49c2f5769b6c97c8f933f4959"
   },
   "js/munawar_c3_gk_book.js": {
-   "v": "70f771a428ae",
-   "bytes": 6038,
-   "sha256": "70f771a428aeb559703b7d47251ef3873532511b13b9411b3aa4ad03652700cc"
+   "v": "444a3661c50a",
+   "bytes": 1063815,
+   "sha256": "444a3661c50a4bff13f7fd8a8c67805f0743b589a6ca623e186d45f390faaf22"
   },
   "js/munawar_c3_gram_book.js": {
-   "v": "57aa8dff6f9b",
-   "bytes": 7802,
-   "sha256": "57aa8dff6f9b7e243e640a0b26f45a83f96bc30e41a8fc975c67d29340e59396"
+   "v": "240a2ff92885",
+   "bytes": 407694,
+   "sha256": "240a2ff928854943aac065dcfaf1663f324af4211d4da4956ddaa4620357978b"
   },
   "js/munawar_c3_isl_book.js": {
    "v": "e4c0de80020a",
@@ -1812,14 +1812,14 @@
    "sha256": "e4c0de80020a0b493aff90884e5876d4774cdbab00250fdc7e19af178ea96b78"
   },
   "js/munawar_c3_math_book.js": {
-   "v": "b7d435942e35",
-   "bytes": 3121,
-   "sha256": "b7d435942e35b1704e2a086ce307c9b01e5e065ab4cc2d77e69dbe0ba64cfd21"
+   "v": "19ac33c3c559",
+   "bytes": 256525,
+   "sha256": "19ac33c3c559d623f4e58c62b4b5a4b2f8fe77558f5bbd63f28c744fe61dbe32"
   },
   "js/munawar_c3_prel_book.js": {
-   "v": "e853a8f1d050",
-   "bytes": 6090,
-   "sha256": "e853a8f1d0507717e76b74c89d9130d187f6c235b38263df20a78848767225f2"
+   "v": "9347dd17ef53",
+   "bytes": 961934,
+   "sha256": "9347dd17ef53389fcd9b68e3c337c4f36df0723fec9585a8d6b42aeb5b4d7466"
   },
   "js/munawar_c3_ugram_book.js": {
    "v": "ff02f4454f97",
@@ -1837,9 +1837,9 @@
    "sha256": "8c15891ddc8ae66cb5b3e99ba656c5284ae9ee937e7705e80cd7e402f0f81a37"
   },
   "js/munawar_c4_comp_book.js": {
-   "v": "ba00acb80159",
-   "bytes": 3386,
-   "sha256": "ba00acb80159004f19ce433552e13dc3f19c6d5e8403a2180b562325507b3570"
+   "v": "0311cbcd78b8",
+   "bytes": 518393,
+   "sha256": "0311cbcd78b8cf27fac81ee893b1d9c92f8ffedfa241510ae5cf98d7fb71c49f"
   },
   "js/munawar_c4_compbl_book.js": {
    "v": "d884615b27b4",
@@ -1847,14 +1847,14 @@
    "sha256": "d884615b27b4af9fa7b5d0025ade6f322a068f8c150fe92063a1ae32ef7f0b92"
   },
   "js/munawar_c4_eng_book.js": {
-   "v": "215bb2a08d7b",
-   "bytes": 1307,
-   "sha256": "215bb2a08d7b366f840b08c3f8b4829a148adf2814679bfc30d2f15ef6674c4f"
+   "v": "bcb6619800fd",
+   "bytes": 764844,
+   "sha256": "bcb6619800fdd64e73fe277d41822cbb9c05e3fe6eec06efc2950ec53fcef093"
   },
   "js/munawar_c4_gram_book.js": {
-   "v": "95433559c121",
-   "bytes": 6462,
-   "sha256": "95433559c12193d6f907510c7cbc99f4681cacdd55d7cf0f2a35d825420dddd6"
+   "v": "de8505205020",
+   "bytes": 382003,
+   "sha256": "de8505205020bc606348af5112c16b0e3c795a5d94d0a942b80ce7771bff299f"
   },
   "js/munawar_c4_isl_book.js": {
    "v": "85e269944830",
@@ -1862,19 +1862,19 @@
    "sha256": "85e2699448307095b98180d990de263e5f2327adff130927a5b0b9b943add454"
   },
   "js/munawar_c4_math_book.js": {
-   "v": "2ed887c7553d",
-   "bytes": 3234,
-   "sha256": "2ed887c7553da7d2eca01a88eff6570628baa5515295e829f6bca3ca6b0bd668"
+   "v": "099751475b8f",
+   "bytes": 236932,
+   "sha256": "099751475b8f33d6ce9a910c4c692c27ec0d4c9178d033fc296e7f2ee8010aee"
   },
   "js/munawar_c4_sci_book.js": {
-   "v": "c8291ae2b601",
-   "bytes": 4451,
-   "sha256": "c8291ae2b6011cdd321ceda83c91b37b5d763f8f1bfa4caa2d712161dcd78a1a"
+   "v": "4449e7d1890c",
+   "bytes": 629434,
+   "sha256": "4449e7d1890cbc91735d507dfbb98a0dccd67eae3f0cbbbcf86afa6ac92ca696"
   },
   "js/munawar_c4_sst_book.js": {
-   "v": "47b6ed5d8752",
-   "bytes": 2670,
-   "sha256": "47b6ed5d8752ba3e21b6ae5adf11728015445237a4f94604eefd767be877614c"
+   "v": "4e168f0b65bd",
+   "bytes": 653728,
+   "sha256": "4e168f0b65bd713807947f0088262a2b8ea8ac5d9aba9d14a48e2a1aeda0a413"
   },
   "js/munawar_c4_ugram_book.js": {
    "v": "16366db538f1",
@@ -2398,7 +2398,7 @@
    "bytes": 26065
   },
   "content/search/index.json": {
-   "bytes": 269701
+   "bytes": 276242
   }
  },
  "subjects": {
@@ -2497,7 +2497,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1906624
+   "bytes": 1913165
   },
   "cls1-urdu": {
    "classId": "cls1",
@@ -2510,7 +2510,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 391054
+   "bytes": 397595
   },
   "cls1-math": {
    "classId": "cls1",
@@ -2523,7 +2523,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2582524
+   "bytes": 2589065
   },
   "cls1-gk": {
    "classId": "cls1",
@@ -2536,7 +2536,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 391389
+   "bytes": 397930
   },
   "cls1-isl": {
    "classId": "cls1",
@@ -2549,7 +2549,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 698211
+   "bytes": 704752
   },
   "cls1-nazira": {
    "classId": "cls1",
@@ -2562,7 +2562,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1552663
+   "bytes": 1559204
   },
   "cls1-pashto": {
    "classId": "cls1",
@@ -2575,7 +2575,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1002835
+   "bytes": 1009376
   },
   "cls1-drawing": {
    "classId": "cls1",
@@ -2588,19 +2588,21 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 594829
+   "bytes": 601370
   },
   "cls1-mun-comp": {
    "classId": "cls1",
    "name": "Kanz Computer",
    "files": [
     "js/munawar_c1_comp_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls1-mun-comp.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 274147
+   "bytes": 716862
   },
   "cls1-mun-compbl": {
    "classId": "cls1",
@@ -2612,43 +2614,49 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271600
+   "bytes": 278141
   },
   "cls1-mun-eng": {
    "classId": "cls1",
    "name": "Kanz English",
    "files": [
     "js/munawar_c1_eng_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls1-mun-eng.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271527
+   "bytes": 1353668
   },
   "cls1-mun-gram": {
    "classId": "cls1",
    "name": "Kanz English Grammar",
    "files": [
     "js/munawar_c1_gram_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls1-mun-gram.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 279764
+   "bytes": 700309
   },
   "cls1-mun-gk": {
    "classId": "cls1",
    "name": "Kanz General Knowledge",
    "files": [
     "js/munawar_c1_gk_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls1-mun-gk.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 278388
+   "bytes": 1251809
   },
   "cls1-mun-isl": {
    "classId": "cls1",
@@ -2660,7 +2668,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271558
+   "bytes": 278099
   },
   "cls1-mun-math": {
    "classId": "cls1",
@@ -2674,19 +2682,21 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1790844
+   "bytes": 1797385
   },
   "cls1-mun-prel": {
    "classId": "cls1",
    "name": "Kanz Preliminary Knowledge",
    "files": [
     "js/munawar_c1_prel_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls1-mun-prel.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 278273
+   "bytes": 1147466
   },
   "cls1-mun-urdu": {
    "classId": "cls1",
@@ -2698,7 +2708,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271547
+   "bytes": 278088
   },
   "cls1-mun-ugram": {
    "classId": "cls1",
@@ -2710,7 +2720,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271592
+   "bytes": 278133
   },
   "cls1-mun-waqf": {
    "classId": "cls1",
@@ -2722,7 +2732,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271598
+   "bytes": 278139
   },
   "cls2-eng": {
    "classId": "cls2",
@@ -2735,7 +2745,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1726729
+   "bytes": 1733270
   },
   "cls2-urdu": {
    "classId": "cls2",
@@ -2748,7 +2758,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1377446
+   "bytes": 1383987
   },
   "cls2-math": {
    "classId": "cls2",
@@ -2761,7 +2771,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2619295
+   "bytes": 2625836
   },
   "cls2-gk": {
    "classId": "cls2",
@@ -2774,7 +2784,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 949138
+   "bytes": 955679
   },
   "cls2-isl": {
    "classId": "cls2",
@@ -2787,7 +2797,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 790566
+   "bytes": 797107
   },
   "cls2-nazira": {
    "classId": "cls2",
@@ -2800,7 +2810,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1497887
+   "bytes": 1504428
   },
   "cls2-pashto": {
    "classId": "cls2",
@@ -2813,7 +2823,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1246921
+   "bytes": 1253462
   },
   "cls2-drawing": {
    "classId": "cls2",
@@ -2826,67 +2836,77 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 569026
+   "bytes": 575567
   },
   "cls2-mun-comp": {
    "classId": "cls2",
    "name": "Kanz Computer",
    "files": [
     "js/munawar_c2_comp_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls2-mun-comp.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 274941
+   "bytes": 789424
   },
   "cls2-mun-compbl": {
    "classId": "cls2",
    "name": "Kanz Computer (Bilingual)",
    "files": [
     "js/munawar_c2_compbl_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls2-mun-compbl.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271600
+   "bytes": 690869
   },
   "cls2-mun-eng": {
    "classId": "cls2",
    "name": "Kanz English",
    "files": [
     "js/munawar_c2_eng_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls2-mun-eng.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271527
+   "bytes": 1563628
   },
   "cls2-mun-gram": {
    "classId": "cls2",
    "name": "Kanz English Grammar",
    "files": [
     "js/munawar_c2_gram_book.js",
+    "js/answers_extra.js",
+    "js/fills_data.js",
     "content/search/cls2-mun-gram.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 282675
+   "bytes": 793509
   },
   "cls2-mun-gk": {
    "classId": "cls2",
    "name": "Kanz General Knowledge",
    "files": [
     "js/munawar_c2_gk_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls2-mun-gk.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 279725
+   "bytes": 1265519
   },
   "cls2-mun-isl": {
    "classId": "cls2",
@@ -2898,31 +2918,35 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271558
+   "bytes": 278099
   },
   "cls2-mun-math": {
    "classId": "cls2",
    "name": "Kanz Mathematics",
    "files": [
     "js/munawar_c2_math_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls2-mun-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 274838
+   "bytes": 786430
   },
   "cls2-mun-prel": {
    "classId": "cls2",
    "name": "Kanz Preliminary Knowledge",
    "files": [
     "js/munawar_c2_prel_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls2-mun-prel.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 279801
+   "bytes": 1236125
   },
   "cls2-mun-ugram": {
    "classId": "cls2",
@@ -2934,7 +2958,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271592
+   "bytes": 278133
   },
   "cls2-mun-waqf": {
    "classId": "cls2",
@@ -2946,7 +2970,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271598
+   "bytes": 278139
   },
   "cls3-eng": {
    "classId": "cls3",
@@ -2959,7 +2983,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1369445
+   "bytes": 1375986
   },
   "cls3-urdu": {
    "classId": "cls3",
@@ -2972,7 +2996,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 391058
+   "bytes": 397599
   },
   "cls3-math": {
    "classId": "cls3",
@@ -2986,7 +3010,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2419075
+   "bytes": 2425616
   },
   "cls3-gk": {
    "classId": "cls3",
@@ -2999,7 +3023,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1255067
+   "bytes": 1261608
   },
   "cls3-isl": {
    "classId": "cls3",
@@ -3012,7 +3036,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1306041
+   "bytes": 1312582
   },
   "cls3-nazira": {
    "classId": "cls3",
@@ -3025,7 +3049,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2218617
+   "bytes": 2225158
   },
   "cls3-pashto": {
    "classId": "cls3",
@@ -3038,7 +3062,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1469316
+   "bytes": 1475857
   },
   "cls3-drawing": {
    "classId": "cls3",
@@ -3051,19 +3075,21 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 519073
+   "bytes": 525614
   },
   "cls3-mun-comp": {
    "classId": "cls3",
    "name": "Kanz Computer",
    "files": [
     "js/munawar_c3_comp_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls3-mun-comp.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 275390
+   "bytes": 919916
   },
   "cls3-mun-compbl": {
    "classId": "cls3",
@@ -3075,43 +3101,49 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271600
+   "bytes": 278141
   },
   "cls3-mun-eng": {
    "classId": "cls3",
    "name": "Kanz English",
    "files": [
     "js/munawar_c3_eng_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls3-mun-eng.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271527
+   "bytes": 1388145
   },
   "cls3-mun-gram": {
    "classId": "cls3",
    "name": "Kanz English Grammar",
    "files": [
     "js/munawar_c3_gram_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls3-mun-gram.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 282125
+   "bytes": 978897
   },
   "cls3-mun-gk": {
    "classId": "cls3",
    "name": "Kanz General Knowledge",
    "files": [
     "js/munawar_c3_gk_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls3-mun-gk.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 279471
+   "bytes": 1751404
   },
   "cls3-mun-isl": {
    "classId": "cls3",
@@ -3123,31 +3155,35 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271558
+   "bytes": 278099
   },
   "cls3-mun-math": {
    "classId": "cls3",
    "name": "Kanz Mathematics",
    "files": [
     "js/munawar_c3_math_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls3-mun-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 274392
+   "bytes": 788847
   },
   "cls3-mun-prel": {
    "classId": "cls3",
    "name": "Kanz Preliminary Knowledge",
    "files": [
     "js/munawar_c3_prel_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls3-mun-prel.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 279535
+   "bytes": 1634003
   },
   "cls3-mun-urdu": {
    "classId": "cls3",
@@ -3159,7 +3195,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271547
+   "bytes": 278088
   },
   "cls3-mun-ugram": {
    "classId": "cls3",
@@ -3171,7 +3207,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271592
+   "bytes": 278133
   },
   "cls3-mun-waqf": {
    "classId": "cls3",
@@ -3183,7 +3219,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271598
+   "bytes": 278139
   },
   "cls4-math": {
    "classId": "cls4",
@@ -3197,7 +3233,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2638538
+   "bytes": 2645079
   },
   "cls4-eng": {
    "classId": "cls4",
@@ -3210,7 +3246,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2364574
+   "bytes": 2371115
   },
   "cls4-urdu": {
    "classId": "cls4",
@@ -3224,7 +3260,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2735972
+   "bytes": 2742513
   },
   "cls4-sci": {
    "classId": "cls4",
@@ -3237,7 +3273,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1859433
+   "bytes": 1865974
   },
   "cls4-sst": {
    "classId": "cls4",
@@ -3250,7 +3286,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2128657
+   "bytes": 2135198
   },
   "cls4-sstum": {
    "classId": "cls4",
@@ -3263,7 +3299,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2326185
+   "bytes": 2332726
   },
   "cls4-isl": {
    "classId": "cls4",
@@ -3276,7 +3312,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1793864
+   "bytes": 1800405
   },
   "cls4-pashto": {
    "classId": "cls4",
@@ -3289,19 +3325,20 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1710102
+   "bytes": 1716643
   },
   "cls4-mun-comp": {
    "classId": "cls4",
    "name": "Kanz Computer",
    "files": [
     "js/munawar_c4_comp_book.js",
+    "js/fills_data.js",
     "content/search/cls4-mun-comp.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 274953
+   "bytes": 1000803
   },
   "cls4-mun-compbl": {
    "classId": "cls4",
@@ -3313,31 +3350,34 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271600
+   "bytes": 278141
   },
   "cls4-mun-eng": {
    "classId": "cls4",
    "name": "Kanz English",
    "files": [
     "js/munawar_c4_eng_book.js",
+    "js/fills_data.js",
     "content/search/cls4-mun-eng.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271529
+   "bytes": 1267428
   },
   "cls4-mun-gram": {
    "classId": "cls4",
    "name": "Kanz English Grammar",
    "files": [
     "js/munawar_c4_gram_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls4-mun-gram.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 280004
+   "bytes": 959366
   },
   "cls4-mun-isl": {
    "classId": "cls4",
@@ -3349,43 +3389,47 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271558
+   "bytes": 278099
   },
   "cls4-mun-math": {
    "classId": "cls4",
    "name": "Kanz Mathematics",
    "files": [
     "js/munawar_c4_math_book.js",
+    "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls4-mun-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 274639
+   "bytes": 768689
   },
   "cls4-mun-sci": {
    "classId": "cls4",
    "name": "Kanz Science",
    "files": [
     "js/munawar_c4_sci_book.js",
+    "js/fills_data.js",
     "content/search/cls4-mun-sci.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 276596
+   "bytes": 1111964
   },
   "cls4-mun-sst": {
    "classId": "cls4",
    "name": "Kanz Social Studies",
    "files": [
     "js/munawar_c4_sst_book.js",
+    "js/fills_data.js",
     "content/search/cls4-mun-sst.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 273669
+   "bytes": 1142810
   },
   "cls4-mun-urdu": {
    "classId": "cls4",
@@ -3397,7 +3441,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271537
+   "bytes": 278078
   },
   "cls4-mun-ugram": {
    "classId": "cls4",
@@ -3409,7 +3453,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 271592
+   "bytes": 278133
   },
   "cls5-math": {
    "classId": "cls5",
@@ -3421,7 +3465,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2142247
+   "bytes": 2148788
   },
   "cls5-sci": {
    "classId": "cls5",
@@ -3434,7 +3478,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2258878
+   "bytes": 2265419
   },
   "cls5-eng": {
    "classId": "cls5",
@@ -3447,7 +3491,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2039311
+   "bytes": 2045852
   },
   "cls5-urdu": {
    "classId": "cls5",
@@ -3461,7 +3505,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2965673
+   "bytes": 2972214
   },
   "cls5-isl": {
    "classId": "cls5",
@@ -3474,7 +3518,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1880370
+   "bytes": 1886911
   },
   "cls5-sst": {
    "classId": "cls5",
@@ -3487,7 +3531,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1899306
+   "bytes": 1905847
   },
   "cls5-sstum": {
    "classId": "cls5",
@@ -3500,7 +3544,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2098469
+   "bytes": 2105010
   },
   "cls5-pashto": {
    "classId": "cls5",
@@ -3513,7 +3557,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1975779
+   "bytes": 1982320
   },
   "cls6-math": {
    "classId": "cls6",
@@ -3527,7 +3571,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3613488
+   "bytes": 3620029
   },
   "cls6-sci": {
    "classId": "cls6",
@@ -3540,7 +3584,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2072180
+   "bytes": 2078721
   },
   "cls6-eng": {
    "classId": "cls6",
@@ -3553,7 +3597,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2027823
+   "bytes": 2034364
   },
   "cls6-urdu": {
    "classId": "cls6",
@@ -3566,7 +3610,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2945800
+   "bytes": 2952341
   },
   "cls6-isl": {
    "classId": "cls6",
@@ -3579,7 +3623,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2938153
+   "bytes": 2944694
   },
   "cls6-comp": {
    "classId": "cls6",
@@ -3592,7 +3636,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1273916
+   "bytes": 1280457
   },
   "cls6-geo": {
    "classId": "cls6",
@@ -3605,7 +3649,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1376435
+   "bytes": 1382976
   },
   "cls6-hist": {
    "classId": "cls6",
@@ -3618,7 +3662,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1595887
+   "bytes": 1602428
   },
   "cls6-hpe": {
    "classId": "cls6",
@@ -3631,7 +3675,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1316344
+   "bytes": 1322885
   },
   "cls6-drawing": {
    "classId": "cls6",
@@ -3644,7 +3688,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 846617
+   "bytes": 853158
   },
   "cls6-arabic": {
    "classId": "cls6",
@@ -3657,7 +3701,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1781690
+   "bytes": 1788231
   },
   "cls6-quran": {
    "classId": "cls6",
@@ -3670,7 +3714,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2626194
+   "bytes": 2632735
   },
   "cls6-pashto": {
    "classId": "cls6",
@@ -3683,7 +3727,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1790345
+   "bytes": 1796886
   },
   "cls7-eng": {
    "classId": "cls7",
@@ -3697,7 +3741,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3321432
+   "bytes": 3327973
   },
   "cls7-urdu": {
    "classId": "cls7",
@@ -3711,7 +3755,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5109572
+   "bytes": 5116113
   },
   "cls7-math": {
    "classId": "cls7",
@@ -3723,7 +3767,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4080135
+   "bytes": 4086676
   },
   "cls7-sci": {
    "classId": "cls7",
@@ -3737,7 +3781,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3767069
+   "bytes": 3773610
   },
   "cls7-geo": {
    "classId": "cls7",
@@ -3751,7 +3795,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2286994
+   "bytes": 2293535
   },
   "cls7-hist": {
    "classId": "cls7",
@@ -3765,7 +3809,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2896066
+   "bytes": 2902607
   },
   "cls7-comp": {
    "classId": "cls7",
@@ -3779,7 +3823,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2167867
+   "bytes": 2174408
   },
   "cls7-isl": {
    "classId": "cls7",
@@ -3793,7 +3837,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5193437
+   "bytes": 5199978
   },
   "cls7-quran": {
    "classId": "cls7",
@@ -3807,7 +3851,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4981414
+   "bytes": 4987955
   },
   "cls7-arabic": {
    "classId": "cls7",
@@ -3820,7 +3864,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3241143
+   "bytes": 3247684
   },
   "cls7-drawing": {
    "classId": "cls7",
@@ -3834,7 +3878,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1450515
+   "bytes": 1457056
   },
   "cls7-hpe": {
    "classId": "cls7",
@@ -3848,7 +3892,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2470197
+   "bytes": 2476738
   },
   "cls8-eng": {
    "classId": "cls8",
@@ -3863,7 +3907,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3243037
+   "bytes": 3249578
   },
   "cls8-urdu": {
    "classId": "cls8",
@@ -3877,7 +3921,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5214645
+   "bytes": 5221186
   },
   "cls8-math": {
    "classId": "cls8",
@@ -3889,7 +3933,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4205036
+   "bytes": 4211577
   },
   "cls8-sci": {
    "classId": "cls8",
@@ -3903,7 +3947,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4203886
+   "bytes": 4210427
   },
   "cls8-geo": {
    "classId": "cls8",
@@ -3917,7 +3961,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2207856
+   "bytes": 2214397
   },
   "cls8-hist": {
    "classId": "cls8",
@@ -3931,7 +3975,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2826037
+   "bytes": 2832578
   },
   "cls8-comp": {
    "classId": "cls8",
@@ -3945,7 +3989,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2015429
+   "bytes": 2021970
   },
   "cls8-isl": {
    "classId": "cls8",
@@ -3959,7 +4003,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4965304
+   "bytes": 4971845
   },
   "cls8-quran": {
    "classId": "cls8",
@@ -3973,7 +4017,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5214453
+   "bytes": 5220994
   },
   "cls8-pashto": {
    "classId": "cls8",
@@ -3987,7 +4031,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2660947
+   "bytes": 2667488
   },
   "cls8-arabic": {
    "classId": "cls8",
@@ -4000,7 +4044,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3226464
+   "bytes": 3233005
   },
   "cls8-drawing": {
    "classId": "cls8",
@@ -4014,7 +4058,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1012447
+   "bytes": 1018988
   },
   "cls8-hpe": {
    "classId": "cls8",
@@ -4028,7 +4072,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1714323
+   "bytes": 1720864
   },
   "cls9-math": {
    "classId": "cls9",
@@ -4040,7 +4084,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1018232
+   "bytes": 1024773
   },
   "cls9-phy": {
    "classId": "cls9",
@@ -4053,7 +4097,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 8827207
+   "bytes": 8833748
   },
   "cls9-chem": {
    "classId": "cls9",
@@ -4068,7 +4112,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 13401942
+   "bytes": 13408483
   },
   "cls9-bio": {
    "classId": "cls9",
@@ -4082,7 +4126,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 6870329
+   "bytes": 6876870
   },
   "cls9-eng": {
    "classId": "cls9",
@@ -4096,7 +4140,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3394694
+   "bytes": 3401235
   },
   "cls9-urdu": {
    "classId": "cls9",
@@ -4108,7 +4152,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3093013
+   "bytes": 3099554
   },
   "cls9-isl": {
    "classId": "cls9",
@@ -4121,7 +4165,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3967002
+   "bytes": 3973543
   },
   "cls9-comp": {
    "classId": "cls9",
@@ -4135,7 +4179,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2640791
+   "bytes": 2647332
   },
   "cls9-pakstudy": {
    "classId": "cls9",
@@ -4148,7 +4192,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1685084
+   "bytes": 1691625
   },
   "cls9-sci": {
    "classId": "cls9",
@@ -4162,7 +4206,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3292899
+   "bytes": 3299440
   },
   "cls9-hpe": {
    "classId": "cls9",
@@ -4176,7 +4220,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2174485
+   "bytes": 2181026
   },
   "cls9-drawing": {
    "classId": "cls9",
@@ -4190,7 +4234,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1635570
+   "bytes": 1642111
   },
   "cls9-islopt": {
    "classId": "cls9",
@@ -4203,7 +4247,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2792551
+   "bytes": 2799092
   },
   "cls9-quran": {
    "classId": "cls9",
@@ -4217,7 +4261,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5085394
+   "bytes": 5091935
   },
   "cls10-math": {
    "classId": "cls10",
@@ -4229,7 +4273,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 833823
+   "bytes": 840364
   },
   "cls10-phy": {
    "classId": "cls10",
@@ -4244,7 +4288,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 11427145
+   "bytes": 11433686
   },
   "cls10-chem": {
    "classId": "cls10",
@@ -4259,7 +4303,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 13020848
+   "bytes": 13027389
   },
   "cls10-bio": {
    "classId": "cls10",
@@ -4284,7 +4328,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5611953
+   "bytes": 5618494
   },
   "cls10-eng": {
    "classId": "cls10",
@@ -4298,7 +4342,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3611074
+   "bytes": 3617615
   },
   "cls10-pakstudy": {
    "classId": "cls10",
@@ -4310,7 +4354,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1681823
+   "bytes": 1688364
   },
   "cls10-isl": {
    "classId": "cls10",
@@ -4323,7 +4367,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3967002
+   "bytes": 3973543
   },
   "cls10-urdu": {
    "classId": "cls10",
@@ -4337,7 +4381,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 4454282
+   "bytes": 4460823
   },
   "cls10-comp": {
    "classId": "cls10",
@@ -4351,7 +4395,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2969525
+   "bytes": 2976066
   },
   "cls10-sci": {
    "classId": "cls10",
@@ -4365,7 +4409,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 3663283
+   "bytes": 3669824
   },
   "cls10-hpe": {
    "classId": "cls10",
@@ -4379,7 +4423,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2620705
+   "bytes": 2627246
   },
   "cls10-drawing": {
    "classId": "cls10",
@@ -4393,7 +4437,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1379770
+   "bytes": 1386311
   },
   "cls10-islopt": {
    "classId": "cls10",
@@ -4406,7 +4450,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 2792551
+   "bytes": 2799092
   },
   "cls10-quran": {
    "classId": "cls10",
@@ -4420,7 +4464,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5782206
+   "bytes": 5788747
   },
   "cls11-math": {
    "classId": "cls11",
@@ -4432,7 +4476,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5934560
+   "bytes": 5941101
   },
   "cls11-phy": {
    "classId": "cls11",
@@ -4445,7 +4489,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5353259
+   "bytes": 5359800
   },
   "cls11-chem": {
    "classId": "cls11",
@@ -4460,7 +4504,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 10163489
+   "bytes": 10170030
   },
   "cls11-bio": {
    "classId": "cls11",
@@ -4474,7 +4518,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 9761454
+   "bytes": 9767995
   },
   "cls11-stat": {
    "classId": "cls11",
@@ -4489,7 +4533,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5255082
+   "bytes": 5261623
   },
   "cls11-eng": {
    "classId": "cls11",
@@ -4504,7 +4548,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 5958950
+   "bytes": 5965491
   },
   "cls11-ishist": {
    "classId": "cls11",
@@ -4524,7 +4568,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 19824306
+   "bytes": 19830847
   },
   "cls11-cs": {
    "classId": "cls11",
@@ -4545,7 +4589,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 19462207
+   "bytes": 19468748
   },
   "cls11-ikhtiari": {
    "classId": "cls11",
@@ -4566,7 +4610,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 20149214
+   "bytes": 20155755
   },
   "cls11-civics": {
    "classId": "cls11",
@@ -4587,7 +4631,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 19004428
+   "bytes": 19010969
   },
   "cls11-urdu": {
    "classId": "cls11",
@@ -4608,7 +4652,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 18750826
+   "bytes": 18757367
   },
   "cls11-mq": {
    "classId": "cls11",
@@ -4628,7 +4672,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 20360767
+   "bytes": 20367308
   },
   "cls11-hpe": {
    "classId": "cls11",
@@ -4649,7 +4693,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 17763730
+   "bytes": 17770271
   },
   "cls11-isl": {
    "classId": "cls11",
@@ -4670,7 +4714,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 18100986
+   "bytes": 18107527
   },
   "cls12-math": {
    "classId": "cls12",
@@ -4748,7 +4792,7 @@
     "assets/math12/vector-project-source141.jpg",
     "content/search/index.json"
    ],
-   "bytes": 9618641
+   "bytes": 9625182
   },
   "cls12-phy": {
    "classId": "cls12",
@@ -4764,7 +4808,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 26994125
+   "bytes": 27000666
   },
   "cls12-chem": {
    "classId": "cls12",
@@ -4784,7 +4828,7 @@
     "assets/chem12/unit22-industrial-chemistry-cover.jpg",
     "content/search/index.json"
    ],
-   "bytes": 21036884
+   "bytes": 21043425
   },
   "cls12-stat": {
    "classId": "cls12",
@@ -4800,7 +4844,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 11218852
+   "bytes": 11225393
   },
   "cls12-eng": {
    "classId": "cls12",
@@ -4816,7 +4860,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 10345748
+   "bytes": 10352289
   },
   "cls12-urdu": {
    "classId": "cls12",
@@ -4832,7 +4876,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 13438517
+   "bytes": 13445058
   },
   "cls12-bio": {
    "classId": "cls12",
@@ -4844,7 +4888,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 11435326
+   "bytes": 11441867
   },
   "cls12-pak": {
    "classId": "cls12",
@@ -4858,7 +4902,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 10497729
+   "bytes": 10504270
   },
   "cls12-comp": {
    "classId": "cls12",
@@ -4874,7 +4918,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 9026905
+   "bytes": 9033446
   },
   "cls12-civics": {
    "classId": "cls12",
@@ -4888,7 +4932,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 10250533
+   "bytes": 10257074
   },
   "cls12-econ": {
    "classId": "cls12",
@@ -4903,7 +4947,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 24109614
+   "bytes": 24116155
   },
   "cls12-hpe": {
    "classId": "cls12",
@@ -4918,7 +4962,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 6293176
+   "bytes": 6299717
   },
   "cls12-islopt": {
    "classId": "cls12",
@@ -4933,7 +4977,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 12591609
+   "bytes": 12598150
   },
   "cls12-islhist": {
    "classId": "cls12",
@@ -4948,7 +4992,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 9135701
+   "bytes": 9142242
   },
   "cls12-quran": {
    "classId": "cls12",
@@ -4964,7 +5008,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 20438599
+   "bytes": 20445140
   },
   "meanings": {
    "classId": "meanings",
@@ -4989,7 +5033,7 @@
     "js/sent_data_9.js"
    ],
    "assets": [],
-   "bytes": 5382576
+   "bytes": 5384476
   }
  }
 }
