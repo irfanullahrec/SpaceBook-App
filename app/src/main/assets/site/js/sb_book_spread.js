@@ -196,18 +196,25 @@
     feed(res.front, null);
     res.units.forEach((u, i) => (u.sections || []).forEach(sec => feed(sec.blocks, i)));
     feed(res.back, null);
-    cache.set(res.key, {units: res.units, pages});
-    return pages;
+    // a page with nothing on it (only its number) is not shown: no blank page in the book
+    const kept = pages.filter(p => p.blocks.length);
+    cache.set(res.key, {units: res.units, pages: kept});
+    return kept;
   }
 
-  // odd printed page on the first side, even on the second; gaps and unnumbered pages stand alone
+  // odd printed page on the first side, even on the second, whatever order the data lists them in (a unit's sections need not follow the printed order, and
+  // pairing only the next item left pages 5, 8, 9, 6, 7, 10 each beside an empty side); a page whose partner is not in the book stands alone and is drawn as a
+  // single page (book()), never beside a blank half
   function spreadsOf(pages) {
-    const out = [];
+    const out = [], used = new Set(), byNo = new Map();
+    pages.forEach(p => { if (p.printed != null && !byNo.has(p.printed)) byNo.set(p.printed, p); });
     for (let i = 0; i < pages.length; i++) {
-      const p = pages[i], n = pages[i + 1];
-      if (p.printed != null && p.printed % 2 === 1 && n && n.printed === p.printed + 1) { out.push([p, n]); i++; }
-      else if (p.printed != null && p.printed % 2 === 0) out.push([null, p]);
-      else out.push([p, null]);
+      const p = pages[i];
+      if (used.has(p)) continue;
+      used.add(p);
+      const mate = p.printed == null ? null : byNo.get(p.printed % 2 === 1 ? p.printed + 1 : p.printed - 1);
+      if (mate && mate !== p && !used.has(mate)) { used.add(mate); out.push(p.printed % 2 === 1 ? [p, mate] : [mate, p]); }
+      else out.push(p.printed != null && p.printed % 2 === 0 ? [null, p] : [p, null]);
     }
     return out;
   }
@@ -274,7 +281,9 @@
           html.push(`<section class="bk-wrap bk-one" id="bk-spread-${esc(key)}" data-label="${esc(nums.join('–'))}"${ids.length ? ' data-ex="1"' : ''}><div class="bk-head"><span>${ids.length ? `<b>${esc(ids.join(' · '))}</b> · ` : ''}${esc(title)}</span></div><div class="bk-spread bk-single bk-ans${res.rtl ? ' bk-rtl' : ''}" dir="${res.rtl ? 'rtl' : 'ltr'}">${pageHtml(s[0], 'bk-solo')}</div></section>`);
           return;
         }
-        html.push(`<section class="bk-wrap" id="bk-spread-${esc(key)}" data-label="${esc(nums.join('–'))}"${ids.length ? ' data-ex="1"' : ''}><div class="bk-head"><span>${ids.length ? `<b>${esc(ids.join(' · '))}</b> · ` : ''}${esc(title)}</span><label><input type="checkbox" checked onchange="this.closest('.bk-wrap').querySelector('.bk-spread').classList.toggle('bk-ans',this.checked)"> Show answers &amp; solutions</label></div><div class="bk-spread bk-ans${res.rtl ? ' bk-rtl' : ''}" dir="${res.rtl ? 'rtl' : 'ltr'}">${pageHtml(s[0], 'bk-left')}${pageHtml(s[1], 'bk-right')}</div></section>`);
+        // a page whose partner is not in the book: one page on its own, centred, not a page beside an empty one
+        const lone = !s[0] || !s[1];
+        html.push(`<section class="bk-wrap${lone ? ' bk-lone' : ''}" id="bk-spread-${esc(key)}" data-label="${esc(nums.join('–'))}"${ids.length ? ' data-ex="1"' : ''}><div class="bk-head"><span>${ids.length ? `<b>${esc(ids.join(' · '))}</b> · ` : ''}${esc(title)}</span><label><input type="checkbox" checked onchange="this.closest('.bk-wrap').querySelector('.bk-spread').classList.toggle('bk-ans',this.checked)"> Show answers &amp; solutions</label></div><div class="bk-spread${lone ? ' bk-single' : ''} bk-ans${res.rtl ? ' bk-rtl' : ''}" dir="${res.rtl ? 'rtl' : 'ltr'}">${lone ? pageHtml(s[0] || s[1], 'bk-solo') : pageHtml(s[0], 'bk-left') + pageHtml(s[1], 'bk-right')}</div></section>`);
       });
       return html.join('');
     };
@@ -442,11 +451,12 @@
       const labs = pair.map((e, k) => e ? labelOf(e, i + k) : '').filter(Boolean);
       sec.dataset.label = labs.length > 1 && labs[0] !== labs[1] ? labs[0] + '–' + labs[1] : labs[0];
       if (pair.some(e => e && /exercise|مشق|تمرین|questions?/i.test((e.textContent || '').slice(0, 120)))) sec.dataset.ex = '1';
-      sec.innerHTML = '<div class="bk-head"><span>Page ' + esc(sec.dataset.label) + '</span><label><input type="checkbox" checked onchange="this.closest(\'.bk-wrap\').querySelector(\'.bk-spread\').classList.toggle(\'bk-ans\',this.checked)"> Show answers &amp; solutions</label></div><div class="bk-spread bk-ans' + (rtl ? ' bk-rtl' : '') + '" dir="' + (rtl ? 'rtl' : 'ltr') + '"></div>';
+      sec.innerHTML = '<div class="bk-head"><span>Page ' + esc(sec.dataset.label) + '</span><label><input type="checkbox" checked onchange="this.closest(\'.bk-wrap\').querySelector(\'.bk-spread\').classList.toggle(\'bk-ans\',this.checked)"> Show answers &amp; solutions</label></div><div class="bk-spread bk-ans' + (pair[1] ? '' : ' bk-single') + (rtl ? ' bk-rtl' : '') + '" dir="' + (rtl ? 'rtl' : 'ltr') + '"></div>';
       const sp = sec.querySelector('.bk-spread');
       pair.forEach((el, k) => {
+        if (!el) return;                      // the last card has no partner: it is one page on its own, not a page beside an empty one
         const art = document.createElement('article');
-        art.className = 'bk-page ' + (k ? 'bk-right' : 'bk-left') + (el ? '' : ' bk-blank');
+        art.className = 'bk-page ' + (pair[1] ? (k ? 'bk-right' : 'bk-left') : 'bk-solo');
         if (el) {
           el.classList.add('open');
           // the page number is shown once, in the footer circle: a "Page 57" / "Scan 12" chip on the card would repeat it

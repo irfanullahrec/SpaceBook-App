@@ -151,7 +151,7 @@
     const extra = foreign ? englishFor(toks) : [];
     const weight = t => extra.includes(t) ? 0.8 : 1;
     const qTokens = [...new Set(toks.concat(extra))];
-    const result = {q: text, foreign, passages: [], questions: [], chapters: [], meaning: null, definition: null, direct: null, scope: ''};
+    const result = {q: text, foreign, passages: [], questions: [], chapters: [], meaning: null, definition: null, direct: null, scope: S.cls ? 'Class ' + S.cls : 'all classes'};
     if (!qTokens.length) return result;
     // the scope: a class, or all of them one after the other
     if (!AIDX) AIDX = await getJson('content/assistant/index.json');
@@ -236,6 +236,111 @@
     return out.sort((a, b) => b.score - a.score).slice(0, 3);
   }
 
+  // ---------- an exercise asked by number ("maths 11 exercise 3.5 question 3"): looked up in the Class 11 Maths book, with its written answer and steps ----------
+  let M11 = null;
+  const loadScript = src => new Promise((res, rej) => { const e = document.createElement('script'); e.src = src; e.onload = res; e.onerror = () => rej(new Error('load ' + src)); document.head.appendChild(e); });
+  async function math11() {
+    if (M11) return M11;
+    if (typeof MATH_11_DATA === 'undefined') await loadScript('js/math_11_data.js');
+    if (!window.MATH_11_SOLUTIONS && !window.SBHost && !document.documentElement.classList.contains('sbapp')) { try { await loadScript('js/math_11_solutions.js'); } catch (e) { /* the book's own answers still show */ } }
+    M11 = MATH_11_DATA; return M11;
+  }
+  // the numbers in a question; typos in the words around them do not matter ("exersice", "qustion", "mathes")
+  function exerciseRef(text) {
+    const t = String(text || '').toLowerCase();
+    const ex = /\b(?:ex\w*|exc\w*|review)\.?\s*(?:no\.?\s*)?(\d{1,2}(?:\.\d{1,2})?)/.exec(t);
+    if (!ex) return null;
+    const q = /\b(?:q\w*|no|number|sawal|sawaal)\.?\s*(?:no\.?\s*)?(\d{1,2})\b/.exec(t.replace(ex[0], ' '));
+    const cls = /\b(?:class|grade|cls)\s*(\d{1,2})\b/.exec(t) || /\bmath\w*\s*(\d{1,2})\b/.exec(t) || /\b(\d{1,2})(?:th|st|nd|rd)?\s*(?:class|grade)?\s*math\w*/.exec(t);
+    const part = /\b(?:option|part|item|sub\s?part)\s*\(?([a-h]|iv|vi{0,3}|i{1,3})\)?(?![a-z])/.exec(t);
+    return {exercise: /review/.test(ex[0]) ? 'Review ' + ex[1] : ex[1], q: q ? q[1] : '', part: part ? part[1] : '', cls: cls ? +cls[1] : 0, maths: /math|ریاضی|حساب/.test(t)};
+  }
+  // an exercise of Classes 1-10 and 12: its questions are in the question bank (content/testbank) with the exercise number, so "class 6 maths exercise 3.7 question 6 option e" is a lookup
+  const PARTS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'], ROMAN = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii'];
+  async function lookupBank(ref, n) {
+    let rec; try { rec = await loadClass(n); } catch (e) { return null; }
+    if (!rec || !rec.bank) return null;
+    const subs = rec.bank.subjects, want = ref.exercise.toLowerCase();
+    const inScope = it => (!S.subject || it.s === S.subject) && (!ref.maths || /math/i.test((subs[it.s] || {}).name || ''));
+    const all = rec.bank.items.filter(it => String(it.x || '').toLowerCase() === want && inScope(it));
+    if (!all.length) return {missing: true, ref, cls: n, none: true};
+    const bySub = all[0].s, rows = all.filter(it => it.s === bySub);
+    const sj = subs[bySub] || {}, chapter = String(((sj.chapters || [])[rows[0].u]) || '').replace(/[؀-ۿ].*$/, '').trim();
+    const groups = new Map(); rows.forEach(it => { const k = it.p; if (!groups.has(k)) groups.set(k, []); groups.get(k).push(it); });
+    const ans = it => it.y === 'mcq' ? 'ABCDE'[it.a] + '. ' + (it.o || [])[it.a] : it.y === 'tf' ? (it.a === 0 ? 'True' : 'False') : String(it.a == null ? '' : it.a);
+    const shape = (it, label, k) => ({no: label, en: (it.h && it.h !== it.q ? it.h + ' ' : '') + (it.y === 'mcq' ? it.q + ' ' + (it.o || []).map((o, i) => 'ABCDE'[i] + '. ' + o).join('  ') : it.q), answer: ans(it), sol: it.e ? {steps: [{en: it.e}]} : null, parts: [], pg: it.pg});
+    let items, whole = false;
+    const letter = ref.part ? ref.part.toLowerCase() : '';
+    const pi = letter ? (PARTS.indexOf(letter) >= 0 && letter.length === 1 ? PARTS.indexOf(letter) : ROMAN.indexOf(letter)) : -1;
+    if (ref.q && groups.has(+ref.q)) {
+      const g = groups.get(+ref.q);
+      if (pi >= 0 && g[pi]) items = [shape(g[pi], ref.q + ' (' + letter + ')')];
+      else if (pi >= 0) return {missing: true, ref, cls: n, count: g.length, partMissing: true};
+      else items = g.length === 1 ? [shape(g[0], ref.q)] : g.map((it, i) => shape(it, ref.q + ' (' + PARTS[i] + ')'));
+    } else if (ref.q) {
+      return {missing: true, ref, cls: n, count: groups.size, keys: [...groups.keys()].filter(k => k > 0).sort((a, b) => a - b)};
+    } else if (pi >= 0) {
+      items = []; [...groups.entries()].sort((a, b) => a[0] - b[0]).forEach(([k, g]) => { if (g.length > 1 && g[pi]) items.push(shape(g[pi], k + ' (' + letter + ')')); });
+      if (!items.length) return {missing: true, ref, cls: n, count: groups.size, partMissing: true};
+    } else { whole = true; items = []; [...groups.entries()].sort((a, b) => a[0] - b[0]).slice(0, 8).forEach(([k, g]) => g.slice(0, 3).forEach((it, i) => items.push(shape(it, k + (g.length > 1 ? ' (' + PARTS[i] + ')' : ''))))); }
+    return {ref, cls: n, title: 'Class ' + n + ' ' + (sj.name || ''), unit: chapter, items, whole, count: groups.size, pg: rows[0].pg};
+  }
+  async function lookupExercise(ref) {
+    if (!ref || !ref.exercise) return null;
+    const cn = ref.cls || S.cls || 0;
+    if (cn !== 11 || !ref.maths) return cn ? await lookupBank(ref, cn) : null;
+    const data = await math11();
+    const found = [];
+    const walk = (bs, u) => bs.forEach(b => { if (b && b.t === 'exercise' && String(b.id).toLowerCase() === ref.exercise.toLowerCase()) found.push({b, u}); if (b && Array.isArray(b.blocks)) walk(b.blocks, u); });
+    data.forEach(u => (u.sections || []).forEach(sec => walk(sec.blocks || [], u)));
+    if (!found.length) return {missing: true, ref};
+    const qs = []; found.forEach(f => (f.b.blocks || []).forEach(q => { if (q && q.t === 'q') qs.push({q, u: f.u}); }));
+    const pick = ref.q ? qs.filter(x => String(x.q.no) === ref.q) : [];
+    if (ref.q && !pick.length) return {missing: true, ref, count: qs.length};
+    const sol = id => (window.MATH_11_SOLUTIONS && id && window.MATH_11_SOLUTIONS[id]) || null;
+    const shape = x => ({no: x.q.no, en: x.q.en || '', answer: x.q.authoredAnswer ? x.q.authoredAnswer.en : '', sol: sol(x.q.solId),
+      parts: (x.q.parts || []).map(p => ({no: p.no, en: p.en || '', answer: p.authoredAnswer ? p.authoredAnswer.en : '', sol: sol(p.solId)}))});
+    return {ref, unit: found[0].u.title, items: (pick.length ? pick : qs.slice(0, 12)).map(shape), whole: !pick.length, count: qs.length};
+  }
+  const stepsText = sol => sol && sol.steps ? sol.steps.map((st, i) => (i + 1) + '. ' + (st.en || '')).join(' ') : '';
+  const exerciseSources = ex => !ex || ex.missing ? [] : ex.items.map(it => ({w: (ex.title || 'Class 11 Mathematics') + ', Exercise ' + ex.ref.exercise + ', question ' + it.no + ' (' + ex.unit + ')',
+    t: ('Question: ' + it.en + (it.parts.length ? ' ' + it.parts.map(p => p.no + ' ' + p.en).join(' ') : '') + ' | Answer: ' + (it.answer || it.parts.map(p => p.no + ' ' + p.answer).join('; ')) + (it.sol ? ' | Steps: ' + stepsText(it.sol) : '') + it.parts.map(p => p.sol ? ' | ' + p.no + ' steps: ' + stepsText(p.sol) : '').join('')).slice(0, 1400)}));
+  // the AI reads what was typed, mends the spelling and says which exercise and question it means (api/ask.php?action=understand)
+  async function understand(text) {
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) return null;
+    const ctl = typeof AbortController !== 'undefined' ? new AbortController() : null, timer = ctl ? setTimeout(() => ctl.abort(), 9000) : null;
+    try {
+      const res = await fetch('api/ask.php?action=understand', {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, signal: ctl ? ctl.signal : undefined, body: JSON.stringify({q: text})});
+      const j = await res.json();
+      return j && j.ok ? j : null;
+    } catch (e) { return null; } finally { if (timer) clearTimeout(timer); }
+  }
+
+  // ---------- the AI answer: the best passages found on the device go to api/ask.php, which asks the model to answer only from them ----------
+  const sourcesOf = r => {
+    const out = [];
+    const add = (t, w) => { t = String(t == null ? '' : t).trim(); if (t) out.push({t: t.slice(0, 1400), w}); };
+    exerciseSources(r.exercise).forEach(x => add(x.t, x.w));
+    if (r.definition) add(r.definition.s, where0(r.definition.p));
+    (r.questions || []).forEach(x => { const it = x.it; if (it.a === undefined) return; const ans = it.y === 'mcq' ? 'ABCDE'[it.a] + '. ' + it.o[it.a] : it.y === 'tf' ? (it.a === 0 ? 'True' : 'False') : it.a; add('Textbook question: ' + it.q + ' | Written answer: ' + ans, where0(x)); });
+    (r.passages || []).slice(0, 5).forEach(p => add(p.text, where0(p) + (p.head ? ' · ' + p.head : '')));
+    return out;
+  };
+  const where0 = o => 'Class ' + o.cls + ', ' + o.subject + (o.chapter ? ', ' + o.chapter : '');
+  async function askAI(entry, hist) {
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) return null;
+    let src = sourcesOf(entry.r);
+    if (entry.r.followup) { const prev = [...S.log].reverse().find(e => e !== entry && e.r && e.r.src && e.r.src.length); if (prev) src = prev.r.src; }
+    entry.r.src = src;
+    const ctl = typeof AbortController !== 'undefined' ? new AbortController() : null, timer = ctl ? setTimeout(() => ctl.abort(), 30000) : null;
+    try {
+      const res = await fetch('api/ask.php', {method: 'POST', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, signal: ctl ? ctl.signal : undefined,
+        body: JSON.stringify({q: entry.r.fixed || entry.q, sources: src, history: hist})});
+      const j = await res.json();
+      return j && j.ok && j.answer ? String(j.answer) : null;
+    } catch (e) { return null; } finally { if (timer) clearTimeout(timer); }
+  }
+
   // ---------- the page ----------
   const CSS = `
   .sbtu{max-width:900px;margin:0 auto;padding:.4rem .2rem 6rem;color:#0f172a}
@@ -263,7 +368,30 @@
   .sbtu-input button{padding:.5rem 1.1rem;border:none;border-radius:12px;background:#be185d;color:#fff;font:800 .95rem system-ui,sans-serif;cursor:pointer}
   .sbtu-input button:disabled{opacity:.5}
   .sbtu-opt{display:flex;gap:.45rem;padding:.25rem .5rem;border:1px solid #cbd5e1;border-radius:8px;margin:.15rem 0;cursor:pointer}.sbtu-opt.ok{background:#dcfce7;border-color:#16a34a}.sbtu-opt.bad{background:#fee2e2;border-color:#dc2626}
-  .sbtu-prog{font-size:.85rem;color:#475569;font-style:italic}`;
+  .sbtu-prog{font-size:.85rem;color:#475569;font-style:italic}
+  .sbtu{max-width:900px;margin:0 auto;display:flex;flex-direction:column;min-height:calc(100vh - 220px);padding:0 .2rem 5.5rem}
+  .sbtu-top{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;padding:.6rem .2rem;border-bottom:1px solid #e2e8f0}
+  .sbtu-av{width:2.4rem;height:2.4rem;border-radius:12px;background:linear-gradient(135deg,#1d4ed8,#7c3aed);display:grid;place-items:center;font-size:1.3rem}
+  .sbtu-tt{display:grid;line-height:1.15;margin-inline-end:auto}.sbtu-tt b{letter-spacing:.04em;color:#0f172a}.sbtu-tt small{color:#64748b}
+  .sbtu-live{font:800 .68rem system-ui,sans-serif;padding:.15rem .5rem;border-radius:999px;background:#e2e8f0;color:#475569}.sbtu-live.on{background:#dcfce7;color:#166534}.sbtu-live.off{background:#fef3c7;color:#92400e}
+  .sbtu-sel{display:flex;align-items:center;gap:.3rem;font-size:.85rem;color:#475569}.sbtu-sel select,.sbtu-sel2{padding:.3rem .5rem;border:1px solid #cbd5e1;border-radius:8px;font:inherit;background:#fff;color:#0f172a;max-width:100%}
+  .sbtu-welcome{text-align:center;padding:1.6rem .6rem 1rem}.sbtu.has-log .sbtu-welcome{display:none}
+  .sbtu-spark{width:5rem;height:5rem;margin:0 auto .6rem;border-radius:20px;background:linear-gradient(135deg,#2563eb,#06b6d4);color:#fff;display:grid;place-items:center;font-size:2.4rem;box-shadow:0 10px 24px rgba(37,99,235,.3)}
+  .sbtu-welcome h2{margin:.2rem 0;font-size:1.6rem;color:#0f172a}.sbtu-welcome p{margin:.3rem auto 1rem;max-width:620px;color:#475569;line-height:1.6}
+  .sbtu-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.6rem;text-align:start}
+  .sbtu-card{padding:.9rem 1rem;border:1px solid #cbd5e1;border-radius:12px;background:#fff;color:#0f172a;font:600 .95rem system-ui,sans-serif;cursor:pointer;text-align:center}
+  .sbtu-card:hover,.sbtu-card:focus-visible{border-color:#2563eb;background:#eff6ff;outline:none}
+  .sbtu-log{display:grid;gap:.8rem;margin:.8rem 0;flex:1}
+  .sbtu-q{justify-self:end;max-width:92%;background:#2563eb;color:#fff;border-radius:16px 16px 4px 16px;padding:.55rem .95rem}
+  .sbtu-a{background:#fff;border:1px solid #cbd5e1;border-radius:16px 16px 16px 4px;padding:.75rem .95rem;box-shadow:0 1px 3px rgba(15,23,42,.06)}
+  .sbtu-ai{font-size:1.02rem;line-height:1.75}.sbtu-ai div{margin:.2rem 0}
+  .sbtu-dots i{display:inline-block;width:.45rem;height:.45rem;margin-inline-end:.2rem;border-radius:50%;background:#2563eb;animation:sbtud 1s infinite ease-in-out}.sbtu-dots i:nth-child(2){animation-delay:.15s}.sbtu-dots i:nth-child(3){animation-delay:.3s}
+  @keyframes sbtud{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+  .sbtu-input{position:sticky;bottom:0;display:flex;align-items:flex-end;gap:.5rem;padding:.6rem 0 .2rem;background:linear-gradient(transparent,#f8fafc 28%)}
+  .sbtu-input textarea{flex:1;min-height:2.8rem;max-height:7rem;padding:.65rem .9rem;border:2px solid #94a3b8;border-radius:16px;font:inherit;resize:none;background:#fff;color:#0f172a}.sbtu-input textarea:focus{border-color:#2563eb;outline:none}
+  .sbtu-mic,.sbtu-send{width:2.9rem;height:2.9rem;border-radius:50%;border:1px solid #cbd5e1;background:#fff;font-size:1.15rem;cursor:pointer}.sbtu-send{border:none;background:#2563eb;color:#fff}.sbtu-mic.rec{background:#fee2e2;border-color:#dc2626;animation:sbtud 1s infinite}
+  .sbtu-foot{text-align:center;font-size:.75rem;color:#64748b}
+`;
   function addCss() { if (document.getElementById('sbtu-css')) return; const s = document.createElement('style'); s.id = 'sbtu-css'; s.textContent = CSS; document.head.appendChild(s); }
 
   const highlight = (text, tokens) => {
@@ -272,14 +400,33 @@
     const set = new Set(tokens);
     return safe.replace(/[\p{L}\p{N}]+/gu, w => set.has(tokensOf(w)[0]) ? '<mark>' + w + '</mark>' : w);
   };
+  // the AI's text: lines, **bold**, and formulas in $...$ drawn like the books' own (\[..\] and \(..\) are turned into $..$ first)
+  const aiHtml = t => String(t).replace(/\\\[([\s\S]*?)\\\]/g, (m, x) => '$' + x.trim() + '$').replace(/\\\(([\s\S]*?)\\\)/g, (m, x) => '$' + x.trim() + '$')
+    .replace(/\$[^$]*\$/g, m => m.replace(/\s*\n\s*/g, ' ')).split(/\n+/).filter(l => l.trim()).map(l => '<div>' + fmt(l.replace(/^#+\s*/, '')).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>') + '</div>').join('');
   const where = o => 'Class ' + o.cls + ' · ' + esc(o.subject) + (o.chapter ? ' · ' + esc(o.chapter) : '');
   function answerHtml(r, idx) {
     const toks = contentTokens(r.q);
     let h = '';
-    if (!r.direct && !r.meaning && !r.passages.length && !r.chapters.length) {
+    if (r.ai) h += '<h4>🤖 SpaceBook AI</h4><div class="sbtu-direct sbtu-ai" dir="' + dirOf(r.ai) + '">' + aiHtml(r.ai) + '</div>';
+    if (r.exercise) {
+      const ex = r.exercise;
+      if (ex.missing) h += '<div class="sbtu-warn">I could not find ' + (ex.partMissing ? 'that part of question ' + esc(ex.ref.q) + ' in ' : ex.count && ex.ref.q ? 'question ' + esc(ex.ref.q) + ' in ' : '') + 'Exercise ' + esc(ex.ref.exercise) + ' of ' + (ex.cls ? 'Class ' + ex.cls : 'Class 11 Mathematics') + (ex.none ? ' in the books I have' : '') + (ex.keys && ex.keys.length ? ' (its questions are ' + ex.keys.join(', ') + ')' : ex.count && !ex.keys ? ' (it has ' + ex.count + (ex.partMissing ? ' parts' : ' questions') + ')' : '') + '.</div>';
+      else {
+        h += '<h4>' + esc(ex.title || 'Class 11 Mathematics') + ' · Exercise ' + esc(ex.ref.exercise) + ' · ' + esc(ex.unit) + '</h4>';
+        h += ex.items.map(it => '<div class="sbtu-p"><b>Question ' + esc(it.no) + '.</b> ' + fmt(it.en) +
+          (it.parts.length ? '<div>' + it.parts.map(p => '<div><b>' + esc(p.no) + '</b> ' + fmt(p.en) + (p.answer ? ' <span class="sbtu-direct" style="padding:.1rem .4rem">→ ' + fmt(p.answer) + '</span>' : '') + '</div>').join('') + '</div>' : '') +
+          (it.answer ? '<div class="sbtu-direct" style="margin:.35rem 0">Answer: ' + fmt(it.answer) + '</div>' : '') +
+          (it.sol && it.sol.steps ? '<details><summary>Step by step</summary><ol>' + it.sol.steps.map(st => '<li>' + fmt(st.en || '') + '</li>').join('') + '</ol></details>' : '') + '</div>').join('');
+        if (ex.whole) h += '<div class="sbtu-src">The whole exercise (' + ex.count + ' questions) is shown; ask for one, e.g. “Exercise ' + esc(ex.ref.exercise) + ' question 3”.</div>';
+      }
+    }
+    if (!r.ai && r.chat) return '<div class="sbtu-warn">I need the internet to chat. Ask me a question from the books and I can still answer it from this device.</div>';
+    if (!r.ai && !r.exercise && !r.direct && !r.meaning && !r.passages.length && !r.chapters.length) {
       return '<div class="sbtu-warn">I could not find that in the books of ' + esc(r.scope) + '. Try other words from the lesson' + (S.cls ? ', or choose <b>All classes</b> above' : '') + '. I answer only from the textbooks in this project.</div>';
     }
-    if (r.direct) {
+    const exOk = !!(r.exercise && !r.exercise.missing);
+    const aiGaveUp = r.ai && /do not answer this/i.test(r.ai);
+    if (r.direct && !(aiGaveUp && r.direct.kind === 'sentences') && !(r.ai && r.exercise && !r.exercise.missing)) {
       h += '<h4>Answer</h4>';
       if (r.direct.kind === 'question') {
         const qa = r.direct.qa, it = qa.it;
@@ -296,48 +443,62 @@
       const m = r.meaning;
       h += '<h4>Word meaning</h4><div class="sbtu-mean"><div><b>English</b>' + esc(m[0]) + '</div><div dir="rtl"><b>اردو</b>' + esc(m[1] || '') + '</div><div dir="rtl"><b>پښتو</b>' + esc(m[2] || '') + '</div><div dir="rtl"><b>العربية</b>' + esc(m[3] || '') + '</div></div>';
     }
-    if (r.passages.length) {
+    if (!exOk && r.passages.length) {
       h += '<h4>From the books</h4>' + r.passages.slice(0, 3).map(p => '<div class="sbtu-p" dir="' + dirOf(p.text) + '">' + highlight(p.text, toks) + '<div class="sbtu-src">' + where(p) + (p.head ? ' · ' + esc(p.head) : '') + (p.call ? '<button type="button" class="sbtu-btn" data-act="open" data-s="' + esc(p.sid) + '" data-call="' + esc(p.call) + '">Open the chapter</button>' : '') + '</div></div>').join('');
     }
-    if (r.questions.length) {
+    if (!exOk && r.questions.length) {
       h += '<h4>Questions of the books on this</h4>' + r.questions.map((x, k) => {
         const it = x.it;
         const body = it.y === 'mcq' ? it.o.map((o, i) => '<label class="sbtu-opt" dir="' + dirOf(o) + '"><input type="radio" name="tq' + idx + '_' + k + '" data-act="pick" data-a="' + idx + '" data-k="' + k + '" data-v="' + i + '"> <span><b>' + 'ABCDE'[i] + '.</b> ' + fmt(o) + '</span></label>').join('') : '<button type="button" class="sbtu-btn alt" data-act="show" data-a="' + idx + '" data-k="' + k + '" style="margin:.3rem 0">Show the answer</button><div data-ans="' + idx + '_' + k + '"></div>';
         return '<div class="sbtu-p"><div dir="' + dirOf(it.q) + '">' + fmt(it.q) + '</div>' + body + '<div class="sbtu-src">' + where(x) + '</div></div>';
       }).join('');
     }
-    if (r.chapters.length) {
+    if (!exOk && r.chapters.length) {
       h += '<h4>Read more</h4>' + r.chapters.map(c => '<div class="sbtu-p">' + where(c) + (c.fromIndex ? ' <span class="sbtu-src">(the chapter\'s text has these words)</span>' : '') + (c.call ? '<button type="button" class="sbtu-btn" data-act="open" data-s="' + esc(c.sid) + '" data-call="' + esc(c.call) + '">Open the chapter</button>' : '') + '<button type="button" class="sbtu-btn alt" data-act="test" data-s="' + esc(c.sid) + '" data-cls="' + c.cls + '" data-call="' + esc(c.call) + '">Make a test on it</button></div>').join('');
     }
     return h;
   }
   function logHtml() {
-    return S.log.map((e, i) => '<div class="sbtu-q" dir="' + dirOf(e.q) + '">' + esc(e.q) + '</div><div class="sbtu-a" data-i="' + i + '">' + (e.r ? answerHtml(e.r, i) : '<span class="sbtu-prog">' + esc(e.progress || 'Looking in the books…') + '</span>') + '</div>').join('');
+    return S.log.map((e, i) => '<div class="sbtu-q" dir="' + dirOf(e.q) + '">' + esc(e.q) + '</div><div class="sbtu-a" data-i="' + i + '">' + (e.r ? answerHtml(e.r, i) : '<span class="sbtu-dots"><i></i><i></i><i></i></span> <span class="sbtu-prog">' + esc(e.progress || 'Looking in the books…') + '</span>') + '</div>').join('');
   }
   function paint() {
     const h = host(); if (!h) return;
     const root = h.querySelector('.sbtu');
     if (!root) { build(); return; }
+    root.classList.toggle('has-log', S.log.length > 0);
     root.querySelector('.sbtu-log').innerHTML = logHtml();
     const last = root.querySelector('.sbtu-a:last-of-type'); if (last && last.scrollIntoView) { try { last.scrollIntoView({block: 'nearest', behavior: 'smooth'}); } catch (e) { /* old webview */ } }
   }
   function suggestions() {
     const base = S.cls && AIDX && AIDX.subjects ? Object.keys(AIDX.subjects).filter(id => AIDX.subjects[id].cls === S.cls) : [];
-    const chips = ['What is photosynthesis?', 'Difference between a cell and a tissue', 'What is a noun?', 'Meaning of abundant', 'Who was Quaid-e-Azam?', 'نمک کیا ہے؟'];
+    const chips = ['What is photosynthesis?', 'Maths 11 exercise 3.5 question 3', 'Difference between a cell and a tissue', 'نمک کیا ہے؟'];
     return chips;
   }
   function build() {
     const h = host(); if (!h) return;
     const opts = ['<option value="0"' + (!S.cls ? ' selected' : '') + '>All classes</option>'].concat([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(n => '<option value="' + n + '"' + (S.cls === n ? ' selected' : '') + '>Class ' + n + '</option>')).join('');
-    h.innerHTML = '<div class="sbtu"><section class="sbtu-hero"><h2>🤖 Ask SpaceBook</h2><p>Ask anything from the books of Classes 1 to 12, in English, Urdu, Pashto or Arabic. It answers from the textbooks only, and works offline once the books\' files are on this device.</p></section>' +
-      '<div class="sbtu-bar"><label>Look in <select data-act="cls" aria-label="Class to look in">' + opts + '</select></label><select data-act="subject" aria-label="Subject" ' + (S.cls ? '' : 'disabled') + '><option value="">All subjects</option></select><button type="button" class="sbtu-chip" data-act="clear">Clear the chat</button>' + (window.SBApp ? '' : '<button type="button" class="sbtu-chip" data-act="save" title="Keep the files of the books on this device so Ask, Create Test and Grammar Stats work without internet">⬇ Save for offline use</button>') + '<span class="sbtu-prog" data-save role="status"></span></div>' +
-      '<div class="sbtu-chips" role="group" aria-label="Examples">' + suggestions().map(c => '<button type="button" class="sbtu-chip" data-act="try" data-q="' + esc(c) + '">' + esc(c) + '</button>').join('') + '</div>' +
+    const hour = new Date().getHours(), greet = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+    h.innerHTML = '<div class="sbtu' + (S.log.length ? ' has-log' : '') + '">' +
+      '<header class="sbtu-top"><span class="sbtu-av" aria-hidden="true">🤖</span><div class="sbtu-tt"><b>SPACEBOOK AI</b><small>Study assistant · Classes 1 to 12</small></div><span class="sbtu-live" data-live>CHECKING</span>' +
+      '<label class="sbtu-sel">Look in <select data-act="cls" aria-label="Class to look in">' + opts + '</select></label><select class="sbtu-sel2" data-act="subject" aria-label="Subject" ' + (S.cls ? '' : 'disabled') + '><option value="">All subjects</option></select>' +
+      '<button type="button" class="sbtu-chip" data-act="clear">New chat</button>' + (window.SBApp ? '' : '<button type="button" class="sbtu-chip" data-act="save" title="Keep the files of the books on this device so Ask, Create Test and Grammar Stats work without internet">⬇ Offline</button>') + '<span class="sbtu-prog" data-save role="status"></span></header>' +
+      '<section class="sbtu-welcome"><div class="sbtu-spark" aria-hidden="true">✦</div><h2>' + greet + '!</h2><p>I am your study copilot. Ask me anything from the textbooks, in English, Urdu, Pashto or Arabic: a lesson, a word, or a question like “Maths 11 exercise 3.5 question 3”. Spelling mistakes are fine. I keep answering from the books even without internet.</p>' +
+      '<div class="sbtu-cards" role="group" aria-label="Examples">' + suggestions().map(c => '<button type="button" class="sbtu-card" data-act="try" data-q="' + esc(c) + '">' + esc(c) + '</button>').join('') + '</div></section>' +
       '<div class="sbtu-log" aria-live="polite">' + logHtml() + '</div>' +
-      '<div class="sbtu-input"><textarea rows="1" data-act="input" placeholder="Ask a question…" aria-label="Your question" dir="auto"></textarea><button type="button" data-act="ask">Ask</button></div></div>';
+      '<div class="sbtu-input"><button type="button" class="sbtu-mic" data-act="mic" title="Speak your question" aria-label="Speak your question">🎤</button><textarea rows="1" data-act="input" placeholder="Ask SpaceBook AI (e.g. \'What is photosynthesis?\', \'Maths 11 exercise 3.5 question 3\')" aria-label="Your question" dir="auto"></textarea><button type="button" class="sbtu-send" data-act="ask" aria-label="Send">➤</button></div>' +
+      '<div class="sbtu-foot">Press Enter to send, Shift+Enter for a new line · Answers come from the textbooks, explained by AI</div></div>';
     const root = h.querySelector('.sbtu');
     root.addEventListener('click', onClick); root.addEventListener('change', onChange);
     root.querySelector('textarea').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); } });
-    fillSubjects();
+    fillSubjects(); checkLive();
+  }
+  // the badge: LIVE AI when the server answers (and has a key), OFFLINE when only the books on the device can
+  async function checkLive() {
+    const el = document.querySelector('[data-live]'); if (!el) return;
+    let ok = false;
+    if (typeof navigator === 'undefined' || navigator.onLine !== false) { try { const r = await fetch('api/ask.php?action=ping', {credentials: 'same-origin'}); const j = await r.json(); ok = !!(j && j.ok && j.ai); } catch (e) { ok = false; } }
+    el.textContent = ok ? 'LIVE AI' : 'OFFLINE'; el.className = 'sbtu-live ' + (ok ? 'on' : 'off');
+    el.title = ok ? 'The AI explains the books for you' : 'Answering from the books on this device';
   }
   function fillSubjects() {
     const sel = document.querySelector('.sbtu select[data-act="subject"]'); if (!sel) return;
@@ -355,8 +516,25 @@
     if (ta) ta.value = '';
     const entry = {q: text, r: null, progress: ''};
     S.log.push(entry); S.busy = true; paint();
-    answer(text, msg => { entry.progress = msg; const el = document.querySelector('.sbtu-a:last-of-type .sbtu-prog'); if (el) el.textContent = msg; })
-      .then(r => { entry.r = r || {q: text, passages: [], questions: [], chapters: [], scope: 'all classes'}; })
+    const say = msg => { entry.progress = msg; const el = document.querySelector('.sbtu-a:last-of-type .sbtu-prog'); if (el) el.textContent = msg; };
+    (async () => {
+      say('Reading your question…');
+      const u = await understand(text);
+      const kind = u && u.kind ? u.kind : 'study';                       // mends spelling and finds the exercise asked for (needs the server)
+      const fixed = u && u.fixed ? String(u.fixed) : text;
+      let ref = exerciseRef(text) || exerciseRef(fixed);
+      if (u && u.exercise && !ref) ref = {exercise: String(u.exercise), q: /^\d{1,2}$/.test(String(u.q || '')) ? String(u.q) : '', cls: +u.cls || 0, maths: /math/i.test(u.subject || '')};
+      else if (u && ref) { if (!ref.q && /^\d{1,2}$/.test(String(u.q || ''))) ref.q = String(u.q); if (!ref.cls && +u.cls) ref.cls = +u.cls; }
+      let ex = null; try { if (kind !== 'chat') ex = await lookupExercise(ref); } catch (e) { /* the book data is not here: the search below still answers */ }
+      // talk: a greeting, thanks or a remark needs no search of the books; a follow-up reuses what the last answer was built from
+      const r = kind === 'chat' || (kind === 'followup' && !ref) ? {q: fixed, passages: [], questions: [], chapters: [], scope: '', chat: kind === 'chat', followup: kind === 'followup'} : await answer(fixed, say);
+      r.fixed = fixed !== text ? fixed : ''; r.exercise = ex;
+      entry.r = r;
+      say('Thinking…');
+      const hist = S.log.slice(-7, -1).filter(e => e.r && e.r.ai).map(e => ({q: e.q, a: e.r.ai}));
+      const a = await askAI(entry, hist);
+      if (a) r.ai = a;
+    })()
       .catch(e => { entry.r = {q: text, passages: [], questions: [], chapters: [], scope: 'the books', error: e.message}; })
       .then(() => { S.busy = false; paint(); const st = readLog(); st.unshift(text); saveLog([...new Set(st)]); });
   }
@@ -367,10 +545,23 @@
     else if (a === 'try') submit(b.dataset.q);
     else if (a === 'clear') { S.log = []; paint(); }
     else if (a === 'save') savePack(b);
+    else if (a === 'mic') listen(b);
     else if (a === 'open') { if (window.SBOpenChapter) window.SBOpenChapter(b.dataset.s, b.dataset.call); }
     else if (a === 'test') { if (window.SBCreateTest && window.SBCreateTest.openWith) { const m = /selectSubjectChapter\('\w+',\s*(\d+),/.exec(b.dataset.call) || /selectMathChapter\((\d+)/.exec(b.dataset.call); window.SBCreateTest.openWith({cls: +b.dataset.cls, s: b.dataset.s, u: m ? +m[1] : null}); } }
     else if (a === 'show') { const r = S.log[+b.dataset.a].r, x = r.questions[+b.dataset.k], it = x.it, box = document.querySelector('[data-ans="' + b.dataset.a + '_' + b.dataset.k + '"]'); if (box) box.innerHTML = '<div class="sbtu-direct" dir="' + dirOf(String(it.a)) + '">' + (it.y === 'tf' ? (it.a === 0 ? 'True' : 'False') : fmt(it.a)) + '</div>'; }
     else if (a === 'pick') { const r = S.log[+b.dataset.a].r, it = r.questions[+b.dataset.k].it, v = +b.dataset.v, box = b.closest('.sbtu-p'); box.querySelectorAll('.sbtu-opt').forEach((o, i) => { o.classList.toggle('ok', i === it.a); o.classList.toggle('bad', i === v && v !== it.a); }); }
+  }
+  function listen(btn) {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition, ta = document.querySelector('.sbtu textarea');
+    if (!SR || !ta) { btn.title = 'Speaking is not available in this browser'; return; }
+    try {
+      const rec = new SR(); rec.lang = /[؀-ۿ]/.test(ta.value) ? 'ur-PK' : 'en-US'; rec.interimResults = false;
+      btn.classList.add('rec');
+      rec.onresult = ev => { ta.value = (ta.value + ' ' + ev.results[0][0].transcript).trim(); };
+      rec.onend = () => { btn.classList.remove('rec'); if (ta.value.trim()) submit(); };
+      rec.onerror = () => btn.classList.remove('rec');
+      rec.start();
+    } catch (e) { btn.classList.remove('rec'); }
   }
   function onChange(e) {
     const el = e.target;
@@ -381,7 +572,7 @@
     try {
       state.page = 'assistant'; state.activeView = 'assistant';
       setActiveNav('assistant');
-      setDashHeader('🤖 Ask SpaceBook', 'Ask the books: an offline tutor for Classes 1 to 12');
+      setDashHeader('🤖 Ask SpaceBook', 'Your AI study assistant for Classes 1 to 12');
       setBreadcrumb([{label: 'Home', onclick: () => { setActiveNav('home'); renderHome(); }}, {label: 'Ask SpaceBook', active: true, onclick: () => {}}]);
     } catch (e) { /* app helpers missing: the page still draws */ }
     addCss();

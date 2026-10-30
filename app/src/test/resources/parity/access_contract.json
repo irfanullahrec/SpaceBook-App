@@ -1,14 +1,15 @@
 {
-  "note": "The access rules both platforms apply (api/lib/billing.php sb_access / sb_can_read / sb_metric_unlimited, js/sb_access.js, the app's AccessRules.kt). Each scenario lists the subscriptions a person holds at `now`, the access lists the server derives from them, and what must be readable / unlimited. Chapter 0 is Chapter 1. Edit here, then run the three suites.",
+  "note": "The access rules both platforms apply (api/lib/billing.php sb_access / sb_can_read / sb_metric_unlimited, js/sb_access.js, the app's AccessRules.kt). Each scenario lists the subscriptions a person holds at `now`, the access lists the server derives from them, and what must be readable / unlimited. Chapters 0 and 1 are Chapters 1 and 2: the two free ones. Edit here, then run the three suites.",
   "now": "2026-10-29T12:00:00Z",
   "scenarios": [
     {
-      "name": "no plan: only Chapter 1 and the free allowance",
+      "name": "no plan: only Chapters 1 and 2 and the free allowance",
       "subscriptions": [],
       "access": { "readClasses": [], "readSubjects": [], "planClasses": [], "paperSubjects": [], "prep": false },
       "read": [
         { "cls": "cls9", "subject": "cls9-eng", "chapter": 0, "expect": true },
-        { "cls": "cls9", "subject": "cls9-eng", "chapter": 1, "expect": false },
+        { "cls": "cls9", "subject": "cls9-eng", "chapter": 1, "expect": true },
+        { "cls": "cls9", "subject": "cls9-eng", "chapter": 2, "expect": false },
         { "cls": "cls1", "subject": "cls1-math", "chapter": 0, "expect": true },
         { "cls": "cls12", "subject": "cls12-phy", "chapter": 4, "expect": false }
       ],
@@ -25,8 +26,9 @@
       "read": [
         { "cls": "cls9", "subject": "cls9-eng", "chapter": 7, "expect": true },
         { "cls": "cls9", "subject": "cls9-math", "chapter": 3, "expect": true },
-        { "cls": "cls10", "subject": "cls10-math", "chapter": 1, "expect": false },
-        { "cls": "cls10", "subject": "cls10-math", "chapter": 0, "expect": true }
+        { "cls": "cls10", "subject": "cls10-math", "chapter": 2, "expect": false },
+        { "cls": "cls10", "subject": "cls10-math", "chapter": 0, "expect": true },
+        { "cls": "cls10", "subject": "cls10-math", "chapter": 1, "expect": true }
       ],
       "unlimited": [
         { "metric": "plan_q", "cls": "cls9", "subject": "", "expect": true },
@@ -42,8 +44,9 @@
       "read": [
         { "cls": "cls9", "subject": "cls9-math", "chapter": 5, "expect": true },
         { "cls": "cls10", "subject": "cls10-math", "chapter": 2, "expect": true },
-        { "cls": "cls9", "subject": "cls9-phy", "chapter": 1, "expect": false },
-        { "cls": "cls9", "subject": "cls9-phy", "chapter": 0, "expect": true }
+        { "cls": "cls9", "subject": "cls9-phy", "chapter": 2, "expect": false },
+        { "cls": "cls9", "subject": "cls9-phy", "chapter": 0, "expect": true },
+        { "cls": "cls9", "subject": "cls9-phy", "chapter": 1, "expect": true }
       ],
       "unlimited": [
         { "metric": "paper", "cls": "cls9", "subject": "cls9-math", "expect": true },
@@ -56,7 +59,7 @@
       "name": "Test Preparation module alone: unlimited questions, no chapters",
       "subscriptions": [ { "planType": "prep", "classId": null, "status": "active", "expiresAt": "2026-11-29T12:00:01Z", "subjects": [] } ],
       "access": { "readClasses": [], "readSubjects": [], "planClasses": [], "paperSubjects": [], "prep": true },
-      "read": [ { "cls": "cls9", "subject": "cls9-eng", "chapter": 1, "expect": false } ],
+      "read": [ { "cls": "cls9", "subject": "cls9-eng", "chapter": 2, "expect": false }, { "cls": "cls9", "subject": "cls9-eng", "chapter": 1, "expect": true } ],
       "unlimited": [ { "metric": "prep_q", "cls": "", "subject": "", "expect": true }, { "metric": "plan_q", "cls": "cls9", "subject": "", "expect": false } ]
     },
     {
@@ -66,7 +69,7 @@
         { "planType": "prep", "classId": null, "status": "suspended", "expiresAt": "2026-12-01T00:00:00Z", "subjects": [] }
       ],
       "access": { "readClasses": [], "readSubjects": [], "planClasses": [], "paperSubjects": [], "prep": false },
-      "read": [ { "cls": "cls9", "subject": "cls9-eng", "chapter": 1, "expect": false }, { "cls": "cls9", "subject": "cls9-eng", "chapter": 0, "expect": true } ],
+      "read": [ { "cls": "cls9", "subject": "cls9-eng", "chapter": 2, "expect": false }, { "cls": "cls9", "subject": "cls9-eng", "chapter": 1, "expect": true }, { "cls": "cls9", "subject": "cls9-eng", "chapter": 0, "expect": true } ],
       "unlimited": [ { "metric": "prep_q", "cls": "", "subject": "", "expect": false } ]
     },
     {
@@ -81,7 +84,7 @@
       "read": [
         { "cls": "cls8", "subject": "cls8-sci", "chapter": 6, "expect": true },
         { "cls": "cls12", "subject": "cls12-phy", "chapter": 3, "expect": true },
-        { "cls": "cls12", "subject": "cls12-chem", "chapter": 1, "expect": false }
+        { "cls": "cls12", "subject": "cls12-chem", "chapter": 2, "expect": false }
       ],
       "unlimited": [
         { "metric": "prep_q", "cls": "", "subject": "", "expect": true },
