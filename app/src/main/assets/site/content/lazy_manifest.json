@@ -6624,8 +6624,8 @@
   },
   {
    "src": "js/munawar_c1_math_book.js",
-   "bytes": 282330,
-   "sha256": "31bda19e4be2931c60c04f38c8e20f8d23fe0e07927cd90a13143585d65d3f34",
+   "bytes": 1247815,
+   "sha256": "f0c9d29732bbad5c91566e6ba631d628600fb19493d217394d721d5eae9e9dc8",
    "stubs": [
     {
      "name": "MUNAWAR_C1_MATH_DATA",
@@ -8297,7 +8297,7 @@
   {
    "src": "js/fills_data.js",
    "bytes": 116780,
-   "sha256": "746a13f16d77553d53b5137196d5f5bfdf46556972dbe240631918e7464ba338",
+   "sha256": "63fde1e9a8c06f14a9d903b93f6177d76f5c0002ee5750ad492b9960994d7336",
    "stubs": [
     {
      "name": "SB_FILLS",
@@ -8608,8 +8608,8 @@
   },
   {
    "src": "js/study_plan_index.js",
-   "bytes": 252662,
-   "sha256": "5eee89314251e27227cba61bfea66e48f998a2a2eec3d2c1d5efea910aee4bba",
+   "bytes": 252892,
+   "sha256": "2f8067db560135716b30a0a440f29f99fcb3fdc28c36476b18c6c0329a8387e3",
    "stubs": [
     {
      "name": "SB_STUDY_INDEX",

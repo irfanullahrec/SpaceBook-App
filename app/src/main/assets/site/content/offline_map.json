@@ -57,9 +57,9 @@
    "sha256": "b91a3adc36c2571d5334b7cd7ebabe1f62d61e0ab3e5a6538138a9cc2165cfac"
   },
   "content/search/cls1-mun-math.json": {
-   "v": "8dc456fdcd82",
-   "bytes": 14182,
-   "sha256": "8dc456fdcd8231034d82bafd506dea0a9bc1eec91cf65c51be814fe16377e105"
+   "v": "d470e968fd91",
+   "bytes": 58130,
+   "sha256": "d470e968fd919ec9a510d3cf6c39733c26e85cfa9f4fa451bb4369f1e17e3708"
   },
   "content/search/cls1-mun-prel.json": {
    "v": "e680bc5b4b8e",
@@ -1262,9 +1262,9 @@
    "sha256": "fa96960ba99f2462cc7c9e416bf95e8b5fdce5d5b3100eb51ea0a5b82a628d95"
   },
   "js/fills_data.js": {
-   "v": "746a13f16d77",
+   "v": "63fde1e9a8c0",
    "bytes": 116780,
-   "sha256": "746a13f16d77553d53b5137196d5f5bfdf46556972dbe240631918e7464ba338"
+   "sha256": "63fde1e9a8c06f14a9d903b93f6177d76f5c0002ee5750ad492b9960994d7336"
   },
   "js/general_science_10_data.js": {
    "v": "be01a96c3ab7",
@@ -1707,9 +1707,9 @@
    "sha256": "79cf58314139ca0f8a4bf8e692e3810c942cff1550fba01f0b0e69ea2bba85b6"
   },
   "js/munawar_c1_math_book.js": {
-   "v": "31bda19e4be2",
-   "bytes": 282330,
-   "sha256": "31bda19e4be2931c60c04f38c8e20f8d23fe0e07927cd90a13143585d65d3f34"
+   "v": "f0c9d29732bb",
+   "bytes": 1247815,
+   "sha256": "f0c9d29732bbad5c91566e6ba631d628600fb19493d217394d721d5eae9e9dc8"
   },
   "js/munawar_c1_prel_book.js": {
    "v": "1fe98d675af2",
@@ -2668,12 +2668,13 @@
    "files": [
     "js/munawar_c1_math_book.js",
     "js/fills_data.js",
+    "js/answers_extra.js",
     "content/search/cls1-mun-math.json"
    ],
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 682993
+   "bytes": 1790844
   },
   "cls1-mun-prel": {
    "classId": "cls1",
