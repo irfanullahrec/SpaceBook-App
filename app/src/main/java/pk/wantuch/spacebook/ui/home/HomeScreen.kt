@@ -64,6 +64,8 @@ data class HomeActions(
     val openGrammar: (lang: String) -> Unit = {},
     /** the website's plans window (prices, Easypaisa payment) inside the app */
     val openPlans: () -> Unit = {},
+    /** the owner's licence key window (the website's, inside the app) */
+    val openKey: () -> Unit = {},
 )
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -155,7 +155,8 @@ fun SubjectScreen(app: AppViewModel, subjectId: String, onBack: () -> Unit, onOp
     val catalog by app.catalog.collectAsStateWithLifecycle()
     val reading by vm.reading.collectAsStateWithLifecycle()
     val entitlements by app.entitlements.collectAsStateWithLifecycle()      // the lock marks follow the plans: bought, ended or suspended
-    SubjectContent(catalog?.subject(subjectId), catalog?.classOf(subjectId), reading[subjectId], onBack, onOpenChapter, locked = { i -> entitlements.let { !app.canRead(subjectId, i) } })
+    val appState by app.state.collectAsStateWithLifecycle()                  // and the owner's pass
+    SubjectContent(catalog?.subject(subjectId), catalog?.classOf(subjectId), reading[subjectId], onBack, onOpenChapter, locked = { i -> entitlements.let { appState.ownerPass.let { !app.canRead(subjectId, i) } } })
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

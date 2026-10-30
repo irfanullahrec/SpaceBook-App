@@ -120,7 +120,7 @@ data class ItemDto(val kind: String, val key: String, val value: JsonObject = Js
 @Serializable
 data class ItemGoneDto(val kind: String, val key: String, val at: Long = 0)
 
-/** What the paid plans open, as the server lists it (api/lib/billing.php sb_access). Chapter 1 is always open: see [AccessRules]. */
+/** What the paid plans open, as the server lists it (api/lib/billing.php sb_access). Chapters 1 and 2 are always open: see [AccessRules]. */
 @Serializable
 data class AccessDto(
     val readClasses: List<String> = emptyList(),
@@ -133,10 +133,10 @@ data class AccessDto(
 @Serializable
 data class FreeUseDto(val limit: Int = 0, val used: Int = 0)
 
-/** The free allowance: Chapter 1 of every subject, 50 Test Preparation questions, 50 Study Plan questions, 1 paper. */
+/** The free allowance: Chapters 1 and 2 of every subject, 50 Test Preparation questions, 50 Study Plan questions, 1 paper. */
 @Serializable
 data class FreeDto(
-    val chapters: Int = 1,
+    val chapters: Int = 2,
     @SerialName("prep_q") val prepQ: FreeUseDto = FreeUseDto(50, 0),
     @SerialName("plan_q") val planQ: FreeUseDto = FreeUseDto(50, 0),
     val paper: FreeUseDto = FreeUseDto(1, 0),

@@ -48,7 +48,7 @@ fun FeatureScreen(app: AppViewModel, page: String, title: String, onBack: (() ->
         when (name) {
             "auth" -> onSignIn()
             // the plans window (or My plans) was closed: nothing is behind it in the app, so go back
-            "plansClosed" -> if (page.startsWith("plans") || page == "my-plans") onBack?.invoke()
+            "plansClosed" -> if (page.startsWith("plans") || page == "my-plans" || page == "owner-key") onBack?.invoke()
             // the account was deleted inside the page: the app forgets this phone's sign-in too
             "signedOut" -> if (page == "account") { app.logout(); android.widget.Toast.makeText(context, "You are signed out.", android.widget.Toast.LENGTH_SHORT).show(); onBack?.invoke() }
             // a job Home asked for (deleting a plan) is finished: say so and go back to Home

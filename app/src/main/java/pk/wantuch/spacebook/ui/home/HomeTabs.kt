@@ -345,12 +345,14 @@ internal fun AccountTab(info: AccountInfo, prep: PrepSnapshot?, actions: HomeAct
     Card {
         Text(if (info.planId.equals("paid", true)) "✅ You have a paid plan" else "Free for everyone", style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.height(6.dp))
-        Text("Chapter 1 of every subject, 50 Test Preparation questions, 50 Study Plan questions and 1 paper are free.", style = MaterialTheme.typography.bodyMedium)
+        Text("Chapters 1 and 2 of every subject, 50 Test Preparation questions, 50 Study Plan questions and 1 paper are free.", style = MaterialTheme.typography.bodyMedium)
         Spacer(Modifier.height(6.dp))
         Text("Student plan (one class), Teacher plan (10 subjects, with papers) and the Test Preparation module: PKR 500 for one month each. Pay with Easypaisa; a plan starts when the payment is approved.",
             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(10.dp))
         Button(onClick = actions.openPlans, modifier = Modifier.fillMaxWidth()) { Text("See plans") }
+        Spacer(Modifier.height(6.dp))
+        OutlinedButton(onClick = actions.openKey, modifier = Modifier.fillMaxWidth()) { Text("Enter licence key") }
     }
 
     // usage

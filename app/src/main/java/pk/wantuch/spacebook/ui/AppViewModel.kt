@@ -39,12 +39,19 @@ class AppViewModel @Inject constructor(
     val entitlements: StateFlow<EntitlementsDto> =
         entitlementsRepo.current.stateIn(viewModelScope, SharingStarted.Eagerly, EntitlementsDto())
 
+    init {
+        // the owner's pass (access/OwnerPass.kt): what the settings hold is what the web pages are told, and what the page sets is written to the settings
+        pk.wantuch.spacebook.access.OwnerPass.persist = { on -> viewModelScope.launch { prefs.setOwnerPass(on) } }
+        viewModelScope.launch { prefs.state.collect { pk.wantuch.spacebook.access.OwnerPass.on = it.ownerPass } }
+    }
+
     /** What the paid plans open now, worked out from the saved answer with this phone's clock (an expired plan opens nothing even offline). */
     fun access(): pk.wantuch.spacebook.data.remote.AccessDto =
         pk.wantuch.spacebook.access.AccessRules.fromSubscriptions(entitlements.value, System.currentTimeMillis())
 
-    /** Chapter 1 is free; later chapters need a plan for the class or the subject (api/lib/billing.php, js/sb_access.js). [chapter] is 0-based. */
+    /** Chapters 1 and 2 are free; later chapters need a plan for the class or the subject (api/lib/billing.php, js/sb_access.js); the owner's pass opens all of them. [chapter] is 0-based. */
     fun canRead(subjectId: String, chapter: Int): Boolean {
+        if (state.value.ownerPass || pk.wantuch.spacebook.access.OwnerPass.on) return true
         val cls = catalog.value?.classOf(subjectId)?.id.orEmpty()
         return pk.wantuch.spacebook.access.AccessRules.canRead(access(), cls, subjectId, chapter)
     }

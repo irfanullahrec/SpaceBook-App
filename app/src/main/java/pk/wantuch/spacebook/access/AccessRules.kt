@@ -6,12 +6,12 @@ import java.time.Instant
 
 /**
  * What a person may open, decided by the one rule set of the server (api/lib/billing.php) and applied here and on the website (js/sb_access.js)
- * in the same way: Chapter 1 of every subject is free; later chapters need a Student plan for the class or a Teacher plan that lists the subject;
+ * in the same way: Chapters 1 and 2 of every subject are free; later chapters need a Student plan for the class or a Teacher plan that lists the subject;
  * the free allowance of questions and the paper is counted by the server. tests/parity/access_contract.json holds the cases all three share.
  */
 object AccessRules {
-    /** Chapter 1 (index 0) of every subject of every class. */
-    const val FREE_CHAPTERS = 1
+    /** Chapters 1 and 2 (index 0 and 1) of every subject of every class. */
+    const val FREE_CHAPTERS = 2
 
     fun canRead(access: AccessDto, cls: String, subject: String, chapterIdx: Int): Boolean =
         chapterIdx < FREE_CHAPTERS || cls in access.readClasses || subject in access.readSubjects

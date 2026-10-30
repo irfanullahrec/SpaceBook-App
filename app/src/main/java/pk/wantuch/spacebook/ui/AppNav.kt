@@ -84,7 +84,7 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController(), 
     val showBar = tabs.any { it.route == route }
 
     fun go(r: String) = nav.navigate(r) { launchSingleTop = true }
-    /** Chapter 1 of every subject is free; a later chapter without a plan opens the plans window (the website's, inside the app) instead of the reader. */
+    /** Chapters 1 and 2 of every subject are free; a later chapter without a plan opens the plans window (the website's, inside the app) instead of the reader. */
     fun openReader(id: String, chapter: Int, page: Int = 0, tab: String = "") {
         if (app.canRead(id, chapter)) go(Routes.reader(id, chapter, page, tab))
         else go(Routes.web("plans:${app.classOf(id)}:$id", "Plans"))
@@ -105,6 +105,7 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController(), 
         openProfile = { switchTab(nav, Routes.ME) },
         openGrammar = { lang -> go(Routes.web("grammar-stats:$lang", "Grammar Stats")) },
         openPlans = { go(Routes.web("plans", "Plans")) },
+        openKey = { go(Routes.web("owner-key", "Licence key")) },
     )
 
     Scaffold(
@@ -130,7 +131,7 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController(), 
                 composable(Routes.LIBRARY) { LibraryScreen(app, onOpenSubject = { go(Routes.subject(it)) }, onSearch = { go(Routes.SEARCH) }) }
                 composable(Routes.PRACTICE) { PracticeScreen(onOpen = { page, title -> go(Routes.web(page, title)) }) }
                 composable(Routes.PLAN) { FeatureScreen(app, "study-plan", "Study Plan", onBack = null, onSignIn = { go(Routes.AUTH) }, onOpenOffline = { go(Routes.OFFLINE) }) }
-                composable(Routes.ME) { MeScreen(app, onSignIn = { go(Routes.AUTH) }, onSaved = { go(Routes.SAVED) }, onSettings = { go(Routes.SETTINGS) }, onOffline = { go(Routes.OFFLINE) }, onAccount = { go(Routes.web("account", "My account")) }, onPlans = { go(Routes.web("plans", "Plans")) }, onMyPlans = { go(Routes.web("my-plans", "My plans")) }, onFeedback = { go(Routes.web("feedback", "Report a problem")) }) }
+                composable(Routes.ME) { MeScreen(app, onSignIn = { go(Routes.AUTH) }, onSaved = { go(Routes.SAVED) }, onSettings = { go(Routes.SETTINGS) }, onOffline = { go(Routes.OFFLINE) }, onAccount = { go(Routes.web("account", "My account")) }, onPlans = { go(Routes.web("plans", "Plans")) }, onMyPlans = { go(Routes.web("my-plans", "My plans")) }, onKey = { go(Routes.web("owner-key", "Licence key")) }, onFeedback = { go(Routes.web("feedback", "Report a problem")) }) }
                 composable(Routes.AUTH) { AuthScreen(onDone = { nav.popBackStack() }, onBack = { nav.popBackStack() }) }
                 composable(Routes.SEARCH) {
                     SearchScreen(app, onBack = { nav.popBackStack() }, onOpen = { subject, chapter -> openReader(subject, chapter) })

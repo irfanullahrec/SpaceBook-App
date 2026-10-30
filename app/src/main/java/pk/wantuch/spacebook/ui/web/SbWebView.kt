@@ -133,6 +133,10 @@ class WebController(
         /** this install's visitor id (32 hex): the page sends it as X-SB-Visitor, the same id the app's own requests carry, so the free allowance is counted once */
         @JavascriptInterface fun visitorId(): String = endpoint.visitor
 
+        /** the owner's pass (js/sb_access.js): the page reads it, sets it when the key was right, and the app remembers it (AppViewModel, access/OwnerPass.kt) */
+        @JavascriptInterface fun ownerPass(): Boolean = pk.wantuch.spacebook.access.OwnerPass.on
+        @JavascriptInterface fun setOwnerPass(on: Boolean) { pk.wantuch.spacebook.access.OwnerPass.on = on; main.post { pk.wantuch.spacebook.access.OwnerPass.persist(on) } }
+
         @JavascriptInterface fun onAction(name: String, detail: String) {
             when (name) {
                 "meaning" -> runCatching { json.decodeFromString<MeaningDto>(detail).toState() }.getOrNull()?.let { m -> main.post { meaning = m } }
@@ -259,6 +263,8 @@ class WebController(
             // the website's plans window ("plans" or "plans:<class>:<subject>") and "My plans" (js/sb_billing.js): the same prices, payment and account as the website
             p[0] == "plans" -> run("SBApp.openPlans(${quote(p.getOrElse(1) { "" })}, ${quote(p.getOrElse(2) { "" })})")
             p[0] == "my-plans" -> run("SBApp.openMyPlans()")
+            // the "Enter licence key" window of the owner's pass (js/sb_access.js keyDialog)
+            p[0] == "owner-key" -> run("SBApp.openKey()")
             // Grammar Stats on one language (Home's Project Stats links to it): "grammar-stats:en|ur|ps|ar"
             p[0] == "grammar-stats" -> { loading = true; run("SBApp.openGrammar(${quote(p.getOrElse(1) { "en" })})") }
             else -> openPage(p[0])

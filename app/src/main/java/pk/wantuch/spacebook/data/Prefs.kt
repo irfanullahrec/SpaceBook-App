@@ -41,6 +41,8 @@ data class AppState(
     val syncOn: Boolean = false,
     /** study-plan reminders as phone notifications (data/reminders); the student switches them on in Settings */
     val remindersOn: Boolean = false,
+    /** the owner's pass is on for this phone (access/OwnerPass.kt) */
+    val ownerPass: Boolean = false,
 ) {
     val signedIn get() = user != null && device != null
 }
@@ -61,6 +63,7 @@ class Prefs @Inject constructor(@ApplicationContext private val context: Context
         val cursor = stringPreferencesKey("syncCursor")
         val syncOn = booleanPreferencesKey("syncOn")
         val remindersOn = booleanPreferencesKey("remindersOn")
+        val ownerPass = booleanPreferencesKey("ownerPass")
     }
 
     val state: Flow<AppState> = context.sbStore.data.map { p ->
@@ -77,6 +80,7 @@ class Prefs @Inject constructor(@ApplicationContext private val context: Context
             syncCursor = p[K.cursor]?.toLongOrNull() ?: 0L,
             syncOn = p[K.syncOn] ?: false,
             remindersOn = p[K.remindersOn] ?: false,
+            ownerPass = p[K.ownerPass] ?: false,
         )
     }
 
@@ -131,6 +135,10 @@ class Prefs @Inject constructor(@ApplicationContext private val context: Context
 
     suspend fun setRemindersOn(on: Boolean) {
         context.sbStore.edit { it[K.remindersOn] = on }
+    }
+
+    suspend fun setOwnerPass(on: Boolean) {
+        context.sbStore.edit { it[K.ownerPass] = on }
     }
 
     suspend fun setSyncOn(on: Boolean) {

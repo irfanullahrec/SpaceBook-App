@@ -487,6 +487,14 @@
       window.SBBilling.open({ why: cls || subject ? 'chapter' : '', cls: cls || '', subject: subject || '' });
       return true;
     },
+    // The "Enter licence key" window of the owner's pass (js/sb_access.js keyDialog) over the page. It closes itself (Unlock or Cancel): then this screen is left too.
+    openKey: async function () {
+      var a = await until(function () { return window.SBAccess && window.SBAccess.keyDialog; }, 20000, 100);
+      if (!a) { host('onAction', ['error', 'The key window did not load.']); return false; }
+      window.SBAccess.keyDialog();
+      var t = setInterval(function () { if (!document.querySelector('.sbx-key-overlay')) { clearInterval(t); host('onAction', ['plansClosed', '']); } }, 300);
+      return true;
+    },
     // "My plans": current plans with their dates, payments (Pending Verification, Approved, Rejected with the reason), messages, renewal
     openMyPlans: async function () {
       var b = await until(function () { return window.SBBilling && window.SBBilling.openAccount; }, 20000, 100);

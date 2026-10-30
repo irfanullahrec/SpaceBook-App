@@ -256,7 +256,7 @@ class SyncRepository @Inject constructor(
     }
 }
 
-/** What the signed-in (or guest) student may use, from api/v2/entitlements.php. With no answer yet it is the free tier: Chapter 1 and the free allowance. */
+/** What the signed-in (or guest) student may use, from api/v2/entitlements.php. With no answer yet it is the free tier: Chapters 1 and 2 and the free allowance. */
 @Singleton
 class EntitlementsRepository @Inject constructor(
     private val api: ApiService,

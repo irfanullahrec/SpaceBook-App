@@ -102,21 +102,21 @@ class SavedViewModel @Inject constructor(private val library: LibraryRepository,
 }
 
 @Composable
-fun MeScreen(app: AppViewModel, onSignIn: () -> Unit, onSaved: () -> Unit, onSettings: () -> Unit, onOffline: () -> Unit, onAccount: () -> Unit = {}, onPlans: () -> Unit = {}, onMyPlans: () -> Unit = {}, onFeedback: () -> Unit = {}) {
+fun MeScreen(app: AppViewModel, onSignIn: () -> Unit, onSaved: () -> Unit, onSettings: () -> Unit, onOffline: () -> Unit, onAccount: () -> Unit = {}, onPlans: () -> Unit = {}, onMyPlans: () -> Unit = {}, onKey: () -> Unit = {}, onFeedback: () -> Unit = {}) {
     val state by app.state.collectAsStateWithLifecycle()
     val catalog by app.catalog.collectAsStateWithLifecycle()
     val entitlements by app.entitlements.collectAsStateWithLifecycle()
     MeContent(state.user, state.coins, catalog?.classes.orEmpty(), state.classId, onPickClass = { app.setClass(it) }, onSignIn = onSignIn, onSignOut = { app.logout() }, onSaved = onSaved, onSettings = onSettings, onOffline = onOffline, onAccount = onAccount,
-        plans = if (state.user != null) entitlements.subscriptions else emptyList(), pendingPayments = if (state.user != null) entitlements.pendingPayments else 0, onPlans = onPlans, onMyPlans = onMyPlans, onFeedback = onFeedback)
+        plans = if (state.user != null) entitlements.subscriptions else emptyList(), pendingPayments = if (state.user != null) entitlements.pendingPayments else 0, onPlans = onPlans, onMyPlans = onMyPlans, onKey = onKey, onFeedback = onFeedback)
 }
 
 /** The plans of the signed-in person (the same ones the website shows), what is waiting for approval, and the way to buy or renew. */
 @Composable
-internal fun PlansCard(plans: List<pk.wantuch.spacebook.data.remote.SubscriptionDto>, pending: Int, signedIn: Boolean, onPlans: () -> Unit, onMyPlans: () -> Unit) {
+internal fun PlansCard(plans: List<pk.wantuch.spacebook.data.remote.SubscriptionDto>, pending: Int, signedIn: Boolean, onPlans: () -> Unit, onMyPlans: () -> Unit, onKey: () -> Unit = {}) {
     Surface(shape = MaterialTheme.shapes.large, shadowElevation = 1.dp, modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp)) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text("My plans", style = MaterialTheme.typography.titleMedium)
-            if (plans.isEmpty()) Text("Chapter 1 of every subject is free. Plans open the rest: from PKR 500 a month.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            if (plans.isEmpty()) Text("Chapters 1 and 2 of every subject are free. Plans open the rest: from PKR 500 a month.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             plans.forEach { p ->
                 val state = when (p.status) { "active" -> "Active · ${p.daysLeft} day${if (p.daysLeft == 1) "" else "s"} left"; "suspended" -> "Suspended"; else -> "Ended" }
                 Column {
@@ -130,6 +130,7 @@ internal fun PlansCard(plans: List<pk.wantuch.spacebook.data.remote.Subscription
                 Button(onClick = onPlans, modifier = Modifier.weight(1f)) { Text(if (plans.isEmpty()) "See plans" else "Buy or renew") }
                 if (signedIn) OutlinedButton(onClick = onMyPlans, modifier = Modifier.weight(1f)) { Text("Payments") }
             }
+            OutlinedButton(onClick = onKey, modifier = Modifier.fillMaxWidth()) { Text("Enter licence key") }
         }
     }
 }
@@ -152,6 +153,7 @@ internal fun MeContent(
     pendingPayments: Int = 0,
     onPlans: () -> Unit = {},
     onMyPlans: () -> Unit = {},
+    onKey: () -> Unit = {},
 ) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
         Text("Me", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 8.dp))
@@ -179,7 +181,7 @@ internal fun MeContent(
                 }
             }
         }
-        PlansCard(plans, pendingPayments, user != null, onPlans, onMyPlans)
+        PlansCard(plans, pendingPayments, user != null, onPlans, onMyPlans, onKey)
         Text("My class", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(start = 16.dp, top = 20.dp, bottom = 4.dp))
         LazyRow(contentPadding = PaddingValues(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(classes, key = { it.id }) { c ->

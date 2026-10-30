@@ -40,6 +40,16 @@ class AccessRulesTest {
         return json.decodeFromString(EntitlementsDto.serializer(), body)
     }
 
+    @Test fun twoChaptersAreFreeAndTheOwnersPassStartsOff() {
+        assertEquals(2, AccessRules.FREE_CHAPTERS)
+        val none = AccessDto()
+        assertTrue(AccessRules.canRead(none, "cls9", "cls9-eng", 0))
+        assertTrue(AccessRules.canRead(none, "cls9", "cls9-eng", 1))
+        assertFalse(AccessRules.canRead(none, "cls9", "cls9-eng", 2))
+        // the owner's pass is a switch of this phone, off until the page says the key was right (access/OwnerPass.kt)
+        assertFalse(pk.wantuch.spacebook.access.OwnerPass.on)
+    }
+
     @Test fun everyScenarioOfTheSharedContractHolds() {
         val scenarios = contract["scenarios"]!!.jsonArray
         assertTrue(scenarios.size >= 6)
@@ -73,7 +83,8 @@ class AccessRulesTest {
         assertFalse(dto.unlocked)
         val a = AccessRules.fromSubscriptions(dto, now)
         assertTrue(AccessRules.canRead(a, "cls9", "cls9-eng", 0))
-        assertFalse(AccessRules.canRead(a, "cls9", "cls9-eng", 1))
+        assertTrue(AccessRules.canRead(a, "cls9", "cls9-eng", 1))
+        assertFalse(AccessRules.canRead(a, "cls9", "cls9-eng", 2))
         assertEquals(50, dto.free.prepQ.limit); assertEquals(50, dto.free.planQ.limit); assertEquals(1, dto.free.paper.limit)
     }
 
