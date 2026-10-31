@@ -1,6 +1,15 @@
+# The dated preview lock
+
+The app's **1-month free trial lock (30 days, WhatsApp contact, device unlock codes) was removed on 2026-10-29**, when plans and payments arrived: access is now decided
+by the free allowance and the plans the server knows (`SpaceBook Web/docs/BILLING.md`), the same on the website and in the app. Nothing in the app locks
+a person out after a month any more.
+
+A **release build has no end date** (`-Pspacebook.expireDays` defaults to 0). What is left, and described below, is the **dated preview lock** for a preview APK handed out with
+`-Pspacebook.expireDays=N`: after that date only the unlock screen is shown until the unlock code is typed.
+
 # The offline expiry lock (preview builds)
 
-A **release** build of the app stops working a fixed number of days after it was built (default **30**), on every phone, with no
+A **dated preview** build of the app (built with `-Pspacebook.expireDays=N`; the default is now 0 = no date) stops working N days after it was built, on every phone, with no
 internet needed. It then shows only an "unlock" screen. Someone who knows the **unlock code** can open it again, and the
 phone remembers that.
 
@@ -18,7 +27,7 @@ phone remembers that.
 ## Everyday use
 
 ```
-.\gradlew.bat :app:assembleRelease                              # expires 30 days after this build
+.\gradlew.bat :app:assembleRelease -Pspacebook.expireDays=30     # expires 30 days after this build (a dated preview)
 .\gradlew.bat :app:assembleRelease -Pspacebook.expireDays=60     # 60 days
 .\gradlew.bat :app:assembleRelease -Pspacebook.expireDays=0      # a copy that never expires
 .\gradlew.bat :app:assembleDebug -Pspacebook.debugExpireDays=1   # try the lock on a phone

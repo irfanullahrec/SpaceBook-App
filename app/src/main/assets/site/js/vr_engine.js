@@ -34,7 +34,7 @@
 .sbt-lines{column-width:30rem;column-gap:2.8rem;column-fill:auto;max-height:520px}
 .sbt-lines>*{break-inside:avoid}
 .sbt-colline{stroke:#64748b;stroke-width:2.5;stroke-dasharray:7 6;stroke-linecap:round;opacity:.8}
-.sbt.sbt-fs{position:fixed;inset:0;z-index:2147483000;margin:0;border-radius:0;border:0;display:flex;flex-direction:column;width:100vw;height:100vh;max-height:none}
+.sbt.sbt-fs{position:fixed;inset:0;z-index:2147483000;margin:0;border-radius:0;border:0;display:flex;flex-direction:column;width:100%;height:100%;max-height:none}
 .sbt.sbt-fs .sbt-area{flex:1 1 auto;min-height:0;overflow:auto;font-size:1.45rem}
 .sbt.sbt-fs .sbt-lines{column-width:31rem}
 .sbt .sbt-lines.acc{column-width:auto;column-count:var(--cols,1);column-gap:2.4rem;column-fill:auto;max-height:none;font-size:calc(var(--sc,1) * 1em);line-height:1.3}

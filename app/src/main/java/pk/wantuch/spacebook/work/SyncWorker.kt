@@ -18,6 +18,6 @@ class SyncWorker @AssistedInject constructor(
     private val sync: SyncRepository,
 ) : CoroutineWorker(context, params) {
     override suspend fun doWork(): Result =
-        if (ExpiryGate.forApp(applicationContext).check() is LockState.Locked) Result.success()   // an expired preview does nothing in the background
+        if (ExpiryGate.forApp(applicationContext).check() is LockState.Locked) Result.success()   // an expired dated preview build does nothing in the background
         else if (sync.flush()) Result.success() else if (runAttemptCount < 8) Result.retry() else Result.failure()
 }

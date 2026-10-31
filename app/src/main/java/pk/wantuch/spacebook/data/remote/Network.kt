@@ -26,6 +26,9 @@ class Endpoint @Inject constructor() {
         private set
     @Volatile var token: String = ""
 
+    /** this install's random id (32 hex), sent as X-SB-Visitor: the server counts the free allowance of a person who has no account by it (api/lib/billing.php) */
+    @Volatile var visitor: String = ""
+
     /** @return false (and keeps the current address) when [raw] is not a usable address. */
     fun override(raw: String): Boolean {
         if (raw.isBlank()) { url = DEFAULT; return true }
@@ -55,6 +58,8 @@ class SiteInterceptor(private val endpoint: Endpoint) : Interceptor {
         val b = req.newBuilder().url(target)
         if (req.header("Accept") == null) b.header("Accept", "application/json")
         if (endpoint.token.isNotEmpty()) b.header("Authorization", "Bearer ${endpoint.token}")
+        b.header("X-SB-Platform", "app")
+        if (endpoint.visitor.isNotEmpty()) b.header("X-SB-Visitor", endpoint.visitor)
         return chain.proceed(b.build())
     }
 }

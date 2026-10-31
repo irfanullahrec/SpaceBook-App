@@ -47,6 +47,8 @@ fun FeatureScreen(app: AppViewModel, page: String, title: String, onBack: (() ->
     controller.onAction = { name, detail ->
         when (name) {
             "auth" -> onSignIn()
+            // the plans window (or My plans) was closed: nothing is behind it in the app, so go back
+            "plansClosed" -> if (page.startsWith("plans") || page == "my-plans" || page == "owner-key") onBack?.invoke()
             // the account was deleted inside the page: the app forgets this phone's sign-in too
             "signedOut" -> if (page == "account") { app.logout(); android.widget.Toast.makeText(context, "You are signed out.", android.widget.Toast.LENGTH_SHORT).show(); onBack?.invoke() }
             // a job Home asked for (deleting a plan) is finished: say so and go back to Home
@@ -63,6 +65,8 @@ fun FeatureScreen(app: AppViewModel, page: String, title: String, onBack: (() ->
     }
     // the dialog can rename the student: ask the server who is signed in again when leaving it
     if (page == "account") DisposableEffect(Unit) { onDispose { app.refreshUser() } }
+    // a payment may have been submitted, or a plan approved meanwhile: ask the server what this person may use now when the plans window is left
+    if (page.startsWith("plans") || page == "my-plans") DisposableEffect(Unit) { onDispose { app.refresh() } }
     // the plans may have changed: schedule the reminders again when the student leaves them
     if (page.startsWith("study-plan")) DisposableEffect(Unit) { onDispose { app.refreshReminders() } }
     LaunchedEffect(controller.ready, state.user?.id, state.device?.id, state.syncOn) {

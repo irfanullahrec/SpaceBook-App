@@ -11,10 +11,10 @@ sealed interface LockState {
     /** this build never expires, or it was opened with the unlock code */
     data object Open : LockState
 
-    /** still working; [daysLeft] counts today */
+    /** a dated preview build, still working; [daysLeft] counts today */
     data class Counting(val expiresAt: Long, val daysLeft: Int) : LockState
 
-    /** the preview period is over: only the unlock screen is shown */
+    /** the dated preview period is over: only the unlock screen is shown */
     data class Locked(val expiredAt: Long) : LockState
 }
 

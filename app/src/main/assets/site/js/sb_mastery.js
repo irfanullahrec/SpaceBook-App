@@ -172,8 +172,8 @@
   const CSS = `
 #sbm{position:fixed;inset:0;z-index:10060;background:rgba(15,23,42,.62);display:flex;align-items:flex-end;justify-content:center;font-family:inherit;color:#0f172a;-webkit-tap-highlight-color:transparent}
 #sbm *{box-sizing:border-box}
-.sbm-card{background:#fff;width:min(680px,100%);max-height:96vh;max-height:96dvh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;box-shadow:0 -12px 40px -10px rgba(15,23,42,.45);outline:0}
-@media (min-width:700px){#sbm{align-items:center}.sbm-card{border-radius:22px;max-height:90vh}}
+.sbm-card{background:#fff;width:min(680px,100%);max-height:96%;border-radius:22px 22px 0 0;display:flex;flex-direction:column;box-shadow:0 -12px 40px -10px rgba(15,23,42,.45);outline:0}
+@media (min-width:700px){#sbm{align-items:center}.sbm-card{border-radius:22px;max-height:90%}}
 .sbm-head{display:flex;align-items:center;gap:.6rem;padding:.8rem .9rem .5rem 1.1rem}
 .sbm-ttl{flex:1;min-width:0}.sbm-ttl b{display:block;font-size:1.02rem;line-height:1.25}.sbm-ttl span{display:block;font-size:.8rem;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sbm-x{border:0;background:#f1f5f9;border-radius:50%;width:36px;height:36px;font-size:1.3rem;line-height:1;cursor:pointer;color:#334155;flex:none}

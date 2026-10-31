@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,6 +20,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,10 +29,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
@@ -37,9 +43,14 @@ import pk.wantuch.spacebook.expiry.UnlockResult
 import java.text.DateFormat
 import java.util.Date
 
-/** The only screen of an expired preview build. It needs no network: the unlock code is checked on the phone. */
+/**
+ * The only screen when a dated preview build has ended (release builds have no end date). It needs no network: the unlock code is checked on the phone.
+ */
 @Composable
-fun LockScreen(expiredAt: Long, onSubmit: (String) -> UnlockResult) {
+fun LockScreen(
+    expiredAt: Long,
+    onSubmit: (String) -> UnlockResult,
+) {
     var code by remember { mutableStateOf("") }
     var message by remember { mutableStateOf("") }
     val date = remember(expiredAt) { DateFormat.getDateInstance(DateFormat.LONG).format(Date(expiredAt)) }
@@ -66,14 +77,14 @@ fun LockScreen(expiredAt: Long, onSubmit: (String) -> UnlockResult) {
                     Text("This preview of SpaceBook has ended", style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        "It stopped working on $date. Ask the SpaceBook team for the unlock code and type it below to open the app again.",
+                        "It stopped working on $date. Type the unlock code from the SpaceBook team below to open the app again.",
                         style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Spacer(Modifier.height(20.dp))
                     OutlinedTextField(
-                        value = code, onValueChange = { code = it.uppercase().take(32); message = "" },
+                        value = code, onValueChange = { code = it.take(400); message = "" },
                         label = { Text("Unlock code") }, singleLine = true, isError = message.isNotEmpty(),
-                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters, imeAction = ImeAction.Done),
+                        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.None, autoCorrectEnabled = false, imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(onDone = { submit() }),
                         modifier = Modifier.fillMaxWidth(),
                     )

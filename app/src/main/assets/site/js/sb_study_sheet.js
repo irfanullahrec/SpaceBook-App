@@ -101,8 +101,8 @@
   const CSS = `
 #sbss{position:fixed;inset:0;z-index:10050;background:rgba(15,23,42,.62);display:flex;align-items:flex-end;justify-content:center;color:#0f172a;-webkit-tap-highlight-color:transparent}
 #sbss *{box-sizing:border-box}
-.sbss-card{background:#fff;width:min(940px,100%);height:100%;max-height:100vh;max-height:100dvh;display:flex;flex-direction:column;outline:0;box-shadow:0 -12px 40px -10px rgba(15,23,42,.45)}
-@media (min-width:760px){#sbss{align-items:center;padding:2vh 0}.sbss-card{height:96vh;height:96dvh;border-radius:22px;overflow:hidden}}
+.sbss-card{background:#fff;width:min(940px,100%);height:100%;max-height:100%;display:flex;flex-direction:column;outline:0;box-shadow:0 -12px 40px -10px rgba(15,23,42,.45)}
+@media (min-width:760px){#sbss{align-items:center;padding:2vh 0}.sbss-card{height:96%;border-radius:22px;overflow:hidden}}
 .sbss-head{display:flex;align-items:center;gap:.6rem;padding:.75rem .9rem .5rem 1.1rem;background:linear-gradient(135deg,#0369a1,#0ea5e9);color:#fff}
 .sbss-ttl{flex:1;min-width:0}.sbss-ttl b{display:block;font-size:1.02rem;line-height:1.3}.sbss-ttl span{display:block;font-size:.8rem;opacity:.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sbss-x{border:0;background:rgba(255,255,255,.2);color:#fff;border-radius:50%;width:38px;height:38px;font-size:1.4rem;line-height:1;cursor:pointer;flex:none}

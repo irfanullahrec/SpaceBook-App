@@ -59,6 +59,15 @@ class NetworkTest {
         assertEquals("Bearer " + "a".repeat(64), server.takeRequest().getHeader("Authorization"))
     }
 
+    @Test fun everyRequestSaysItIsTheAppAndCarriesTheVisitorId() = runBlocking {
+        endpoint.visitor = "c".repeat(32)
+        server.enqueue(MockResponse().setBody("""{"ok":true,"plan":"free"}"""))
+        apiCall(json) { api.entitlements() }
+        val req = server.takeRequest()
+        assertEquals("app", req.getHeader("X-SB-Platform"))
+        assertEquals("c".repeat(32), req.getHeader("X-SB-Visitor"))
+    }
+
     @Test fun serverErrorMessageIsShownToTheStudent() = runBlocking {
         server.enqueue(MockResponse().setResponseCode(401).setBody("""{"ok":false,"error":"Wrong WhatsApp number or password"}"""))
         val r = apiCall(json) { api.login(LoginBody("0300", "x")) }

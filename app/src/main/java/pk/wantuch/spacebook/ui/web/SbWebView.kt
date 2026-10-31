@@ -11,6 +11,9 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import android.widget.Toast
 import android.webkit.JavascriptInterface
+import android.webkit.ServiceWorkerClient
+import android.webkit.ServiceWorkerController
+import android.webkit.ValueCallback
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
 import android.webkit.WebResourceResponse
@@ -18,6 +21,8 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -87,6 +92,19 @@ class WebController(
     var missing by mutableStateOf<String?>(null)
         private set
 
+    /**
+     * The page asked for a file (the picture of a problem report: a file input that accepts pictures only). The WebView cannot open the picker by itself: the composable that
+     * hosts it supplies [chooser] (it launches the picker and hands the answer to [fileChosen]). Only a picture is ever asked for, and only by the website.
+     */
+    var chooser: ((Intent) -> Unit)? = null
+    private var fileCallback: ValueCallback<Array<Uri>>? = null
+
+    fun fileChosen(resultCode: Int, data: Intent?) {
+        val cb = fileCallback ?: return
+        fileCallback = null
+        cb.onReceiveValue(if (resultCode == android.app.Activity.RESULT_OK) WebChromeClient.FileChooserParams.parseResult(resultCode, data) else null)
+    }
+
     /** called on the main thread: ("auth" | "end" | "start" | "error" | "done", detail) */
     var onAction: (String, String) -> Unit = { _, _ -> }
 
@@ -111,6 +129,13 @@ class WebController(
         @JavascriptInterface fun speak(id: String, text: String, lang: String, rate: Float) { main.post { speakForPage(id, text, lang, rate) } }
 
         @JavascriptInterface fun stopSpeech(@Suppress("UNUSED_PARAMETER") unused: String) { main.post { tts?.stop() } }
+
+        /** this install's visitor id (32 hex): the page sends it as X-SB-Visitor, the same id the app's own requests carry, so the free allowance is counted once */
+        @JavascriptInterface fun visitorId(): String = endpoint.visitor
+
+        /** the owner's pass (js/sb_access.js): the page reads it, sets it when the key was right, and the app remembers it (AppViewModel, access/OwnerPass.kt) */
+        @JavascriptInterface fun ownerPass(): Boolean = pk.wantuch.spacebook.access.OwnerPass.on
+        @JavascriptInterface fun setOwnerPass(on: Boolean) { pk.wantuch.spacebook.access.OwnerPass.on = on; main.post { pk.wantuch.spacebook.access.OwnerPass.persist(on) } }
 
         @JavascriptInterface fun onAction(name: String, detail: String) {
             when (name) {
@@ -211,6 +236,9 @@ class WebController(
 
     fun openPage(name: String) { loading = true; run("SBApp.openPage(${quote(name)})") }
 
+    /** the website's own dialog to suggest something or report a mistake, filled in with the class, subject, chapter and page on screen; it is shown over the page */
+    fun openFeedback() = run("SBApp.openFeedback()")
+
     /** a test (PST, CT ...) on its tab: "practice" | "mock" | "mistakes" | "history" | "stats" */
     fun openTestPrep(testId: String, tab: String) { loading = true; run("SBApp.openTestPrep(${quote(testId)},${quote(tab)})") }
 
@@ -230,7 +258,13 @@ class WebController(
             p[0] == "study-plan" && p.size >= 2 && p[1].isNotBlank() -> openPlan(p[1])
             p[0] == "study-plan-delete" && p.size >= 2 && p[1].isNotBlank() -> deletePlan(p[1])
             p[0] == "words-reset" -> resetWords()
+            p[0] == "feedback" -> openFeedback()
             p[0] == "account" -> { loading = true; run("SBApp.openAccount()") }
+            // the website's plans window ("plans" or "plans:<class>:<subject>") and "My plans" (js/sb_billing.js): the same prices, payment and account as the website
+            p[0] == "plans" -> run("SBApp.openPlans(${quote(p.getOrElse(1) { "" })}, ${quote(p.getOrElse(2) { "" })})")
+            p[0] == "my-plans" -> run("SBApp.openMyPlans()")
+            // the "Enter licence key" window of the owner's pass (js/sb_access.js keyDialog)
+            p[0] == "owner-key" -> run("SBApp.openKey()")
             // Grammar Stats on one language (Home's Project Stats links to it): "grammar-stats:en|ur|ps|ar"
             p[0] == "grammar-stats" -> { loading = true; run("SBApp.openGrammar(${quote(p.getOrElse(1) { "en" })})") }
             else -> openPage(p[0])
@@ -270,7 +304,7 @@ class WebController(
     @SuppressLint("SetJavaScriptEnabled")
     fun create(context: Context, textZoom: Int): WebView {
         webView?.let { return it }
-        val wv = WebView(context)
+        val wv = GuardedWebView(context)        // the system's selection bar has no Copy, Cut or Share for the book text (the page switches off the rest: js/sb_rights.js)
         WebView.setWebContentsDebuggingEnabled(BuildConfig.DEBUG)
         wv.settings.apply {
             javaScriptEnabled = true
@@ -290,6 +324,15 @@ class WebController(
         wv.addJavascriptInterface(Host(), "SBHost")
         // pages, scripts and books come from the phone's own copy first (SiteStore); only the API and anything new goes to the network
         store.onMissing = { path -> main.post { missing = path; loading = false } }
+        // The website's service worker (sw.js) answers the page's requests itself, from the live website, so the phone's own copy of the site (SiteStore)
+        // is never asked: a worker registered by an earlier visit kept the app on the website's older pages and scripts. A worker's own requests
+        // (its script and every file it fetches) are answered by the store too: sw.js is refused (404, nothing is registered) and a worker that is
+        // already there reads the same files as the page.
+        runCatching {
+            ServiceWorkerController.getInstance().setServiceWorkerClient(object : ServiceWorkerClient() {
+                override fun shouldInterceptRequest(request: WebResourceRequest): WebResourceResponse? = store.intercept(request)
+            })
+        }
         wv.webViewClient = object : WebViewClient() {
             override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? = store.intercept(request)
 
@@ -325,6 +368,14 @@ class WebController(
         wv.webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, newProgress: Int) { pageProgress = newProgress }
             override fun onPermissionRequest(request: android.webkit.PermissionRequest) = request.deny()
+            override fun onShowFileChooser(view: WebView, callback: ValueCallback<Array<Uri>>, params: FileChooserParams): Boolean {
+                val launch = chooser ?: return false
+                fileCallback?.onReceiveValue(null)
+                fileCallback = callback
+                val intent = Intent(Intent.ACTION_GET_CONTENT).addCategory(Intent.CATEGORY_OPENABLE).setType("image/*")
+                    .putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png", "image/webp"))
+                return runCatching { launch(Intent.createChooser(intent, "Choose a picture")); true }.getOrElse { fileCallback = null; callback.onReceiveValue(null); false }
+            }
         }
         webView = wv
         wv.loadUrl(entryUrl())
@@ -348,6 +399,8 @@ class WebController(
 fun SbWebView(controller: WebController, textZoom: Int, modifier: Modifier = Modifier) {
     DisposableEffect(controller) { onDispose { controller.destroy() } }
     var created by remember { mutableStateOf(false) }
+    val picker = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { r -> controller.fileChosen(r.resultCode, r.data) }
+    DisposableEffect(controller, picker) { controller.chooser = { picker.launch(it) }; onDispose { controller.chooser = null } }
     AndroidView(
         modifier = modifier,
         factory = { ctx -> controller.create(ctx, textZoom).also { created = true } },

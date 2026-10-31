@@ -291,6 +291,7 @@ data class AccountInfo(
     /** epoch millis when this preview build stops working, 0 = never */
     val previewEnds: Long = 0,
     val previewDaysLeft: Int = 0,
+    /** previewEnds is the end of the person's 1-month free trial, not of a dated preview build */
 )
 
 private fun planName(id: String) = id.ifBlank { "free" }.replaceFirstChar { it.uppercase() }
@@ -339,16 +340,20 @@ internal fun AccountTab(info: AccountInfo, prep: PrepSnapshot?, actions: HomeAct
         }
     }
 
-    // plans and pricing (the same two the website shows until the owner announces prices)
+    // plans: the real ones are the website's window (js/sb_billing.js), the same prices and payment as on the website
     Text("💳 Plans & pricing", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(start = 16.dp, top = 14.dp, end = 16.dp))
-    PlanOffer(
-        "Free", "Free", current = info.planId.equals("free", true), note = null,
-        features = listOf("Every textbook, Class 1 to 12", "Word meanings and sentence meanings (offline)", "Animated solutions", "Test preparation MCQ bank", "Study plans and reminders", "Progress saved on this device"),
-    )
-    PlanOffer(
-        "Premium", "Price to be announced", current = info.planId.equals("premium", true), note = "Coming soon",
-        features = listOf("Progress saved in your account on every device", "More study plans and test papers", "Priority support"),
-    )
+    Card {
+        Text(if (info.planId.equals("paid", true)) "✅ You have a paid plan" else "Free for everyone", style = MaterialTheme.typography.titleMedium)
+        Spacer(Modifier.height(6.dp))
+        Text("Chapters 1 and 2 of every subject, 50 Test Preparation questions, 50 Study Plan questions and 1 paper are free.", style = MaterialTheme.typography.bodyMedium)
+        Spacer(Modifier.height(6.dp))
+        Text("Student plan (one class), Teacher plan (10 subjects, with papers) and the Test Preparation module: PKR 500 for one month each. Pay with Easypaisa; a plan starts when the payment is approved.",
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Spacer(Modifier.height(10.dp))
+        Button(onClick = actions.openPlans, modifier = Modifier.fillMaxWidth()) { Text("See plans") }
+        Spacer(Modifier.height(6.dp))
+        OutlinedButton(onClick = actions.openKey, modifier = Modifier.fillMaxWidth()) { Text("Enter licence key") }
+    }
 
     // usage
     Card {
@@ -365,32 +370,8 @@ internal fun AccountTab(info: AccountInfo, prep: PrepSnapshot?, actions: HomeAct
             Triple(sizeText(prep?.usage?.bytes ?: 0), "saved on this phone (${prep?.usage?.keys ?: 0} items)", WORD_BLUE),
         ))
         Text(
-            "Usage is counted from what this phone has saved${if (info.signedIn) " and your account" else ""}. Nothing here is billed: every feature is currently free.",
+            "Usage is counted from what this phone has saved${if (info.signedIn) " and your account" else ""}.",
             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-    }
-}
-
-@Composable
-private fun PlanOffer(title: String, price: String, current: Boolean, note: String?, features: List<String>) {
-    val accent = if (current) WORD_GREEN else MaterialTheme.colorScheme.onSurfaceVariant
-    Surface(
-        shape = RoundedCornerShape(24.dp), color = MaterialTheme.colorScheme.surface, shadowElevation = 2.dp,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 6.dp),
-    ) {
-        Column {
-            Box(Modifier.fillMaxWidth().height(5.dp).background(accent))
-            Column(Modifier.padding(16.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column(Modifier.weight(1f)) {
-                        Text(title, style = MaterialTheme.typography.titleMedium)
-                        Text(if (current) "✅ Your current plan" else note ?: "Available", style = MaterialTheme.typography.bodySmall, color = if (current) WORD_GREEN else MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                    Text(price, style = MaterialTheme.typography.titleSmall, color = accent, textAlign = TextAlign.End, modifier = Modifier.padding(start = 12.dp))
-                }
-                Spacer(Modifier.height(8.dp))
-                features.forEach { Text("✔ $it", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(vertical = 2.dp)) }
-            }
-        }
     }
 }

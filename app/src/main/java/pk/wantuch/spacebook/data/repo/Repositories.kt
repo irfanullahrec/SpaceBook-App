@@ -96,22 +96,28 @@ class AuthRepository @Inject constructor(
     private val library: LibraryRepository,
     private val json: Json,
 ) {
-    suspend fun login(whatsapp: String, password: String): ApiResult<UserDto> =
-        finish(apiCall(json) { api.login(LoginBody(whatsapp.trim(), password, deviceName = deviceName())) })
+    suspend fun login(whatsapp: String, password: String): ApiResult<UserDto> {
+        val name = deviceName()
+        return finish(apiCall(json) { api.login(LoginBody(whatsapp.trim(), password, deviceName = name)) })
+    }
 
+    /** One general account: the plan (Student, Teacher, Test Preparation) is chosen when buying, not here. */
     suspend fun register(
         name: String,
         fatherName: String,
-        userType: String,
         whatsapp: String,
         password: String,
-    ): ApiResult<UserDto> = finish(
-        apiCall(json) {
-            api.register(RegisterBody(name.trim(), fatherName.trim(), userType, whatsapp.trim(), password, deviceName = deviceName()))
-        },
-    )
+    ): ApiResult<UserDto> {
+        val device = deviceName()
+        return finish(apiCall(json) { api.register(RegisterBody(name.trim(), fatherName.trim(), whatsapp.trim(), password, deviceName = device)) })
+    }
 
-    private suspend fun deviceName() = "SpaceBook Android ${prefs.ensureInstallId().take(8)}"
+    /** Also hands the server this install's visitor id, so what was used of the free allowance before signing in comes with the account. */
+    private suspend fun deviceName(): String {
+        val id = prefs.ensureInstallId()
+        endpoint.visitor = id.replace("-", "")
+        return "SpaceBook Android ${id.take(8)}"
+    }
 
     private suspend fun finish(r: ApiResult<pk.wantuch.spacebook.data.remote.AuthResponse>): ApiResult<UserDto> {
         if (r is ApiResult.Failure) return r
@@ -250,7 +256,7 @@ class SyncRepository @Inject constructor(
     }
 }
 
-/** What the signed-in (or guest) student may use, from api/v2/entitlements.php. Everything is open if the server cannot be asked. */
+/** What the signed-in (or guest) student may use, from api/v2/entitlements.php. With no answer yet it is the free tier: Chapters 1 and 2 and the free allowance. */
 @Singleton
 class EntitlementsRepository @Inject constructor(
     private val api: ApiService,

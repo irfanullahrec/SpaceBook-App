@@ -26,6 +26,7 @@ import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.rounded.Login
 import androidx.compose.material.icons.automirrored.rounded.Logout
 import androidx.compose.material.icons.rounded.Bookmark
+import androidx.compose.material.icons.rounded.Feedback
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Download
 import androidx.compose.material.icons.rounded.Edit
@@ -101,10 +102,37 @@ class SavedViewModel @Inject constructor(private val library: LibraryRepository,
 }
 
 @Composable
-fun MeScreen(app: AppViewModel, onSignIn: () -> Unit, onSaved: () -> Unit, onSettings: () -> Unit, onOffline: () -> Unit, onAccount: () -> Unit = {}) {
+fun MeScreen(app: AppViewModel, onSignIn: () -> Unit, onSaved: () -> Unit, onSettings: () -> Unit, onOffline: () -> Unit, onAccount: () -> Unit = {}, onPlans: () -> Unit = {}, onMyPlans: () -> Unit = {}, onKey: () -> Unit = {}, onFeedback: () -> Unit = {}) {
     val state by app.state.collectAsStateWithLifecycle()
     val catalog by app.catalog.collectAsStateWithLifecycle()
-    MeContent(state.user, state.coins, catalog?.classes.orEmpty(), state.classId, onPickClass = { app.setClass(it) }, onSignIn = onSignIn, onSignOut = { app.logout() }, onSaved = onSaved, onSettings = onSettings, onOffline = onOffline, onAccount = onAccount)
+    val entitlements by app.entitlements.collectAsStateWithLifecycle()
+    MeContent(state.user, state.coins, catalog?.classes.orEmpty(), state.classId, onPickClass = { app.setClass(it) }, onSignIn = onSignIn, onSignOut = { app.logout() }, onSaved = onSaved, onSettings = onSettings, onOffline = onOffline, onAccount = onAccount,
+        plans = if (state.user != null) entitlements.subscriptions else emptyList(), pendingPayments = if (state.user != null) entitlements.pendingPayments else 0, onPlans = onPlans, onMyPlans = onMyPlans, onKey = onKey, onFeedback = onFeedback)
+}
+
+/** The plans of the signed-in person (the same ones the website shows), what is waiting for approval, and the way to buy or renew. */
+@Composable
+internal fun PlansCard(plans: List<pk.wantuch.spacebook.data.remote.SubscriptionDto>, pending: Int, signedIn: Boolean, onPlans: () -> Unit, onMyPlans: () -> Unit, onKey: () -> Unit = {}) {
+    Surface(shape = MaterialTheme.shapes.large, shadowElevation = 1.dp, modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp)) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text("My plans", style = MaterialTheme.typography.titleMedium)
+            if (plans.isEmpty()) Text("Chapters 1 and 2 of every subject are free. Plans open the rest: from PKR 500 a month.", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            plans.forEach { p ->
+                val state = when (p.status) { "active" -> "Active · ${p.daysLeft} day${if (p.daysLeft == 1) "" else "s"} left"; "suspended" -> "Suspended"; else -> "Ended" }
+                Column {
+                    Text(p.label, style = MaterialTheme.typography.titleSmall)
+                    Text(listOfNotNull(state, p.expiresAt?.take(10)?.let { "ends $it" }).joinToString(" · "), style = MaterialTheme.typography.bodySmall,
+                        color = if (p.status == "active") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error)
+                }
+            }
+            if (pending > 0) Text("⏳ $pending payment${if (pending == 1) " is" else "s are"} waiting to be checked (Pending Verification).", style = MaterialTheme.typography.bodyMedium)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button(onClick = onPlans, modifier = Modifier.weight(1f)) { Text(if (plans.isEmpty()) "See plans" else "Buy or renew") }
+                if (signedIn) OutlinedButton(onClick = onMyPlans, modifier = Modifier.weight(1f)) { Text("Payments") }
+            }
+            OutlinedButton(onClick = onKey, modifier = Modifier.fillMaxWidth()) { Text("Enter licence key") }
+        }
+    }
 }
 
 @Composable
@@ -120,6 +148,12 @@ internal fun MeContent(
     onSettings: () -> Unit,
     onOffline: () -> Unit,
     onAccount: () -> Unit = {},
+    onFeedback: () -> Unit = {},
+    plans: List<pk.wantuch.spacebook.data.remote.SubscriptionDto> = emptyList(),
+    pendingPayments: Int = 0,
+    onPlans: () -> Unit = {},
+    onMyPlans: () -> Unit = {},
+    onKey: () -> Unit = {},
 ) {
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 24.dp)) {
         Text("Me", style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 8.dp))
@@ -133,7 +167,7 @@ internal fun MeContent(
                         Spacer(Modifier.width(16.dp))
                         Column(Modifier.weight(1f)) {
                             Text(user?.name ?: "Guest", color = Color.White, style = MaterialTheme.typography.titleLarge)
-                            Text(if (user != null) "${user.userType.replaceFirstChar { it.uppercase() }} · ${user.whatsapp}" else "Reading without an account", color = Color.White.copy(alpha = 0.9f), style = MaterialTheme.typography.bodyMedium)
+                            Text(if (user != null) user.whatsapp else "Reading without an account", color = Color.White.copy(alpha = 0.9f), style = MaterialTheme.typography.bodyMedium)
                         }
                         CoinChip(coins)
                     }
@@ -147,6 +181,7 @@ internal fun MeContent(
                 }
             }
         }
+        PlansCard(plans, pendingPayments, user != null, onPlans, onMyPlans, onKey)
         Text("My class", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(start = 16.dp, top = 20.dp, bottom = 4.dp))
         LazyRow(contentPadding = PaddingValues(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(classes, key = { it.id }) { c ->
@@ -157,6 +192,7 @@ internal fun MeContent(
         if (user != null) MenuRow(Icons.Rounded.Person, "My account", "Details, password, download my data, delete my account", onAccount)
         MenuRow(Icons.Rounded.Download, "Books on this phone", "Download classes to read with no internet", onOffline)
         MenuRow(Icons.Rounded.Bookmark, "Saved pages and notes", "Bookmarks, notes and highlights; they follow your account", onSaved)
+        MenuRow(Icons.Rounded.Feedback, "Suggestions and problems", "Tell us about a mistake in a book, a wrong answer, something broken, or an idea", onFeedback)
         MenuRow(Icons.Rounded.Settings, "Settings", "Dark mode, text size", onSettings)
         Text("SpaceBook ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(16.dp))
     }

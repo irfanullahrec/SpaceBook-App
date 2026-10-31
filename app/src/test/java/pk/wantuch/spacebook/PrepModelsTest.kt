@@ -70,7 +70,7 @@ class PrepModelsTest {
         assertEquals(listOf(null, false, 0L), listOf(guest.name, guest.signedIn, guest.previewEnds))
         val user = UserDto(id = 7, name = "Ayesha", userType = "student", whatsapp = "0300")
         val a = accountInfo(user, 9, "free", LockState.Counting(expiresAt = 1_000L, daysLeft = 3))
-        assertEquals(listOf("Ayesha", "Student · 0300", true, 1_000L, 3, 9), listOf(a.name, a.subtitle, a.signedIn, a.previewEnds, a.previewDaysLeft, a.coins))
+        assertEquals(listOf("Ayesha", "0300", true, 1_000L, 3, 9), listOf(a.name, a.subtitle, a.signedIn, a.previewEnds, a.previewDaysLeft, a.coins))
         assertEquals("Student", accountInfo(user.copy(name = " "), 0, "free", LockState.Open).name)
         assertEquals(0L, accountInfo(user, 0, "free", LockState.Locked(1L)).previewEnds)
     }
