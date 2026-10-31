@@ -8297,7 +8297,7 @@
   {
    "src": "js/fills_data.js",
    "bytes": 116780,
-   "sha256": "da418413e9d46ceda3c8365844ba309854e974919378eb28065163c63595d0c4",
+   "sha256": "fb86595afc3c744790068368bee6746d85528a6d13374fdca5096164fe4d5df4",
    "stubs": [
     {
      "name": "SB_FILLS",
@@ -8609,7 +8609,7 @@
   {
    "src": "js/study_plan_index.js",
    "bytes": 264659,
-   "sha256": "0b410430b7f488f4b6b9ed350aa9aa57a06e38a1a52882fb39796d3886773ab8",
+   "sha256": "c3f1de5f80993788b3c9ae888140dd937bdf33d8ce8e5ba9fe98a6be165517e2",
    "stubs": [
     {
      "name": "SB_STUDY_INDEX",

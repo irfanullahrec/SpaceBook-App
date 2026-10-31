@@ -8521,3 +8521,7 @@ body:has(.cls1-cover-stage-grid) #footer {
 @media (max-width: 640px) { .bio11-page h3 { font-size: 1.05rem; } .bio11-heading-translations { font-size: .85rem; } }
 .bio11-list li.bio11-labelled { list-style: none; position: relative; }
 .bio11-list li.bio11-labelled::before { content: attr(data-label); position: absolute; left: -1.6em; }
+
+/* Back button stays visible when the header tabs overflow */
+.header-nav-tabs .nav-tab-back{position:sticky;left:0;z-index:5;flex:0 0 auto;background:var(--bg-card,#fff)}
+

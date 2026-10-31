@@ -2,7 +2,7 @@
 .sbb-backdrop { position: fixed; inset: 0; z-index: 10010; display: flex; align-items: center; justify-content: center; padding: 12px; background: rgba(15, 23, 42, .6); }
 .sbb-backdrop[hidden] { display: none; }
 body.sbb-lock { overflow: hidden; }
-.sbb-card { position: relative; width: 100%; max-width: 760px; max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); overflow-y: auto; background: var(--card-bg, #fff); color: var(--text, #1e293b);
+.sbb-card { position: relative; width: 100%; max-width: 760px; max-height: 100%; /* of the backdrop (fixed, padded 12px), not calc(100vh - 24px): viewport-height units are 0 in the app's WebView and the window collapsed to its title */ overflow-y: auto; background: var(--card-bg, #fff); color: var(--text, #1e293b);
   border-radius: var(--radius, 14px); padding: 1.25rem 1.1rem 1.1rem; box-shadow: 0 24px 60px rgba(15, 23, 42, .3); -webkit-overflow-scrolling: touch; }
 .sbb-card:focus { outline: none; }
 .sbb-card h2 { margin: 0 2rem .7rem 0; font-size: 1.3rem; font-weight: 800; }
@@ -72,3 +72,13 @@ body.sbb-lock { overflow: hidden; }
 .sbx-btn-main { background: var(--blue, #4f46e5); border-color: var(--blue, #4f46e5); color: #fff; }
 .sbx-tag { margin-left: auto; font-size: .85rem; opacity: .8; }
 .math-ch-btn.sbx-locked { opacity: .78; }
+
+/* the owner's licence key window (js/sb_access.js keyDialog); sized in %, not vh: viewport-height units are 0 in the app's WebView */
+.sbx-key-overlay { position: fixed; inset: 0; z-index: 100050; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(15, 23, 42, .55); }
+.sbx-key-box { width: 100%; max-width: 380px; max-height: calc(100% - 32px); overflow: auto; box-sizing: border-box; padding: 1.2rem; border-radius: 16px; background: var(--card-bg, #fff); color: var(--text, #1e293b); box-shadow: 0 18px 50px rgba(0, 0, 0, .35); }
+.sbx-key-box h2 { margin: 0 0 .8rem; font-size: 1.2rem; }
+.sbx-key-box label { display: block; margin-bottom: .3rem; font-weight: 700; font-size: .92rem; }
+.sbx-key-box input { width: 100%; box-sizing: border-box; min-height: 46px; padding: .6rem .8rem; border-radius: 10px; border: 2px solid var(--border, #94a3b8); background: var(--card-bg, #fff); color: inherit; font: inherit; }
+.sbx-key-box input:focus-visible, .sbx-btn:focus-visible { outline: 3px solid var(--blue, #4f46e5); outline-offset: 2px; }
+.sbx-key-msg { min-height: 1.4em; margin: .6rem 0 0; font-size: .95rem; }
+.sbx-key-actions { display: flex; flex-direction: column; gap: .5rem; margin-top: .8rem; }
