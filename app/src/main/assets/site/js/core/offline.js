@@ -154,13 +154,27 @@
 
   const downloaded = readDownloaded;
 
+  // ---- the student's own actions since this page opened: while there are none, putting a waiting version in place (the page reloads once) costs nothing
+  const born = Date.now();
+  let touched = false;
+  if (doc && doc.addEventListener) ['pointerdown', 'keydown', 'touchstart', 'input'].forEach(ev => doc.addEventListener(ev, () => { touched = true; }, true));
+  const AUTO_KEY = 'sb_auto_update_at';
+  const autoRecently = () => { try { return Date.now() - Number(win.sessionStorage.getItem(AUTO_KEY) || 0) < 120000; } catch (e) { return false; } };   // one automatic update per two minutes: never a reload loop
+  const markAuto = () => { try { win.sessionStorage.setItem(AUTO_KEY, String(Date.now())); } catch (e) { /* the banner is the fallback */ } };
+
   // ---- service worker registration and the update offer
+  // opts.autoUpdate: a new version that is waiting is taken at once when the page was opened less than a minute ago and the student has not touched it (a returning student whose
+  // browser holds the previous version then sees the current one after one quick reload). Otherwise the banner is shown, as before, and the version waits for the next visit.
   function register(opts = {}) {
     if (!nav.serviceWorker) return Promise.resolve(null);
     const url = opts.url || 'sw.js';
     const hadController = !!nav.serviceWorker.controller;      // false on the very first visit: the page in front of the student is already the newest, so taking control needs no reload
     return nav.serviceWorker.register(url, { scope: opts.scope || './' }).then(reg => {
-      const offer = worker => showUpdateBanner(() => { worker.postMessage({ type: 'SKIP_WAITING' }); });
+      const offer = worker => {
+        const take = () => { worker.postMessage({ type: 'SKIP_WAITING' }); };
+        if (opts.autoUpdate && !touched && Date.now() - born < 60000 && !autoRecently()) { markAuto(); take(); return; }
+        showUpdateBanner(take);
+      };
       if (reg.waiting && nav.serviceWorker.controller) offer(reg.waiting);
       reg.addEventListener('updatefound', () => {
         const w = reg.installing;
@@ -362,7 +376,7 @@
   // The service worker installs by downloading the whole start-up shell again in the background: that is done after the first screen is drawn (a few seconds
   // after the page has loaded), so on a slow connection it does not compete with the page the student is waiting for.
   if (secure && O.active()) {
-    const go = () => O.register({ reloadOnUpdate: true });
+    const go = () => O.register({ reloadOnUpdate: true, autoUpdate: true });
     if (document.readyState === 'complete') setTimeout(go, 3000); else window.addEventListener('load', () => setTimeout(go, 3000));
   }
 })();
