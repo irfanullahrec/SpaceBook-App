@@ -6784,8 +6784,8 @@
   },
   {
    "src": "js/munawar_c2_gram_book.js",
-   "bytes": 244109,
-   "sha256": "0dff8ddfba852d5547a13599d8601c4c6c0eb5b681c76aa870c88c720bd8165a",
+   "bytes": 246938,
+   "sha256": "6eec6903c6eb0f7146995e65bf5f1ebb037858cf101c382c9d968aa557f0768b",
    "stubs": [
     {
      "name": "MUNAWAR_C2_GRAM_DATA",
@@ -6864,8 +6864,8 @@
   },
   {
    "src": "js/munawar_c2_prel_book.js",
-   "bytes": 620254,
-   "sha256": "2b282eb2df4ee64401669802a5cb474c8b4c487693dd064149129c8f0fa1bea3",
+   "bytes": 627386,
+   "sha256": "1bd5e978e4c03f72d7c0e2fea7fd847c9d274e20d48cd5943f3e2a1d9ed03535",
    "stubs": [
     {
      "name": "MUNAWAR_C2_PREL_DATA",
@@ -6984,8 +6984,8 @@
   },
   {
    "src": "js/munawar_c3_gram_book.js",
-   "bytes": 407694,
-   "sha256": "240a2ff928854943aac065dcfaf1663f324af4211d4da4956ddaa4620357978b",
+   "bytes": 415984,
+   "sha256": "d54d1a018edc3bf1a3897ccb916bcb9fa9965a511e556f1f0eba07074defd827",
    "stubs": [
     {
      "name": "MUNAWAR_C3_GRAM_DATA",
@@ -7064,8 +7064,8 @@
   },
   {
    "src": "js/munawar_c3_prel_book.js",
-   "bytes": 964771,
-   "sha256": "9619a66c46f920dfa9f52568070db16c2cf22b8ac776d542577c15842d8baf19",
+   "bytes": 992904,
+   "sha256": "34aeceb488e9a9b50d92b4542194b9162f9d3adeb483ba74dab031685658039b",
    "stubs": [
     {
      "name": "MUNAWAR_C3_PREL_DATA",
