@@ -6544,8 +6544,8 @@
   },
   {
    "src": "js/munawar_c1_eng_book.js",
-   "bytes": 736723,
-   "sha256": "8a0fa1d9cb07edb94b532f47da069bb684ac9d6f6833a4d33e852e9753e788fe",
+   "bytes": 817061,
+   "sha256": "37a54818171cb9c1a40ae74bacdcaec2bc0cef325f131ae977f31bb16dcd7a2f",
    "stubs": [
     {
      "name": "MUNAWAR_C1_ENG_DATA",
@@ -7264,8 +7264,8 @@
   },
   {
    "src": "js/munawar_c4_sci_book.js",
-   "bytes": 629434,
-   "sha256": "4449e7d1890cbc91735d507dfbb98a0dccd67eae3f0cbbbcf86afa6ac92ca696",
+   "bytes": 644254,
+   "sha256": "9ae6a736a12153eaf0a6ae2e7af88c95e6e03ec05348bcf38be77c0ef2320bf1",
    "stubs": [
     {
      "name": "MUNAWAR_C4_SCI_DATA",
