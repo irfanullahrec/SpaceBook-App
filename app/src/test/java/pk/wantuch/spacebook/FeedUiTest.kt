@@ -106,11 +106,12 @@ class FeedUiTest {
         assertEquals(listOf(TAB_FEED, TAB_STATS, TAB_PROJECT, TAB_ACCOUNT), listOf(0, 1, 2, 3))
     }
 
-    @Test fun theTabsAreIconsOnlyButEveryOneIsNamedForTheScreenReader() {
+    @Test fun everyTabIsNamedForTheScreenReaderAndShowsOnlyAShortLabel() {
         showHome(TAB_STATS)
         HOME_TABS.forEach { rule.onNodeWithContentDescription(it.label).assertIsDisplayed() }
-        val texts = listOf("News Feed", "📰 News Feed", "📊 My Stats", "📚 Project Stats", "👤 My Account", "My Stats", "Project Stats", "My Account")
-        texts.forEach { assertTrue("the tab strip has no text title \"$it\"", rule.onAllNodesWithText(it, substring = false).fetchSemanticsNodes().isEmpty()) }
+        // the redesign puts a short label under each icon (Feed, My Stats, Project, Account); the old emoji titles and the long names are not drawn
+        val old = listOf("📰 News Feed", "📊 My Stats", "📚 Project Stats", "👤 My Account", "News Feed", "Project Stats", "My Account")
+        old.forEach { assertTrue("the tab strip has no long title \"$it\"", rule.onAllNodesWithText(it, substring = false).fetchSemanticsNodes().isEmpty()) }
     }
 
     @Test fun theOldHeadingIsGone() {
