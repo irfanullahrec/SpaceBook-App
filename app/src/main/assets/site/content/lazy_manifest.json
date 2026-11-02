@@ -6844,8 +6844,8 @@
   },
   {
    "src": "js/munawar_c2_math_book.js",
-   "bytes": 251518,
-   "sha256": "159f936d5b9e3158c4ee25b7bfe9b7e2812001448015d3d317f41a66674770fa",
+   "bytes": 258643,
+   "sha256": "3bf907ccf6d5512c6cef9423aba726c73e17a3c0895c9ba0057ff2218e4abbe6",
    "stubs": [
     {
      "name": "MUNAWAR_C2_MATH_DATA",

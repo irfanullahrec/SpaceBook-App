@@ -1762,9 +1762,9 @@
    "sha256": "d3a9ef6833a90a292cb97b1e4ec1897621a2a3487d9395776d0e73c93f7068f8"
   },
   "js/munawar_c2_math_book.js": {
-   "v": "159f936d5b9e",
-   "bytes": 251518,
-   "sha256": "159f936d5b9e3158c4ee25b7bfe9b7e2812001448015d3d317f41a66674770fa"
+   "v": "3bf907ccf6d5",
+   "bytes": 258643,
+   "sha256": "3bf907ccf6d5512c6cef9423aba726c73e17a3c0895c9ba0057ff2218e4abbe6"
   },
   "js/munawar_c2_prel_book.js": {
    "v": "2b282eb2df4e",
@@ -2932,7 +2932,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 786430
+   "bytes": 793555
   },
   "cls2-mun-prel": {
    "classId": "cls2",
