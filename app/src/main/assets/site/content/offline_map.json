@@ -1742,9 +1742,9 @@
    "sha256": "efb673ab09e11e69e46b588d671da74cd89a8eef7c777fb33b69d90953a2df5b"
   },
   "js/munawar_c2_eng_book.js": {
-   "v": "9af7cf1eca2b",
-   "bytes": 923485,
-   "sha256": "9af7cf1eca2b65136cb90d2887ee4aaee90da5cc782734fd0f960acaddc8a4c4"
+   "v": "326bd51b690d",
+   "bytes": 1041593,
+   "sha256": "326bd51b690d8d33466b05dcf44e37a0cadb62fc50ea18350acd392aeb31613c"
   },
   "js/munawar_c2_gk_book.js": {
    "v": "3a622b0137a5",
@@ -1792,9 +1792,9 @@
    "sha256": "f347e664f544664e64adaab4731039189e4538c324df78359340c74bf7a8f1d4"
   },
   "js/munawar_c3_eng_book.js": {
-   "v": "c033a4bfff39",
-   "bytes": 776813,
-   "sha256": "c033a4bfff39b80fa2498cbb0f764616bcaed1d49c2f5769b6c97c8f933f4959"
+   "v": "257b1a755925",
+   "bytes": 805953,
+   "sha256": "257b1a75592571de5536b7d9a71ffbef5c24a865b9d69db53de1444cd4cd3cc2"
   },
   "js/munawar_c3_gk_book.js": {
    "v": "444a3661c50a",
@@ -1847,9 +1847,9 @@
    "sha256": "d884615b27b4af9fa7b5d0025ade6f322a068f8c150fe92063a1ae32ef7f0b92"
   },
   "js/munawar_c4_eng_book.js": {
-   "v": "bcb6619800fd",
-   "bytes": 764844,
-   "sha256": "bcb6619800fdd64e73fe277d41822cbb9c05e3fe6eec06efc2950ec53fcef093"
+   "v": "041d3b6bdd5a",
+   "bytes": 793913,
+   "sha256": "041d3b6bdd5a715f52107290cc95d76916a059847bc7ac979d5962f1b79535e3"
   },
   "js/munawar_c4_gram_book.js": {
    "v": "de8505205020",
@@ -1867,9 +1867,9 @@
    "sha256": "099751475b8f33d6ce9a910c4c692c27ec0d4c9178d033fc296e7f2ee8010aee"
   },
   "js/munawar_c4_sci_book.js": {
-   "v": "9ae6a736a121",
-   "bytes": 644254,
-   "sha256": "9ae6a736a12153eaf0a6ae2e7af88c95e6e03ec05348bcf38be77c0ef2320bf1"
+   "v": "69e4a81737d2",
+   "bytes": 648070,
+   "sha256": "69e4a81737d24ad3859d3cf4e6e5b4cf0be584b176c0a2d8b37d9a4ab8b54422"
   },
   "js/munawar_c4_sst_book.js": {
    "v": "4e168f0b65bd",
@@ -2878,7 +2878,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1563628
+   "bytes": 1681736
   },
   "cls2-mun-gram": {
    "classId": "cls2",
@@ -3115,7 +3115,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1388145
+   "bytes": 1417285
   },
   "cls3-mun-gram": {
    "classId": "cls3",
@@ -3363,7 +3363,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1267428
+   "bytes": 1296497
   },
   "cls4-mun-gram": {
    "classId": "cls4",
@@ -3416,7 +3416,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1126784
+   "bytes": 1130600
   },
   "cls4-mun-sst": {
    "classId": "cls4",
