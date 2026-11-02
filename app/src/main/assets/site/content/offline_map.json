@@ -1677,9 +1677,9 @@
    "sha256": "9525086cdbd9cf2f6e12930b5da6f40ae7859472b4c4eaceed7ab51f845c9c91"
   },
   "js/munawar_c1_comp_book.js": {
-   "v": "d0159d5c4eac",
-   "bytes": 186931,
-   "sha256": "d0159d5c4eac9f9b8b0c5c6ab8c7dd0d4cd122dc2fc28f3e2544a5892dcd7353"
+   "v": "9acd13412c9f",
+   "bytes": 821544,
+   "sha256": "9acd13412c9fe11bd7470fcd7c1c7576ad94f3461fed76185c71c47275062870"
   },
   "js/munawar_c1_compbl_book.js": {
    "v": "030311ba35bc",
@@ -2602,7 +2602,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 716862
+   "bytes": 1351475
   },
   "cls1-mun-compbl": {
    "classId": "cls1",

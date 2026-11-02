@@ -6504,8 +6504,8 @@
   },
   {
    "src": "js/munawar_c1_comp_book.js",
-   "bytes": 186931,
-   "sha256": "d0159d5c4eac9f9b8b0c5c6ab8c7dd0d4cd122dc2fc28f3e2544a5892dcd7353",
+   "bytes": 821544,
+   "sha256": "9acd13412c9fe11bd7470fcd7c1c7576ad94f3461fed76185c71c47275062870",
    "stubs": [
     {
      "name": "MUNAWAR_C1_COMP_DATA",
