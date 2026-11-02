@@ -176,30 +176,66 @@
       cur = byKey.get(key);
       if (u != null) cur.units.add(u);
     };
-    const put = (b, u) => {
+    const put = (b, u, si) => {
       if (!cur) { cur = {key: 'x0', printed: null, pdf: null, blocks: [], units: new Set()}; byKey.set('x0', cur); pages.push(cur); }
       if (u != null) cur.units.add(u);
       cur.blocks.push(b);
+      (cur.from || (cur.from = [])).push(u == null ? null : u + ':' + si);
     };
-    const feed = (list, u) => (list || []).forEach(b => {
+    const feed = (list, u, si) => (list || []).forEach(b => {
       if (b.t === 'page') { enter(b, u); return; }
       // an exercise / box that runs over a page break is cut at its page markers, one piece per page
       if (b.blocks && b.blocks.some(x => x.t === 'page')) {
         let chunk = [], first = true;
-        const flush = () => { if (chunk.length) put(Object.assign({}, b, {blocks: chunk, id: first || b.t !== 'exercise' ? b.id : ''}), u); first = false; chunk = []; };
+        const flush = () => { if (chunk.length) put(Object.assign({}, b, {blocks: chunk, id: first || b.t !== 'exercise' ? b.id : ''}), u, si); first = false; chunk = []; };
         b.blocks.forEach(x => { if (x.t === 'page') { flush(); enter(x, u); } else chunk.push(x); });
         flush();
         return;
       }
-      put(b, u);
+      put(b, u, si);
     });
     feed(res.front, null);
-    res.units.forEach((u, i) => (u.sections || []).forEach(sec => feed(sec.blocks, i)));
+    res.units.forEach((u, i) => (u.sections || []).forEach((sec, si) => feed(sec.blocks, i, si)));
     feed(res.back, null);
+    openerAlone(pages, res.units);
     // a page with nothing on it (only its number) is not shown: no blank page in the book
     const kept = pages.filter(p => p.blocks.length);
     cache.set(res.key, {units: res.units, pages: kept});
     return kept;
+  }
+
+  // A unit's first page shows only its opening (the unit title and Student Learning Outcomes); the Introduction and the lesson that the
+  // printed book starts on that same page begin on the unit's second page, ahead of what that page already holds. Same rule for every
+  // book, and the phone draws the same pages.
+  const OPENER = /learning outcomes|حاصلاتِ? ?تعل|حاصلات|زده کړې پایلې|^\s*(unit|chapter|lesson|باب|سبق|څپرکی)\s*[\w؀-ۿ]+\s*[:：]/i;
+  const INTRO = /introduction|تعارف|پېژندنه|^\s*\d+\.[01]\s/i;
+  const textOf = b => String(b.en || b.ur || b.ps || b.ar || b.text || '');
+  function isOpener(sec) {
+    if (!sec) return false;
+    if (/-opening$/.test(String(sec.id || '')) || OPENER.test(String(sec.title || ''))) return true;
+    return (sec.blocks || []).some(b => b.slo || (b.t === 'h' || b.t === 'p') && OPENER.test(textOf(b)));
+  }
+  function openerAlone(pages, units) {
+    units.forEach((u, i) => {
+      if (!isOpener((u.sections || [])[0])) return;
+      const tag = i + ':0';
+      const at = pages.findIndex(p => p.from && p.from.some(f => f != null && f.indexOf(i + ':') === 0));
+      if (at < 0) return;
+      const pg = pages[at], start = pg.from.indexOf(tag);
+      if (start < 0) return;
+      // the first block of a later section of this unit; or, inside the opening section, an Introduction heading after its outcomes list
+      let cut = pg.from.findIndex((f, k) => k > start && f !== tag && f != null && f.indexOf(i + ':') === 0);
+      if (cut < 0) {
+        const lastSlo = pg.blocks.reduce((m, b, k) => b.slo && pg.from[k] === tag ? k : m, -1);
+        if (lastSlo >= 0) cut = pg.blocks.findIndex((b, k) => k > lastSlo && b.t === 'h' && INTRO.test(textOf(b)));
+      }
+      if (cut <= start) return;
+      const moved = pg.blocks.splice(cut), from = pg.from.splice(cut);
+      let next = pages.slice(at + 1).find(p => p.units.has(i));
+      if (!next) { next = {key: pg.key + '-2', printed: null, pdf: null, blocks: [], from: [], units: new Set([i])}; pages.splice(at + 1, 0, next); }
+      next.blocks.unshift(...moved);
+      next.from = from.concat(next.from || []);
+    });
   }
 
   // odd printed page on the first side, even on the second, whatever order the data lists them in (a unit's sections need not follow the printed order, and

@@ -75,14 +75,21 @@
     if (el.closest('.sb-loading')) return;
     e.preventDefault(); e.stopImmediatePropagation();
     show('Opening…');
-    // let the overlay paint first, then run the original click (the handler blocks the page while it renders)
-    after(() => {
+    // a book: its files are downloaded first in the background with the real percent (js/core/lazy.js), so opening it never waits on the network
+    // with the page frozen; then the original click runs on files that are already here
+    const book = /openSubject\(\s*'([^']+)'\s*,\s*'([^']+)'/.exec(el.getAttribute('onclick') || '');
+    const L = window.SBLazy;
+    const need = book && L && L.filesFor ? L.filesFor(book[1], book[2]) : [];
+    const ready = need.length ? L.prepare(need, set) : Promise.resolve();
+    ready.then(() => after(() => {
+      const before = L && L.logSize ? L.logSize() : 0;
       el.__sbGo = true;
       try { el.click(); } finally { el.__sbGo = false; }
+      if (book && L && L.remember) L.remember(book[1], book[2], before);
       after(hide);
-    });
+    }));
   }, true);
 
   // safety net: never leave the overlay up
-  setInterval(() => { if (box && !document.hidden && Date.now() - (box._t = box._t || Date.now()) > 20000) { depth = 1; hide(); } }, 5000);
+  setInterval(() => { if (box && !document.hidden && Date.now() - (box._t = box._t || Date.now()) > (real ? 120000 : 20000)) { depth = 1; hide(); } }, 5000);   // a download that is moving may take longer
 })();

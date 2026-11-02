@@ -143,11 +143,71 @@
     });
   }
 
+  // ---- opening a book without freezing the page: the files a subject needs are downloaded in the background first (with a real percent), so the
+  // synchronous loadFile() that follows finds them here and only runs them. Which files: the ones the manifest files under that subject, the ones whose
+  // name carries the subject and the class number (phys_12_data.js), and the ones this device saw that subject load last time.
+  const ALIAS = {phy: 'phys|physics', phys: 'phys|physics', chem: 'chem|chemistry', bio: 'bio|biology', math: 'math', stat: 'stat|statistics', eng: 'eng|english',
+    urdu: 'urdu', pak: 'pak|pakstudy|pakstudies', pakstudy: 'pak|pakstudy|pakstudies', comp: 'comp|computer|cs', civics: 'civics', econ: 'econ|economics', hpe: 'hpe',
+    isl: 'isl|islamiat', islopt: 'islopt|ikhtiari|islamiat_ikhtiari', iski: 'iski|islamiat_ikhtiari', ishist: 'ishist|islamic_history', islhist: 'islhist|ishist|islamic_history',
+    quran: 'quran|mutalia_quran', mq: 'mq|mutalia_quran', sci: 'sci|general_science', geo: 'geo|geography', hist: 'hist|history', gk: 'gk', drawing: 'drawing',
+    arabic: 'arabic', pashto: 'pashto', nazira: 'nazira', sst: 'sst|social', sstum: 'sstum|social'};
+  const SEEN_KEY = 'sbLazySeen1';
+  const seenMap = () => { try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch (e) { return {}; } };
+  function filesFor(classId, subj) {
+    const n = String(classId || '').replace(/\D/g, ''), s = String(subj || '').replace(/^cls\d+v?-/, '').toLowerCase();
+    if (!n || !s) return [];
+    const al = ALIAS[s] || s.replace(/[^a-z0-9_]/g, '');
+    const named = new RegExp('(?:^|_)(?:' + al + ')(?:_|$)'), num = new RegExp('(?:^|_)' + n + '(?:_|$)');
+    const out = new Set(seenMap()[n + ':' + s] || []);
+    M.files.forEach(f => {
+      const base = f.src.replace(/^.*\//, '').replace(/\.js$/, '');
+      const boxed = Object.keys(f.keys || {}).some(c => (c === 'CLS' + n + '_BOOKS' || (n === '11' && c === 'CLASS11_BOOKS')) && f.keys[c].some(k => k.toLowerCase() === s));
+      if (boxed || (named.test(base) && num.test(base))) out.add(f.src);
+    });
+    return [...out].filter(src => byFile[src] && !loaded.has(src));
+  }
+  // download (not run) a list of files; onProgress(0..100) by bytes
+  function prepare(srcs, onProgress) {
+    const parts = [];
+    (srcs || []).forEach(src => { const f = byFile[src]; if (f && !loaded.has(src)) [f].concat(f.also || [], f.after || []).forEach(o => { if (!pre.has(url(o))) parts.push(o); }); });
+    if (!parts.length || !window.fetch) return Promise.resolve();
+    const total = parts.reduce((t, o) => t + ((byFile[o.src] && byFile[o.src].bytes) || 200000), 0);
+    let got = 0;
+    const tick = () => { if (onProgress) try { onProgress(Math.min(99, 100 * got / total)); } catch (e) { /* the overlay is gone */ } };
+    return Promise.all(parts.map(o => fetch(url(o)).then(r => {
+      if (!r.ok) throw new Error('SBLazy: cannot prepare ' + o.src);
+      const full = (byFile[o.src] && byFile[o.src].bytes) || 200000;
+      if (!r.body || !r.body.getReader) return r.text().then(t => { got += full; tick(); return t; });
+      // the file arrives compressed: count the share of its decoded size by the characters read so far
+      const rd = r.body.getReader(), dec = new TextDecoder(), chunks = [];
+      let mine = 0;
+      const pump = () => rd.read().then(({done, value}) => {
+        if (done) { chunks.push(dec.decode()); got += Math.max(0, full - mine); tick(); return chunks.join(''); }
+        const s = dec.decode(value, {stream: true}); chunks.push(s);
+        const add = Math.min(s.length, Math.max(0, full - mine)); mine += add; got += add; tick();
+        return pump();
+      });
+      return pump();
+    }).then(t => { pre.set(url(o), t); }).catch(() => { /* the synchronous path will try again */ }))).then(() => undefined);
+  }
+  // remember what a subject loaded on this device, so the next opening downloads all of it ahead
+  function remember(classId, subj, before) {
+    const n = String(classId || '').replace(/\D/g, ''), s = String(subj || '').replace(/^cls\d+v?-/, '').toLowerCase();
+    if (!n || !s) return;
+    const now = log.slice(before).map(l => l.src);
+    if (!now.length) return;
+    try { const m = seenMap(), k = n + ':' + s; m[k] = [...new Set((m[k] || []).concat(now))].slice(-12); localStorage.setItem(SEEN_KEY, JSON.stringify(m)); } catch (e) { /* private window */ }
+  }
+
   window.SBLazy = {
     manifest: M,
     attachData,
     isLoaded: src => loaded.has(src),
     preload,
+    filesFor,
+    prepare,
+    remember,
+    logSize: () => log.length,
     loadAll() { M.files.forEach(f => loadFile(f.src)); },
     stats() {
       return { files: M.files.length, loaded: log.length, bytesLoaded: log.reduce((n, l) => n + l.bytes, 0), bytesTotal: M.files.reduce((n, f) => n + f.bytes, 0), ms: log.reduce((n, l) => n + l.ms, 0), log: log.slice() };

@@ -168,6 +168,74 @@
     return sets;
   }
 
+
+  // ---------- practice made from the page itself (so no tab of a page is ever empty) ----------
+  const GT = {
+    en: {sq: k => `What does this page say about “${k}”?`, lq: (a, b) => `Explain “${a}”${b ? ` and “${b}”` : ''} in detail, using this page.`, mcq: 'Choose the word that completes the sentence.'},
+    ur: {sq: k => `اس صفحے میں «${k}» کے بارے میں کیا بتایا گیا ہے؟`, lq: (a, b) => `اس صفحے کی روشنی میں «${a}»${b ? ` اور «${b}»` : ''} کی تفصیل بیان کریں۔`, mcq: 'جملہ مکمل کرنے والا لفظ چنیں۔'},
+    ps: {sq: k => `پدې پاڼه کې د «${k}» په اړه څه ویل شوي؟`, lq: (a, b) => `د دې پاڼې په رڼا کې «${a}»${b ? ` او «${b}»` : ''} په تفصیل سره بیان کړئ.`, mcq: 'هغه کلمه وټاکئ چې جمله بشپړوي.'},
+    ar: {sq: k => `ماذا تقول هذه الصفحة عن «${k}»؟`, lq: (a, b) => `اشرح «${a}»${b ? ` و«${b}»` : ''} بالتفصيل من خلال هذه الصفحة.`, mcq: 'اختر الكلمة التي تكمل الجملة.'}
+  };
+  function hashN(str) { let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) | 0; return Math.abs(h); }
+  function genFor(unit, med) {
+    const T = TP(), S = sentencesOf(unit), out = {mcq: [], sq: [], lq: []};
+    const text = unitText(unit), nw = text.split(/\s+/).length;
+    const want = {mcq: Math.max(2, Math.min(10, Math.round(nw / 50))), sq: Math.max(2, Math.min(8, Math.round(nw / 80))), lq: Math.max(1, Math.min(4, Math.round(nw / 200)))};
+    const lang = T.lang(text) || med, G = GT[lang] || GT[med] || GT.en;
+    // key words of the page, most frequent first
+    const cnt = new Map(), shown = new Map();
+    T.content(text, 4).forEach(w => { const st = T.stem(w); cnt.set(st, (cnt.get(st) || 0) + 1); if (!shown.has(st)) shown.set(st, w); });
+    const keys = [...cnt.entries()].sort((a, b) => b[1] - a[1]).map(([st]) => shown.get(st));
+    const sents = S.list.length ? S.list : [text.slice(0, 300)];
+    const used = new Set();
+    const pickSent = kw => { const rx = kw.toLowerCase(); return sents.find(x => !used.has(x) && x.toLowerCase().includes(rx)) || sents.find(x => x.toLowerCase().includes(rx)) || sents[hashN(kw) % sents.length]; };
+    // MCQs: a sentence with a key word taken out, the word and three other key words of the page as options
+    for (let i = 0; i < keys.length && out.mcq.length < want.mcq; i++) {
+      const kw = keys[i], sent = pickSent(kw);
+      const at = sent.toLowerCase().indexOf(kw.toLowerCase());
+      if (at < 0 || used.has(sent + kw)) continue;
+      used.add(sent + kw);
+      const stem = sent.slice(0, at) + '_____' + sent.slice(at + kw.length);
+      const scr = w => /[A-Za-z]/.test(w) ? 'l' : 'a';
+      const pool = keys.filter(k => k.toLowerCase() !== kw.toLowerCase() && scr(k) === scr(kw));
+      if (pool.length < 3) continue;
+      const decoys = [0, 1, 2].map(j => pool[(hashN(kw) + j * 7) % pool.length]);
+      const uniq = [...new Set(decoys)];
+      for (let j = 0; uniq.length < 3 && j < pool.length; j++) if (!uniq.includes(pool[j])) uniq.push(pool[j]);
+      const opts = uniq.slice(0, 3); const pos = hashN(sent) % 4; opts.splice(pos, 0, kw);
+      out.mcq.push({kind: 'mcq', q: stem, opts, a: pos, gen: true});
+    }
+    // SQs: "what does the page say about <key word>" with the page's own sentence as the answer
+    for (let i = 0; i < keys.length && out.sq.length < want.sq; i++) {
+      const kw = keys[(i * 2 + 1) % keys.length], sent = pickSent(kw);
+      if (out.sq.some(x => x.q === G.sq(kw))) continue;
+      out.sq.push({kind: 'sq', q: G.sq(kw), ans: sent, gen: true});
+    }
+    // LQs: two key words together; the answer is the page's own sentences about them
+    for (let i = 0; i + 1 < keys.length + 1 && out.lq.length < want.lq; i++) {
+      const a = keys[(i * 3) % keys.length], b = keys.length > 1 ? keys[(i * 3 + 2) % keys.length] : '';
+      const q = G.lq(a, b === a ? '' : b);
+      if (out.lq.some(x => x.q === q)) continue;
+      out.lq.push({kind: 'lq', q, ans: pageAnswer(unit, q, 'lq') || sents.slice(0, 4).join(' '), gen: true});
+    }
+    // a page with almost no words still gets one of each kind
+    if (!out.mcq.length && keys.length >= 2) out.mcq.push({kind: 'mcq', q: sents[0].replace(keys[0], '_____'), opts: keys.slice(0, 4), a: 0, gen: true});
+    if (!out.sq.length) out.sq.push({kind: 'sq', q: G.sq(keys[0] || sents[0].slice(0, 30)), ans: sents[0], gen: true});
+    if (!out.lq.length) out.lq.push({kind: 'lq', q: G.lq(keys[0] || sents[0].slice(0, 30), ''), ans: sents.slice(0, 3).join(' '), gen: true});
+    return out;
+  }
+  // top up every kind of a page so none is empty; more text on the page gives more questions
+  function topUp(units, sets, med) {
+    units.forEach((u, i) => {
+      const g = genFor(u, med), st = sets[i];
+      KINDS.forEach(k => {
+        const have = new Set(st.slo[k].map(x => x.q));
+        g[k].forEach(x => { if (st.slo[k].length < g[k].length && !have.has(x.q)) { st.slo[k].push(x); have.add(x.q); } });
+        if (!st.ex[k].length) { const last = g[k][g[k].length - 1]; if (last) st.ex[k].push(Object.assign({}, last, {q: last.q})); }
+      });
+    });
+  }
+
   // ---------- the bar ----------
   function policy(board, kind, T) {
     if (!board || !board.s.pattern) return '';
@@ -221,7 +289,8 @@
   function itemHtml(it, T, TT, unit) {
     if (it.kind === 'slo') { const a = pageAnswer(unit, it.q, it.k); return `<div class="sb-tp-q sb-pt-slo"><div class="sb-tp-qt" dir="auto">${esc(it.q)}</div>${a ? `<button type="button" class="sb-tp-show">${esc(T.show)}</button><div class="sb-tp-ans" dir="auto" hidden><b>${esc(TT.frompage)}:</b> ${esc(a)}</div>` : ''}<div class="sb-pt-meta"><span class="sb-pt-chip">${esc(TT.slochip)}</span>${it.l ? `<span class="sb-pt-chip alt">${esc(TT.lvl)}: ${esc(it.l)}</span>` : ''}<span class="sb-pt-hint">${esc(TT.hint)}</span></div></div>`; }
     if (!it.ans && it.kind !== 'mcq' && it.kind !== 'tf') { const a = pageAnswer(unit, it.q, bucket(it)); if (a) it = Object.assign({}, it, {ans: TT.frompage + ': ' + a}); }
-    return TP().itemHtml(it, T);
+    const h = TP().itemHtml(it, T);
+    return it.gen ? h.replace(/<\/div>\s*$/, `<div class="sb-pt-meta"><span class="sb-pt-chip">${esc(TT.slochip)}</span></div></div>`) : h;
   }
   function panelHtml(st, which, kind, TT, T, board, med, unit) {
     const set = st[which], list = set[kind];
@@ -233,17 +302,21 @@
   }
   const total = set => KINDS.reduce((n, k) => n + set[k].length, 0);
 
-  function mount(unit, st, med, board) {
+  function mount(unit, st, med, board, opt) {
+    opt = opt || {};
+    // Islamiat, Arabic and the Quran books carry no Games button (js/sb_sacred.js); an exercise page there gets no bar at all
+    const noGame = !!(window.SBSacred && window.SBSacred.noGames(chapterNow().subj));
+    if (noGame && opt.gamesOnly) return;
     const TT = LBL[med] || LBL.en, T = TP().L[med] || TP().L.en;
     const host = document.createElement('div');
     host.className = 'sb-pt'; host.setAttribute('dir', med === 'en' ? 'ltr' : 'rtl');
     let which = null, kind = 'mcq';
     host.innerHTML = `<div class="sb-pt-bar">
-        <span style="display:contents" role="tablist" aria-label="${esc(TT.slo)} / ${esc(TT.ex)}">
-        <button type="button" class="sb-pt-tab" role="tab" data-w="slo" aria-selected="false">${TT.slo} <i>${total(st.slo)}</i></button>
+        ${opt.gamesOnly ? '' : `<span style="display:contents" role="tablist" aria-label="${esc(TT.slo)} / ${esc(TT.ex)}">
+        ${opt.slo ? `<button type="button" class="sb-pt-tab" role="tab" data-w="slo" aria-selected="false">${TT.slo} <i>${total(st.slo)}</i></button>` : ''}
         <button type="button" class="sb-pt-tab" role="tab" data-w="ex" aria-selected="false">${TT.ex} <i>${total(st.ex)}</i></button>
-        </span>
-        <button type="button" class="sb-pt-tab sb-pt-game" data-game="1" aria-haspopup="dialog">${TT.game}</button>
+        </span>`}
+        ${noGame ? '' : `<button type="button" class="sb-pt-tab sb-pt-game" data-game="1" aria-haspopup="dialog">${TT.game}</button>`}
       </div>
       <div class="sb-pt-drawer" hidden>
         <div class="sb-pt-sub" role="tablist">${KINDS.map(k => `<button type="button" class="sb-pt-subtab" role="tab" data-k="${k}" title="${esc(TT.full[k])}"><span lang="en">${TT[k]}</span> <i></i></button>`).join('')}</div>
@@ -283,7 +356,7 @@
   }
 
   // ---------- scanning ----------
-  let timer = 0, busy = false;
+  let timer = 0, busy = false, lastPlan = null;
   function scan(force) {
     if (busy) return; busy = true;
     try {
@@ -295,16 +368,24 @@
       if (force) { c.querySelectorAll('.sb-pt').forEach(x => x.remove()); c.querySelectorAll('[data-sb-pt], [data-sb-pt-no]').forEach(u => { u.removeAttribute('data-sb-pt'); u.removeAttribute('data-sb-pt-no'); }); }
       // exercise pages carry no bar; neither do the pages after the last exercise (summary, glossary). Lesson pages between
       // two exercises (a book that sets an exercise after each section) still do.
+      const LO = /^(?:student\s+)?(?:learning\s+outcomes?|slos?(?![a-z])|سیکھنے کے نتائج|طلبہ کے سیکھنے|د زده کړې پایلې)/i;
+      const isLO = u => LO.test(headOf(u).replace(/^(?:Page|Scan|صفحہ|پاڼه)\s*\d+\s*/i, '')) || LO.test(unitText(u).slice(0, 90).replace(/^(?:Page|Scan)\s*\d+\s*/i, ''));
       const flags = units.map(startsExercise), last = flags.lastIndexOf(true);
-      const pre = units.filter((u, i) => !flags[i] && (last < 0 || i < last));
+      const lo = units.map((u, i) => !flags[i] && isLO(u));
+      const pre = units.filter((u, i) => !flags[i] && !lo[i] && (last < 0 || i < last));
       units.forEach(u => { if (!pre.includes(u)) u.dataset.sbPtNo = '1'; });
-      if (!pre.length) return;
       let med = 'en'; try { med = (window.SBMedium && window.SBMedium.mediumNow()) || 'en'; } catch (e) { /* default */ }
       if (!LBL[med]) med = 'en';
       const cur = chapterNow();
+      const clsNo = +((/^cls(\d+)$/.exec(cur.cls || '') || [])[1] || 0);
       const board = cur.ch ? boardOf(cur.subj, cur.cls, cur.ch, cur.idx) : null;
+      // Exercise pages and Learning-outcome pages carry the Games button only
+      units.forEach((u, i) => { if ((flags[i] || lo[i]) && !u.dataset.sbPt) { mount(u, {slo: {mcq: [], sq: [], lq: []}, ex: {mcq: [], sq: [], lq: []}, slos: []}, med, null, {gamesOnly: true}); } });
+      if (!pre.length) return;
       const sets = plan(pre, cur.ch, board, med);
-      pre.forEach((u, i) => { if (!u.dataset.sbPt) mount(u, sets[i], med, board); });
+      topUp(pre, sets, med);
+      lastPlan = {pre, sets, ch: cur.ch, med, cls: cur.cls, subj: cur.subj};
+      pre.forEach((u, i) => { if (!u.dataset.sbPt) mount(u, sets[i], med, board, {slo: clsNo >= 9}); });
     } catch (e) { console.error('page tabs', e); } finally { busy = false; }
   }
   // a throttle, not a debounce: the full-screen book keeps touching the page every 300 ms
@@ -325,7 +406,7 @@
     .sb-pt-subtab.on{background:#dcfce7;border-color:#16a34a;color:#166534}.sb-pt-subtab.zero:not(.on){opacity:.6}
     .sb-pt-drawer{border-top:1px solid #e2e8f0;padding:.4rem .5rem .5rem}
     .sb-pt-sub{display:flex;gap:.4rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-bottom:.45rem}
-    .sb-pt-panel{max-height:max(min(44vh,420px),220px);overflow:auto;padding-inline-end:.2rem;scrollbar-width:thin}
+    .sb-pt-panel{max-height:min(44vh,420px);overflow:auto;padding-inline-end:.2rem;scrollbar-width:thin}
     .sb-pt-pol{font-size:.78rem;font-weight:600;color:#1e3a8a;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:.3rem .6rem;margin-bottom:.5rem}
     .sb-pt-cov{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:.3rem .6rem;margin-bottom:.5rem;font-size:.84rem}
     .sb-pt-cov summary{cursor:pointer;font-weight:700;color:#075985}.sb-pt-cov ul{margin:.3rem 0 .1rem;padding-inline-start:1.2rem;line-height:1.6}.sb-pt-cov em{color:#64748b;font-size:.75rem}
@@ -345,7 +426,7 @@
     .bk-page>.sb-pt{margin-bottom:.8rem;margin-right:5.6rem}   /* the page's Bookmark / Notes buttons sit in the top corner, beside the bar */
     .bk-page>.sb-pt .sb-pt-tab{padding:.28rem .7rem;font-size:.8rem}
     .math-accordion-body>.sb-pt{margin-top:-.2rem}
-    @media (max-width:560px){.sb-pt-tab,.sb-pt-subtab{padding:.26rem .55rem;font-size:.76rem;gap:.25rem}.sb-pt-tab{flex:1 1 0;justify-content:center}.sb-pt-panel{max-height:max(38vh,200px)}}
+    @media (max-width:560px){.sb-pt-tab,.sb-pt-subtab{padding:.26rem .55rem;font-size:.76rem;gap:.25rem}.sb-pt-tab{flex:1 1 0;justify-content:center}.sb-pt-panel{max-height:38vh}}
     `;
     document.head.appendChild(s);
     new MutationObserver(recs => {
@@ -355,5 +436,5 @@
     refresh(false);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
-  window.SBPageTabs = {scan: () => scan(true), plan, unitsIn, startsExercise, unitText, chapterNow, boardOf, bucket, sloBucket};
+  window.SBPageTabs = {lastPlan: () => lastPlan, genFor, scan: () => scan(true), plan, unitsIn, startsExercise, unitText, chapterNow, boardOf, bucket, sloBucket};
 })();

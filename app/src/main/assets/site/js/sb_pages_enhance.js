@@ -53,12 +53,10 @@
     body.appendChild(strip);
   }
 
+  // extends the page function through the hook registry (js/core/hooks.js): a hand-made replacement of window[name] fails tools/wrappers_audit.js
   function wrapFn(name, after) {
-    const orig = window[name];
-    if (typeof orig !== 'function' || orig.__sbEnh) return;
-    const w = function () { const r = orig.apply(this, arguments); try { after.apply(null, arguments); } catch (e) { /* the original page stays */ } return r; };
-    w.__sbEnh = true;
-    window[name] = w;
+    if (!window.SBHooks || typeof window[name] !== 'function') return;
+    SBHooks.use(name, next => function () { const r = next.apply(this, arguments); try { after.apply(null, arguments); } catch (e) { /* the original page stays */ } return r; }, { id: 'sb_pages_enhance.js' });
   }
   // Reader (designs 06, 07): on wide screens the chapter list opens with its titles, like the "Unit Contents" panel; the rail button still folds it.
   function openRail() {

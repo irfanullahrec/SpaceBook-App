@@ -124,14 +124,14 @@
     if (fig) {
       if (getComputedStyle(fig).position === 'static') fig.style.position = 'relative';
       badge = document.createElement('div'); badge.className = 'sbt-badge'; badge.hidden = true; fig.appendChild(badge);
-      reset = document.createElement('button'); reset.type = 'button'; reset.className = 'c1-drawbtn sbt-reset'; reset.style.cssText = 'right:auto;left:.4rem';
+      reset = document.createElement('button'); reset.type = 'button'; reset.className = 'c1-drawbtn sbt-reset'; reset.style.cssText = 'position:static;display:block;margin:.9rem auto .4rem;clear:both';
       reset.addEventListener('click', ev => {
         ev.stopPropagation();
         const rec = window.SBRewards && SBRewards.get(key);
         run.repeat = !!(rec && rec.times > 0); run.done.clear();
         ui.resetAll(); paint();
       });
-      fig.appendChild(reset);
+      fig.insertAdjacentElement('afterend', reset);      // below the picture, never over the part the child traces
     }
     const fmt = d => { if (!d) return ''; const t = new Date(String(d).replace(' ', 'T')); return isNaN(t) ? '' : t.toLocaleDateString(undefined, {day: 'numeric', month: 'short'}); };
     function paint() {

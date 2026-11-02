@@ -24,6 +24,27 @@
     'في من على إلى عن أن إن كان كانت هذا هذه ذلك التي الذي ثم او أو لا ما هو هي ' +
     'کے کی کا کو میں سے پر اور یہ وہ ہے ہیں تھا تھی تھے ہو ہوتا ہوتی ہوتے کہ بھی نے کر کرنا کیا جو جس ایک اس ان لیے لئے ساتھ بعد پہلے ' +
     'د په او چې کې له سره هم یو دا ده دي وي شي نه ته هغه دغه څخه لپاره وروسته مخکې کله').split(/\s+/));
+
+  /* Guide shown whenever a game is paused (Space bar, the pause button, Escape): how to win, in English, Urdu and Pashto. */
+  const GUIDE = {
+    snake: ['Steer the snake with the arrow keys or by swiping. Eat the food that carries the RIGHT answer to grow; a wrong one costs a life. Fill the goal to win.', 'تیر والی کیز یا انگلی سے سانپ کو چلائیں۔ صحیح جواب والا کھانا کھائیں تو سانپ بڑا ہوگا، غلط پر ایک جان جائے گی۔ ہدف پورا کریں تو جیت۔', 'د غشي کیلي یا ګوتې سره مار حرکت ورکړئ. سم ځواب لرونکې خوراک وخورئ، غلط ځواب ژوند کموي. هدف بشپړ کړئ ترڅو ګټه وکړئ.'],
+    candy: ['Tap two tiles to swap them. Match each clue with its answer. Match them all before you run out of lives.', 'دو ٹائلز پر ٹیپ کر کے بدلیں۔ ہر سراغ کو اس کے جواب سے ملائیں۔ جانیں ختم ہونے سے پہلے سب ملائیں۔', 'دوه ټایلونه ټچ کړئ ترڅو بدل شي. هر ګواښ له خپل ځواب سره جوړ کړئ. مخکې له دې چې ژوند ختم شي ټول جوړ کړئ.'],
+    treasure: ['Solve each clue to open a gate. Pick the right answer to move on; open all gates to reach the treasure.', 'ہر سراغ حل کر کے دروازہ کھولیں۔ صحیح جواب چنیں اور آگے بڑھیں۔ تمام دروازے کھول کر خزانہ حاصل کریں۔', 'هر ګواښ حل کړئ ترڅو دروازه خلاصه شي. سم ځواب وټاکئ او مخکې ولاړ شئ. ټول دروازې خلاصې کړئ ترڅو خزانې ته ورسېږئ.'],
+    subway: ['Switch lanes with Left / Right (or swipe) and run through the RIGHT answer. Jump over nothing else: wrong answers cost a life.', 'بائیں / دائیں (یا سوائپ) سے لین بدلیں اور صحیح جواب میں سے گزریں۔ غلط جواب پر جان جاتی ہے۔', 'کیڼ / ښي (یا سوایپ) سره لاین بدل کړئ او له سم ځواب څخه تیر شئ. غلط ځواب ژوند کموي.'],
+    temple: ['Pick the door that has the right answer: Left / Right keys or swipe. Wrong door = lose a life. Pass all doors to win.', 'صحیح جواب والا دروازہ چنیں: بائیں / دائیں کی یا سوائپ۔ غلط دروازہ = ایک جان کم۔ سب دروازے پار کریں۔', 'هغه دروازه وټاکئ چې سم ځواب لري: کیڼ / ښي کیلي یا سوایپ. غلطه دروازه = یو ژوند کم. ټولې دروازې تیرې کړئ.'],
+    race: ['Steer your car between lanes. Right answers make the car faster; wrong ones slow it down. Cross the finish line first.', 'گاڑی کو لینز میں چلائیں۔ صحیح جواب سے رفتار بڑھتی ہے، غلط سے کم ہوتی ہے۔ سب سے پہلے فنش لائن پار کریں۔', 'موټر په لاینونو کې حرکت ورکړئ. سم ځواب سرعت زیاتوي، غلط یې کموي. لومړی د پای کرښه تیره کړئ.'],
+    flappy: ['Tap / press Up to flap and fly through the gate with the RIGHT answer. Hitting a wrong gate or the ground costs a life.', 'اڑنے کے لیے ٹیپ / اوپر کی دبائیں اور صحیح جواب والے دروازے سے گزریں۔ غلط دروازے یا زمین سے ٹکرانے پر جان جاتی ہے۔', 'د الوتنې لپاره ټچ / پورته کیلي وکړئ او له سم ځواب لرونکې دروازې تیر شئ. غلطې دروازې یا ځمکې سره ټکر ژوند کموي.'],
+    ninja: ['Swipe across the fruit that carries the right answer. Do not slice the wrong ones. Slice enough right fruit to win.', 'جس پھل پر صحیح جواب لکھا ہو اس پر انگلی پھیریں۔ غلط پھل نہ کاٹیں۔ کافی صحیح پھل کاٹ کر جیتیں۔', 'پر هغه میوه ګوتې تېرې کړئ چې سم ځواب لري. غلطې مه پرې کوئ. کافي سمې میوې پرې کړئ ترڅو وګټئ.'],
+    balloon: ['Tap the balloon with the right answer to pop it. Wrong balloons cost a life. Pop enough right ones to win.', 'صحیح جواب والے غبارے پر ٹیپ کریں۔ غلط غبارے پر جان جاتی ہے۔ کافی صحیح غبارے پھوڑ کر جیتیں۔', 'هغه بالون ټچ کړئ چې سم ځواب لري. غلط بالون ژوند کموي. کافي سم بالونونه وچاوئ ترڅو وګټئ.'],
+    bubble: ['Aim and tap to shoot the bubble that holds the right answer into the matching spot. A wrong bubble costs a life.', 'نشانہ لے کر ٹیپ کریں اور صحیح جواب والا بلبلہ درست جگہ پر چلائیں۔ غلط بلبلہ = جان کم۔', 'نښه واخلئ او ټچ کړئ ترڅو سم ځواب لرونکی بلبل په سمه ځای ولګي. غلط بلبل ژوند کموي.'],
+    birds: ['Drag back and release to launch the bird at the crate that carries the right answer. Hit the wrong crate and you lose a life.', 'پیچھے کھینچ کر چھوڑیں اور پرندے کو صحیح جواب والے ڈبے پر ماریں۔ غلط ڈبے پر جان جاتی ہے۔', 'شاته ایستل او خوشې کول ترڅو مرغه هغه بکس ته ولګي چې سم ځواب لري. غلط بکس ژوند کموي.'],
+    penalty: ['Choose the corner with the right answer to shoot. Right answer = goal; wrong = the keeper saves. Score enough goals to win.', 'صحیح جواب والے کونے کا انتخاب کر کے شاٹ ماریں۔ صحیح = گول، غلط = گول کیپر بچا لے گا۔ کافی گول کریں۔', 'هغه کونج وټاکئ چې سم ځواب لري او شاټ وکړئ. سم = ګول، غلط = ګولکیپر یې ساتي. کافي ګولونه وکړئ.'],
+    build: ['Solve each challenge to unlock blocks, then place them to build the house. All blocks placed = level complete.', 'ہر چیلنج حل کر کے بلاکس کھولیں، پھر انہیں رکھ کر گھر بنائیں۔ تمام بلاکس لگ جائیں تو درجہ مکمل۔', 'هر ننګونه حل کړئ ترڅو بلاکونه خلاص شي، بیا یې کېږدئ او کور جوړ کړئ. ټول بلاکونه کېښودل شي نو کچه بشپړه ده.'],
+    hill: ['Answer the question to get fuel, then hold the pedal to drive uphill. No fuel = the car stops. Reach the top.', 'سوال کا جواب دے کر ایندھن لیں، پھر پیڈل دبا کر چڑھائی چڑھیں۔ ایندھن ختم تو گاڑی رک جائے گی۔ چوٹی تک پہنچیں۔', 'پوښتنې ته ځواب ورکړئ ترڅو تیل ترلاسه شي، بیا پیډل ونیسئ او پورته ولاړ شئ. تیل ختم = موټر ودریږي. سر ته ورسېږئ.'],
+    train: ['Control the speed and stop the train exactly at the station. Answer correctly to complete each mission.', 'رفتار قابو کر کے ٹرین کو ٹھیک اسٹیشن پر روکیں۔ ہر مشن صحیح جواب دے کر مکمل کریں۔', 'سرعت کنټرول کړئ او اورګاډی په سم سټېشن کې ودروئ. هر ماموریت په سم ځواب بشپړ کړئ.']
+  };
+  const GUIDE_DEF = ['Answer the questions from this page to win: right answers score, wrong ones cost a life.', 'اس صفحے کے سوالوں کے صحیح جواب دے کر جیتیں: صحیح پر پوائنٹس، غلط پر ایک جان کم۔', 'د دې مخ پوښتنو ته سم ځواب ورکړئ: سم ځواب نمرې، غلط ځواب ژوند کموي.'];
+  const guideHtml = gm => { const g = GUIDE[gm && gm.id] || GUIDE_DEF; return `<div class="sba-guide"><h3>${esc((gm && gm.name) || '')} — How to win</h3><p lang="en" dir="ltr">${esc(g[0])}</p><p lang="ur" dir="rtl">${esc(g[1])}</p><p lang="ps" dir="rtl">${esc(g[2])}</p></div>`; };
   const ARABIC = /[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]/;
   const MARKS = /[\p{M}ـ]/gu;                                   // vowel signs and tatweel: not part of a word's identity
   const key = w => w.toLowerCase().replace(MARKS, '');
@@ -136,10 +157,10 @@
    * 2. The overlay: hub, the frame every game shares (lives, score, question bar, pause), coins, sounds
    * ===================================================================================================== */
   const LANG = {
-    en: { games: 'Games', play: 'Play', again: 'Play again', hub: 'All games', close: 'Close', none: 'There are no games on this page', noneWhy: 'Games are made from the words and numbers of a page. This page has too little text to make questions from. Open a page with a lesson, a paragraph or sums and try again.', made: n => n + ' questions from this page', best: 'Best', won: 'Level complete!', lost: 'Game over', coins: 'coins', score: 'Score', pause: 'Paused', resume: 'Resume', how: 'How to play', sound: 'Sound', correct: 'Right answer', paused: 'Paused', speed: 'Game speed', sp_slow: 'Slow', sp_easy: 'Easy', sp_normal: 'Normal' },
-    ur: { games: 'کھیل', play: 'کھیلیں', again: 'دوبارہ کھیلیں', hub: 'تمام کھیل', close: 'بند کریں', none: 'اس صفحے پر کوئی کھیل نہیں', noneWhy: 'کھیل صفحے کے الفاظ اور اعداد سے بنتے ہیں۔ اس صفحے میں سوال بنانے کے لیے متن کافی نہیں۔ کوئی سبق یا حساب والا صفحہ کھولیں۔', made: n => 'اس صفحے سے ' + n + ' سوال', best: 'بہترین', won: 'درجہ مکمل!', lost: 'کھیل ختم', coins: 'سکے', score: 'سکور', pause: 'رکا ہوا', resume: 'جاری رکھیں', how: 'کیسے کھیلیں', sound: 'آواز', correct: 'صحیح جواب', paused: 'رکا ہوا', speed: 'کھیل کی رفتار', sp_slow: 'آہستہ', sp_easy: 'آسان', sp_normal: 'عام' },
-    ps: { games: 'لوبې', play: 'لوبه وکړئ', again: 'بیا لوبه', hub: 'ټولې لوبې', close: 'بندول', none: 'پدې مخ کې لوبه نشته', noneWhy: 'لوبې د مخ له کلمو او شمېرو جوړېږي. پدې مخ کې د پوښتنو جوړولو لپاره کافي متن نشته. یو درس یا حساب لرونکی مخ پرانیزئ.', made: n => 'له دې مخ ' + n + ' پوښتنې', best: 'غوره', won: 'کچه بشپړه شوه!', lost: 'لوبه پای ته ورسېده', coins: 'سکې', score: 'نمرې', pause: 'ودرېده', resume: 'دوام', how: 'څنګه لوبه کوئ', sound: 'غږ', correct: 'سم ځواب', paused: 'ودرېده', speed: 'د لوبې چټکتیا', sp_slow: 'ورو', sp_easy: 'اسانه', sp_normal: 'نورمال' },
-    ar: { games: 'ألعاب', play: 'العب', again: 'العب مرة أخرى', hub: 'كل الألعاب', close: 'إغلاق', none: 'لا توجد ألعاب في هذه الصفحة', noneWhy: 'تُصنع الألعاب من كلمات وأرقام الصفحة. هذه الصفحة تحتوي نصًا قليلًا لصنع أسئلة. افتح صفحة فيها درس أو فقرة أو مسائل.', made: n => n + ' سؤالًا من هذه الصفحة', best: 'الأفضل', won: 'اكتمل المستوى!', lost: 'انتهت اللعبة', coins: 'عملات', score: 'النقاط', pause: 'متوقف', resume: 'متابعة', how: 'كيف تلعب', sound: 'الصوت', correct: 'إجابة صحيحة', paused: 'متوقف', speed: 'سرعة اللعبة', sp_slow: 'بطيء', sp_easy: 'سهل', sp_normal: 'عادي' },
+    en: { games: 'Games', play: 'Play', again: 'Play again', hub: 'All games', close: 'Close', none: 'There are no games on this page', noneWhy: 'Games are made from the words and numbers of a page. This page has too little text to make questions from. Open a page with a lesson, a paragraph or sums and try again.', made: n => n + ' questions from this page', best: 'Best', won: 'Level complete!', lost: 'Game over', coins: 'coins', score: 'Score', pause: 'Paused', resume: 'Resume', how: 'How to play', sound: 'Sound', correct: 'Right answer', paused: 'Paused' },
+    ur: { games: 'کھیل', play: 'کھیلیں', again: 'دوبارہ کھیلیں', hub: 'تمام کھیل', close: 'بند کریں', none: 'اس صفحے پر کوئی کھیل نہیں', noneWhy: 'کھیل صفحے کے الفاظ اور اعداد سے بنتے ہیں۔ اس صفحے میں سوال بنانے کے لیے متن کافی نہیں۔ کوئی سبق یا حساب والا صفحہ کھولیں۔', made: n => 'اس صفحے سے ' + n + ' سوال', best: 'بہترین', won: 'درجہ مکمل!', lost: 'کھیل ختم', coins: 'سکے', score: 'سکور', pause: 'رکا ہوا', resume: 'جاری رکھیں', how: 'کیسے کھیلیں', sound: 'آواز', correct: 'صحیح جواب', paused: 'رکا ہوا' },
+    ps: { games: 'لوبې', play: 'لوبه وکړئ', again: 'بیا لوبه', hub: 'ټولې لوبې', close: 'بندول', none: 'پدې مخ کې لوبه نشته', noneWhy: 'لوبې د مخ له کلمو او شمېرو جوړېږي. پدې مخ کې د پوښتنو جوړولو لپاره کافي متن نشته. یو درس یا حساب لرونکی مخ پرانیزئ.', made: n => 'له دې مخ ' + n + ' پوښتنې', best: 'غوره', won: 'کچه بشپړه شوه!', lost: 'لوبه پای ته ورسېده', coins: 'سکې', score: 'نمرې', pause: 'ودرېده', resume: 'دوام', how: 'څنګه لوبه کوئ', sound: 'غږ', correct: 'سم ځواب', paused: 'ودرېده' },
+    ar: { games: 'ألعاب', play: 'العب', again: 'العب مرة أخرى', hub: 'كل الألعاب', close: 'إغلاق', none: 'لا توجد ألعاب في هذه الصفحة', noneWhy: 'تُصنع الألعاب من كلمات وأرقام الصفحة. هذه الصفحة تحتوي نصًا قليلًا لصنع أسئلة. افتح صفحة فيها درس أو فقرة أو مسائل.', made: n => n + ' سؤالًا من هذه الصفحة', best: 'الأفضل', won: 'اكتمل المستوى!', lost: 'انتهت اللعبة', coins: 'عملات', score: 'النقاط', pause: 'متوقف', resume: 'متابعة', how: 'كيف تلعب', sound: 'الصوت', correct: 'إجابة صحيحة', paused: 'متوقف' },
   };
   const FONT = '"Segoe UI",system-ui,-apple-system,Roboto,"Noto Sans","Noto Naskh Arabic","Jameel Noori Nastaleeq",sans-serif';
   const GAMES = [];
@@ -173,10 +194,6 @@
 .sba-hub h2{margin:.2rem 0 .1rem;font-size:1.15rem}
 .sba-hub p{margin:.1rem 0 .6rem;color:#9fb3d9;font-size:.85rem}
 .sba-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem;width:100%}
-.sba-speed{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.4rem;margin:.7rem 0 0;color:#e2e8f0;font:600 .9rem system-ui,sans-serif}
-.sba-speed button{min-height:44px;min-width:44px;padding:.3rem .9rem;border-radius:999px;border:2px solid #94a3b8;background:transparent;color:inherit;font:inherit;cursor:pointer}
-.sba-speed button.on{background:#fff;color:#0f172a;border-color:#fff}
-.sba-speed button:focus-visible{outline:3px solid #fde047;outline-offset:2px}
 @media (min-width:560px){.sba-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .sba-card{display:flex;flex-direction:column;align-items:flex-start;gap:.15rem;text-align:start;padding:.55rem .6rem;border:1px solid #2b3f68;background:linear-gradient(160deg,#16233f,#0f1a30);color:#fff;border-radius:14px;font:inherit;cursor:pointer;min-height:5.4rem}
 .sba-card:active{transform:scale(.98)}
@@ -184,6 +201,7 @@
 .sba-msg{margin:auto;max-width:420px;text-align:center}
 .sba-msg h2{margin:.3rem 0;font-size:1.25rem}.sba-msg p{color:#b7c6e6;margin:.3rem 0 .8rem}
 .sba-msg .big{font-size:3rem;line-height:1.1}
+.sba-guide{background:#0f1b3a;border:1px solid #2b3f73;border-radius:12px;padding:.6rem .8rem;margin:.5rem 0 .8rem;text-align:start}.sba-guide h3{margin:0 0 .3rem;font-size:.95rem;color:#fde68a}.sba-guide p{margin:.25rem 0;font-size:.9rem;line-height:1.7;color:#dbe6ff}
 .sba-row{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:.6rem}
 .sba-btn{border:0;border-radius:999px;padding:.6rem 1.2rem;font:800 .95rem system-ui,sans-serif;background:#22c55e;color:#04210f;cursor:pointer;min-height:2.6rem}
 .sba-btn.alt{background:#1d2c4d;color:#fff;border:1px solid #334a73}
@@ -199,10 +217,6 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
 
   // ---- sound (WebAudio, only after the first touch) and settings kept on the device ----
   const store = { get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage blocked: nothing is kept */ } } };
-  // How fast the games run: Easy is the default (a child who is still reading the question is not run over); the choice is kept. Only the live loop is scaled
-  // (frame()), the step() the tests call by hand is not.
-  const SPEEDS = { slow: 0.55, easy: 0.75, normal: 1 };
-  const speedPref = () => { const v = store.get('sb_arcade_speed', 'easy'); return SPEEDS[v] ? v : 'easy'; };
   let actx = null;
   function beep(freq, dur, type, vol) {
     if (store.get('sb_arcade_mute', false)) return;
@@ -260,8 +274,13 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
     opt = opt || {};
     if (current) current.destroy();
     addCss();
-    const text = typeof src === 'string' ? src : (src && src.text != null && !src.nodeType ? src.text : unitText(src));
+    const SAC = root.SBSacred;
+    const raw = typeof src === 'string' ? src : (src && src.text != null && !src.nodeType ? src.text : unitText(src));
     const meta = identify(src && src.nodeType ? src : null, typeof src === 'object' && !src.nodeType ? src : opt);
+    // Islamiat, Arabic and the Quran books have no games; elsewhere a sentence naming something sacred never enters a game (js/sb_sacred.js)
+    let subjNow = ''; try { subjNow = (root.SBPageTabs && root.SBPageTabs.chapterNow ? root.SBPageTabs.chapterNow().subj : '') || ''; } catch (e) { /* no chapter open */ }
+    if (SAC && SAC.noGames(subjNow)) return null;
+    const text = SAC ? SAC.stripSacred(raw) : raw;
     const L = LANG[opt.lang || uiLang()] || LANG.en;
     const pack = extract(text);
     const rtlPage = langOf(text) === 'ar';
@@ -282,7 +301,7 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
     let W = 300, H = 400, dpr = 1;
     const E = {
       el, stage, g, R, seed, meta, L, pack, rtlPage, auto: opt.auto || null, manual: !!opt.manual,
-      get W() { return W; }, get H() { return H; }, rnd: R, t: 0, FONT, speed: SPEEDS[speedPref()],
+      get W() { return W; }, get H() { return H; }, rnd: R, t: 0, FONT,
       lives: 3, score: 0, streak: 0, right: 0, goal: 8, state: 'hub', game: null, inst: null, paused: false, q: null, steps: 0, coinsEarned: 0, wrongs: 0,
     };
     const feed = makeFeed(pack, R);
@@ -425,7 +444,6 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
     // ---- screens ----
     function show(html, clear) { layer.hidden = false; layer.classList.toggle('clear', !!clear); layer.innerHTML = html; layer.scrollTop = 0; }
     function hideLayer() { layer.hidden = true; layer.innerHTML = ''; }
-    const speedHtml = () => `<div class="sba-speed" role="radiogroup" aria-label="${esc(L.speed)}"><span>${esc(L.speed)}</span>${['slow', 'easy', 'normal'].map(k => `<button type="button" role="radio" aria-checked="${speedPref() === k}" class="${speedPref() === k ? 'on' : ''}" data-sp="${k}">${esc(L['sp_' + k])}</button>`).join('')}</div>`;
     function showHub() {
       E.state = 'hub'; E.paused = false; timers.length = 0; if (E.inst && E.inst.destroy) { try { E.inst.destroy(); } catch (e) { /* closing */ } } E.inst = null; E.game = null; E.clearAsk(); E.setQuestion(null); setQ(false);
       pauseBtn.hidden = true; titleEl.textContent = '🎮 ' + L.games; paintStats(); g.clearRect(0, 0, W, H);
@@ -437,7 +455,7 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
       show(`<div class="sba-hub"><h2 dir="auto">${esc(meta.title)}</h2><p dir="auto">${esc(L.made(pack.items.length))}</p><div class="sba-grid">${GAMES.map(gm => {
         const bb = b[meta.pid + '|' + gm.id];
         return `<button type="button" class="sba-card" data-g="${gm.id}"><em aria-hidden="true">${gm.emoji}</em><b>${esc(gm.name)}</b><span>${esc(gm.teach)}</span>${bb ? `<small>${'⭐'.repeat(bb.stars)} ${esc(L.best)} ${bb.score}</small>` : ''}</button>`;
-      }).join('')}</div>${speedHtml()}</div>`);
+      }).join('')}</div></div>`);
     }
     function showResult(won) {
       const earned = E.right;
@@ -446,7 +464,7 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
         <div class="sba-row"><button type="button" class="sba-btn" data-g="${E.game.id}">${esc(L.again)}</button><button type="button" class="sba-btn alt" data-a="hub">${esc(L.hub)}</button></div></div>`);
     }
     function showHow(gm) {
-      show(`<div class="sba-msg"><div class="big">${gm.emoji}</div><h2>${esc(gm.name)}</h2><p dir="auto">${esc(gm.how || gm.teach)}</p><div class="sba-row"><button type="button" class="sba-btn" data-a="go">${esc(L.play)}</button><button type="button" class="sba-btn alt" data-a="hub">${esc(L.hub)}</button></div>${speedHtml()}</div>`);
+      show(`<div class="sba-msg"><div class="big">${gm.emoji}</div><h2>${esc(gm.name)}</h2><p dir="auto">${esc(gm.how || gm.teach)}</p><div class="sba-row"><button type="button" class="sba-btn" data-a="go">${esc(L.play)}</button><button type="button" class="sba-btn alt" data-a="hub">${esc(L.hub)}</button></div></div>`);
       E.pendingGame = gm;
     }
 
@@ -469,7 +487,7 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
       raf = 0;
       if (!current || current !== api) return;
       const dt = lastT ? Math.min(0.05, (ts - lastT) / 1000) : 0.016; lastT = ts;
-      step(dt * E.speed);
+      step(dt);
       raf = requestAnimationFrame(frame);
     }
     function step(dt) {
@@ -516,6 +534,7 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
     const keys = e => {
       if (!current || current !== api) return;
       if (e.key === 'Escape') { e.stopPropagation(); if (E.state === 'play') togglePause(); else close(); return; }
+      if (e.key === ' ' || e.code === 'Space') { if (E.state === 'play' || E.state === 'paused') { e.preventDefault(); e.stopPropagation(); togglePause(); } return; }
       if (E.state !== 'play' || E.paused || !E.inst) return;
       const m = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down', a: 'left', d: 'right', w: 'up', s: 'down', ' ': 'action' }[e.key];
       if (m && E.inst.key) { e.preventDefault(); E.inst.key(m); }
@@ -526,15 +545,13 @@ html.sba-lock,html.sba-lock body{overflow:hidden!important}
       if (E.state !== 'play' && E.state !== 'paused') return;
       E.paused = !E.paused; E.state = E.paused ? 'paused' : 'play';
       pauseBtn.innerHTML = ico(E.paused ? 'play' : 'pause');
-      if (E.paused) show(`<div class="sba-msg"><div class="big">⏸</div><h2>${esc(L.paused)}</h2><div class="sba-row"><button type="button" class="sba-btn" data-a="resume">${esc(L.resume)}</button><button type="button" class="sba-btn alt" data-a="hub">${esc(L.hub)}</button></div></div>`);
+      if (E.paused) show(`<div class="sba-msg"><div class="big">⏸</div><h2>${esc(L.paused)}</h2>${guideHtml(E.game)}<div class="sba-row"><button type="button" class="sba-btn" data-a="resume">${esc(L.resume)}</button><button type="button" class="sba-btn alt" data-a="hub">${esc(L.hub)}</button></div></div>`);
       else hideLayer();
       paintStats();
     }
     function close() { api.destroy(); try { root.SBHost && root.SBHost.onAction && root.SBHost.onAction('gamesClosed', ''); } catch (e) { /* not in the app */ } }
 
     el.addEventListener('click', e => {
-      const sp = e.target.closest('[data-sp]');
-      if (sp) { store.set('sb_arcade_speed', sp.dataset.sp); E.speed = SPEEDS[sp.dataset.sp] || SPEEDS.easy; el.querySelectorAll('[data-sp]').forEach(b => { const on = b.dataset.sp === sp.dataset.sp; b.classList.toggle('on', on); b.setAttribute('aria-checked', on); }); return; }
       const c = e.target.closest('[data-g]'), a = e.target.closest('[data-a]');
       if (c) { const gm = GAMES.find(x => x.id === c.dataset.g); if (gm) { if (c.classList.contains('sba-card') && !store.get('sb_arcade_seen_' + gm.id, false)) { store.set('sb_arcade_seen_' + gm.id, true); showHow(gm); } else start(gm); } return; }
       if (!a) return;

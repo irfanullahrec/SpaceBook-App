@@ -63,7 +63,7 @@
   .sb-fs-host:fullscreen{background:#fff;overflow:auto;padding:1rem;width:100vw;height:100vh;box-sizing:border-box}
   .sb-fs-host:fullscreen .math-ch-sidebar{max-height:calc(100vh - 2rem)}
   .sb-fs-host:fullscreen .math-topic-area{max-height:calc(100vh - 2rem);overflow:auto}
-  .sb-fs-host.sb-fs-fallback{position:fixed!important;inset:0;z-index:960;background:#fff;overflow:auto;padding:1rem}
+  .sb-fs-host.sb-fs-fallback{position:fixed!important;inset:0;z-index:1100;background:#fff;overflow:auto;padding:1rem}
   .sb-rail-btn{display:none;align-items:center;justify-content:center;flex:0 0 auto;width:34px;height:34px;border:1px solid rgba(255,255,255,.28);border-radius:9px;background:rgba(255,255,255,.1);color:#fff;font:700 1rem system-ui,sans-serif;line-height:1;cursor:pointer;padding:0}
   .sb-rail-btn:hover,.sb-rail-btn:focus-visible{background:#0369a1;border-color:#0369a1;outline:none}
   @media(min-width:761px){html:not(.sbapp) .math-unified-view.sb-fs-host .sb-rail-btn,.math-unified-view.sb-fs-fallback .sb-rail-btn{display:inline-flex}

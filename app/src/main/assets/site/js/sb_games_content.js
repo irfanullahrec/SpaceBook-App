@@ -405,6 +405,8 @@
 
   // ---------- Little Learners ----------
   const VOC = () => root.SB_GAMES_VOCAB || {words: [], colors: [], numbers: [], shapes: [], names: []};
+  // js/sb_sacred.js: no games from Islamiat, Arabic or the Quran books, and no question or word that names something sacred
+  const SAC = () => root.SBSacred || (typeof require === 'function' ? require('./sb_sacred.js') : {noGames: () => false, isSacred: () => false});
   const flash = w => '<b>' + esc(w.w) + '</b>' + (w.ur ? ' · <span dir="rtl" lang="ur">' + esc(w.ur) + '</span>' : '') + (w.ps ? ' · <span dir="rtl" lang="ps">' + esc(w.ps) + '</span>' : '');
   const pics = (e, n) => '<span class="g-pics">' + new Array(n + 1).join('<i>' + e + '</i>') + '</span>';
   const GROUP = {animal: 'animals', fruit: 'fruits', veg: 'vegetables', food: 'food', nature: 'things in nature', body: 'parts of the body', thing: 'things we use', place: 'places', vehicle: 'vehicles'};
@@ -500,6 +502,7 @@
     for (let i = 0; i < B.mcqs.length; i++) {
       const q = B.mcqs[i], sub = B.subjects[q.s];
       if (!sub || sub.cls !== cls || !q.o || q.a == null || q.a < 0 || q.a >= q.o.length || !q.q) continue;
+      if (SAC().noGames(q.s) || SAC().isSacred([q.q, q.e, q.qu, q.qp].concat(q.o).join(' | '))) continue;
       out.push({id: q.i, s: slug(q.s), q: q.q, o: q.o, a: q.a, e: q.e || '', qu: q.qu || '', qp: q.qp || '', tf: !!q.tf});
     }
     return (m[cls] = out);
@@ -516,7 +519,7 @@
   };
   // picture-word pools (Classes 1-3)
   function vocabPool(game) {
-    const W = VOC().words.slice();
+    const W = VOC().words.filter(w => !SAC().isSacred(w.w + ' ' + (w.ur || '') + ' ' + (w.ps || '')));
     if (game === 'spell') return W.filter(w => /^[a-z]{3,9}$/.test(w.w)).sort((a, b) => a.w.length - b.w.length || (a.w < b.w ? -1 : 1)).map(w => ({vocab: w, key: w.w}));
     return W.sort((a, b) => a.w.length - b.w.length || (a.w < b.w ? -1 : 1)).map(w => ({vocab: w, key: w.w}));
   }

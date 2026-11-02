@@ -157,9 +157,19 @@
     }
     return sentenceWhole(rec, tag, cls);
   }
+  // English text the book data gives no translation for (the Class 11 and 12 Maths page books): each sentence still opens its meaning
+  // when clicked, looked up then from the translations stored on the device (js/universal_translate.js, js/sent_data_N.js)
+  const AUTO_OK = s => typeof s === 'string' && !RTL_PRIMARY() && /[A-Za-z]{3,}.*\s.*[A-Za-z]{3,}/.test(s) && s.replace(/\$[^$]*\$/g, '').split(/\s+/).length >= 3;
+  const autoOne = (en, tag, cls) => `<${tag} class="m6-s m6-auto ${cls || ''}" tabindex="0" onclick="m6Toggle(this,event)" onkeydown="if(event.key==='Enter'||event.key===' '){m6Toggle(this,event)}">${inline(en, true)}</${tag}>`;
+  function autoSentences(en, tag, cls) {
+    const parts = en.indexOf('$') < 0 ? en.split(SB_SPLIT) : [en];
+    if (parts.length < 2) return autoOne(en, tag, cls);
+    const w = tag === 'span' ? 'span' : tag;
+    return `<${w} class="m6-para ${cls || ''}">` + parts.map(x => autoOne(x, 'span', 'm6-sent')).join(' ') + `</${w}>`;
+  }
   function sentenceWhole(rec, tag, cls) {
     tag = tag || 'p';
-    if (!rec.ur) return `<${tag} class="${cls || ''}"${primaryAttrs()}>${inline(rec.en, true)}</${tag}>`;
+    if (!rec.ur) return AUTO_OK(rec.en) ? autoSentences(rec.en, tag, cls) : `<${tag} class="${cls || ''}"${primaryAttrs()}>${inline(rec.en, true)}</${tag}>`;
     // A sentence holds word buttons (m6-w) and a Listen button, and a button may not hold controls: so the sentence has no role, like the
     // sentences of the Class 9 renderer (js/core/a11y.js). It stays one Tab stop; Enter or Space opens its translation.
     return `<${tag} class="m6-s ${cls || ''}"${primaryAttrs()} tabindex="0" onclick="m6Toggle(this,event)" onkeydown="if(event.key==='Enter'||event.key===' '){m6Toggle(this,event)}">${inline(rec.en, true)}</${tag}>${translations(rec)}`;
@@ -168,10 +178,31 @@
   window.m6Toggle = function (el, event) {
     if (event && event.target && event.target.closest('.m6-w')) return;
     if (event && event.type === 'keydown') event.preventDefault();
-    const panel = el.nextElementSibling;
+    let panel = el.classList.contains('m6-auto') ? (el._m6p && el._m6p.isConnected ? el._m6p : (el._m6p = autoPanel(el))) : el.nextElementSibling;
     if (!panel || !panel.classList.contains('m6-tr')) return;
     panel.hidden = !panel.hidden;
   };
+  // the meaning of a sentence the book gives no translation for: Urdu and Pashto from the device's stored translations (a computer translation is marked ≈)
+  function autoPanel(el) {
+    const c = el.cloneNode(true);
+    c.querySelectorAll('.katex-mathml, .m6-ans, .sb-ans, button').forEach(x => x.remove());
+    const en = c.textContent.replace(/\s+/g, ' ').trim();
+    const panel = document.createElement('div');
+    panel.className = 'm6-tr'; panel.hidden = true;
+    const line = (l, text, k) => `<p class="${k}" lang="${l}" dir="${LANG_INFO[l] ? LANG_INFO[l].dir : 'rtl'}"${l === 'en' ? ' style="text-align:left"' : ''}><span class="m6-lang">${LANG_INFO[l] ? LANG_INFO[l].label : l}</span>${text}</p>`;
+    panel.innerHTML = line('en', esc(en), 'm6-en') + line('ur', '…', 'm6-ur') + line('ps', '…', 'm6-ps');
+    if (el.matches('span')) { const holder = el.closest('.m6-para') || el; holder.after(panel); } else el.after(panel);
+    const T = window.SBTranslate;
+    ['ur', 'ps'].forEach((l, i) => {
+      const p = panel.children[i + 1];
+      if (!T || !T.translate) { p.lastChild.textContent = '—'; return; }
+      T.translate(en, 'en', l).then(r => {
+        const mark = r && (r.source === 'machine' || r.source === 'gloss' || r.source === 'online') ? '≈ ' : '';
+        p.lastChild.textContent = r && r.text ? mark + r.text : '—';
+      }, () => { p.lastChild.textContent = '—'; });
+    });
+    return panel;
+  }
   window.m6Word = function (el, event) {
     event.preventDefault(); event.stopPropagation();
     const key = el.dataset.w, m = el.dataset.ur ? [el.dataset.ur, el.dataset.ps] : WORDS[key];

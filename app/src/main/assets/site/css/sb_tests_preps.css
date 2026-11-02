@@ -25,7 +25,7 @@
 .sbd-tiles .b { background:#e4efff; color:#0b4fc2; } .sbd-tiles .g { background:#dff5e8; color:#0a7a45; } .sbd-tiles .r { background:#fde3e6; color:#d1203a; }
 .sbd-prow { display:grid; grid-template-columns:1.5fr 1fr; gap:10px; margin:0 4px; }
 .sbd-play { display:flex; align-items:center; justify-content:center; gap:10px; height:50px; border:0; border-radius:10px; background:linear-gradient(180deg,#1f7bf4,#0b5fd6); color:#fff; font-size:1.1rem; font-weight:700; cursor:pointer; }
-.sbd-detail { height:50px; border:1px solid #cfe0f5; border-radius:10px; background:#f3f8ff; color:#1d6fe8; font-size:1.05rem; font-weight:600; cursor:pointer; }
+.sbd-detail { height:50px; border:1px solid #cfe0f5; border-radius:10px; background:#f3f8ff; color:#1b66d8; font-size:1.05rem; font-weight:600; cursor:pointer; }
 .sbd-pempty { grid-column:1 / -1; text-align:center; padding:26px; } .sbd-pempty p { color:#34476f; }
 .sbd-prep-two { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; }
 .sbd-panel { background:#fff; border:1px solid #d9e6f7; border-radius:16px; padding:16px 20px; }

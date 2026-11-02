@@ -694,9 +694,43 @@
     btn.dataset.subj = subj;
     btn.title = 'Distinct ' + ((INFO[mediumOf(subj)] || {}).label || 'words').toLowerCase() + ' in this book';
     btn.innerHTML = '📊 Word Stats';
-    btn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openSubjectStats(subj); }, true);
+    btn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); if (chapterOpen()) openChapterStats(subj); else openSubjectStats(subj); }, true);
     found.bar.appendChild(btn);
     if (window.SBA11y) window.SBA11y.enhance(found.bar);     // it is part of the tab bar for keyboard and screen-reader users
+  }
+
+  // ── chapter scope: inside a chapter the tab counts that chapter's words only ──
+  const chapterOpen = () => !!document.querySelector('.math-ch-btn.active') && !!(document.getElementById('subjTabContent') || document.getElementById('mathTabContent'));
+  function openChapterStats(subj) {
+    const box = document.getElementById('subjTabContent') || document.getElementById('mathTabContent');
+    const btn = document.querySelector('.math-ch-btn.active');
+    const name = btn ? (btn.textContent || '').replace(/\s+/g, ' ').trim() : 'This chapter';
+    const c = box.cloneNode(true);
+    c.querySelectorAll('script,style,svg,.katex-mathml,.sb-pt,.sb-tp,button,[id^="sent-trans-"]').forEach(x => x.remove());
+    const text = (c.textContent || '').replace(/\s+/g, ' ');
+    const LANGS3 = { en: /^[A-Za-z][A-Za-z'’-]*$/, ar: /[؀-ۿ]/ };
+    const words = text.match(/[\p{L}\p{M}][\p{L}\p{M}'’-]*/gu) || [];
+    const sets = { en: new Map(), ur: new Map(), ps: new Map(), ar: new Map() };
+    const PS = /[ښږځڅټډړېۍګ]/, UR = /[ٹڈڑےۓںھ]/;
+    words.forEach(w => {
+      let l;
+      if (LANGS3.en.test(w)) { if (w.length < 2) return; w = w.toLowerCase(); l = 'en'; }
+      else if (LANGS3.ar.test(w)) l = PS.test(w) ? 'ps' : UR.test(w) ? 'ur' : 'ar';
+      else return;
+      sets[l].set(w, (sets[l].get(w) || 0) + 1);
+    });
+    ensureModal();
+    ex.req++;
+    modal.hidden = false; modal.classList.add('ws-chooser'); document.body.classList.add('ws-modal-open');
+    modal.querySelector('#wsModalTitle').textContent = 'Word Stats — ' + name;
+    modal.querySelector('#wsModalSub').textContent = 'Distinct words of this chapter only (' + scopeName(subj) + ').';
+    modal.querySelector('#wsChips').innerHTML = ''; modal.querySelector('#wsStatus').innerHTML = ''; modal.querySelector('#wsPager').innerHTML = '';
+    const names = { en: 'English', ur: 'Urdu', ps: 'Pashto', ar: 'Arabic' };
+    const esc2 = v => String(v).replace(/[&<>"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]);
+    modal.querySelector('#wsTableWrap').innerHTML = Object.keys(sets).filter(k => sets[k].size).map(k => {
+      const top = [...sets[k].entries()].sort((a, b) => b[1] - a[1]).slice(0, 40);
+      return `<details class="ws-ch-lang" open><summary><b>${names[k]}</b>: ${sets[k].size} distinct words</summary><p dir="${k === 'en' ? 'ltr' : 'rtl'}" style="line-height:2">${top.map(([w, n]) => `<span style="display:inline-block;margin:.1rem .25rem;padding:.05rem .5rem;border:1px solid #cbd5e1;border-radius:999px">${esc2(w)} <small>${n}</small></span>`).join('')}</p></details>`;
+    }).join('') || '<div class="ws-empty">No words found in this chapter yet.</div>';
   }
 
   function openSubjectStats(subj) {

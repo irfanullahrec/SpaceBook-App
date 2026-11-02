@@ -244,12 +244,20 @@
       win.SBHooks.use('closeModal', next => function () { const r = next.apply(this, arguments); if (modalRelease) { const f = modalRelease; modalRelease = null; f(); } return r; }, { id: 'a11y.js' });
     }
   }
+  // one pass after the page has been drawn, however many drawing functions ran in the same click: a pass measures every heading (a full layout),
+  // and running it inside each nested draw made opening a big book seconds slower
+  let pending = 0;
+  function later() {
+    if (pending) return;
+    const go = () => { pending = 0; try { enhance(); } catch (e) { /* never break navigation */ } };
+    pending = win.setTimeout ? win.setTimeout(go, 60) : (go(), 0);
+  }
   function hook() {
     if (!win.SBHooks) return;
     hookModal();
     DRAWS.forEach(name => {
       if (typeof win[name] !== 'function') return;
-      win.SBHooks.use(name, next => function () { const r = next.apply(this, arguments); try { enhance(); } catch (e) { /* never break navigation */ } return r; }, { id: 'a11y.js' });
+      win.SBHooks.use(name, next => function () { const r = next.apply(this, arguments); later(); return r; }, { id: 'a11y.js' });
     });
   }
 

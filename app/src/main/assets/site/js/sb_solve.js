@@ -84,19 +84,6 @@
   const CREDIT = /^[\s(]*(?:(?:د|دَ)\s*)?(?:spacebook|اسپیس بک|اسپیس بُک|agent|model|نمونے کا|نمونه)\s*(?:answer|note|sentence|جواب|نوٹ|ځواب|یادونه|نمونه)?\s*(?:\((?:agent|ایجنٹ)\)|\(ایجنٹ کا جواب\))?\s*[:：.۔،,-]?\s*|^\s*جواب\s*\(ایجنٹ\)\s*[:.۔]?\s*/i;
   const cleanNote = t => { const c = String(t || '').replace(CREDIT, '').trim(); return /[\p{L}\p{N}]/u.test(c) ? c : ''; };
   const hasText = s => SLOTS.some(k => typeof s[k] === 'string' && s[k].trim()) || s.m || s.svg;
-  // The note under every answer says where it comes from. An answer that is a model (a sentence, a paragraph, a drawing described) says that other
-  // correct answers exist: the data says so itself (sol.open, or a note such as "Model answer" / "answers may vary"), the panel never guesses. One button
-  // tells us about a wrong answer (js/sb_feedback.js opens its dialog with the question).
-  const MODEL_RX = /model|sample|may vary|answers? vary|نمونے|نمونه/i;
-  const MODEL_START = /^s*(?:model answer|sample answer|answers? (?:may|will) vary|نمونے کا جواب|نمونہ جواب|د نمونې ځواب)/i;      // an open question's answer starts with these words
-  const isOpen = (sol, note) => !!sol.open || MODEL_START.test(String(sol.answer || '')) || Object.keys(note || {}).some(k => MODEL_RX.test(String(note[k])));
-  function footNote(sol, hasSteps, note) {
-    const what = sol.src === 'book' ? 'Printed answer from the textbook'
-      : isOpen(sol, note) ? 'SpaceBook model answer · not printed in the textbook · other correct answers are possible'
-      : `SpaceBook ${hasSteps ? 'explanation' : 'answer'} · not printed in the textbook`;
-    const check = /needs a teacher.s check|ٹیچر سے تصدیق/i.test(String(sol.answer || '') + ' ' + JSON.stringify(sol.steps || [])) ? ' · ⚠ not yet checked by a teacher' : '';
-    return `<p class="sbs-note" dir="ltr">${what}${check}</p><button type="button" class="sbs-report" data-sbfb="answer">Wrong answer? Tell us</button>`;
-  }
   function analyse(sol, med, declared) {
     const lines = {}, note = {};
     const put = (l, v) => { v = String(v || '').trim(); if (v && l && LANG[l] && !lines[l]) lines[l] = v; };
@@ -289,6 +276,8 @@
   // keeps the answer window for every answer).
   const IN_PLACE = ['*'];
   const inPlaceBook = () => typeof state !== 'undefined' && !!state && (IN_PLACE.includes('*') || IN_PLACE.includes(state.selectedClass + ':' + state.activeSubject));
+  // every Mathematics book (Classes 1-12) shows its answer in the answer window, with the animated board and the worked steps
+  const isMathBook = () => { try { return typeof state !== 'undefined' && !!state && /math/i.test(String(state.activeSubject || '')); } catch (e) { return false; } };
   const hasMaths = sol => (sol.steps || []).some(s => s.m || s.svg || SLOTS.some(k => typeof s[k] === 'string' && s[k].includes('$')));
   const BLANK_G = /_{3,}|\.{4,}|…+|-{3,}|[—–]{2,}/g;                // a run of underscores, dots or dashes that stands for the missing word
   const SENT_RX = /(?:^|\s)[a-z]+\d*-s(?:\s|$)/, TR_RX = /(?:^|\s)[a-z]+\d*-tr(?:\s|$)/;
@@ -342,11 +331,27 @@
   }
   // one answer for several dashes: "a, b" / "a ; b" / "a … b" / "a اور b" for two dashes
   const splitAnswer = (text, n) => (n === 1 ? [text] : String(text).split(/\s*(?:[،,;؛…]|\.{3}|\s+(?:اور|and|و)\s+)\s*/).filter(Boolean));
+  // a table with empty cells (or ? / dashes): the answer goes into those cells, in reading order
+  function fillTable(btn, panel, info, host) {
+    const tbl = host.querySelector('table') || (host.nextElementSibling && host.nextElementSibling.matches('table') ? host.nextElementSibling : null) || (host.nextElementSibling && host.nextElementSibling.querySelector('table'));
+    if (!tbl || tbl.closest('.sb-solve')) return false;
+    const cells = [...tbl.querySelectorAll('td')].filter(c => { const t = (c.textContent || '').replace(/\s+/g, ''); return !c.querySelector('.sbs-fill') && (t === '' || /^(?:\?+|_{2,}|\.{3,}|…+|-{2,}|[—–]+)$/.test(t)); });
+    if (!cells.length) return false;
+    const med = panel._med, lines = info.lines, line = lines[med.text] || lines.en || Object.values(lines)[0];
+    if (!line) return false;
+    const vals = splitAnswer(line, cells.length);
+    if (vals.length !== cells.length) return false;
+    btn._fills = cells.map((c, i) => {
+      const sp = document.createElement('span'); sp.className = 'sbs-fill sbs-enter'; sp.dataset.blank = c.textContent; sp.innerHTML = panel._inline(vals[i], false);
+      c.textContent = ''; c.appendChild(sp); return sp;
+    });
+    return true;
+  }
   function fillQuestion(btn, panel, info) {
     const se = sentenceOf(btn), host = se || btn.parentElement; if (!host) return false;
     const med = panel._med, lines = info.lines;
     const main = blanksOf(host, n => ownTextNode(n, host));
-    if (!main.length) return false;
+    if (!main.length) return fillTable(btn, panel, info, host);
     const mainLang = ((se && se.getAttribute('lang')) || '').slice(0, 2) || med.text;
     const line = lines[mainLang] || lines[med.text] || lines.en || Object.values(lines)[0];
     if (!line || line.length > 90) return false;                           // a paragraph does not go into a dash: it shows under the question
@@ -382,7 +387,7 @@
       _lang: med.text, _steps: info.steps, _lines: info.lines, _note: info.note});
     const filled = fillQuestion(btn, panel, info);
     const src = (() => { const n = info.note, l = n[med.text] ? med.text : Object.keys(n)[0], t = l ? cleanNote(n[l]) : ''; return t ? `<p class="sbs-exp" dir="${LANG[l].dir}">📖 ${panel._inline(t, false)}</p>` : ''; })();
-    const foot = footNote(sol, info.steps.length > 0, info.note);
+    const foot = `<p class="sbs-note" dir="ltr">${sol.src === 'book' ? 'Printed answer from the textbook' : `SpaceBook ${info.steps.length ? 'explanation' : 'answer'} · not printed in the textbook`}</p>`;
     panel.innerHTML = (filled ? '' : `<div class="sbs-final">${finalHtml(panel)}</div>`) + explainHtml(panel) + src + foot;
     panel.hidden = false;
     btn.setAttribute('aria-expanded', 'true');
@@ -391,7 +396,7 @@
   // Open or close the panel that belongs to an Ans button. cfg: {inline, plain, langs}
   function toggle(btn, sol, cfg) {
     addCss();
-    if (sol && !hasMaths(sol) && inPlaceBook()) return toggleInPlace(btn, sol, cfg);
+    if (sol && !hasMaths(sol) && inPlaceBook() && !isMathBook()) return toggleInPlace(btn, sol, cfg);
     const panel = panelFor(btn);
     const open = panel.hidden || !panel._sol;
     if (!open) { if (panel.classList.contains('sbs-fs')) setFs(panel, false); panel.hidden = true; btn.setAttribute('aria-expanded', 'false'); stop(panel); return; }
@@ -418,7 +423,7 @@
       ${hasSteps ? `<ol class="sbs-steps">${panel._steps.map(s => `<li class="sbs-step${s.m ? ' sbs-hasm' : ''}" hidden><span class="sbs-teacher" aria-hidden="true">🧑‍🏫</span><div class="sbs-say" aria-live="polite"></div>${s.m ? `<div class="sbs-show" hidden>${inl('$$' + s.m + '$$', false)}</div>` : ''}${s.svg ? `<div class="sbs-show" hidden>${s.svg}</div>` : ''}</li>`).join('')}</ol>` : ''}
       <p class="sbs-src"></p>
       <div class="sbs-final"${hasSteps ? ' hidden' : ''}>${finalHtml(panel)}</div>
-      ${footNote(sol, hasSteps, info.note)}</div>`;
+      <p class="sbs-note" dir="ltr">${sol.src === 'book' ? 'Printed answer from the textbook' : `SpaceBook ${hasSteps ? 'explanation' : 'answer'} · not printed in the textbook`}</p></div>`;
     // Visual reasoning (additive): when the English steps hold equations, offer the animated board next to the language buttons
     if (hasSteps && window.SBVR && window.SBVR.autoFromSolve) { try { window.SBVR.autoFromSolve(panel, panel._steps, declared, slots); } catch (e) { /* never break the panel */ } }
     const playBtn = panel.querySelector('[data-a="play"]');
