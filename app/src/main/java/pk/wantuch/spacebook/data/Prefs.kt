@@ -30,7 +30,7 @@ data class AppState(
     val baseUrlOverride: String = "",
     val classId: String = "",
     /** 0 = follow the system, 1 = light, 2 = dark */
-    val themeMode: Int = 0,
+    val themeMode: Int = 1,
     /** percent, 100 = normal */
     val fontScale: Int = 100,
     val coins: Int = 0,
@@ -73,7 +73,7 @@ class Prefs @Inject constructor(@ApplicationContext private val context: Context
             installId = p[K.installId].orEmpty(),
             baseUrlOverride = p[K.baseUrl].orEmpty(),
             classId = p[K.classId].orEmpty(),
-            themeMode = p[K.theme] ?: 0,
+            themeMode = p[K.theme] ?: 1,
             fontScale = p[K.fontScale] ?: 100,
             coins = p[K.coins] ?: 0,
             entitlementsJson = p[K.entitlements].orEmpty(),

@@ -172,12 +172,12 @@
           '<div class="gm-cardstats"><span>' + sm.cleared + ' / ' + sm.levels + ' levels</span><span class="gm-stars" aria-label="' + sm.stars + ' stars">★ ' + sm.stars + '</span></div>' +
           '<button type="button" class="gm-play" data-act="play" data-game="' + g + '">' + (sm.cleared ? (sm.next ? 'Continue' : 'Play again') : 'Play') + ' ▶</button>'
         : '<p class="gm-why">' + esc(sm.why) + '</p>' + (sm.loading ? '<div class="gm-meter gm-load"><i></i></div>' : '');
-      return '<article class="gm-card' + (sm.ok ? '' : ' is-off') + '" style="--gc:' + G.color + '"><div class="gm-cardhead"><span class="gm-ico" aria-hidden="true">' + G.emoji + '</span><h3>' + esc(G.title) + '</h3></div><p class="gm-blurb">' + esc(G.blurb) + '</p>' + body + '</article>';
+      return '<article class="gm-card' + (sm.ok ? '' : ' is-off') + '" data-game="' + g + '" style="--gc:' + G.color + '"><div class="gm-cardhead"><span class="gm-ico" aria-hidden="true">' + G.emoji + '</span><h3>' + esc(G.title) + '</h3></div><p class="gm-blurb">' + esc(G.blurb) + '</p>' + body + '</article>';
     }).join('');
     if (!cont && p.last && p.last.cls === S.cls) { const sm = summary(p.last.game); if (sm.ok && sm.next) cont = {game: p.last.game, level: sm.next, scope: sm.scope}; }
     const pills = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(n => '<button type="button" class="gm-pill' + (n === S.cls ? ' on' : '') + '" data-act="cls" data-cls="' + n + '" aria-pressed="' + (n === S.cls) + '">' + n + '</button>').join('');
     return '<div class="gm-root" data-view="hub">' +
-      '<section class="gm-hero"><div class="gm-hero-txt"><h2>Play · Learn · Earn</h2><p>Every right answer is a step. Finish steps to earn 🪙, clear a level to open the next one.</p>' +
+      '<section class="gm-hero"><div class="gm-hero-txt"><h2>Learning Games</h2><p>Every right answer is a step. Finish steps to earn 🪙, clear a level to open the next one.</p>' +
       (cont ? '<button type="button" class="gm-cont" data-act="cont" data-game="' + cont.game + '" data-level="' + cont.level + '">▶ Continue · ' + esc(C.GAMES[cont.game].title) + ' · Level ' + cont.level + '</button>' : '') +
       '</div><div class="gm-stats"><div><b>🔥 ' + p.streak.n + '</b><small>day streak</small></div><div><b>🏅 ' + cleared + '/' + levels + '</b><small>levels cleared</small></div><div><b>⭐ ' + st + '</b><small>stars</small></div></div></section>' +
       '<div class="gm-pick"><span class="gm-lbl" id="gm-cls-lbl">My class</span><div class="gm-pills" role="group" aria-labelledby="gm-cls-lbl">' + pills + '</div></div>' +

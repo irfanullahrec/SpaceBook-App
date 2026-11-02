@@ -1,0 +1,89 @@
+/* sb_redesign.css — 2026-10 UI redesign: shared tokens + app shell (navy sidebar, pill header, soft cards).
+   Presentation only. Loaded last. Desktop (>=1100px) gets the permanent sidebar; narrower screens keep the drawer. */
+:root {
+  --sb-navy:#0a2a6b; --sb-navy-2:#0b3a8f; --sb-blue:#1d6fe8; --sb-blue-soft:#e8f2ff;
+  --sb-orange:#f58220; --sb-green:#12a05c; --sb-purple:#7a3fe0;
+  --sb-lang-en:#1d6fe8; --sb-lang-ur:#12a05c; --sb-lang-ps:#7a3fe0; --sb-lang-ar:#f58220;
+  --sb-page:#f1f7ff; --sb-card-line:#d9e6f7; --sb-card-shadow:0 2px 10px rgba(16,52,120,.07);
+  --sb-radius:16px;
+  --blue:#1d6fe8; --blue-dark:#0b3a8f; --blue-light:#e8f2ff;
+  --sidebar-bg:#0a2a6b; --page-bg:#f1f7ff; --border:#d9e6f7; --text:#0b1f5c; --radius:16px;
+}
+body { background:var(--sb-page); color:var(--text); }
+
+#sidebar { background:linear-gradient(180deg,#0b3a8f 0%,#0a2a6b 55%,#071d4d 100%); }
+.sidebar-logo { height:72px; border-bottom:0; }
+.logo-icon { background:transparent; }
+.logo-name { font-size:1.35rem; font-weight:800; letter-spacing:-.01em; color:#fff; }
+.logo-sub { text-transform:none; letter-spacing:0; font-size:.66rem; color:#bcd3f5; }
+.nav-label { display:none; }
+.nav-link { padding:.8rem 1rem; border-radius:12px; color:#e3edfc; }
+.nav-link.active { background:var(--sb-blue); box-shadow:0 6px 14px -6px rgba(29,111,232,.7); }
+.nav-link:hover { background:rgba(255,255,255,.1); }
+.sidebar-footer { color:#8fb0e6; border-top-color:rgba(255,255,255,.12); }
+
+#top-header { background:rgba(255,255,255,.96); border-bottom:1px solid var(--sb-card-line); height:64px; box-shadow:none; }
+.header-search-box { background:#fff; border:1.5px solid var(--sb-card-line); border-radius:14px; }
+.header-search-box:focus-within { border-color:var(--sb-blue); box-shadow:0 0 0 3px rgba(29,111,232,.15); }
+.nav-tab.active { background:var(--sb-blue); color:#fff; border-radius:10px; }
+
+#subpage-nav-bar { background:transparent; border-bottom:0; box-shadow:none; }
+#subpage-nav-bar h2 { color:#0b1f5c; font-weight:800; letter-spacing:-.01em; }
+#footer { background:transparent; }
+
+/* cards: one soft, rounded, outlined surface everywhere */
+.modal-box, .sb-card, .wsx-card, .tp-card { border-radius:var(--sb-radius); border:1px solid var(--sb-card-line); box-shadow:var(--sb-card-shadow); }
+
+@media (min-width:1100px) {
+  :root { --sidebar-w:250px; --header-h:64px; --top-total-h:64px; }
+  #sidebar { transform:none !important; box-shadow:none; }
+  #overlay, #overlay.visible { display:none !important; }
+  .hamburger-btn, .header-brand, .header-nav-tabs .nav-tab { display:none !important; }
+  #top-header { left:var(--sidebar-w); }
+  #main-wrapper, #paperStatisticalHeader { margin-left:var(--sidebar-w); }
+  .header-search-box { min-width:420px; }
+}
+@media (prefers-reduced-motion:reduce) { #sidebar { transition:none; } }
+
+/* ===== shell v2: sidebar icons, logo, bottom block, header chips ===== */
+#sidebar { width:var(--sidebar-w); }
+.sidebar-logo { height:auto; flex-direction:column; align-items:flex-start; gap:2px; padding:18px 18px 14px; }
+.sb-logo-img { display:block; width:200px; height:auto; }
+.sidebar-logo .logo-sub { font-size:.68rem; color:#c9dcf8; padding-left:4px; line-height:1.2; }
+.sidebar-nav { padding:10px 12px; gap:4px; }
+.nav-link { gap:.85rem; padding:.72rem .95rem; font-size:.98rem; font-weight:600; }
+.nav-link .nav-svg { width:24px; height:24px; flex:0 0 24px; }
+.nav-link .nav-text { flex:1; }
+.nav-link .nav-chev { width:16px; height:16px; opacity:.8; }
+.nav-link.active { background:var(--sb-blue); }
+.sidebar-bottom { padding:10px 12px 16px; border-top:1px solid rgba(255,255,255,.14); display:flex; flex-direction:column; gap:4px; }
+.sidebar-footer { display:none; }
+.header-class-chip { display:inline-flex; align-items:center; gap:.5rem; background:#fff; border:1.5px solid var(--sb-card-line); color:#0b1f5c; font-weight:700; font-size:.98rem; padding:.45rem .85rem; border-radius:14px; }
+.header-class-chip:hover { border-color:var(--sb-blue); }
+.header-right-group { margin-left:auto; gap:.8rem; }
+.sbr-chip { background:#fff !important; border:1.5px solid #f6d58a !important; color:#0b1f5c !important; border-radius:14px !important; font-weight:800; padding:.4rem .8rem !important; }
+.header-user-avatar svg { fill:var(--sb-blue); }
+@media (min-width:1100px) {
+  #top-header { justify-content:flex-start; padding:0 1.5rem; gap:1rem; }
+  .header-left { display:none; }
+  .header-nav-tabs { order:5; margin-left:0; }
+  .header-right-group { flex:1; display:flex; align-items:center; justify-content:flex-end; gap:.8rem; }
+  .header-right-search { order:-1; flex:1; max-width:none; margin-right:auto; }
+  .header-search-box { width:100%; min-width:0; height:46px; }
+  .header-class-chip { order:2; }
+  .header-search-box input { font-size:1rem; }
+}
+@media (max-width:1099px) { .header-class-chip { display:none; } }
+.header-user-avatar[data-name] { display:inline-flex; align-items:center; gap:.5rem; }
+.header-user-avatar[data-name]::after { content:attr(data-name); font-weight:700; color:#0a1f5c; font-size:1rem; }
+@media (max-width:1099px) { .header-user-avatar[data-name]::after { display:none; } }
+/* search results dropdown (design 32): a wide rounded card under the search box */
+.header-search-dropdown { background:#fff !important; border:1px solid #d9e6f7 !important; border-radius:16px !important; box-shadow:0 18px 48px rgba(16,52,120,.22) !important; padding:8px !important; max-height:72vh; overflow:auto; }
+@media (min-width:1100px) { .header-search-dropdown { width:min(860px, 70vw); left:0; } }
+.header-search-dropdown > * { border-radius:10px; }
+.header-search-dropdown mark, .header-search-dropdown .hl { background:#fff1a8; color:inherit; padding:0 2px; border-radius:3px; }
+/* the "About the books" notice and other dialogs use the same blue as the rest */
+.sbrt-dialog { border-radius:18px !important; border:1px solid #d9e6f7; }
+.sbrt-dialog h2, .sbrt-dialog h3 { color:#0a1f5c; }
+.sbrt-ok { background:linear-gradient(180deg,#1f7bf4,#0b5fd6) !important; border:0 !important; color:#fff !important; border-radius:10px !important; font-weight:700; }
+.sbrt-actions button:not(.sbrt-ok) { border-color:#9ac2f6 !important; color:#0b4fc2 !important; border-radius:10px !important; }

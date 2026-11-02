@@ -405,25 +405,53 @@
     const cat = await catalog();
     const nameOf = x => { const f = subjectOf(cat, x.s); return { subj: f ? f.subj.name : x.s, emoji: f ? f.subj.emoji : '📘', chapter: f && f.subj.chapters[x.ch] ? f.subj.chapters[x.ch].t : (x.t || '') }; };
     const marks = I().list('bm'), notes = I().list('note');
-    const row = (kind, key, v, body) => {
+    const hl = notes.filter(m => m.value.q), nt = notes.filter(m => !m.value.q);
+    const tint = ['blue', 'yellow', 'green', 'pink'];
+    const row = (kind, key, v, body, i) => {
       const n = nameOf(v);
-      return '<div class="sbl-row-item" data-kind="' + kind + '" data-key="' + esc(key) + '"><button type="button" class="sbl-open"><span class="sbl-em">' + esc(n.emoji) + '</span><span class="sbl-body"><b>' + esc(n.chapter.replace(/\s+/g, ' ').slice(0, 120)) + '</b>' +
-        '<small>' + esc(n.subj) + ' · ' + (v.tb ? esc(v.tb) + ' · ' : '') + 'page ' + (v.p + 1) + '</small>' + body + '</span></button><button type="button" class="sbl-del" aria-label="Remove">🗑</button></div>';
+      return '<div class="sbl-row-item sbl2-item" data-kind="' + kind + '" data-key="' + esc(key) + '"><button type="button" class="sbl-open sbl2-sel"><span class="sbl2-cover">' + esc(n.emoji) + '</span><span class="sbl-body"><b>' + esc(n.chapter.replace(/\s+/g, ' ').slice(0, 120)) + '</b>' +
+        '<small>' + esc(n.subj) + ' · ' + (v.tb ? esc(v.tb) + ' · ' : '') + 'Page ' + (v.p + 1) + '</small>' + (body ? '<span class="sbl2-quote sbl2-' + tint[(i || 0) % 4] + '">' + body + '</span>' : '') + '</span></button><button type="button" class="sbl-del" aria-label="Remove">🗑</button></div>';
     };
-    host.innerHTML = '<section class="sbl-page"><h2>🔖 Saved</h2>' +
-      '<p class="sbl-intro">' + (I().userId() ? 'Your bookmarks, notes and highlights follow your account to every device.' : 'Sign in to keep them on every device. Until then they stay on this one.') + '</p>' +
-      '<h3>Bookmarks <span class="sbl-count">' + marks.length + '</span></h3>' +
-      (marks.length ? marks.map(m => row('bm', m.key, m.value, '')).join('') : '<p class="sbl-empty">Tap 🔖 on a page of a book and it shows up here.</p>') +
-      '<h3>Notes and highlights <span class="sbl-count">' + notes.length + '</span></h3>' +
-      (notes.length ? notes.map(m => row('note', m.key, m.value, (m.value.q ? '<q>' + esc(m.value.q) + '</q>' : '') + (m.value.x ? '<span class="sbl-note">' + esc(m.value.x) + '</span>' : ''))).join('') : '<p class="sbl-empty">Select some words on a page and choose Highlight or Note, or tap 📝.</p>') +
-      '</section>';
-    host.querySelector('.sbl-page').addEventListener('click', async ev => {
+    const lists = {
+      bm: marks.map((m, i) => row('bm', m.key, m.value, '', i)).join('') || '<p class="sbl-empty">Tap the bookmark on a page of a book and it shows up here.</p>',
+      note: nt.map((m, i) => row('note', m.key, m.value, esc(m.value.x || ''), i)).join('') || '<p class="sbl-empty">Select some words on a page and choose Note.</p>',
+      hl: hl.map((m, i) => row('note', m.key, m.value, esc(m.value.q), i)).join('') || '<p class="sbl-empty">Select some words on a page and choose Highlight.</p>'
+    };
+    host.innerHTML = '<section class="sbl-page sbl2"><div class="sbl2-head"><span class="sbl2-ic"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg></span><div><h2>My Saved Library</h2>' +
+      '<p>' + (I().userId() ? 'Your bookmarks, notes and highlights from all your books, in one place.' : 'Sign in to keep them on every device. Until then they stay on this one.') + '</p></div>' +
+      (I().userId() ? '<span class="sbl2-sync"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#12a05c" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg><span><b>All changes saved</b><small>Follows your account</small></span></span>' : '') + '</div>' +
+      '<div class="sbl2-cols"><div class="sbl2-left"><div class="sbl2-tabs" role="tablist"><button type="button" role="tab" class="on" data-tab="bm">Bookmarks <i>' + marks.length + '</i></button><button type="button" role="tab" data-tab="note">Notes <i>' + nt.length + '</i></button><button type="button" role="tab" data-tab="hl">Highlights <i>' + hl.length + '</i></button></div>' +
+      '<label class="sbl2-find"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#4a5f8a" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M16 16l5 5"/></svg><input type="search" placeholder="Search your saved items..." aria-label="Search saved items"></label>' +
+      '<div class="sbl2-list" data-list="bm">' + lists.bm + '</div><div class="sbl2-list" data-list="note" hidden>' + lists.note + '</div><div class="sbl2-list" data-list="hl" hidden>' + lists.hl + '</div></div>' +
+      '<aside class="sbl2-detail" id="sbl2Detail"><p class="sbl-empty">Choose a saved item to see it here.</p></aside></div></section>';
+    const page = host.querySelector('.sbl-page');
+    const detail = page.querySelector('#sbl2Detail');
+    const showDetail = r => {
+      page.querySelectorAll('.sbl2-item').forEach(x => x.classList.toggle('on', x === r));
+      const kind = r.dataset.kind, v = I().get(kind, r.dataset.key); if (!v) return;
+      const n = nameOf(v);
+      detail.innerHTML = '<div class="sbl2-dh"><span class="sbl2-cover big">' + esc(n.emoji) + '</span><div><h3>' + esc(n.chapter.replace(/\s+/g, ' ').slice(0, 120)) + '</h3><small>' + esc(n.subj) + (v.tb ? ' · ' + esc(v.tb) : '') + '</small><p>Page ' + (v.p + 1) + '</p></div></div>' +
+        (v.q ? '<blockquote>' + esc(v.q) + '</blockquote>' : '') + (v.x ? '<h4>My Note</h4><div class="sbl2-note">' + esc(v.x) + '</div>' : '') +
+        '<div class="sbl2-acts"><button type="button" class="sbl2-a" data-go>Open Book</button><button type="button" class="sbl2-a red" data-rm>Remove</button></div>';
+      detail.querySelector('[data-go]').onclick = () => { setActiveNavSafe('subjects'); open(v); };
+      detail.querySelector('[data-rm]').onclick = async () => { await I().del(kind, r.dataset.key); };
+    };
+    page.querySelectorAll('.sbl2-tabs button').forEach(t => t.addEventListener('click', () => {
+      page.querySelectorAll('.sbl2-tabs button').forEach(x => x.classList.toggle('on', x === t));
+      page.querySelectorAll('.sbl2-list').forEach(l => { l.hidden = l.dataset.list !== t.dataset.tab; });
+    }));
+    page.querySelector('.sbl2-find input').addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      page.querySelectorAll('.sbl2-item').forEach(x => { x.hidden = !!q && x.textContent.toLowerCase().indexOf(q) < 0; });
+    });
+    page.addEventListener('click', async ev => {
       const r = ev.target.closest('.sbl-row-item');
       if (!r) return;
-      const kind = r.dataset.kind, key = r.dataset.key, v = I().get(kind, key);
+      const kind = r.dataset.kind, key = r.dataset.key;
       if (ev.target.closest('.sbl-del')) { await I().del(kind, key); return; }
-      if (v) { setActiveNavSafe('subjects'); await open(v); }
+      showDetail(r);
     });
+    const first = page.querySelector('.sbl2-list:not([hidden]) .sbl2-item'); if (first) showDetail(first);
   }
   function setActiveNavSafe(p) { try { if (typeof setActiveNav === 'function') setActiveNav(p); } catch (e) { /* nav optional */ } }
   if (window.SBHooks && typeof window.renderPage === 'function') {

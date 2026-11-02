@@ -272,7 +272,7 @@
     const st = store.read();
     // a class the question bank has no file for (Class 11: its books carry no answer keys) says so instead of failing as a "connection" problem
     const pills = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(n => '<button type="button" class="sbct-pill' + (INDEX && !INDEX.classes[n] ? ' sbct-none' : '') + '" data-act="cls" data-n="' + n + '" aria-pressed="' + (n === S.cls) + '"' + (INDEX && !INDEX.classes[n] ? ' title="No questions for this class yet"' : '') + '>' + n + '</button>').join('');
-    let h = '<section class="sbct-hero"><h2>📝 Create Test</h2><p>Make a test from the textbooks: a whole class, some subjects, some chapters, one chapter or one topic. Take it here, or print it as a paper.</p></section>';
+    let h = '<section class="sbct-hero"><h2>Create Test</h2><p>Make a test from the textbooks: a whole class, some subjects, some chapters, one chapter or one topic. Take it here, or print it as a paper.</p></section>';
     h += '<section class="sbct-card"><h3><b>1</b> Class</h3><div class="sbct-pills" role="group" aria-label="Class">' + pills + '</div></section>';
     if (loading) h += '<div class="sbct-msg" role="status">Loading the questions of class ' + S.cls + '…</div>';
     else if (S.cls && sh()) h += scopeHtml() + kindsHtml() + detailsHtml();

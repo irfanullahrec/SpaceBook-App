@@ -14,6 +14,8 @@ import androidx.compose.material.icons.rounded.Quiz
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
+import pk.wantuch.spacebook.ui.home.ReferenceBrandHeader
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -108,7 +110,15 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController(), 
         openKey = { go(Routes.web("owner-key", "Licence key")) },
     )
 
+    val profile by app.state.collectAsStateWithLifecycle()
     Scaffold(
+        topBar = {
+            // Library and Practice carry their own logo header (designs 04 and 14)
+            if (showBar && route != Routes.LIBRARY && route != Routes.PRACTICE) ReferenceBrandHeader(
+                name = profile.user?.name ?: "Student", coins = profile.coins,
+                onSearch = { go(Routes.SEARCH) }, onProfile = { switchTab(nav, Routes.ME) },
+            )
+        },
         bottomBar = {
             if (showBar) NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 tabs.forEach { t ->
@@ -117,6 +127,11 @@ fun AppNav(app: AppViewModel, nav: NavHostController = rememberNavController(), 
                         onClick = { switchTab(nav, t.route) },
                         icon = { Icon(t.icon, null) },
                         label = { Text(t.label) },
+                        colors = androidx.compose.material3.NavigationBarItemDefaults.colors(
+                            selectedIconColor = MaterialTheme.colorScheme.primary, selectedTextColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant, unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        ),
                     )
                 }
             }

@@ -1,6 +1,23 @@
 package pk.wantuch.spacebook.ui.auth
 
 import androidx.compose.foundation.background
+import pk.wantuch.spacebook.R
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.icons.rounded.Lock
+import androidx.compose.material.icons.rounded.Phone
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -123,46 +140,68 @@ fun AuthScreen(onDone: () -> Unit, onBack: () -> Unit, vm: AuthViewModel = hiltV
     }
     androidx.compose.runtime.LaunchedEffect(user, ui.guestEvents) { if (user != null && ui.guestEvents == 0) onDone() }
 
+    val navy = Color(0xFF0B2056)
+    val fieldShape = RoundedCornerShape(12.dp)
+    val fieldColors = OutlinedTextFieldDefaults.colors(
+        focusedBorderColor = Color(0xFF0785FF), unfocusedBorderColor = Color(0xFFCFE0F5),
+        focusedContainerColor = Color.White, unfocusedContainerColor = Color.White,
+    )
     Column(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).statusBarsPadding().imePadding().verticalScroll(rememberScrollState())) {
-        Row(Modifier.fillMaxWidth().padding(4.dp)) { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Rounded.ArrowBack, "Back") } }
-        Box(Modifier.fillMaxWidth().padding(horizontal = 16.dp).background(Sb.Brand, MaterialTheme.shapes.extraLarge).padding(24.dp)) {
-            Column {
-                Text("SpaceBook", style = MaterialTheme.typography.headlineLarge, color = androidx.compose.ui.graphics.Color.White)
-                Text("Sign in to keep your coins and plans on every phone. You can read everything without an account.", style = MaterialTheme.typography.bodyLarge, color = androidx.compose.ui.graphics.Color.White.copy(alpha = 0.92f))
-            }
-        }
-        TabRow(selectedTabIndex = tab, modifier = Modifier.padding(top = 12.dp), containerColor = androidx.compose.ui.graphics.Color.Transparent) {
-            Tab(tab == 0, { tab = 0; vm.clearError() }, text = { Text("Sign in", style = MaterialTheme.typography.titleSmall) })
-            Tab(tab == 1, { tab = 1; vm.clearError() }, text = { Text("Create account", style = MaterialTheme.typography.titleSmall) })
-        }
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Image(painterResource(R.drawable.au_hero), "SpaceBook", Modifier.fillMaxWidth().padding(horizontal = 10.dp), contentScale = ContentScale.FillWidth)
+        Column(
+            Modifier.padding(horizontal = 16.dp).padding(top = 4.dp, bottom = 20.dp).fillMaxWidth()
+                .background(Color.White, RoundedCornerShape(24.dp)).padding(horizontal = 20.dp, vertical = 18.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp), horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(if (tab == 0) "Sign In" else "Create Account", fontSize = 32.sp, fontWeight = FontWeight.ExtraBold, color = navy)
+            Text(
+                if (tab == 0) "Welcome back to SpaceBook!\nAccess your study bank, practice questions and much more." else "Join SpaceBook and start your learning journey today!",
+                style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center,
+            )
             if (tab == 1) {
-                OutlinedTextField(name, { name = it }, Modifier.fillMaxWidth(), label = { Text("Your name") }, singleLine = true, keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
-                OutlinedTextField(father, { father = it }, Modifier.fillMaxWidth(), label = { Text("Father's name") }, singleLine = true, keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                OutlinedTextField(name, { name = it }, Modifier.fillMaxWidth(), shape = fieldShape, colors = fieldColors, label = { Text("Your name") }, singleLine = true,
+                    leadingIcon = { Icon(Icons.Rounded.Person, null) }, keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
+                OutlinedTextField(father, { father = it }, Modifier.fillMaxWidth(), shape = fieldShape, colors = fieldColors, label = { Text("Father name") }, singleLine = true,
+                    leadingIcon = { Icon(Icons.Rounded.Person, null) }, keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next))
             }
             OutlinedTextField(
-                whatsapp, { whatsapp = it }, Modifier.fillMaxWidth(), label = { Text("WhatsApp number") }, singleLine = true,
-                placeholder = { Text("03xx xxxxxxx") },
+                whatsapp, { whatsapp = it }, Modifier.fillMaxWidth(), shape = fieldShape, colors = fieldColors, label = { Text("WhatsApp number") }, singleLine = true,
+                placeholder = { Text("03xx xxxxxxx") }, leadingIcon = { Icon(Icons.Rounded.Phone, null) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone, imeAction = ImeAction.Next),
             )
             OutlinedTextField(
-                password, { password = it }, Modifier.fillMaxWidth(), label = { Text("Password") }, singleLine = true,
+                password, { password = it }, Modifier.fillMaxWidth(), shape = fieldShape, colors = fieldColors, label = { Text("Password") }, singleLine = true,
+                leadingIcon = { Icon(Icons.Rounded.Lock, null) },
                 visualTransformation = if (show) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIcon = { IconButton(onClick = { show = !show }) { Icon(if (show) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility, if (show) "Hide password" else "Show password") } },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
             )
             ui.error?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium) }
-            Spacer(Modifier.height(4.dp))
             Button(
                 onClick = { if (tab == 0) vm.login(whatsapp, password) else vm.register(name, father, whatsapp, password) },
                 enabled = !ui.busy && whatsapp.isNotBlank() && password.length >= (if (tab == 1) 6 else 1) && (tab == 0 || (name.length >= 2 && father.length >= 2)),
                 modifier = Modifier.fillMaxWidth().height(54.dp),
+                shape = fieldShape,
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF079F51)),
             ) {
                 if (ui.busy) CircularProgressIndicator(Modifier.height(24.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.onPrimary)
-                else Text(if (tab == 0) "Sign in" else "Create my account", style = MaterialTheme.typography.titleSmall)
+                else Text(if (tab == 0) "Sign In" else "Create my account", fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
             }
-            if (tab == 0) Text("Forgot your password? Ask your teacher or write to SpaceBook support on WhatsApp.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            TextButton(onClick = onBack, modifier = Modifier.align(Alignment.CenterHorizontally)) { Text("Not now, just read") }
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                HorizontalDivider(Modifier.weight(1f), color = Color(0xFFD5E2F2))
+                Text("  OR  ", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                HorizontalDivider(Modifier.weight(1f), color = Color(0xFFD5E2F2))
+            }
+            OutlinedButton(
+                onClick = { tab = if (tab == 0) 1 else 0; vm.clearError() }, modifier = Modifier.fillMaxWidth().height(52.dp), shape = fieldShape,
+                border = BorderStroke(1.5.dp, Color(0xFF0785FF)),
+            ) { Text(if (tab == 0) "Create Account" else "I already have an account", fontSize = 17.sp, fontWeight = FontWeight.Bold, color = Color(0xFF0B4FC2)) }
+            Button(
+                onClick = onBack, modifier = Modifier.fillMaxWidth().height(52.dp), shape = fieldShape,
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFE3EEFB), contentColor = navy),
+            ) { Text("Continue as Guest", fontSize = 17.sp, fontWeight = FontWeight.Bold) }
+            if (tab == 0) Text("Forgot your password? Ask your teacher or write to SpaceBook support on WhatsApp.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
+            Text("Your data is safe and secure with us.", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

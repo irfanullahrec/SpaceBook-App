@@ -1,0 +1,11 @@
+/* 2026-10 redesign: Exam Paper Builder (designs 22, 23): light control bar instead of the dark one; titled page. */
+.paper-statistical-header { background:#fff !important; color:#0a1f5c !important; border-bottom:1px solid #d9e6f7 !important; box-shadow:none !important; flex-wrap:wrap; height:auto !important; padding:8px 16px !important; gap:8px !important; }
+.paper-statistical-header::before { content:"Exam Paper Builder"; flex:0 0 100%; font-size:2.2rem; font-weight:800; letter-spacing:-.02em; color:#0a1f5c; padding:2px 0 4px 74px; line-height:1.1; background:url("../assets/ui/papers-icon.png") left center/62px no-repeat; min-height:62px; display:flex; align-items:center; }
+.paper-statistical-header .psh-item { background:#f3f8ff !important; border:1px solid #d9e6f7 !important; color:#0a1f5c !important; border-radius:10px !important; font-weight:600; }
+.paper-statistical-header .psh-item.active, .paper-statistical-header .psh-badge-selected { background:#1d6fe8 !important; color:#fff !important; border-color:#1d6fe8 !important; }
+.paper-statistical-header .psh-badge-total { background:#e3efff !important; color:#0b4fc2 !important; }
+.paper-statistical-header .psh-badge-pending { background:#fff0dc !important; color:#c35a00 !important; border-color:#f7dca9 !important; }
+.paper-statistical-header select { background:transparent !important; color:#0a1f5c !important; }
+.paper-statistical-header .psh-sep { background:#d9e6f7 !important; }
+body:has(.papers-creator-view) #main-wrapper { background:transparent; }
+.papers-creator-view .pc-left, .papers-creator-view [class*="pcv-left"], .papers-creator-view [class*="paper-q-panel"] { border-radius:16px; }

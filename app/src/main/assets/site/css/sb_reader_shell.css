@@ -1,0 +1,24 @@
+/* 2026-10 redesign: the book reader frame shared by every class and subject (designs 06-17):
+   chapter list card, header bar, tab pills, toolbar and page navigation. Only presentation; the reader code is unchanged. */
+.math-unified-view { background:transparent !important; gap:14px; padding:6px 0; }
+.math-ch-sidebar { background:#fff !important; border:1px solid #d9e6f7 !important; border-radius:16px !important; box-shadow:0 2px 10px rgba(16,52,120,.05); overflow:hidden; }
+.math-ch-sidebar-header { background:#fff !important; border-bottom:1px solid #e6eef8 !important; }
+.math-sidebar-back-btn { border-radius:10px !important; color:#1d6fe8 !important; font-weight:700; }
+.math-ch-btn { border-radius:10px !important; margin:3px 8px !important; color:#0a1f5c !important; font-weight:600; background:transparent !important; border:1px solid transparent !important; }
+.math-ch-btn:hover { background:#f1f7ff !important; }
+.math-ch-btn.active { background:#e6f1ff !important; border-color:#9ac2f6 !important; color:#0b4fc2 !important; box-shadow:none !important; }
+.math-ch-btn.active .math-ch-num, .math-ch-btn.active > :first-child { background:#1d6fe8 !important; color:#fff !important; }
+.math-topic-area { background:transparent !important; }
+.math-compact-header-bar { background:#fff !important; border:1px solid #d9e6f7 !important; border-radius:14px !important; box-shadow:0 2px 10px rgba(16,52,120,.04); color:#0a1f5c !important; }
+.math-nav-tabs, .chapter-nav-tabs { background:#fff !important; border:1px solid #d9e6f7 !important; border-radius:14px !important; padding:6px !important; gap:4px !important; box-shadow:0 2px 10px rgba(16,52,120,.04); }
+.math-top-tab.active, .math-tab-btn.active, .bio-tab-btn.active { background:linear-gradient(180deg,#1f7bf4,#0b5fd6) !important; color:#fff !important; border-radius:10px !important; box-shadow:0 4px 12px -4px rgba(29,111,232,.6) !important; }
+.math-top-tab, .math-tab-btn, .bio-tab-btn { border-radius:10px !important; color:#0a1f5c !important; font-weight:600 !important; font-size:.98rem !important; padding:.55rem 1.1rem !important; }
+.math-top-tab:not(.active):hover { background:#f1f7ff !important; }
+.math-tab-content-scroll { background:transparent !important; }
+.bk-wrap { border-radius:16px; }
+.bk-nav { background:#fff !important; border:1px solid #d9e6f7 !important; border-radius:14px !important; box-shadow:0 4px 16px rgba(16,52,120,.12) !important; }
+.bk-nav button { border-radius:10px !important; font-weight:700 !important; }
+.bk-nav .bk-next, .bk-nav button:last-child { background:linear-gradient(180deg,#1f7bf4,#0b5fd6) !important; color:#fff !important; border:0 !important; }
+.math-topic-card, .math-accordion-card, .slo-accordion-card { border-color:#d9e6f7 !important; border-radius:14px !important; box-shadow:0 2px 10px rgba(16,52,120,.04); }
+.math-sub-tabs, .topic-sub-tabs-bar, .topic-sub-tabs-bar-fixed, .category-sub-tabs-bar { background:#fff !important; border:1px solid #d9e6f7 !important; border-radius:12px !important; }
+.math-sub-tab-btn.active, .topic-sub-tab-btn.active, .category-sub-tab-btn.active, .slo-tab-pill.active { background:#e6f1ff !important; color:#0b4fc2 !important; box-shadow:inset 0 0 0 1px #9ac2f6 !important; }

@@ -45,6 +45,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -85,32 +86,27 @@ internal const val TAB_ACCOUNT = 3
  */
 @Composable
 internal fun HomeTabRow(selected: Int, onSelect: (Int) -> Unit) {
-    Surface(color = MaterialTheme.colorScheme.surface, shadowElevation = 3.dp, modifier = Modifier.fillMaxWidth()) {
-        Row(Modifier.fillMaxWidth().padding(horizontal = 6.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
-            HOME_TABS.forEachIndexed { i, t -> HomeTabButton(t, selected == i, Modifier.weight(1f)) { onSelect(i) } }
-        }
+    // design 01: four rounded tiles, the chosen one filled blue
+    Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        HOME_TABS.forEachIndexed { i, t -> HomeTabButton(t, selected == i, Modifier.weight(1f)) { onSelect(i) } }
     }
 }
 
 @Composable
 private fun HomeTabButton(tab: HomeTab, on: Boolean, modifier: Modifier, onClick: () -> Unit) {
-    val bubble by animateColorAsState(if (on) MaterialTheme.colorScheme.primaryContainer else Color.Transparent, label = "bubble")
-    val tint by animateColorAsState(if (on) Sb.Violet else MaterialTheme.colorScheme.onSurfaceVariant, label = "tint")
-    val bar by animateFloatAsState(if (on) 1f else 0f, spring(stiffness = Spring.StiffnessMediumLow), label = "bar")
-    val pop by animateFloatAsState(if (on) 1.08f else 1f, spring(dampingRatio = Spring.DampingRatioMediumBouncy), label = "pop")
+    val fill by animateColorAsState(if (on) Color(0xFF0785FF) else MaterialTheme.colorScheme.surface, label = "fill")
+    val tint by animateColorAsState(if (on) Color.White else Color(0xFF0B2056), label = "tint")
     Column(
         modifier
+            .height(66.dp)
+            .shadow(if (on) 4.dp else 1.dp, RoundedCornerShape(14.dp))
+            .clip(RoundedCornerShape(14.dp)).background(fill)
             .clickable(role = Role.Tab, onClick = onClick)
             .semantics { contentDescription = tab.label; selected = on },
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,
     ) {
-        Spacer(Modifier.height(6.dp))
-        Box(Modifier.size(width = 56.dp, height = 36.dp).scale(pop).clip(RoundedCornerShape(18.dp)).background(bubble), contentAlignment = Alignment.Center) {
-            Icon(if (on) tab.icon else tab.iconOff, null, tint = tint, modifier = Modifier.size(26.dp))
-        }
-        Spacer(Modifier.height(5.dp))
-        Box(Modifier.fillMaxWidth(.5f * bar).height(3.dp).clip(RoundedCornerShape(50)).background(Sb.Brand))
-        Spacer(Modifier.height(if (on) 0.dp else 3.dp))
+        Icon(if (on) tab.icon else tab.iconOff, null, tint = if (on) Color.White else Color(0xFF0B2056), modifier = Modifier.size(26.dp))
+        Text(when (tab.label) { "News Feed" -> "Feed"; "Project Stats" -> "Project"; "My Account" -> "Account"; else -> tab.label }, color = tint, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(top = 3.dp))
     }
 }
 

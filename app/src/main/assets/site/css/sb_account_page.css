@@ -1,0 +1,28 @@
+/* 2026-10 redesign: My Account page (design 35). */
+.sbd-acct-page { display:block; padding:0; background:#eff7ff; inset:64px 0 0 0; overflow-y:auto; z-index:900; }
+@media (min-width:1100px) { .sbd-acct-page { left:var(--sidebar-w, 240px); } }
+.sbd-acct-page .auth-card.sbd-acct { max-width:none; width:100%; max-height:none; min-height:100%; background:transparent; box-shadow:none; border-radius:0; padding:14px 22px 40px; overflow:visible; }
+.sbd-acct-page .auth-close { display:none; }
+.sbd-acct h2 { text-align:left; margin:0; font-size:2.6rem; letter-spacing:-.02em; color:#0a1f5c; font-weight:800; }
+.sbd-acct-sub { margin:.2rem 0 14px; color:#4a5f8a; font-size:1.1rem; }
+.sbd-acct-tabs { display:grid; grid-template-columns:repeat(3,1fr); background:#fff; border:1px solid #d9e6f7; border-radius:14px; margin-bottom:14px; overflow:hidden; }
+.sbd-acct-tabs button { display:flex; align-items:center; justify-content:center; gap:12px; padding:16px; border:0; background:#fff; font-size:1.2rem; font-weight:600; color:#0a1f5c; cursor:pointer; border-bottom:4px solid transparent; }
+.sbd-acct-tabs button.on { color:#1d6fe8; border-bottom-color:#1d6fe8; background:linear-gradient(#f3f9ff,#fff); }
+.sbd-acct-hero { display:grid; grid-template-columns:auto 1fr minmax(0,1.5fr); gap:22px; align-items:center; background:#fff; border:1px solid #d9e6f7; border-radius:16px; padding:18px 22px; margin-bottom:14px; }
+.sbd-avatar { width:130px; height:130px; border-radius:50%; background:linear-gradient(180deg,#c9b8ff,#9c8bf0); color:#fff; font-size:3.6rem; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.sbd-acct-hero h3 { margin:0; font-size:2.2rem; color:#0a1f5c; } .sbd-acct-hero p { margin:.3rem 0 0; font-size:1.1rem; color:#34476f; }
+.sbd-acct-prog { background:#eef5fd; border-radius:14px; padding:14px; } .sbd-acct-prog h4 { margin:0 0 10px; font-size:1.3rem; color:#0a1f5c; } .sbd-acct-prog > div { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+.sbd-lp { display:flex; flex-direction:column; gap:4px; padding:10px; border-radius:10px; font-weight:700; background:#fff; } .sbd-lp img { height:28px; width:auto; align-self:flex-start; border-radius:4px; } .sbd-lp b { font-size:1.6rem; } .sbd-lp small { font-weight:400; color:#4a5f8a; }
+.sbd-lp.en { color:#1d6fe8; background:#e6f1ff; } .sbd-lp.ur { color:#0a7a45; background:#e3f6ec; } .sbd-lp.ps { color:#7a3fe0; background:#efe8ff; } .sbd-lp.ar { color:#d46a00; background:#fff0dc; }
+.sbd-acct-card { background:#fff; border:1px solid #d9e6f7; border-radius:16px; padding:20px 24px; margin-bottom:14px; max-width:760px; }
+.sbd-acct-card h3 { margin:0 0 4px; font-size:1.5rem; color:#0a1f5c; } .sbd-acct-card > p, .sbd-acct-card > div > p { margin:0 0 12px; color:#4a5f8a; }
+.sbd-acct .auth-form label { display:block; margin:12px 0 0; font-size:1rem; font-weight:600; color:#0a1f5c; }
+.sbd-acct .auth-form input { width:100%; box-sizing:border-box; margin-top:6px; padding:0 14px; height:50px; border:1.5px solid #cdddf2; border-radius:10px; background:#f7fbff; font-size:1.05rem; }
+.sbd-acct .sbd-field { display:flex; align-items:center; gap:10px; padding:0 14px; height:50px; margin-top:6px; background:#f7fbff; border:1.5px solid #cdddf2; border-radius:10px; } .sbd-acct .sbd-field input { border:0; background:transparent; margin:0; height:46px; padding:0; outline:none; }
+.sbd-acct .auth-submit { width:100%; min-height:54px; margin-top:14px; border:0; border-radius:12px; background:linear-gradient(180deg,#1f7bf4,#0b5fd6) !important; color:#fff; font-size:1.15rem; font-weight:700; }
+.sbd-acct .auth-submit.sbd-green { background:linear-gradient(180deg,#14a85f,#0a8a47) !important; }
+.sbd-acct .auth-submit.sbd-outline { background:#fff !important; color:#1d6fe8; border:1.5px solid #1d6fe8; }
+.sbd-acct .auth-submit.sbd-red { background:#fff !important; color:#d1203a; border:1.5px solid #d1203a; }
+.sbd-dl { display:flex; justify-content:space-between; align-items:center; gap:20px; } .sbd-dl .auth-form { min-width:260px; }
+.sbd-danger { background:#fff2f2; border-color:#f6c9cf; } .sbd-danger h3 { color:#c8102e; }
+@media (max-width:1099px) { .sbd-acct-hero { grid-template-columns:1fr; } .sbd-acct-prog > div { grid-template-columns:repeat(2,1fr); } .sbd-dl { flex-direction:column; align-items:stretch; } .sbd-acct h2 { font-size:1.9rem; } }
