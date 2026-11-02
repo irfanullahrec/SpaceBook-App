@@ -1692,14 +1692,14 @@
    "sha256": "37a54818171cb9c1a40ae74bacdcaec2bc0cef325f131ae977f31bb16dcd7a2f"
   },
   "js/munawar_c1_gk_book.js": {
-   "v": "9157bf5876d1",
-   "bytes": 638393,
-   "sha256": "9157bf5876d12b1a5b711e6e17728a726d957fe97e2cfaa3b6cf525f237fc312"
+   "v": "b1f0d9c818c1",
+   "bytes": 684172,
+   "sha256": "b1f0d9c818c129c7dd7d42b9f82e289a86411570655103694af0af84e14cf74f"
   },
   "js/munawar_c1_gram_book.js": {
-   "v": "accd6aecfabb",
-   "bytes": 171032,
-   "sha256": "accd6aecfabb947440fcddaff576f1eab354ae2a749fd924df1a541ad1e1ff79"
+   "v": "af82ab55292a",
+   "bytes": 186391,
+   "sha256": "af82ab55292a9d9593dfdbff41d7a48e6f6eb3a408fdd23933028f9494fed057"
   },
   "js/munawar_c1_isl_book.js": {
    "v": "79cf58314139",
@@ -1712,9 +1712,9 @@
    "sha256": "f0c9d29732bbad5c91566e6ba631d628600fb19493d217394d721d5eae9e9dc8"
   },
   "js/munawar_c1_prel_book.js": {
-   "v": "21a27e78bf1d",
-   "bytes": 547987,
-   "sha256": "21a27e78bf1dfd2cc4a16a4001f1ab9e5e6286cd5594d7b86dc74f1df62c6cca"
+   "v": "062bed9cc860",
+   "bytes": 563392,
+   "sha256": "062bed9cc8608b9c4201538df982a76871c1f13c8476bb294a191887fb733327"
   },
   "js/munawar_c1_ugram_book.js": {
    "v": "4714bf779196",
@@ -1747,9 +1747,9 @@
    "sha256": "326bd51b690d8d33466b05dcf44e37a0cadb62fc50ea18350acd392aeb31613c"
   },
   "js/munawar_c2_gk_book.js": {
-   "v": "3a622b0137a5",
-   "bytes": 646040,
-   "sha256": "3a622b0137a5e9dfa1ad5da2263961d1e0192359aca4a2349dcad1bea6f8ff73"
+   "v": "5704de4fc8d9",
+   "bytes": 659091,
+   "sha256": "5704de4fc8d951c74b9d28b15c58eccc08a2d30cfd95ef122b395e9756da2d80"
   },
   "js/munawar_c2_gram_book.js": {
    "v": "0dff8ddfba85",
@@ -1797,9 +1797,9 @@
    "sha256": "257b1a75592571de5536b7d9a71ffbef5c24a865b9d69db53de1444cd4cd3cc2"
   },
   "js/munawar_c3_gk_book.js": {
-   "v": "444a3661c50a",
-   "bytes": 1063815,
-   "sha256": "444a3661c50a4bff13f7fd8a8c67805f0743b589a6ca623e186d45f390faaf22"
+   "v": "9075201155b7",
+   "bytes": 1094785,
+   "sha256": "9075201155b729ff0b92ecd37f95cde0b92861d934d7fd3f477cac44c2c55c7d"
   },
   "js/munawar_c3_gram_book.js": {
    "v": "240a2ff92885",
@@ -1817,9 +1817,9 @@
    "sha256": "19ac33c3c559d623f4e58c62b4b5a4b2f8fe77558f5bbd63f28c744fe61dbe32"
   },
   "js/munawar_c3_prel_book.js": {
-   "v": "9347dd17ef53",
-   "bytes": 961934,
-   "sha256": "9347dd17ef53389fcd9b68e3c337c4f36df0723fec9585a8d6b42aeb5b4d7466"
+   "v": "9619a66c46f9",
+   "bytes": 964771,
+   "sha256": "9619a66c46f920dfa9f52568070db16c2cf22b8ac776d542577c15842d8baf19"
   },
   "js/munawar_c3_ugram_book.js": {
    "v": "ff02f4454f97",
@@ -2642,7 +2642,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 700309
+   "bytes": 715668
   },
   "cls1-mun-gk": {
    "classId": "cls1",
@@ -2656,7 +2656,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1251809
+   "bytes": 1297588
   },
   "cls1-mun-isl": {
    "classId": "cls1",
@@ -2696,7 +2696,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1147466
+   "bytes": 1162871
   },
   "cls1-mun-urdu": {
    "classId": "cls1",
@@ -2906,7 +2906,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1265519
+   "bytes": 1278570
   },
   "cls2-mun-isl": {
    "classId": "cls2",
@@ -3143,7 +3143,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1751404
+   "bytes": 1782374
   },
   "cls3-mun-isl": {
    "classId": "cls3",
@@ -3183,7 +3183,7 @@
    "assets": [
     "content/search/index.json"
    ],
-   "bytes": 1634003
+   "bytes": 1636840
   },
   "cls3-mun-urdu": {
    "classId": "cls3",
